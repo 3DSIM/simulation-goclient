@@ -63,7 +63,7 @@ func _TestExampleUseOfAPIWithAuthentication(t *testing.T) {
 	fmt.Printf("Result: %v\n", createdSimulation)
 }
 
-func TestPatch(t *testing.T) {
+func _TestPatch(t *testing.T) {
 	token := "sample token"
 	bearerTokenAuth := openapiclient.BearerToken(token)
 
