@@ -73,10 +73,10 @@ type GetPartsParams struct {
 	*/
 	Offset *int32
 	/*OrganizationID
-	  the organization id to get parts for.  Must be provided as API callers only have access to parts belonging to their organization.
+	  the organization id to get items for.  Must be provided as API callers only have access to items belonging to their organization.
 
 	*/
-	OrganizationID string
+	OrganizationID int32
 	/*Sort
 	  key:direction pairs for one or multiple field sort orders
 
@@ -155,13 +155,13 @@ func (o *GetPartsParams) SetOffset(offset *int32) {
 }
 
 // WithOrganizationID adds the organizationID to the get parts params
-func (o *GetPartsParams) WithOrganizationID(organizationID string) *GetPartsParams {
+func (o *GetPartsParams) WithOrganizationID(organizationID int32) *GetPartsParams {
 	o.SetOrganizationID(organizationID)
 	return o
 }
 
 // SetOrganizationID adds the organizationId to the get parts params
-func (o *GetPartsParams) SetOrganizationID(organizationID string) {
+func (o *GetPartsParams) SetOrganizationID(organizationID int32) {
 	o.OrganizationID = organizationID
 }
 
@@ -248,7 +248,7 @@ func (o *GetPartsParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Regi
 
 	// query param organizationId
 	qrOrganizationID := o.OrganizationID
-	qOrganizationID := qrOrganizationID
+	qOrganizationID := swag.FormatInt32(qrOrganizationID)
 	if qOrganizationID != "" {
 		if err := r.SetQueryParam("organizationId", qOrganizationID); err != nil {
 			return err

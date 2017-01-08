@@ -60,9 +60,9 @@ type AssumedStrainSimulationParameters struct {
 	// Minimum: 1e-05
 	LayerThickness *float64 `json:"layerThickness"`
 
-	// Must be between 0 to 0.005 meters, Must be greater than minimumWallDistance
+	// Must be between 0 to 0.003 meters, Must be greater than minimumWallDistance
 	// Required: true
-	// Maximum: 0.005
+	// Maximum: 0.003
 	// Minimum: 0
 	MaximumWallDistance *float64 `json:"maximumWallDistance"`
 
@@ -441,7 +441,7 @@ func (m *AssumedStrainSimulationParameters) validateMaximumWallDistance(formats 
 		return err
 	}
 
-	if err := validate.Maximum("maximumWallDistance", "body", float64(*m.MaximumWallDistance), 0.005, false); err != nil {
+	if err := validate.Maximum("maximumWallDistance", "body", float64(*m.MaximumWallDistance), 0.003, false); err != nil {
 		return err
 	}
 

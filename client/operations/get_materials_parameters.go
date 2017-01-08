@@ -71,7 +71,7 @@ type GetMaterialsParams struct {
 	  the organization id to get items for.  Must be provided as API callers only have access to items belonging to their organization.
 
 	*/
-	OrganizationID string
+	OrganizationID int32
 	/*Sort
 	  key:direction pairs for one or multiple field sort orders
 
@@ -139,13 +139,13 @@ func (o *GetMaterialsParams) SetOffset(offset *int32) {
 }
 
 // WithOrganizationID adds the organizationID to the get materials params
-func (o *GetMaterialsParams) WithOrganizationID(organizationID string) *GetMaterialsParams {
+func (o *GetMaterialsParams) WithOrganizationID(organizationID int32) *GetMaterialsParams {
 	o.SetOrganizationID(organizationID)
 	return o
 }
 
 // SetOrganizationID adds the organizationId to the get materials params
-func (o *GetMaterialsParams) SetOrganizationID(organizationID string) {
+func (o *GetMaterialsParams) SetOrganizationID(organizationID int32) {
 	o.OrganizationID = organizationID
 }
 
@@ -216,7 +216,7 @@ func (o *GetMaterialsParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.
 
 	// query param organizationId
 	qrOrganizationID := o.OrganizationID
-	qOrganizationID := qrOrganizationID
+	qOrganizationID := swag.FormatInt32(qrOrganizationID)
 	if qOrganizationID != "" {
 		if err := r.SetQueryParam("organizationId", qOrganizationID); err != nil {
 			return err

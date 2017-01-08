@@ -17,43 +17,43 @@ import (
 	strfmt "github.com/go-openapi/strfmt"
 )
 
-// NewGetThermalSimulationsParams creates a new GetThermalSimulationsParams object
+// NewGetSimulationsParams creates a new GetSimulationsParams object
 // with the default values initialized.
-func NewGetThermalSimulationsParams() *GetThermalSimulationsParams {
+func NewGetSimulationsParams() *GetSimulationsParams {
 	var ()
-	return &GetThermalSimulationsParams{
+	return &GetSimulationsParams{
 
 		timeout: cr.DefaultTimeout,
 	}
 }
 
-// NewGetThermalSimulationsParamsWithTimeout creates a new GetThermalSimulationsParams object
+// NewGetSimulationsParamsWithTimeout creates a new GetSimulationsParams object
 // with the default values initialized, and the ability to set a timeout on a request
-func NewGetThermalSimulationsParamsWithTimeout(timeout time.Duration) *GetThermalSimulationsParams {
+func NewGetSimulationsParamsWithTimeout(timeout time.Duration) *GetSimulationsParams {
 	var ()
-	return &GetThermalSimulationsParams{
+	return &GetSimulationsParams{
 
 		timeout: timeout,
 	}
 }
 
-// NewGetThermalSimulationsParamsWithContext creates a new GetThermalSimulationsParams object
+// NewGetSimulationsParamsWithContext creates a new GetSimulationsParams object
 // with the default values initialized, and the ability to set a context for a request
-func NewGetThermalSimulationsParamsWithContext(ctx context.Context) *GetThermalSimulationsParams {
+func NewGetSimulationsParamsWithContext(ctx context.Context) *GetSimulationsParams {
 	var ()
-	return &GetThermalSimulationsParams{
+	return &GetSimulationsParams{
 
 		Context: ctx,
 	}
 }
 
-/*GetThermalSimulationsParams contains all the parameters to send to the API endpoint
-for the get thermal simulations operation typically these are written to a http.Request
+/*GetSimulationsParams contains all the parameters to send to the API endpoint
+for the get simulations operation typically these are written to a http.Request
 */
-type GetThermalSimulationsParams struct {
+type GetSimulationsParams struct {
 
 	/*Limit
-	  number of items to return within the query
+	  number of materials to return within the query
 
 	*/
 	Limit *int32
@@ -83,85 +83,85 @@ type GetThermalSimulationsParams struct {
 	HTTPClient *http.Client
 }
 
-// WithTimeout adds the timeout to the get thermal simulations params
-func (o *GetThermalSimulationsParams) WithTimeout(timeout time.Duration) *GetThermalSimulationsParams {
+// WithTimeout adds the timeout to the get simulations params
+func (o *GetSimulationsParams) WithTimeout(timeout time.Duration) *GetSimulationsParams {
 	o.SetTimeout(timeout)
 	return o
 }
 
-// SetTimeout adds the timeout to the get thermal simulations params
-func (o *GetThermalSimulationsParams) SetTimeout(timeout time.Duration) {
+// SetTimeout adds the timeout to the get simulations params
+func (o *GetSimulationsParams) SetTimeout(timeout time.Duration) {
 	o.timeout = timeout
 }
 
-// WithContext adds the context to the get thermal simulations params
-func (o *GetThermalSimulationsParams) WithContext(ctx context.Context) *GetThermalSimulationsParams {
+// WithContext adds the context to the get simulations params
+func (o *GetSimulationsParams) WithContext(ctx context.Context) *GetSimulationsParams {
 	o.SetContext(ctx)
 	return o
 }
 
-// SetContext adds the context to the get thermal simulations params
-func (o *GetThermalSimulationsParams) SetContext(ctx context.Context) {
+// SetContext adds the context to the get simulations params
+func (o *GetSimulationsParams) SetContext(ctx context.Context) {
 	o.Context = ctx
 }
 
-// WithLimit adds the limit to the get thermal simulations params
-func (o *GetThermalSimulationsParams) WithLimit(limit *int32) *GetThermalSimulationsParams {
+// WithLimit adds the limit to the get simulations params
+func (o *GetSimulationsParams) WithLimit(limit *int32) *GetSimulationsParams {
 	o.SetLimit(limit)
 	return o
 }
 
-// SetLimit adds the limit to the get thermal simulations params
-func (o *GetThermalSimulationsParams) SetLimit(limit *int32) {
+// SetLimit adds the limit to the get simulations params
+func (o *GetSimulationsParams) SetLimit(limit *int32) {
 	o.Limit = limit
 }
 
-// WithOffset adds the offset to the get thermal simulations params
-func (o *GetThermalSimulationsParams) WithOffset(offset *int32) *GetThermalSimulationsParams {
+// WithOffset adds the offset to the get simulations params
+func (o *GetSimulationsParams) WithOffset(offset *int32) *GetSimulationsParams {
 	o.SetOffset(offset)
 	return o
 }
 
-// SetOffset adds the offset to the get thermal simulations params
-func (o *GetThermalSimulationsParams) SetOffset(offset *int32) {
+// SetOffset adds the offset to the get simulations params
+func (o *GetSimulationsParams) SetOffset(offset *int32) {
 	o.Offset = offset
 }
 
-// WithOrganizationID adds the organizationID to the get thermal simulations params
-func (o *GetThermalSimulationsParams) WithOrganizationID(organizationID int32) *GetThermalSimulationsParams {
+// WithOrganizationID adds the organizationID to the get simulations params
+func (o *GetSimulationsParams) WithOrganizationID(organizationID int32) *GetSimulationsParams {
 	o.SetOrganizationID(organizationID)
 	return o
 }
 
-// SetOrganizationID adds the organizationId to the get thermal simulations params
-func (o *GetThermalSimulationsParams) SetOrganizationID(organizationID int32) {
+// SetOrganizationID adds the organizationId to the get simulations params
+func (o *GetSimulationsParams) SetOrganizationID(organizationID int32) {
 	o.OrganizationID = organizationID
 }
 
-// WithSort adds the sort to the get thermal simulations params
-func (o *GetThermalSimulationsParams) WithSort(sort []string) *GetThermalSimulationsParams {
+// WithSort adds the sort to the get simulations params
+func (o *GetSimulationsParams) WithSort(sort []string) *GetSimulationsParams {
 	o.SetSort(sort)
 	return o
 }
 
-// SetSort adds the sort to the get thermal simulations params
-func (o *GetThermalSimulationsParams) SetSort(sort []string) {
+// SetSort adds the sort to the get simulations params
+func (o *GetSimulationsParams) SetSort(sort []string) {
 	o.Sort = sort
 }
 
-// WithStatus adds the status to the get thermal simulations params
-func (o *GetThermalSimulationsParams) WithStatus(status *string) *GetThermalSimulationsParams {
+// WithStatus adds the status to the get simulations params
+func (o *GetSimulationsParams) WithStatus(status *string) *GetSimulationsParams {
 	o.SetStatus(status)
 	return o
 }
 
-// SetStatus adds the status to the get thermal simulations params
-func (o *GetThermalSimulationsParams) SetStatus(status *string) {
+// SetStatus adds the status to the get simulations params
+func (o *GetSimulationsParams) SetStatus(status *string) {
 	o.Status = status
 }
 
 // WriteToRequest writes these params to a swagger request
-func (o *GetThermalSimulationsParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
+func (o *GetSimulationsParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
 	r.SetTimeout(o.timeout)
 	var res []error

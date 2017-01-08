@@ -52,11 +52,6 @@ for the get porosity simulations operation typically these are written to a http
 */
 type GetPorositySimulationsParams struct {
 
-	/*Filter
-	  Filter objects based on fields in the object.  E.g. filter=name:my-simulation,state:running
-
-	*/
-	Filter *string
 	/*Limit
 	  number of materials to return within the query
 
@@ -67,11 +62,21 @@ type GetPorositySimulationsParams struct {
 
 	*/
 	Offset *int32
+	/*OrganizationID
+	  the organization id to get items for.  Must be provided as API callers only have access to items belonging to their organization.
+
+	*/
+	OrganizationID int32
 	/*Sort
 	  key:direction pairs for one or multiple field sort orders
 
 	*/
 	Sort []string
+	/*Status
+	  simulation status for items retreived. Multiple status values may be specified e.g. "status=completed&status=error&status=cancelled"
+
+	*/
+	Status *string
 
 	timeout    time.Duration
 	Context    context.Context
@@ -100,17 +105,6 @@ func (o *GetPorositySimulationsParams) SetContext(ctx context.Context) {
 	o.Context = ctx
 }
 
-// WithFilter adds the filter to the get porosity simulations params
-func (o *GetPorositySimulationsParams) WithFilter(filter *string) *GetPorositySimulationsParams {
-	o.SetFilter(filter)
-	return o
-}
-
-// SetFilter adds the filter to the get porosity simulations params
-func (o *GetPorositySimulationsParams) SetFilter(filter *string) {
-	o.Filter = filter
-}
-
 // WithLimit adds the limit to the get porosity simulations params
 func (o *GetPorositySimulationsParams) WithLimit(limit *int32) *GetPorositySimulationsParams {
 	o.SetLimit(limit)
@@ -133,6 +127,17 @@ func (o *GetPorositySimulationsParams) SetOffset(offset *int32) {
 	o.Offset = offset
 }
 
+// WithOrganizationID adds the organizationID to the get porosity simulations params
+func (o *GetPorositySimulationsParams) WithOrganizationID(organizationID int32) *GetPorositySimulationsParams {
+	o.SetOrganizationID(organizationID)
+	return o
+}
+
+// SetOrganizationID adds the organizationId to the get porosity simulations params
+func (o *GetPorositySimulationsParams) SetOrganizationID(organizationID int32) {
+	o.OrganizationID = organizationID
+}
+
 // WithSort adds the sort to the get porosity simulations params
 func (o *GetPorositySimulationsParams) WithSort(sort []string) *GetPorositySimulationsParams {
 	o.SetSort(sort)
@@ -144,27 +149,22 @@ func (o *GetPorositySimulationsParams) SetSort(sort []string) {
 	o.Sort = sort
 }
 
+// WithStatus adds the status to the get porosity simulations params
+func (o *GetPorositySimulationsParams) WithStatus(status *string) *GetPorositySimulationsParams {
+	o.SetStatus(status)
+	return o
+}
+
+// SetStatus adds the status to the get porosity simulations params
+func (o *GetPorositySimulationsParams) SetStatus(status *string) {
+	o.Status = status
+}
+
 // WriteToRequest writes these params to a swagger request
 func (o *GetPorositySimulationsParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
 	r.SetTimeout(o.timeout)
 	var res []error
-
-	if o.Filter != nil {
-
-		// query param filter
-		var qrFilter string
-		if o.Filter != nil {
-			qrFilter = *o.Filter
-		}
-		qFilter := qrFilter
-		if qFilter != "" {
-			if err := r.SetQueryParam("filter", qFilter); err != nil {
-				return err
-			}
-		}
-
-	}
 
 	if o.Limit != nil {
 
@@ -198,12 +198,37 @@ func (o *GetPorositySimulationsParams) WriteToRequest(r runtime.ClientRequest, r
 
 	}
 
+	// query param organizationId
+	qrOrganizationID := o.OrganizationID
+	qOrganizationID := swag.FormatInt32(qrOrganizationID)
+	if qOrganizationID != "" {
+		if err := r.SetQueryParam("organizationId", qOrganizationID); err != nil {
+			return err
+		}
+	}
+
 	valuesSort := o.Sort
 
 	joinedSort := swag.JoinByFormat(valuesSort, "csv")
 	// query array param sort
 	if err := r.SetQueryParam("sort", joinedSort...); err != nil {
 		return err
+	}
+
+	if o.Status != nil {
+
+		// query param status
+		var qrStatus string
+		if o.Status != nil {
+			qrStatus = *o.Status
+		}
+		qStatus := qrStatus
+		if qStatus != "" {
+			if err := r.SetQueryParam("status", qStatus); err != nil {
+				return err
+			}
+		}
+
 	}
 
 	if len(res) > 0 {

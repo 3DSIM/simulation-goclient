@@ -690,6 +690,64 @@ func (a *Client) GetPorositySimulations(params *GetPorositySimulationsParams, au
 }
 
 /*
+GetSimulation Get a simulation
+*/
+func (a *Client) GetSimulation(params *GetSimulationParams, authInfo runtime.ClientAuthInfoWriter) (*GetSimulationOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetSimulationParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "getSimulation",
+		Method:             "GET",
+		PathPattern:        "/simulations/{id}",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &GetSimulationReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*GetSimulationOK), nil
+
+}
+
+/*
+GetSimulations Gets a list of all simulations
+*/
+func (a *Client) GetSimulations(params *GetSimulationsParams, authInfo runtime.ClientAuthInfoWriter) (*GetSimulationsOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetSimulationsParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "getSimulations",
+		Method:             "GET",
+		PathPattern:        "/simulations",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &GetSimulationsReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*GetSimulationsOK), nil
+
+}
+
+/*
 GetSingleBeadSimulation Get a single bead simulation
 */
 func (a *Client) GetSingleBeadSimulation(params *GetSingleBeadSimulationParams, authInfo runtime.ClientAuthInfoWriter) (*GetSingleBeadSimulationOK, error) {
@@ -802,6 +860,35 @@ func (a *Client) GetThermalSimulations(params *GetThermalSimulationsParams, auth
 		return nil, err
 	}
 	return result.(*GetThermalSimulationsOK), nil
+
+}
+
+/*
+PatchSimulation Patch a simulation
+*/
+func (a *Client) PatchSimulation(params *PatchSimulationParams, authInfo runtime.ClientAuthInfoWriter) (*PatchSimulationOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewPatchSimulationParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "patchSimulation",
+		Method:             "PATCH",
+		PathPattern:        "/simulations/{id}",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &PatchSimulationReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*PatchSimulationOK), nil
 
 }
 
