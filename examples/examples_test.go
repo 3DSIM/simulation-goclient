@@ -63,6 +63,23 @@ func _TestExampleUseOfAPIWithAuthentication(t *testing.T) {
 	fmt.Printf("Result: %v\n", createdSimulation)
 }
 
+func TestPatch(t *testing.T) {
+	token := "sample token"
+	bearerTokenAuth := openapiclient.BearerToken(token)
+
+	client := simulationclient.New(openapiclient.New("localhost:5000", "", []string{"http"}), strfmt.Default)
+
+	patch := &models.PatchDocument{Op: stringToPointer(models.PatchDocumentOpReplace), Path: stringToPointer("/title"), Value: "Test Patch"}
+	patch2 := &models.PatchDocument{Op: stringToPointer(models.PatchDocumentOpReplace), Path: stringToPointer("/status"), Value: models.SimulationStatusInProgress}
+	patchList := []*models.PatchDocument{patch, patch2}
+	patchedSimulation, err := client.Operations.PatchSimulation(operations.NewPatchSimulationParams().WithSimulationPatch(patchList).WithID(65), bearerTokenAuth)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	fmt.Printf("Result: %v\n", patchedSimulation)
+}
+
 func stringToPointer(text string) *string {
 	return &text
 }

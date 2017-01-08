@@ -52,11 +52,6 @@ for the get single bead simulations operation typically these are written to a h
 */
 type GetSingleBeadSimulationsParams struct {
 
-	/*Filter
-	  filter against available fields for the model
-
-	*/
-	Filter *string
 	/*Limit
 	  number of items to return within the query
 
@@ -67,11 +62,21 @@ type GetSingleBeadSimulationsParams struct {
 
 	*/
 	Offset *int32
+	/*OrganizationID
+	  the organization id to get items for.  Must be provided as API callers only have access to items belonging to their organization.
+
+	*/
+	OrganizationID int32
 	/*Sort
 	  key:direction pairs for one or multiple field sort orders
 
 	*/
 	Sort []string
+	/*Status
+	  simulation status for items retreived. Multiple status values may be specified e.g. "status=completed&status=error&status=cancelled"
+
+	*/
+	Status *string
 
 	timeout    time.Duration
 	Context    context.Context
@@ -100,17 +105,6 @@ func (o *GetSingleBeadSimulationsParams) SetContext(ctx context.Context) {
 	o.Context = ctx
 }
 
-// WithFilter adds the filter to the get single bead simulations params
-func (o *GetSingleBeadSimulationsParams) WithFilter(filter *string) *GetSingleBeadSimulationsParams {
-	o.SetFilter(filter)
-	return o
-}
-
-// SetFilter adds the filter to the get single bead simulations params
-func (o *GetSingleBeadSimulationsParams) SetFilter(filter *string) {
-	o.Filter = filter
-}
-
 // WithLimit adds the limit to the get single bead simulations params
 func (o *GetSingleBeadSimulationsParams) WithLimit(limit *int32) *GetSingleBeadSimulationsParams {
 	o.SetLimit(limit)
@@ -133,6 +127,17 @@ func (o *GetSingleBeadSimulationsParams) SetOffset(offset *int32) {
 	o.Offset = offset
 }
 
+// WithOrganizationID adds the organizationID to the get single bead simulations params
+func (o *GetSingleBeadSimulationsParams) WithOrganizationID(organizationID int32) *GetSingleBeadSimulationsParams {
+	o.SetOrganizationID(organizationID)
+	return o
+}
+
+// SetOrganizationID adds the organizationId to the get single bead simulations params
+func (o *GetSingleBeadSimulationsParams) SetOrganizationID(organizationID int32) {
+	o.OrganizationID = organizationID
+}
+
 // WithSort adds the sort to the get single bead simulations params
 func (o *GetSingleBeadSimulationsParams) WithSort(sort []string) *GetSingleBeadSimulationsParams {
 	o.SetSort(sort)
@@ -144,27 +149,22 @@ func (o *GetSingleBeadSimulationsParams) SetSort(sort []string) {
 	o.Sort = sort
 }
 
+// WithStatus adds the status to the get single bead simulations params
+func (o *GetSingleBeadSimulationsParams) WithStatus(status *string) *GetSingleBeadSimulationsParams {
+	o.SetStatus(status)
+	return o
+}
+
+// SetStatus adds the status to the get single bead simulations params
+func (o *GetSingleBeadSimulationsParams) SetStatus(status *string) {
+	o.Status = status
+}
+
 // WriteToRequest writes these params to a swagger request
 func (o *GetSingleBeadSimulationsParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
 	r.SetTimeout(o.timeout)
 	var res []error
-
-	if o.Filter != nil {
-
-		// query param filter
-		var qrFilter string
-		if o.Filter != nil {
-			qrFilter = *o.Filter
-		}
-		qFilter := qrFilter
-		if qFilter != "" {
-			if err := r.SetQueryParam("filter", qFilter); err != nil {
-				return err
-			}
-		}
-
-	}
 
 	if o.Limit != nil {
 
@@ -198,12 +198,37 @@ func (o *GetSingleBeadSimulationsParams) WriteToRequest(r runtime.ClientRequest,
 
 	}
 
+	// query param organizationId
+	qrOrganizationID := o.OrganizationID
+	qOrganizationID := swag.FormatInt32(qrOrganizationID)
+	if qOrganizationID != "" {
+		if err := r.SetQueryParam("organizationId", qOrganizationID); err != nil {
+			return err
+		}
+	}
+
 	valuesSort := o.Sort
 
 	joinedSort := swag.JoinByFormat(valuesSort, "csv")
 	// query array param sort
 	if err := r.SetQueryParam("sort", joinedSort...); err != nil {
 		return err
+	}
+
+	if o.Status != nil {
+
+		// query param status
+		var qrStatus string
+		if o.Status != nil {
+			qrStatus = *o.Status
+		}
+		qStatus := qrStatus
+		if qStatus != "" {
+			if err := r.SetQueryParam("status", qStatus); err != nil {
+				return err
+			}
+		}
+
 	}
 
 	if len(res) > 0 {
