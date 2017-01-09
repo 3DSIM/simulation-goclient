@@ -7,6 +7,7 @@ import (
 	"github.com/3dsim/simulation-goclient/models"
 	openapiclient "github.com/go-openapi/runtime/client"
 	"github.com/go-openapi/strfmt"
+	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
@@ -61,6 +62,21 @@ func _TestExampleUseOfAPIWithAuthentication(t *testing.T) {
 	}
 
 	fmt.Printf("Result: %v\n", createdSimulation)
+}
+
+func _TestExampleGetSimulations(t *testing.T) {
+	token := "token received from auth0 (without Bearer in front)"
+	bearerTokenAuth := openapiclient.BearerToken(token)
+
+	client := simulationclient.New(openapiclient.New("3dsim-qa.cloud.tyk.io", "simulation-api", []string{"https"}), strfmt.Default)
+
+	simulations, err := client.Operations.GetSimulations(operations.NewGetSimulationsParams().WithStatus([]string{"InProgress", "Error", "Success"}).WithOrganizationID(1), bearerTokenAuth)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	assert.NotEmpty(t, simulations.Payload, "Expected some simulations returned")
+	fmt.Printf("Result: %v\n", simulations.Payload)
 }
 
 func _TestPatch(t *testing.T) {
