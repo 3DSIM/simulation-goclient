@@ -1,10 +1,10 @@
-hash: 3ec234dbc87371666419266f419e34c6c8fe6b1ba98c1b8bbbc58ee0d8c32e41
-updated: 2017-01-05T14:53:18.905541894-07:00
+hash: 2562d1edca5d790abe1298f1de21aae31654ea26eef4e39cdea29e134aba7c45
+updated: 2017-01-09T14:51:54.959195244-07:00
 imports:
 - name: github.com/asaskevich/govalidator
   version: 593d64559f7600f29581a3ee42177f5dbded27a9
 - name: github.com/go-openapi/analysis
-  version: b44dc874b601d9e4e2f6e19140e794ba24bead3b
+  version: d5a75b7d751ca3f11ad5d93cfe97405f2c3f6a47
 - name: github.com/go-openapi/errors
   version: fc3f73a224499b047eda7191e5d22e1e9631e86f
 - name: github.com/go-openapi/jsonpointer
@@ -12,15 +12,17 @@ imports:
 - name: github.com/go-openapi/jsonreference
   version: 13c6e3589ad90f49bd3e3bbe2c2cb3d7a4142272
 - name: github.com/go-openapi/loads
-  version: 18441dfa706d924a39a030ee2c3b1d8d81917b38
+  version: bf98340e04734f11563fd3008e87be4c1d4ffc08
+  subpackages:
+  - fmts
 - name: github.com/go-openapi/runtime
-  version: 75dade37acfd95d51485114793cdc443991ef328
+  version: 6c55ee725bbcb3f0756416804a01a42e072de6e0
   subpackages:
   - client
 - name: github.com/go-openapi/spec
-  version: 2433d2f0fc794728337e0c5d65716e79e163f04d
+  version: 3a0434164aa36744c7ba29b822d36894a1e5ec96
 - name: github.com/go-openapi/strfmt
-  version: d65c7fdb29eca313476e529628176fe17e58c488
+  version: 505012778ef0246e2c9dddcc5a2eaa2ce44add27
 - name: github.com/go-openapi/swag
   version: 0e04f5e499b19bf51031c01a00f098f25067d8dc
 - name: github.com/go-openapi/validate
@@ -31,10 +33,16 @@ imports:
   - buffer
   - jlexer
   - jwriter
+- name: github.com/mitchellh/mapstructure
+  version: 281073eb9eb092240d33ef253c404f1cca550309
 - name: github.com/PuerkitoBio/purell
   version: 8a290539e2e8629dbc4e6bad948158f790ec31f4
 - name: github.com/PuerkitoBio/urlesc
   version: 5bd2802263f21d8788851d5305584c82a5c75d7e
+- name: github.com/stretchr/testify
+  version: 69483b4bd14f5845b5a1e55bca19e954e827f1d0
+  subpackages:
+  - assert
 - name: golang.org/x/net
   version: 024ed629fd292398cfd43c9678a5bf004f7defdc
   subpackages:
@@ -54,4 +62,14 @@ imports:
   - unicode/bidi
   - unicode/norm
   - width
-testImports: []
+- name: gopkg.in/yaml.v2
+  version: f7716cbe52baa25d2e9b0d0da546fcf909fc16b4
+testImports:
+- name: github.com/davecgh/go-spew
+  version: 2df174808ee097f90d259e432cc04442cf60be21
+  subpackages:
+  - spew
+- name: github.com/pmezard/go-difflib
+  version: d8ed2627bdf02c080bf22230dbb337003b7aba2d
+  subpackages:
+  - difflib
