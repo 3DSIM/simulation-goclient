@@ -1,4 +1,4 @@
-package: github.com/3dsim/organization-goclient
+package: github.com/3dsim/simulation-goclient
 import:
 - package: github.com/go-openapi/errors
 - package: github.com/go-openapi/runtime
