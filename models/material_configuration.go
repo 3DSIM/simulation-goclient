@@ -14,9 +14,17 @@ import (
 // swagger:model MaterialConfiguration
 type MaterialConfiguration struct {
 
-	// anisotropic strain coefficients
+	// anisotropic strain coefficient parallel
 	// Required: true
-	AnisotropicStrainCoefficients *float64 `json:"anisotropicStrainCoefficients"`
+	AnisotropicStrainCoefficientParallel *float64 `json:"anisotropicStrainCoefficientParallel"`
+
+	// anisotropic strain coefficient perpendicular
+	// Required: true
+	AnisotropicStrainCoefficientPerpendicular *float64 `json:"anisotropicStrainCoefficientPerpendicular"`
+
+	// anisotropic strain coefficient z
+	// Required: true
+	AnisotropicStrainCoefficientZ *float64 `json:"anisotropicStrainCoefficientZ"`
 
 	// assumed strain
 	// Required: true
@@ -159,7 +167,17 @@ type MaterialConfiguration struct {
 func (m *MaterialConfiguration) Validate(formats strfmt.Registry) error {
 	var res []error
 
-	if err := m.validateAnisotropicStrainCoefficients(formats); err != nil {
+	if err := m.validateAnisotropicStrainCoefficientParallel(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateAnisotropicStrainCoefficientPerpendicular(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateAnisotropicStrainCoefficientZ(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -335,9 +353,27 @@ func (m *MaterialConfiguration) Validate(formats strfmt.Registry) error {
 	return nil
 }
 
-func (m *MaterialConfiguration) validateAnisotropicStrainCoefficients(formats strfmt.Registry) error {
+func (m *MaterialConfiguration) validateAnisotropicStrainCoefficientParallel(formats strfmt.Registry) error {
 
-	if err := validate.Required("anisotropicStrainCoefficients", "body", m.AnisotropicStrainCoefficients); err != nil {
+	if err := validate.Required("anisotropicStrainCoefficientParallel", "body", m.AnisotropicStrainCoefficientParallel); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *MaterialConfiguration) validateAnisotropicStrainCoefficientPerpendicular(formats strfmt.Registry) error {
+
+	if err := validate.Required("anisotropicStrainCoefficientPerpendicular", "body", m.AnisotropicStrainCoefficientPerpendicular); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *MaterialConfiguration) validateAnisotropicStrainCoefficientZ(formats strfmt.Registry) error {
+
+	if err := validate.Required("anisotropicStrainCoefficientZ", "body", m.AnisotropicStrainCoefficientZ); err != nil {
 		return err
 	}
 

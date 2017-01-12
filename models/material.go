@@ -27,6 +27,10 @@ type Material struct {
 	// configuration history
 	ConfigurationHistory []*MaterialConfiguration `json:"configurationHistory"`
 
+	// identifier for the active configuration for this material
+	// Required: true
+	ConfigurationID *int64 `json:"configurationId"`
+
 	// created time stamp, set server-side, read only field
 	// Required: true
 	Created *strfmt.DateTime `json:"created"`
@@ -60,10 +64,6 @@ type Material struct {
 	// Required: true
 	LastModifiedBy *string `json:"lastModifiedBy"`
 
-	// identifier for the active configuration for this material
-	// Required: true
-	MaterialConfigurationID *int64 `json:"materialConfigurationId"`
-
 	// material name
 	// Required: true
 	// Max Length: 128
@@ -94,6 +94,11 @@ func (m *Material) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateConfigurationHistory(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateConfigurationID(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -134,11 +139,6 @@ func (m *Material) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateLastModifiedBy(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
-	if err := m.validateMaterialConfigurationID(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -219,6 +219,15 @@ func (m *Material) validateConfigurationHistory(formats strfmt.Registry) error {
 	return nil
 }
 
+func (m *Material) validateConfigurationID(formats strfmt.Registry) error {
+
+	if err := validate.Required("configurationId", "body", m.ConfigurationID); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (m *Material) validateCreated(formats strfmt.Registry) error {
 
 	if err := validate.Required("created", "body", m.Created); err != nil {
@@ -293,15 +302,6 @@ func (m *Material) validateLastModified(formats strfmt.Registry) error {
 func (m *Material) validateLastModifiedBy(formats strfmt.Registry) error {
 
 	if err := validate.Required("lastModifiedBy", "body", m.LastModifiedBy); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *Material) validateMaterialConfigurationID(formats strfmt.Registry) error {
-
-	if err := validate.Required("materialConfigurationId", "body", m.MaterialConfigurationID); err != nil {
 		return err
 	}
 

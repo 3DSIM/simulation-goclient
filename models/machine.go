@@ -4,6 +4,8 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"strconv"
+
 	strfmt "github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
@@ -18,6 +20,16 @@ type Machine struct {
 	// false if not archived, true if archived
 	// Required: true
 	Archived *bool `json:"archived"`
+
+	// configuration
+	Configuration *MachineConfiguration `json:"configuration,omitempty"`
+
+	// configuration history
+	ConfigurationHistory []*MachineConfiguration `json:"configurationHistory"`
+
+	// identifier for the active configuration for the machine
+	// Required: true
+	ConfigurationID *int64 `json:"configurationId"`
 
 	// created time stamp, set server-side, read only field
 	// Required: true
@@ -52,13 +64,6 @@ type Machine struct {
 	// Required: true
 	LastModifiedBy *string `json:"lastModifiedBy"`
 
-	// machine configuration
-	MachineConfiguration *MachineConfiguration `json:"machineConfiguration,omitempty"`
-
-	// identifier for the active MachineConfiguration for the machine
-	// Required: true
-	MachineConfigurationID *int64 `json:"machineConfigurationId"`
-
 	// machine name
 	// Required: true
 	// Max Length: 128
@@ -74,6 +79,21 @@ func (m *Machine) Validate(formats strfmt.Registry) error {
 	var res []error
 
 	if err := m.validateArchived(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateConfiguration(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateConfigurationHistory(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateConfigurationID(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -118,16 +138,6 @@ func (m *Machine) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
-	if err := m.validateMachineConfiguration(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
-	if err := m.validateMachineConfigurationID(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
 	if err := m.validateName(formats); err != nil {
 		// prop
 		res = append(res, err)
@@ -147,6 +157,61 @@ func (m *Machine) Validate(formats strfmt.Registry) error {
 func (m *Machine) validateArchived(formats strfmt.Registry) error {
 
 	if err := validate.Required("archived", "body", m.Archived); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *Machine) validateConfiguration(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.Configuration) { // not required
+		return nil
+	}
+
+	if m.Configuration != nil {
+
+		if err := m.Configuration.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("configuration")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (m *Machine) validateConfigurationHistory(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.ConfigurationHistory) { // not required
+		return nil
+	}
+
+	for i := 0; i < len(m.ConfigurationHistory); i++ {
+
+		if swag.IsZero(m.ConfigurationHistory[i]) { // not required
+			continue
+		}
+
+		if m.ConfigurationHistory[i] != nil {
+
+			if err := m.ConfigurationHistory[i].Validate(formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("configurationHistory" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
+	}
+
+	return nil
+}
+
+func (m *Machine) validateConfigurationID(formats strfmt.Registry) error {
+
+	if err := validate.Required("configurationId", "body", m.ConfigurationID); err != nil {
 		return err
 	}
 
@@ -227,34 +292,6 @@ func (m *Machine) validateLastModified(formats strfmt.Registry) error {
 func (m *Machine) validateLastModifiedBy(formats strfmt.Registry) error {
 
 	if err := validate.Required("lastModifiedBy", "body", m.LastModifiedBy); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *Machine) validateMachineConfiguration(formats strfmt.Registry) error {
-
-	if swag.IsZero(m.MachineConfiguration) { // not required
-		return nil
-	}
-
-	if m.MachineConfiguration != nil {
-
-		if err := m.MachineConfiguration.Validate(formats); err != nil {
-			if ve, ok := err.(*errors.Validation); ok {
-				return ve.ValidateName("machineConfiguration")
-			}
-			return err
-		}
-	}
-
-	return nil
-}
-
-func (m *Machine) validateMachineConfigurationID(formats strfmt.Registry) error {
-
-	if err := validate.Required("machineConfigurationId", "body", m.MachineConfigurationID); err != nil {
 		return err
 	}
 
