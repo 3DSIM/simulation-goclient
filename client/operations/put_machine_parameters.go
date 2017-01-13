@@ -58,7 +58,7 @@ type PutMachineParams struct {
 	  machine identifier
 
 	*/
-	ID int64
+	ID int32
 	/*Machine*/
 	Machine *models.Machine
 
@@ -90,13 +90,13 @@ func (o *PutMachineParams) SetContext(ctx context.Context) {
 }
 
 // WithID adds the id to the put machine params
-func (o *PutMachineParams) WithID(id int64) *PutMachineParams {
+func (o *PutMachineParams) WithID(id int32) *PutMachineParams {
 	o.SetID(id)
 	return o
 }
 
 // SetID adds the id to the put machine params
-func (o *PutMachineParams) SetID(id int64) {
+func (o *PutMachineParams) SetID(id int32) {
 	o.ID = id
 }
 
@@ -118,7 +118,7 @@ func (o *PutMachineParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Re
 	var res []error
 
 	// path param id
-	if err := r.SetPathParam("id", swag.FormatInt64(o.ID)); err != nil {
+	if err := r.SetPathParam("id", swag.FormatInt32(o.ID)); err != nil {
 		return err
 	}
 

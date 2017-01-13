@@ -56,7 +56,7 @@ type UnarchiveMachineParams struct {
 	  machine identifier
 
 	*/
-	ID int64
+	ID int32
 
 	timeout    time.Duration
 	Context    context.Context
@@ -86,13 +86,13 @@ func (o *UnarchiveMachineParams) SetContext(ctx context.Context) {
 }
 
 // WithID adds the id to the unarchive machine params
-func (o *UnarchiveMachineParams) WithID(id int64) *UnarchiveMachineParams {
+func (o *UnarchiveMachineParams) WithID(id int32) *UnarchiveMachineParams {
 	o.SetID(id)
 	return o
 }
 
 // SetID adds the id to the unarchive machine params
-func (o *UnarchiveMachineParams) SetID(id int64) {
+func (o *UnarchiveMachineParams) SetID(id int32) {
 	o.ID = id
 }
 
@@ -103,7 +103,7 @@ func (o *UnarchiveMachineParams) WriteToRequest(r runtime.ClientRequest, reg str
 	var res []error
 
 	// path param id
-	if err := r.SetPathParam("id", swag.FormatInt64(o.ID)); err != nil {
+	if err := r.SetPathParam("id", swag.FormatInt32(o.ID)); err != nil {
 		return err
 	}
 

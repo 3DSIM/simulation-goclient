@@ -18,7 +18,7 @@ func _TestExampleUseOfAPIWithAuthentication(t *testing.T) {
 	client := simulationclient.New(openapiclient.New("3dsim-qa.cloud.tyk.io", "simulation-api", []string{"https"}), strfmt.Default)
 
 	simulation := models.Simulation{
-		OrganizationID: int64ToPointer(1),
+		OrganizationID: int32ToPointer(1),
 		Title:          stringToPointer("Title"),
 	}
 	assumedStrainParams := models.AssumedStrainSimulationParameters{
@@ -105,6 +105,10 @@ func boolToPointer(b bool) *bool {
 }
 
 func int64ToPointer(i int64) *int64 {
+	return &i
+}
+
+func int32ToPointer(i int32) *int32 {
 	return &i
 }
 

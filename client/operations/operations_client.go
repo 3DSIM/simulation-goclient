@@ -342,35 +342,6 @@ func (a *Client) CancelThermalSimulation(params *CancelThermalSimulationParams, 
 }
 
 /*
-FindMaterialByID Returns a material based on a single ID
-*/
-func (a *Client) FindMaterialByID(params *FindMaterialByIDParams, authInfo runtime.ClientAuthInfoWriter) (*FindMaterialByIDOK, error) {
-	// TODO: Validate the params before sending
-	if params == nil {
-		params = NewFindMaterialByIDParams()
-	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
-		ID:                 "findMaterialById",
-		Method:             "GET",
-		PathPattern:        "/materials/{id}",
-		ProducesMediaTypes: []string{"application/json"},
-		ConsumesMediaTypes: []string{"application/json"},
-		Schemes:            []string{"https"},
-		Params:             params,
-		Reader:             &FindMaterialByIDReader{formats: a.formats},
-		AuthInfo:           authInfo,
-		Context:            params.Context,
-		Client:             params.HTTPClient,
-	})
-	if err != nil {
-		return nil, err
-	}
-	return result.(*FindMaterialByIDOK), nil
-
-}
-
-/*
 GetAssumedStrainSimulation Get a assumed strain simulation
 */
 func (a *Client) GetAssumedStrainSimulation(params *GetAssumedStrainSimulationParams, authInfo runtime.ClientAuthInfoWriter) (*GetAssumedStrainSimulationOK, error) {
@@ -458,23 +429,23 @@ func (a *Client) GetMachine(params *GetMachineParams, authInfo runtime.ClientAut
 }
 
 /*
-GetMachineList Get list of machines
+GetMachines Get list of machines
 */
-func (a *Client) GetMachineList(params *GetMachineListParams, authInfo runtime.ClientAuthInfoWriter) (*GetMachineListOK, error) {
+func (a *Client) GetMachines(params *GetMachinesParams, authInfo runtime.ClientAuthInfoWriter) (*GetMachinesOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
-		params = NewGetMachineListParams()
+		params = NewGetMachinesParams()
 	}
 
 	result, err := a.transport.Submit(&runtime.ClientOperation{
-		ID:                 "getMachineList",
+		ID:                 "getMachines",
 		Method:             "GET",
 		PathPattern:        "/machines",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"https"},
 		Params:             params,
-		Reader:             &GetMachineListReader{formats: a.formats},
+		Reader:             &GetMachinesReader{formats: a.formats},
 		AuthInfo:           authInfo,
 		Context:            params.Context,
 		Client:             params.HTTPClient,
@@ -482,7 +453,36 @@ func (a *Client) GetMachineList(params *GetMachineListParams, authInfo runtime.C
 	if err != nil {
 		return nil, err
 	}
-	return result.(*GetMachineListOK), nil
+	return result.(*GetMachinesOK), nil
+
+}
+
+/*
+GetMaterial Returns a material based on a single ID
+*/
+func (a *Client) GetMaterial(params *GetMaterialParams, authInfo runtime.ClientAuthInfoWriter) (*GetMaterialOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetMaterialParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "getMaterial",
+		Method:             "GET",
+		PathPattern:        "/materials/{id}",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &GetMaterialReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*GetMaterialOK), nil
 
 }
 

@@ -56,7 +56,7 @@ type GetPorositySimulationParams struct {
 	  simulation identifier
 
 	*/
-	ID int64
+	ID int32
 
 	timeout    time.Duration
 	Context    context.Context
@@ -86,13 +86,13 @@ func (o *GetPorositySimulationParams) SetContext(ctx context.Context) {
 }
 
 // WithID adds the id to the get porosity simulation params
-func (o *GetPorositySimulationParams) WithID(id int64) *GetPorositySimulationParams {
+func (o *GetPorositySimulationParams) WithID(id int32) *GetPorositySimulationParams {
 	o.SetID(id)
 	return o
 }
 
 // SetID adds the id to the get porosity simulation params
-func (o *GetPorositySimulationParams) SetID(id int64) {
+func (o *GetPorositySimulationParams) SetID(id int32) {
 	o.ID = id
 }
 
@@ -103,7 +103,7 @@ func (o *GetPorositySimulationParams) WriteToRequest(r runtime.ClientRequest, re
 	var res []error
 
 	// path param id
-	if err := r.SetPathParam("id", swag.FormatInt64(o.ID)); err != nil {
+	if err := r.SetPathParam("id", swag.FormatInt32(o.ID)); err != nil {
 		return err
 	}
 

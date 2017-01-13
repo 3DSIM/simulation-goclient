@@ -37,7 +37,7 @@ type Part struct {
 
 	// Id of the part
 	// Required: true
-	ID *int64 `json:"id"`
+	ID *int32 `json:"id"`
 
 	// last modified time stamp, set server-side, read only
 	LastModified strfmt.DateTime `json:"lastModified,omitempty"`
@@ -56,11 +56,11 @@ type Part struct {
 	Name *string `json:"name"`
 
 	// Number of triangles in the original STL file, calculated when the part is processed, use 0 for initial post
-	NumberOfTriangles int64 `json:"numberOfTriangles,omitempty"`
+	NumberOfTriangles int32 `json:"numberOfTriangles,omitempty"`
 
 	// Id of the organization that owns this part record
 	// Required: true
-	OrganizationID *int64 `json:"organizationId"`
+	OrganizationID *int32 `json:"organizationId"`
 
 	// Width of the Part bounding box (in meters), calculated when the part is processed, use 0 for initial post
 	SizeX float64 `json:"sizeX,omitempty"`

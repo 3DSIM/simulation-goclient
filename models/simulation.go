@@ -30,7 +30,7 @@ type Simulation struct {
 	Description string `json:"description,omitempty"`
 
 	// id
-	ID int64 `json:"id,omitempty"`
+	ID int32 `json:"id,omitempty"`
 
 	// last modified time stamp, set server-side, read only
 	LastModified strfmt.DateTime `json:"lastModified,omitempty"`
@@ -39,14 +39,14 @@ type Simulation struct {
 	LastModifiedBy string `json:"lastModifiedBy,omitempty"`
 
 	// ID of the material configuration that was used in the simulation, set server-side, read only
-	MaterialConfigurationID int64 `json:"materialConfigurationId,omitempty"`
+	MaterialConfigurationID int32 `json:"materialConfigurationId,omitempty"`
 
 	// ID of the material to use in the simulation
-	MaterialID int64 `json:"materialId,omitempty"`
+	MaterialID int32 `json:"materialId,omitempty"`
 
 	// organization Id
 	// Required: true
-	OrganizationID *int64 `json:"organizationId"`
+	OrganizationID *int32 `json:"organizationId"`
 
 	// set server-side, read only
 	PercentComplete float64 `json:"percentComplete,omitempty"`

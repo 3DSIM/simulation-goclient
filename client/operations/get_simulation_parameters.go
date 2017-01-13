@@ -56,7 +56,7 @@ type GetSimulationParams struct {
 	  simulation identifier
 
 	*/
-	ID int64
+	ID int32
 
 	timeout    time.Duration
 	Context    context.Context
@@ -86,13 +86,13 @@ func (o *GetSimulationParams) SetContext(ctx context.Context) {
 }
 
 // WithID adds the id to the get simulation params
-func (o *GetSimulationParams) WithID(id int64) *GetSimulationParams {
+func (o *GetSimulationParams) WithID(id int32) *GetSimulationParams {
 	o.SetID(id)
 	return o
 }
 
 // SetID adds the id to the get simulation params
-func (o *GetSimulationParams) SetID(id int64) {
+func (o *GetSimulationParams) SetID(id int32) {
 	o.ID = id
 }
 
@@ -103,7 +103,7 @@ func (o *GetSimulationParams) WriteToRequest(r runtime.ClientRequest, reg strfmt
 	var res []error
 
 	// path param id
-	if err := r.SetPathParam("id", swag.FormatInt64(o.ID)); err != nil {
+	if err := r.SetPathParam("id", swag.FormatInt32(o.ID)); err != nil {
 		return err
 	}
 

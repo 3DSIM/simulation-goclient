@@ -63,7 +63,7 @@ type PutScanPatternSimulationParams struct {
 	  simulation identifier
 
 	*/
-	ID int64
+	ID int32
 
 	timeout    time.Duration
 	Context    context.Context
@@ -104,13 +104,13 @@ func (o *PutScanPatternSimulationParams) SetScanPatternSimulation(scanPatternSim
 }
 
 // WithID adds the id to the put scan pattern simulation params
-func (o *PutScanPatternSimulationParams) WithID(id int64) *PutScanPatternSimulationParams {
+func (o *PutScanPatternSimulationParams) WithID(id int32) *PutScanPatternSimulationParams {
 	o.SetID(id)
 	return o
 }
 
 // SetID adds the id to the put scan pattern simulation params
-func (o *PutScanPatternSimulationParams) SetID(id int64) {
+func (o *PutScanPatternSimulationParams) SetID(id int32) {
 	o.ID = id
 }
 
@@ -129,7 +129,7 @@ func (o *PutScanPatternSimulationParams) WriteToRequest(r runtime.ClientRequest,
 	}
 
 	// path param id
-	if err := r.SetPathParam("id", swag.FormatInt64(o.ID)); err != nil {
+	if err := r.SetPathParam("id", swag.FormatInt32(o.ID)); err != nil {
 		return err
 	}
 

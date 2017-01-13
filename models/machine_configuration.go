@@ -47,7 +47,7 @@ type MachineConfiguration struct {
 	HeaterTemperature *float64 `json:"heaterTemperature"`
 
 	// machine configuration identifier
-	ID int64 `json:"id,omitempty"`
+	ID int32 `json:"id,omitempty"`
 
 	// laser power in watts
 	// Required: true
@@ -63,7 +63,7 @@ type MachineConfiguration struct {
 
 	// machine identifier for this machine configuration
 	// Required: true
-	MachineID *int64 `json:"machineId"`
+	MachineID *int32 `json:"machineId"`
 
 	// speed at which laser travels in meters per second
 	// Required: true
