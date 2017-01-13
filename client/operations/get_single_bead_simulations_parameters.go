@@ -73,10 +73,10 @@ type GetSingleBeadSimulationsParams struct {
 	*/
 	Sort []string
 	/*Status
-	  simulation status for items retreived. Multiple status values may be specified e.g. "status=completed&status=error&status=cancelled"
+	  simulation status for items retrieved.  If an array of items is sent, they are treated as "OR" operations. e.g. status=InProgress,Requested would yield a list of simulations that are in either state.
 
 	*/
-	Status *string
+	Status []string
 
 	timeout    time.Duration
 	Context    context.Context
@@ -150,13 +150,13 @@ func (o *GetSingleBeadSimulationsParams) SetSort(sort []string) {
 }
 
 // WithStatus adds the status to the get single bead simulations params
-func (o *GetSingleBeadSimulationsParams) WithStatus(status *string) *GetSingleBeadSimulationsParams {
+func (o *GetSingleBeadSimulationsParams) WithStatus(status []string) *GetSingleBeadSimulationsParams {
 	o.SetStatus(status)
 	return o
 }
 
 // SetStatus adds the status to the get single bead simulations params
-func (o *GetSingleBeadSimulationsParams) SetStatus(status *string) {
+func (o *GetSingleBeadSimulationsParams) SetStatus(status []string) {
 	o.Status = status
 }
 
@@ -215,20 +215,12 @@ func (o *GetSingleBeadSimulationsParams) WriteToRequest(r runtime.ClientRequest,
 		return err
 	}
 
-	if o.Status != nil {
+	valuesStatus := o.Status
 
-		// query param status
-		var qrStatus string
-		if o.Status != nil {
-			qrStatus = *o.Status
-		}
-		qStatus := qrStatus
-		if qStatus != "" {
-			if err := r.SetQueryParam("status", qStatus); err != nil {
-				return err
-			}
-		}
-
+	joinedStatus := swag.JoinByFormat(valuesStatus, "")
+	// query array param status
+	if err := r.SetQueryParam("status", joinedStatus...); err != nil {
+		return err
 	}
 
 	if len(res) > 0 {

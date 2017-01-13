@@ -4,6 +4,8 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"encoding/json"
+
 	strfmt "github.com/go-openapi/strfmt"
 
 	"github.com/go-openapi/errors"
@@ -88,6 +90,10 @@ type ThermalSimulationParameters struct {
 	// Minimum: 5e-05
 	MinimumWallThickness *float64 `json:"minimumWallThickness"`
 
+	// output displacement after cutoff
+	// Required: true
+	OutputDisplacementAfterCutoff *bool `json:"outputDisplacementAfterCutoff"`
+
 	// output shrinkage
 	// Required: true
 	OutputShrinkage *bool `json:"outputShrinkage"`
@@ -96,13 +102,16 @@ type ThermalSimulationParameters struct {
 	// Required: true
 	OutputStateMap *bool `json:"outputStateMap"`
 
+	// output thermal vtk
+	// Required: true
+	OutputThermalVtk *bool `json:"outputThermalVtk"`
+
+	// output thermal vtk layers
+	OutputThermalVtkLayers string `json:"outputThermalVtkLayers,omitempty"`
+
 	// poisson ratio
 	// Required: true
 	PoissonRatio *float64 `json:"poissonRatio"`
-
-	// relaxation factor
-	// Required: true
-	RelaxationFactor *float64 `json:"relaxationFactor"`
 
 	// Must be between 0.01 to 10 meters/second
 	// Required: true
@@ -121,6 +130,14 @@ type ThermalSimulationParameters struct {
 	// Maximum: 180
 	// Minimum: 0
 	StartingLayerAngle *float64 `json:"startingLayerAngle"`
+
+	// strain scaling factor
+	// Required: true
+	StrainScalingFactor *float64 `json:"strainScalingFactor"`
+
+	// stress mode
+	// Required: true
+	StressMode *string `json:"stressMode"`
 
 	// Must be between 1 to 89 degrees
 	// Required: true
@@ -231,6 +248,11 @@ func (m *ThermalSimulationParameters) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
+	if err := m.validateOutputDisplacementAfterCutoff(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
 	if err := m.validateOutputShrinkage(formats); err != nil {
 		// prop
 		res = append(res, err)
@@ -241,12 +263,12 @@ func (m *ThermalSimulationParameters) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
-	if err := m.validatePoissonRatio(formats); err != nil {
+	if err := m.validateOutputThermalVtk(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
 
-	if err := m.validateRelaxationFactor(formats); err != nil {
+	if err := m.validatePoissonRatio(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -262,6 +284,16 @@ func (m *ThermalSimulationParameters) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateStartingLayerAngle(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateStrainScalingFactor(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateStressMode(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -505,6 +537,15 @@ func (m *ThermalSimulationParameters) validateMinimumWallThickness(formats strfm
 	return nil
 }
 
+func (m *ThermalSimulationParameters) validateOutputDisplacementAfterCutoff(formats strfmt.Registry) error {
+
+	if err := validate.Required("outputDisplacementAfterCutoff", "body", m.OutputDisplacementAfterCutoff); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (m *ThermalSimulationParameters) validateOutputShrinkage(formats strfmt.Registry) error {
 
 	if err := validate.Required("outputShrinkage", "body", m.OutputShrinkage); err != nil {
@@ -523,18 +564,18 @@ func (m *ThermalSimulationParameters) validateOutputStateMap(formats strfmt.Regi
 	return nil
 }
 
-func (m *ThermalSimulationParameters) validatePoissonRatio(formats strfmt.Registry) error {
+func (m *ThermalSimulationParameters) validateOutputThermalVtk(formats strfmt.Registry) error {
 
-	if err := validate.Required("poissonRatio", "body", m.PoissonRatio); err != nil {
+	if err := validate.Required("outputThermalVtk", "body", m.OutputThermalVtk); err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func (m *ThermalSimulationParameters) validateRelaxationFactor(formats strfmt.Registry) error {
+func (m *ThermalSimulationParameters) validatePoissonRatio(formats strfmt.Registry) error {
 
-	if err := validate.Required("relaxationFactor", "body", m.RelaxationFactor); err != nil {
+	if err := validate.Required("poissonRatio", "body", m.PoissonRatio); err != nil {
 		return err
 	}
 
@@ -586,6 +627,56 @@ func (m *ThermalSimulationParameters) validateStartingLayerAngle(formats strfmt.
 	}
 
 	if err := validate.Maximum("startingLayerAngle", "body", float64(*m.StartingLayerAngle), 180, false); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *ThermalSimulationParameters) validateStrainScalingFactor(formats strfmt.Registry) error {
+
+	if err := validate.Required("strainScalingFactor", "body", m.StrainScalingFactor); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+var thermalSimulationParametersTypeStressModePropEnum []interface{}
+
+func init() {
+	var res []string
+	if err := json.Unmarshal([]byte(`["LinearElastic","J2Plasticity"]`), &res); err != nil {
+		panic(err)
+	}
+	for _, v := range res {
+		thermalSimulationParametersTypeStressModePropEnum = append(thermalSimulationParametersTypeStressModePropEnum, v)
+	}
+}
+
+const (
+	// ThermalSimulationParametersStressModeLinearElastic captures enum value "LinearElastic"
+	ThermalSimulationParametersStressModeLinearElastic string = "LinearElastic"
+	// ThermalSimulationParametersStressModeJ2Plasticity captures enum value "J2Plasticity"
+	ThermalSimulationParametersStressModeJ2Plasticity string = "J2Plasticity"
+)
+
+// prop value enum
+func (m *ThermalSimulationParameters) validateStressModeEnum(path, location string, value string) error {
+	if err := validate.Enum(path, location, value, thermalSimulationParametersTypeStressModePropEnum); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (m *ThermalSimulationParameters) validateStressMode(formats strfmt.Registry) error {
+
+	if err := validate.Required("stressMode", "body", m.StressMode); err != nil {
+		return err
+	}
+
+	// value enum
+	if err := m.validateStressModeEnum("stressMode", "body", *m.StressMode); err != nil {
 		return err
 	}
 
