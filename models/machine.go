@@ -29,7 +29,7 @@ type Machine struct {
 
 	// identifier for the active configuration for the machine
 	// Required: true
-	ConfigurationID *int64 `json:"configurationId"`
+	ConfigurationID *int32 `json:"configurationId"`
 
 	// created time stamp, set server-side, read only field
 	// Required: true
@@ -45,7 +45,7 @@ type Machine struct {
 
 	// machine identifier
 	// Required: true
-	ID *int64 `json:"id"`
+	ID *int32 `json:"id"`
 
 	// flag whether it is a core machine or a custom machine
 	// Required: true
@@ -71,7 +71,7 @@ type Machine struct {
 
 	// organization identifier
 	// Required: true
-	OrganizationID *int64 `json:"organizationId"`
+	OrganizationID *int32 `json:"organizationId"`
 }
 
 // Validate validates this machine

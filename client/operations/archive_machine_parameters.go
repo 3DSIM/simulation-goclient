@@ -56,7 +56,7 @@ type ArchiveMachineParams struct {
 	  machine identifier
 
 	*/
-	ID int64
+	ID int32
 
 	timeout    time.Duration
 	Context    context.Context
@@ -86,13 +86,13 @@ func (o *ArchiveMachineParams) SetContext(ctx context.Context) {
 }
 
 // WithID adds the id to the archive machine params
-func (o *ArchiveMachineParams) WithID(id int64) *ArchiveMachineParams {
+func (o *ArchiveMachineParams) WithID(id int32) *ArchiveMachineParams {
 	o.SetID(id)
 	return o
 }
 
 // SetID adds the id to the archive machine params
-func (o *ArchiveMachineParams) SetID(id int64) {
+func (o *ArchiveMachineParams) SetID(id int32) {
 	o.ID = id
 }
 
@@ -103,7 +103,7 @@ func (o *ArchiveMachineParams) WriteToRequest(r runtime.ClientRequest, reg strfm
 	var res []error
 
 	// path param id
-	if err := r.SetPathParam("id", swag.FormatInt64(o.ID)); err != nil {
+	if err := r.SetPathParam("id", swag.FormatInt32(o.ID)); err != nil {
 		return err
 	}
 

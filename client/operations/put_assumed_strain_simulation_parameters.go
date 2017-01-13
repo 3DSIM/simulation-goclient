@@ -63,7 +63,7 @@ type PutAssumedStrainSimulationParams struct {
 	  simulation identifier
 
 	*/
-	ID int64
+	ID int32
 
 	timeout    time.Duration
 	Context    context.Context
@@ -104,13 +104,13 @@ func (o *PutAssumedStrainSimulationParams) SetAssumedStrainSimulation(assumedStr
 }
 
 // WithID adds the id to the put assumed strain simulation params
-func (o *PutAssumedStrainSimulationParams) WithID(id int64) *PutAssumedStrainSimulationParams {
+func (o *PutAssumedStrainSimulationParams) WithID(id int32) *PutAssumedStrainSimulationParams {
 	o.SetID(id)
 	return o
 }
 
 // SetID adds the id to the put assumed strain simulation params
-func (o *PutAssumedStrainSimulationParams) SetID(id int64) {
+func (o *PutAssumedStrainSimulationParams) SetID(id int32) {
 	o.ID = id
 }
 
@@ -129,7 +129,7 @@ func (o *PutAssumedStrainSimulationParams) WriteToRequest(r runtime.ClientReques
 	}
 
 	// path param id
-	if err := r.SetPathParam("id", swag.FormatInt64(o.ID)); err != nil {
+	if err := r.SetPathParam("id", swag.FormatInt32(o.ID)); err != nil {
 		return err
 	}
 

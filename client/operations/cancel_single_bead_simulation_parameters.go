@@ -56,7 +56,7 @@ type CancelSingleBeadSimulationParams struct {
 	  simulation identifier
 
 	*/
-	ID int64
+	ID int32
 
 	timeout    time.Duration
 	Context    context.Context
@@ -86,13 +86,13 @@ func (o *CancelSingleBeadSimulationParams) SetContext(ctx context.Context) {
 }
 
 // WithID adds the id to the cancel single bead simulation params
-func (o *CancelSingleBeadSimulationParams) WithID(id int64) *CancelSingleBeadSimulationParams {
+func (o *CancelSingleBeadSimulationParams) WithID(id int32) *CancelSingleBeadSimulationParams {
 	o.SetID(id)
 	return o
 }
 
 // SetID adds the id to the cancel single bead simulation params
-func (o *CancelSingleBeadSimulationParams) SetID(id int64) {
+func (o *CancelSingleBeadSimulationParams) SetID(id int32) {
 	o.ID = id
 }
 
@@ -103,7 +103,7 @@ func (o *CancelSingleBeadSimulationParams) WriteToRequest(r runtime.ClientReques
 	var res []error
 
 	// path param id
-	if err := r.SetPathParam("id", swag.FormatInt64(o.ID)); err != nil {
+	if err := r.SetPathParam("id", swag.FormatInt32(o.ID)); err != nil {
 		return err
 	}
 

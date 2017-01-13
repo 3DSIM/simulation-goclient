@@ -56,7 +56,7 @@ type CancelPorositySimulationParams struct {
 	  simulation identifier
 
 	*/
-	ID int64
+	ID int32
 
 	timeout    time.Duration
 	Context    context.Context
@@ -86,13 +86,13 @@ func (o *CancelPorositySimulationParams) SetContext(ctx context.Context) {
 }
 
 // WithID adds the id to the cancel porosity simulation params
-func (o *CancelPorositySimulationParams) WithID(id int64) *CancelPorositySimulationParams {
+func (o *CancelPorositySimulationParams) WithID(id int32) *CancelPorositySimulationParams {
 	o.SetID(id)
 	return o
 }
 
 // SetID adds the id to the cancel porosity simulation params
-func (o *CancelPorositySimulationParams) SetID(id int64) {
+func (o *CancelPorositySimulationParams) SetID(id int32) {
 	o.ID = id
 }
 
@@ -103,7 +103,7 @@ func (o *CancelPorositySimulationParams) WriteToRequest(r runtime.ClientRequest,
 	var res []error
 
 	// path param id
-	if err := r.SetPathParam("id", swag.FormatInt64(o.ID)); err != nil {
+	if err := r.SetPathParam("id", swag.FormatInt32(o.ID)); err != nil {
 		return err
 	}
 

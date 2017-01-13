@@ -28,7 +28,7 @@ type PartPost struct {
 
 	// Id of the organization that owns this part record
 	// Required: true
-	OrganizationID *int64 `json:"organizationId"`
+	OrganizationID *int32 `json:"organizationId"`
 
 	// Tags can be used for any purpose. Max length of serialized json is 256 characters.
 	Tags []string `json:"tags"`

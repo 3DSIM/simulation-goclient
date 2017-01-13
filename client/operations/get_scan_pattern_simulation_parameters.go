@@ -56,7 +56,7 @@ type GetScanPatternSimulationParams struct {
 	  simulation identifier
 
 	*/
-	ID int64
+	ID int32
 
 	timeout    time.Duration
 	Context    context.Context
@@ -86,13 +86,13 @@ func (o *GetScanPatternSimulationParams) SetContext(ctx context.Context) {
 }
 
 // WithID adds the id to the get scan pattern simulation params
-func (o *GetScanPatternSimulationParams) WithID(id int64) *GetScanPatternSimulationParams {
+func (o *GetScanPatternSimulationParams) WithID(id int32) *GetScanPatternSimulationParams {
 	o.SetID(id)
 	return o
 }
 
 // SetID adds the id to the get scan pattern simulation params
-func (o *GetScanPatternSimulationParams) SetID(id int64) {
+func (o *GetScanPatternSimulationParams) SetID(id int32) {
 	o.ID = id
 }
 
@@ -103,7 +103,7 @@ func (o *GetScanPatternSimulationParams) WriteToRequest(r runtime.ClientRequest,
 	var res []error
 
 	// path param id
-	if err := r.SetPathParam("id", swag.FormatInt64(o.ID)); err != nil {
+	if err := r.SetPathParam("id", swag.FormatInt32(o.ID)); err != nil {
 		return err
 	}
 

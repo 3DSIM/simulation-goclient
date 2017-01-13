@@ -29,7 +29,7 @@ type Material struct {
 
 	// identifier for the active configuration for this material
 	// Required: true
-	ConfigurationID *int64 `json:"configurationId"`
+	ConfigurationID *int32 `json:"configurationId"`
 
 	// created time stamp, set server-side, read only field
 	// Required: true
@@ -45,7 +45,7 @@ type Material struct {
 
 	// item identifier
 	// Required: true
-	ID *int64 `json:"id"`
+	ID *int32 `json:"id"`
 
 	// flag whether it is a core material or a custom material
 	// Required: true
@@ -71,7 +71,7 @@ type Material struct {
 
 	// organization identifier
 	// Required: true
-	OrganizationID *int64 `json:"organizationId"`
+	OrganizationID *int32 `json:"organizationId"`
 
 	// version label
 	// Required: true

@@ -56,7 +56,7 @@ type StartSingleBeadSimulationParams struct {
 	  simulation identifier
 
 	*/
-	ID int64
+	ID int32
 
 	timeout    time.Duration
 	Context    context.Context
@@ -86,13 +86,13 @@ func (o *StartSingleBeadSimulationParams) SetContext(ctx context.Context) {
 }
 
 // WithID adds the id to the start single bead simulation params
-func (o *StartSingleBeadSimulationParams) WithID(id int64) *StartSingleBeadSimulationParams {
+func (o *StartSingleBeadSimulationParams) WithID(id int32) *StartSingleBeadSimulationParams {
 	o.SetID(id)
 	return o
 }
 
 // SetID adds the id to the start single bead simulation params
-func (o *StartSingleBeadSimulationParams) SetID(id int64) {
+func (o *StartSingleBeadSimulationParams) SetID(id int32) {
 	o.ID = id
 }
 
@@ -103,7 +103,7 @@ func (o *StartSingleBeadSimulationParams) WriteToRequest(r runtime.ClientRequest
 	var res []error
 
 	// path param id
-	if err := r.SetPathParam("id", swag.FormatInt64(o.ID)); err != nil {
+	if err := r.SetPathParam("id", swag.FormatInt32(o.ID)); err != nil {
 		return err
 	}
 

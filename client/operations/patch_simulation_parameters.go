@@ -58,7 +58,7 @@ type PatchSimulationParams struct {
 	  simulation identifier
 
 	*/
-	ID int64
+	ID int32
 	/*SimulationPatch
 	  This endpoint uses JSON Patch, RFC 6092.
 
@@ -93,13 +93,13 @@ func (o *PatchSimulationParams) SetContext(ctx context.Context) {
 }
 
 // WithID adds the id to the patch simulation params
-func (o *PatchSimulationParams) WithID(id int64) *PatchSimulationParams {
+func (o *PatchSimulationParams) WithID(id int32) *PatchSimulationParams {
 	o.SetID(id)
 	return o
 }
 
 // SetID adds the id to the patch simulation params
-func (o *PatchSimulationParams) SetID(id int64) {
+func (o *PatchSimulationParams) SetID(id int32) {
 	o.ID = id
 }
 
@@ -121,7 +121,7 @@ func (o *PatchSimulationParams) WriteToRequest(r runtime.ClientRequest, reg strf
 	var res []error
 
 	// path param id
-	if err := r.SetPathParam("id", swag.FormatInt64(o.ID)); err != nil {
+	if err := r.SetPathParam("id", swag.FormatInt32(o.ID)); err != nil {
 		return err
 	}
 

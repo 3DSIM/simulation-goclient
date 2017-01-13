@@ -56,7 +56,7 @@ type GetThermalSimulationParams struct {
 	  simulation identifier
 
 	*/
-	ID int64
+	ID int32
 
 	timeout    time.Duration
 	Context    context.Context
@@ -86,13 +86,13 @@ func (o *GetThermalSimulationParams) SetContext(ctx context.Context) {
 }
 
 // WithID adds the id to the get thermal simulation params
-func (o *GetThermalSimulationParams) WithID(id int64) *GetThermalSimulationParams {
+func (o *GetThermalSimulationParams) WithID(id int32) *GetThermalSimulationParams {
 	o.SetID(id)
 	return o
 }
 
 // SetID adds the id to the get thermal simulation params
-func (o *GetThermalSimulationParams) SetID(id int64) {
+func (o *GetThermalSimulationParams) SetID(id int32) {
 	o.ID = id
 }
 
@@ -103,7 +103,7 @@ func (o *GetThermalSimulationParams) WriteToRequest(r runtime.ClientRequest, reg
 	var res []error
 
 	// path param id
-	if err := r.SetPathParam("id", swag.FormatInt64(o.ID)); err != nil {
+	if err := r.SetPathParam("id", swag.FormatInt32(o.ID)); err != nil {
 		return err
 	}
 

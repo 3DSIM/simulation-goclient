@@ -56,7 +56,7 @@ type CancelScanPatternSimulationParams struct {
 	  simulation identifier
 
 	*/
-	ID int64
+	ID int32
 
 	timeout    time.Duration
 	Context    context.Context
@@ -86,13 +86,13 @@ func (o *CancelScanPatternSimulationParams) SetContext(ctx context.Context) {
 }
 
 // WithID adds the id to the cancel scan pattern simulation params
-func (o *CancelScanPatternSimulationParams) WithID(id int64) *CancelScanPatternSimulationParams {
+func (o *CancelScanPatternSimulationParams) WithID(id int32) *CancelScanPatternSimulationParams {
 	o.SetID(id)
 	return o
 }
 
 // SetID adds the id to the cancel scan pattern simulation params
-func (o *CancelScanPatternSimulationParams) SetID(id int64) {
+func (o *CancelScanPatternSimulationParams) SetID(id int32) {
 	o.ID = id
 }
 
@@ -103,7 +103,7 @@ func (o *CancelScanPatternSimulationParams) WriteToRequest(r runtime.ClientReque
 	var res []error
 
 	// path param id
-	if err := r.SetPathParam("id", swag.FormatInt64(o.ID)); err != nil {
+	if err := r.SetPathParam("id", swag.FormatInt32(o.ID)); err != nil {
 		return err
 	}
 

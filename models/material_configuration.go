@@ -63,7 +63,7 @@ type MaterialConfiguration struct {
 	FusionLatentHeat *float64 `json:"fusionLatentHeat"`
 
 	// material configuration identifier
-	ID int64 `json:"id,omitempty"`
+	ID int32 `json:"id,omitempty"`
 
 	// liquidus temperature
 	// Required: true
@@ -71,7 +71,7 @@ type MaterialConfiguration struct {
 
 	// material identifier for this material configuration
 	// Required: true
-	MaterialID *int64 `json:"materialId"`
+	MaterialID *int32 `json:"materialId"`
 
 	// material strain sensitivity
 	// Required: true
