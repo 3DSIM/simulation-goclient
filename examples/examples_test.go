@@ -39,7 +39,7 @@ func _TestExampleUseOfAPIWithAuthentication(t *testing.T) {
 		OutputShrinkage:                            boolToPointer(true),
 		OutputStateMap:                             boolToPointer(true),
 		PoissonRatio:                               float64ToPointer(0.33),
-		RelaxationFactor:                           float64ToPointer(1.0),
+		StrainScalingFactor:                        float64ToPointer(1.0),
 		ScanSpeed:                                  float64ToPointer(1.0),
 		SlicingStripeWidth:                         float64ToPointer(2e-3),
 		StartingLayerAngle:                         float64ToPointer(57),
