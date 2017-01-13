@@ -12,9 +12,9 @@ import (
 	"github.com/go-openapi/validate"
 )
 
-// AssumedStrainSimulationParameters assumed strain simulation parameters
-// swagger:model AssumedStrainSimulationParameters
-type AssumedStrainSimulationParameters struct {
+// ScanPatternSimulationParameters scan pattern simulation parameters
+// swagger:model ScanPatternSimulationParameters
+type ScanPatternSimulationParameters struct {
 
 	// anisotropic strain coefficients parallel
 	// Required: true
@@ -28,25 +28,13 @@ type AssumedStrainSimulationParameters struct {
 	// Required: true
 	AnisotropicStrainCoefficientsZ *float64 `json:"anisotropicStrainCoefficientsZ"`
 
-	// assumed strain
-	// Required: true
-	AssumedStrain *float64 `json:"assumedStrain"`
-
 	// elastic modulus
 	// Required: true
 	ElasticModulus *float64 `json:"elasticModulus"`
 
-	// Must be between 0.00001 to 0.001 meters
+	// generate support voxels
 	// Required: true
-	// Maximum: 0.001
-	// Minimum: 1e-05
-	HatchSpacing *float64 `json:"hatchSpacing"`
-
-	// Must be between 10 to 1000 watts
-	// Required: true
-	// Maximum: 1000
-	// Minimum: 10
-	LaserWattage *float64 `json:"laserWattage"`
+	GenerateSupportVoxels *bool `json:"generateSupportVoxels"`
 
 	// Must be between 0 to 180 degrees
 	// Required: true
@@ -60,9 +48,9 @@ type AssumedStrainSimulationParameters struct {
 	// Minimum: 1e-05
 	LayerThickness *float64 `json:"layerThickness"`
 
-	// Must be between 0 to 0.003 meters, Must be greater than minimumWallDistance
+	// Must be between 0 to 0.005 meters, Must be greater than minimumWallDistance
 	// Required: true
-	// Maximum: 0.003
+	// Maximum: 0.005
 	// Minimum: 0
 	MaximumWallDistance *float64 `json:"maximumWallDistance"`
 
@@ -98,25 +86,13 @@ type AssumedStrainSimulationParameters struct {
 	// Required: true
 	OutputShrinkage *bool `json:"outputShrinkage"`
 
-	// output state map
+	// perform support optimization
 	// Required: true
-	OutputStateMap *bool `json:"outputStateMap"`
+	PerformSupportOptimization *bool `json:"performSupportOptimization"`
 
 	// poisson ratio
 	// Required: true
 	PoissonRatio *float64 `json:"poissonRatio"`
-
-	// Must be between 0.01 to 10 meters/second
-	// Required: true
-	// Maximum: 10
-	// Minimum: 0.01
-	ScanSpeed *float64 `json:"scanSpeed"`
-
-	// Must be between 0.001 to 0.1 meters
-	// Required: true
-	// Maximum: 0.1
-	// Minimum: 0.001
-	SlicingStripeWidth *float64 `json:"slicingStripeWidth"`
 
 	// Must be between 0 to 180 degrees
 	// Required: true
@@ -144,10 +120,6 @@ type AssumedStrainSimulationParameters struct {
 	// Minimum: 0.1
 	SupportFactorOfSafety *float64 `json:"supportFactorOfSafety"`
 
-	// support optimization
-	// Required: true
-	SupportOptimization *bool `json:"supportOptimization"`
-
 	// support yield strength
 	// Required: true
 	SupportYieldStrength *float64 `json:"supportYieldStrength"`
@@ -156,10 +128,6 @@ type AssumedStrainSimulationParameters struct {
 	// Required: true
 	SupportYieldStrengthRatio *float64 `json:"supportYieldStrengthRatio"`
 
-	// use periodic analysis
-	// Required: true
-	UsePeriodicAnalysis *bool `json:"usePeriodicAnalysis"`
-
 	// Must be between 0.00002 to 0.002 meters
 	// Required: true
 	// Maximum: 0.002
@@ -167,8 +135,8 @@ type AssumedStrainSimulationParameters struct {
 	VoxelSize *float64 `json:"voxelSize"`
 }
 
-// Validate validates this assumed strain simulation parameters
-func (m *AssumedStrainSimulationParameters) Validate(formats strfmt.Registry) error {
+// Validate validates this scan pattern simulation parameters
+func (m *ScanPatternSimulationParameters) Validate(formats strfmt.Registry) error {
 	var res []error
 
 	if err := m.validateAnisotropicStrainCoefficientsParallel(formats); err != nil {
@@ -186,22 +154,12 @@ func (m *AssumedStrainSimulationParameters) Validate(formats strfmt.Registry) er
 		res = append(res, err)
 	}
 
-	if err := m.validateAssumedStrain(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
 	if err := m.validateElasticModulus(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
 
-	if err := m.validateHatchSpacing(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
-	if err := m.validateLaserWattage(formats); err != nil {
+	if err := m.validateGenerateSupportVoxels(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -251,22 +209,12 @@ func (m *AssumedStrainSimulationParameters) Validate(formats strfmt.Registry) er
 		res = append(res, err)
 	}
 
-	if err := m.validateOutputStateMap(formats); err != nil {
+	if err := m.validatePerformSupportOptimization(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
 
 	if err := m.validatePoissonRatio(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
-	if err := m.validateScanSpeed(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
-	if err := m.validateSlicingStripeWidth(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -296,22 +244,12 @@ func (m *AssumedStrainSimulationParameters) Validate(formats strfmt.Registry) er
 		res = append(res, err)
 	}
 
-	if err := m.validateSupportOptimization(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
 	if err := m.validateSupportYieldStrength(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
 
 	if err := m.validateSupportYieldStrengthRatio(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
-	if err := m.validateUsePeriodicAnalysis(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -327,7 +265,7 @@ func (m *AssumedStrainSimulationParameters) Validate(formats strfmt.Registry) er
 	return nil
 }
 
-func (m *AssumedStrainSimulationParameters) validateAnisotropicStrainCoefficientsParallel(formats strfmt.Registry) error {
+func (m *ScanPatternSimulationParameters) validateAnisotropicStrainCoefficientsParallel(formats strfmt.Registry) error {
 
 	if err := validate.Required("anisotropicStrainCoefficientsParallel", "body", m.AnisotropicStrainCoefficientsParallel); err != nil {
 		return err
@@ -336,7 +274,7 @@ func (m *AssumedStrainSimulationParameters) validateAnisotropicStrainCoefficient
 	return nil
 }
 
-func (m *AssumedStrainSimulationParameters) validateAnisotropicStrainCoefficientsPerpendicular(formats strfmt.Registry) error {
+func (m *ScanPatternSimulationParameters) validateAnisotropicStrainCoefficientsPerpendicular(formats strfmt.Registry) error {
 
 	if err := validate.Required("anisotropicStrainCoefficientsPerpendicular", "body", m.AnisotropicStrainCoefficientsPerpendicular); err != nil {
 		return err
@@ -345,7 +283,7 @@ func (m *AssumedStrainSimulationParameters) validateAnisotropicStrainCoefficient
 	return nil
 }
 
-func (m *AssumedStrainSimulationParameters) validateAnisotropicStrainCoefficientsZ(formats strfmt.Registry) error {
+func (m *ScanPatternSimulationParameters) validateAnisotropicStrainCoefficientsZ(formats strfmt.Registry) error {
 
 	if err := validate.Required("anisotropicStrainCoefficientsZ", "body", m.AnisotropicStrainCoefficientsZ); err != nil {
 		return err
@@ -354,16 +292,7 @@ func (m *AssumedStrainSimulationParameters) validateAnisotropicStrainCoefficient
 	return nil
 }
 
-func (m *AssumedStrainSimulationParameters) validateAssumedStrain(formats strfmt.Registry) error {
-
-	if err := validate.Required("assumedStrain", "body", m.AssumedStrain); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *AssumedStrainSimulationParameters) validateElasticModulus(formats strfmt.Registry) error {
+func (m *ScanPatternSimulationParameters) validateElasticModulus(formats strfmt.Registry) error {
 
 	if err := validate.Required("elasticModulus", "body", m.ElasticModulus); err != nil {
 		return err
@@ -372,41 +301,16 @@ func (m *AssumedStrainSimulationParameters) validateElasticModulus(formats strfm
 	return nil
 }
 
-func (m *AssumedStrainSimulationParameters) validateHatchSpacing(formats strfmt.Registry) error {
+func (m *ScanPatternSimulationParameters) validateGenerateSupportVoxels(formats strfmt.Registry) error {
 
-	if err := validate.Required("hatchSpacing", "body", m.HatchSpacing); err != nil {
-		return err
-	}
-
-	if err := validate.Minimum("hatchSpacing", "body", float64(*m.HatchSpacing), 1e-05, false); err != nil {
-		return err
-	}
-
-	if err := validate.Maximum("hatchSpacing", "body", float64(*m.HatchSpacing), 0.001, false); err != nil {
+	if err := validate.Required("generateSupportVoxels", "body", m.GenerateSupportVoxels); err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func (m *AssumedStrainSimulationParameters) validateLaserWattage(formats strfmt.Registry) error {
-
-	if err := validate.Required("laserWattage", "body", m.LaserWattage); err != nil {
-		return err
-	}
-
-	if err := validate.Minimum("laserWattage", "body", float64(*m.LaserWattage), 10, false); err != nil {
-		return err
-	}
-
-	if err := validate.Maximum("laserWattage", "body", float64(*m.LaserWattage), 1000, false); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *AssumedStrainSimulationParameters) validateLayerRotationAngle(formats strfmt.Registry) error {
+func (m *ScanPatternSimulationParameters) validateLayerRotationAngle(formats strfmt.Registry) error {
 
 	if err := validate.Required("layerRotationAngle", "body", m.LayerRotationAngle); err != nil {
 		return err
@@ -423,7 +327,7 @@ func (m *AssumedStrainSimulationParameters) validateLayerRotationAngle(formats s
 	return nil
 }
 
-func (m *AssumedStrainSimulationParameters) validateLayerThickness(formats strfmt.Registry) error {
+func (m *ScanPatternSimulationParameters) validateLayerThickness(formats strfmt.Registry) error {
 
 	if err := validate.Required("layerThickness", "body", m.LayerThickness); err != nil {
 		return err
@@ -440,7 +344,7 @@ func (m *AssumedStrainSimulationParameters) validateLayerThickness(formats strfm
 	return nil
 }
 
-func (m *AssumedStrainSimulationParameters) validateMaximumWallDistance(formats strfmt.Registry) error {
+func (m *ScanPatternSimulationParameters) validateMaximumWallDistance(formats strfmt.Registry) error {
 
 	if err := validate.Required("maximumWallDistance", "body", m.MaximumWallDistance); err != nil {
 		return err
@@ -450,14 +354,14 @@ func (m *AssumedStrainSimulationParameters) validateMaximumWallDistance(formats 
 		return err
 	}
 
-	if err := validate.Maximum("maximumWallDistance", "body", float64(*m.MaximumWallDistance), 0.003, false); err != nil {
+	if err := validate.Maximum("maximumWallDistance", "body", float64(*m.MaximumWallDistance), 0.005, false); err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func (m *AssumedStrainSimulationParameters) validateMaximumWallThickness(formats strfmt.Registry) error {
+func (m *ScanPatternSimulationParameters) validateMaximumWallThickness(formats strfmt.Registry) error {
 
 	if err := validate.Required("maximumWallThickness", "body", m.MaximumWallThickness); err != nil {
 		return err
@@ -474,7 +378,7 @@ func (m *AssumedStrainSimulationParameters) validateMaximumWallThickness(formats
 	return nil
 }
 
-func (m *AssumedStrainSimulationParameters) validateMinimumSupportHeight(formats strfmt.Registry) error {
+func (m *ScanPatternSimulationParameters) validateMinimumSupportHeight(formats strfmt.Registry) error {
 
 	if err := validate.Required("minimumSupportHeight", "body", m.MinimumSupportHeight); err != nil {
 		return err
@@ -491,7 +395,7 @@ func (m *AssumedStrainSimulationParameters) validateMinimumSupportHeight(formats
 	return nil
 }
 
-func (m *AssumedStrainSimulationParameters) validateMinimumWallDistance(formats strfmt.Registry) error {
+func (m *ScanPatternSimulationParameters) validateMinimumWallDistance(formats strfmt.Registry) error {
 
 	if err := validate.Required("minimumWallDistance", "body", m.MinimumWallDistance); err != nil {
 		return err
@@ -508,7 +412,7 @@ func (m *AssumedStrainSimulationParameters) validateMinimumWallDistance(formats 
 	return nil
 }
 
-func (m *AssumedStrainSimulationParameters) validateMinimumWallThickness(formats strfmt.Registry) error {
+func (m *ScanPatternSimulationParameters) validateMinimumWallThickness(formats strfmt.Registry) error {
 
 	if err := validate.Required("minimumWallThickness", "body", m.MinimumWallThickness); err != nil {
 		return err
@@ -525,7 +429,7 @@ func (m *AssumedStrainSimulationParameters) validateMinimumWallThickness(formats
 	return nil
 }
 
-func (m *AssumedStrainSimulationParameters) validateOutputDisplacementAfterCutoff(formats strfmt.Registry) error {
+func (m *ScanPatternSimulationParameters) validateOutputDisplacementAfterCutoff(formats strfmt.Registry) error {
 
 	if err := validate.Required("outputDisplacementAfterCutoff", "body", m.OutputDisplacementAfterCutoff); err != nil {
 		return err
@@ -534,7 +438,7 @@ func (m *AssumedStrainSimulationParameters) validateOutputDisplacementAfterCutof
 	return nil
 }
 
-func (m *AssumedStrainSimulationParameters) validateOutputShrinkage(formats strfmt.Registry) error {
+func (m *ScanPatternSimulationParameters) validateOutputShrinkage(formats strfmt.Registry) error {
 
 	if err := validate.Required("outputShrinkage", "body", m.OutputShrinkage); err != nil {
 		return err
@@ -543,16 +447,16 @@ func (m *AssumedStrainSimulationParameters) validateOutputShrinkage(formats strf
 	return nil
 }
 
-func (m *AssumedStrainSimulationParameters) validateOutputStateMap(formats strfmt.Registry) error {
+func (m *ScanPatternSimulationParameters) validatePerformSupportOptimization(formats strfmt.Registry) error {
 
-	if err := validate.Required("outputStateMap", "body", m.OutputStateMap); err != nil {
+	if err := validate.Required("performSupportOptimization", "body", m.PerformSupportOptimization); err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func (m *AssumedStrainSimulationParameters) validatePoissonRatio(formats strfmt.Registry) error {
+func (m *ScanPatternSimulationParameters) validatePoissonRatio(formats strfmt.Registry) error {
 
 	if err := validate.Required("poissonRatio", "body", m.PoissonRatio); err != nil {
 		return err
@@ -561,41 +465,7 @@ func (m *AssumedStrainSimulationParameters) validatePoissonRatio(formats strfmt.
 	return nil
 }
 
-func (m *AssumedStrainSimulationParameters) validateScanSpeed(formats strfmt.Registry) error {
-
-	if err := validate.Required("scanSpeed", "body", m.ScanSpeed); err != nil {
-		return err
-	}
-
-	if err := validate.Minimum("scanSpeed", "body", float64(*m.ScanSpeed), 0.01, false); err != nil {
-		return err
-	}
-
-	if err := validate.Maximum("scanSpeed", "body", float64(*m.ScanSpeed), 10, false); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *AssumedStrainSimulationParameters) validateSlicingStripeWidth(formats strfmt.Registry) error {
-
-	if err := validate.Required("slicingStripeWidth", "body", m.SlicingStripeWidth); err != nil {
-		return err
-	}
-
-	if err := validate.Minimum("slicingStripeWidth", "body", float64(*m.SlicingStripeWidth), 0.001, false); err != nil {
-		return err
-	}
-
-	if err := validate.Maximum("slicingStripeWidth", "body", float64(*m.SlicingStripeWidth), 0.1, false); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *AssumedStrainSimulationParameters) validateStartingLayerAngle(formats strfmt.Registry) error {
+func (m *ScanPatternSimulationParameters) validateStartingLayerAngle(formats strfmt.Registry) error {
 
 	if err := validate.Required("startingLayerAngle", "body", m.StartingLayerAngle); err != nil {
 		return err
@@ -612,7 +482,7 @@ func (m *AssumedStrainSimulationParameters) validateStartingLayerAngle(formats s
 	return nil
 }
 
-func (m *AssumedStrainSimulationParameters) validateStrainScalingFactor(formats strfmt.Registry) error {
+func (m *ScanPatternSimulationParameters) validateStrainScalingFactor(formats strfmt.Registry) error {
 
 	if err := validate.Required("strainScalingFactor", "body", m.StrainScalingFactor); err != nil {
 		return err
@@ -621,7 +491,7 @@ func (m *AssumedStrainSimulationParameters) validateStrainScalingFactor(formats 
 	return nil
 }
 
-var assumedStrainSimulationParametersTypeStressModePropEnum []interface{}
+var scanPatternSimulationParametersTypeStressModePropEnum []interface{}
 
 func init() {
 	var res []string
@@ -629,26 +499,26 @@ func init() {
 		panic(err)
 	}
 	for _, v := range res {
-		assumedStrainSimulationParametersTypeStressModePropEnum = append(assumedStrainSimulationParametersTypeStressModePropEnum, v)
+		scanPatternSimulationParametersTypeStressModePropEnum = append(scanPatternSimulationParametersTypeStressModePropEnum, v)
 	}
 }
 
 const (
-	// AssumedStrainSimulationParametersStressModeLinearElastic captures enum value "LinearElastic"
-	AssumedStrainSimulationParametersStressModeLinearElastic string = "LinearElastic"
-	// AssumedStrainSimulationParametersStressModeJ2Plasticity captures enum value "J2Plasticity"
-	AssumedStrainSimulationParametersStressModeJ2Plasticity string = "J2Plasticity"
+	// ScanPatternSimulationParametersStressModeLinearElastic captures enum value "LinearElastic"
+	ScanPatternSimulationParametersStressModeLinearElastic string = "LinearElastic"
+	// ScanPatternSimulationParametersStressModeJ2Plasticity captures enum value "J2Plasticity"
+	ScanPatternSimulationParametersStressModeJ2Plasticity string = "J2Plasticity"
 )
 
 // prop value enum
-func (m *AssumedStrainSimulationParameters) validateStressModeEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, assumedStrainSimulationParametersTypeStressModePropEnum); err != nil {
+func (m *ScanPatternSimulationParameters) validateStressModeEnum(path, location string, value string) error {
+	if err := validate.Enum(path, location, value, scanPatternSimulationParametersTypeStressModePropEnum); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (m *AssumedStrainSimulationParameters) validateStressMode(formats strfmt.Registry) error {
+func (m *ScanPatternSimulationParameters) validateStressMode(formats strfmt.Registry) error {
 
 	if err := validate.Required("stressMode", "body", m.StressMode); err != nil {
 		return err
@@ -662,7 +532,7 @@ func (m *AssumedStrainSimulationParameters) validateStressMode(formats strfmt.Re
 	return nil
 }
 
-func (m *AssumedStrainSimulationParameters) validateSupportAngle(formats strfmt.Registry) error {
+func (m *ScanPatternSimulationParameters) validateSupportAngle(formats strfmt.Registry) error {
 
 	if err := validate.Required("supportAngle", "body", m.SupportAngle); err != nil {
 		return err
@@ -679,7 +549,7 @@ func (m *AssumedStrainSimulationParameters) validateSupportAngle(formats strfmt.
 	return nil
 }
 
-func (m *AssumedStrainSimulationParameters) validateSupportFactorOfSafety(formats strfmt.Registry) error {
+func (m *ScanPatternSimulationParameters) validateSupportFactorOfSafety(formats strfmt.Registry) error {
 
 	if err := validate.Required("supportFactorOfSafety", "body", m.SupportFactorOfSafety); err != nil {
 		return err
@@ -696,16 +566,7 @@ func (m *AssumedStrainSimulationParameters) validateSupportFactorOfSafety(format
 	return nil
 }
 
-func (m *AssumedStrainSimulationParameters) validateSupportOptimization(formats strfmt.Registry) error {
-
-	if err := validate.Required("supportOptimization", "body", m.SupportOptimization); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *AssumedStrainSimulationParameters) validateSupportYieldStrength(formats strfmt.Registry) error {
+func (m *ScanPatternSimulationParameters) validateSupportYieldStrength(formats strfmt.Registry) error {
 
 	if err := validate.Required("supportYieldStrength", "body", m.SupportYieldStrength); err != nil {
 		return err
@@ -714,7 +575,7 @@ func (m *AssumedStrainSimulationParameters) validateSupportYieldStrength(formats
 	return nil
 }
 
-func (m *AssumedStrainSimulationParameters) validateSupportYieldStrengthRatio(formats strfmt.Registry) error {
+func (m *ScanPatternSimulationParameters) validateSupportYieldStrengthRatio(formats strfmt.Registry) error {
 
 	if err := validate.Required("supportYieldStrengthRatio", "body", m.SupportYieldStrengthRatio); err != nil {
 		return err
@@ -723,16 +584,7 @@ func (m *AssumedStrainSimulationParameters) validateSupportYieldStrengthRatio(fo
 	return nil
 }
 
-func (m *AssumedStrainSimulationParameters) validateUsePeriodicAnalysis(formats strfmt.Registry) error {
-
-	if err := validate.Required("usePeriodicAnalysis", "body", m.UsePeriodicAnalysis); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *AssumedStrainSimulationParameters) validateVoxelSize(formats strfmt.Registry) error {
+func (m *ScanPatternSimulationParameters) validateVoxelSize(formats strfmt.Registry) error {
 
 	if err := validate.Required("voxelSize", "body", m.VoxelSize); err != nil {
 		return err

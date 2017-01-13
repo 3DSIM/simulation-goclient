@@ -255,6 +255,35 @@ func (a *Client) CancelPorositySimulation(params *CancelPorositySimulationParams
 }
 
 /*
+CancelScanPatternSimulation Cancels a Scan Pattern simulation
+*/
+func (a *Client) CancelScanPatternSimulation(params *CancelScanPatternSimulationParams, authInfo runtime.ClientAuthInfoWriter) (*CancelScanPatternSimulationOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewCancelScanPatternSimulationParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "cancelScanPatternSimulation",
+		Method:             "PUT",
+		PathPattern:        "/scanpatternsimulations/{id}/cancel",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &CancelScanPatternSimulationReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*CancelScanPatternSimulationOK), nil
+
+}
+
+/*
 CancelSingleBeadSimulation Cancels a single bead simulation
 */
 func (a *Client) CancelSingleBeadSimulation(params *CancelSingleBeadSimulationParams, authInfo runtime.ClientAuthInfoWriter) (*CancelSingleBeadSimulationOK, error) {
@@ -690,6 +719,64 @@ func (a *Client) GetPorositySimulations(params *GetPorositySimulationsParams, au
 }
 
 /*
+GetScanPatternSimulation Get a Scan Pattern simulation
+*/
+func (a *Client) GetScanPatternSimulation(params *GetScanPatternSimulationParams, authInfo runtime.ClientAuthInfoWriter) (*GetScanPatternSimulationOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetScanPatternSimulationParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "getScanPatternSimulation",
+		Method:             "GET",
+		PathPattern:        "/scanpatternsimulations/{id}",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &GetScanPatternSimulationReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*GetScanPatternSimulationOK), nil
+
+}
+
+/*
+GetScanPatternSimulations Gets a list of all scan pattern simulations for the active user
+*/
+func (a *Client) GetScanPatternSimulations(params *GetScanPatternSimulationsParams, authInfo runtime.ClientAuthInfoWriter) (*GetScanPatternSimulationsOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetScanPatternSimulationsParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "getScanPatternSimulations",
+		Method:             "GET",
+		PathPattern:        "/scanpatternsimulations",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &GetScanPatternSimulationsReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*GetScanPatternSimulationsOK), nil
+
+}
+
+/*
 GetSimulation Get a simulation
 */
 func (a *Client) GetSimulation(params *GetSimulationParams, authInfo runtime.ClientAuthInfoWriter) (*GetSimulationOK, error) {
@@ -980,6 +1067,35 @@ func (a *Client) PostPorositySimulation(params *PostPorositySimulationParams, au
 }
 
 /*
+PostScanPatternSimulation Posts a new scan pattern simulation
+*/
+func (a *Client) PostScanPatternSimulation(params *PostScanPatternSimulationParams, authInfo runtime.ClientAuthInfoWriter) (*PostScanPatternSimulationOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewPostScanPatternSimulationParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "postScanPatternSimulation",
+		Method:             "POST",
+		PathPattern:        "/scanpatternsimulations",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &PostScanPatternSimulationReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*PostScanPatternSimulationOK), nil
+
+}
+
+/*
 PostSingleBeadSimulation Posts a new single bead simulation
 */
 func (a *Client) PostSingleBeadSimulation(params *PostSingleBeadSimulationParams, authInfo runtime.ClientAuthInfoWriter) (*PostSingleBeadSimulationOK, error) {
@@ -1125,6 +1241,35 @@ func (a *Client) PutPorositySimulation(params *PutPorositySimulationParams, auth
 }
 
 /*
+PutScanPatternSimulation Puts an updated scan pattern simulation
+*/
+func (a *Client) PutScanPatternSimulation(params *PutScanPatternSimulationParams, authInfo runtime.ClientAuthInfoWriter) (*PutScanPatternSimulationOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewPutScanPatternSimulationParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "putScanPatternSimulation",
+		Method:             "PUT",
+		PathPattern:        "/scanpatternsimulations/{id}",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &PutScanPatternSimulationReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*PutScanPatternSimulationOK), nil
+
+}
+
+/*
 PutSingleBeadSimulation Puts an updated single bead simulation
 */
 func (a *Client) PutSingleBeadSimulation(params *PutSingleBeadSimulationParams, authInfo runtime.ClientAuthInfoWriter) (*PutSingleBeadSimulationOK, error) {
@@ -1237,6 +1382,35 @@ func (a *Client) StartPorositySimulation(params *StartPorositySimulationParams, 
 		return nil, err
 	}
 	return result.(*StartPorositySimulationOK), nil
+
+}
+
+/*
+StartScanPatternSimulation Starts a Scan Pattern simulation.  If the simulation has been started before, start requests have no effect.
+*/
+func (a *Client) StartScanPatternSimulation(params *StartScanPatternSimulationParams, authInfo runtime.ClientAuthInfoWriter) (*StartScanPatternSimulationOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewStartScanPatternSimulationParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "startScanPatternSimulation",
+		Method:             "PUT",
+		PathPattern:        "/scanpatternsimulations/{id}/start",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &StartScanPatternSimulationReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*StartScanPatternSimulationOK), nil
 
 }
 
