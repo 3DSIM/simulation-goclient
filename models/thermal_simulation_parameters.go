@@ -16,22 +16,6 @@ import (
 // swagger:model ThermalSimulationParameters
 type ThermalSimulationParameters struct {
 
-	// anisotropic strain coefficients parallel
-	// Required: true
-	AnisotropicStrainCoefficientsParallel *float64 `json:"anisotropicStrainCoefficientsParallel"`
-
-	// anisotropic strain coefficients perpendicular
-	// Required: true
-	AnisotropicStrainCoefficientsPerpendicular *float64 `json:"anisotropicStrainCoefficientsPerpendicular"`
-
-	// anisotropic strain coefficients z
-	// Required: true
-	AnisotropicStrainCoefficientsZ *float64 `json:"anisotropicStrainCoefficientsZ"`
-
-	// assumed strain
-	// Required: true
-	AssumedStrain *float64 `json:"assumedStrain"`
-
 	// elastic modulus
 	// Required: true
 	ElasticModulus *float64 `json:"elasticModulus"`
@@ -178,26 +162,6 @@ type ThermalSimulationParameters struct {
 func (m *ThermalSimulationParameters) Validate(formats strfmt.Registry) error {
 	var res []error
 
-	if err := m.validateAnisotropicStrainCoefficientsParallel(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
-	if err := m.validateAnisotropicStrainCoefficientsPerpendicular(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
-	if err := m.validateAnisotropicStrainCoefficientsZ(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
-	if err := m.validateAssumedStrain(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
 	if err := m.validateElasticModulus(formats); err != nil {
 		// prop
 		res = append(res, err)
@@ -336,42 +300,6 @@ func (m *ThermalSimulationParameters) Validate(formats strfmt.Registry) error {
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
-	return nil
-}
-
-func (m *ThermalSimulationParameters) validateAnisotropicStrainCoefficientsParallel(formats strfmt.Registry) error {
-
-	if err := validate.Required("anisotropicStrainCoefficientsParallel", "body", m.AnisotropicStrainCoefficientsParallel); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *ThermalSimulationParameters) validateAnisotropicStrainCoefficientsPerpendicular(formats strfmt.Registry) error {
-
-	if err := validate.Required("anisotropicStrainCoefficientsPerpendicular", "body", m.AnisotropicStrainCoefficientsPerpendicular); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *ThermalSimulationParameters) validateAnisotropicStrainCoefficientsZ(formats strfmt.Registry) error {
-
-	if err := validate.Required("anisotropicStrainCoefficientsZ", "body", m.AnisotropicStrainCoefficientsZ); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *ThermalSimulationParameters) validateAssumedStrain(formats strfmt.Registry) error {
-
-	if err := validate.Required("assumedStrain", "body", m.AssumedStrain); err != nil {
-		return err
-	}
-
 	return nil
 }
 
