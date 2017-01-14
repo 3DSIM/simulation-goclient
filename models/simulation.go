@@ -38,6 +38,12 @@ type Simulation struct {
 	// assigned user, set server-side, read only
 	LastModifiedBy string `json:"lastModifiedBy,omitempty"`
 
+	// ID of the machine configuration that was used in the simulation, set server-side, read only
+	MachineConfigurationID int32 `json:"machineConfigurationId,omitempty"`
+
+	// ID of the machine to use in the simulation
+	MachineID int32 `json:"machineId,omitempty"`
+
 	// ID of the material configuration that was used in the simulation, set server-side, read only
 	MaterialConfigurationID int32 `json:"materialConfigurationId,omitempty"`
 
