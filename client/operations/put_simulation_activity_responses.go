@@ -70,7 +70,7 @@ type PutSimulationActivityOK struct {
 }
 
 func (o *PutSimulationActivityOK) Error() string {
-	return fmt.Sprintf("[PUT /simulations/{id}/activities][%d] putSimulationActivityOK  %+v", 200, o.Payload)
+	return fmt.Sprintf("[PUT /simulations/{id}/activities/{activityId}][%d] putSimulationActivityOK  %+v", 200, o.Payload)
 }
 
 func (o *PutSimulationActivityOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -99,7 +99,7 @@ type PutSimulationActivityUnauthorized struct {
 }
 
 func (o *PutSimulationActivityUnauthorized) Error() string {
-	return fmt.Sprintf("[PUT /simulations/{id}/activities][%d] putSimulationActivityUnauthorized  %+v", 401, o.Payload)
+	return fmt.Sprintf("[PUT /simulations/{id}/activities/{activityId}][%d] putSimulationActivityUnauthorized  %+v", 401, o.Payload)
 }
 
 func (o *PutSimulationActivityUnauthorized) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -128,7 +128,7 @@ type PutSimulationActivityForbidden struct {
 }
 
 func (o *PutSimulationActivityForbidden) Error() string {
-	return fmt.Sprintf("[PUT /simulations/{id}/activities][%d] putSimulationActivityForbidden  %+v", 403, o.Payload)
+	return fmt.Sprintf("[PUT /simulations/{id}/activities/{activityId}][%d] putSimulationActivityForbidden  %+v", 403, o.Payload)
 }
 
 func (o *PutSimulationActivityForbidden) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -166,7 +166,7 @@ func (o *PutSimulationActivityDefault) Code() int {
 }
 
 func (o *PutSimulationActivityDefault) Error() string {
-	return fmt.Sprintf("[PUT /simulations/{id}/activities][%d] putSimulationActivity default  %+v", o._statusCode, o.Payload)
+	return fmt.Sprintf("[PUT /simulations/{id}/activities/{activityId}][%d] putSimulationActivity default  %+v", o._statusCode, o.Payload)
 }
 
 func (o *PutSimulationActivityDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

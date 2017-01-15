@@ -835,6 +835,35 @@ func (a *Client) GetSimulationActivities(params *GetSimulationActivitiesParams, 
 }
 
 /*
+GetSimulationActivity Gets an activity for a simulation
+*/
+func (a *Client) GetSimulationActivity(params *GetSimulationActivityParams, authInfo runtime.ClientAuthInfoWriter) (*GetSimulationActivityOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetSimulationActivityParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "getSimulationActivity",
+		Method:             "GET",
+		PathPattern:        "/simulations/{id}/activities/{activityId}",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &GetSimulationActivityReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*GetSimulationActivityOK), nil
+
+}
+
+/*
 GetSimulationLogs Gets a list of all logs for a simulation
 */
 func (a *Client) GetSimulationLogs(params *GetSimulationLogsParams, authInfo runtime.ClientAuthInfoWriter) (*GetSimulationLogsOK, error) {
@@ -1455,7 +1484,7 @@ func (a *Client) PutSimulationActivity(params *PutSimulationActivityParams, auth
 	result, err := a.transport.Submit(&runtime.ClientOperation{
 		ID:                 "putSimulationActivity",
 		Method:             "PUT",
-		PathPattern:        "/simulations/{id}/activities",
+		PathPattern:        "/simulations/{id}/activities/{activityId}",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"https"},
