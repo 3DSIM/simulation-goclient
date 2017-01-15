@@ -98,10 +98,6 @@ type AssumedStrainSimulationParameters struct {
 	// Required: true
 	OutputShrinkage *bool `json:"outputShrinkage"`
 
-	// output state map
-	// Required: true
-	OutputStateMap *bool `json:"outputStateMap"`
-
 	// poisson ratio
 	// Required: true
 	PoissonRatio *float64 `json:"poissonRatio"`
@@ -247,11 +243,6 @@ func (m *AssumedStrainSimulationParameters) Validate(formats strfmt.Registry) er
 	}
 
 	if err := m.validateOutputShrinkage(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
-	if err := m.validateOutputStateMap(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -537,15 +528,6 @@ func (m *AssumedStrainSimulationParameters) validateOutputDisplacementAfterCutof
 func (m *AssumedStrainSimulationParameters) validateOutputShrinkage(formats strfmt.Registry) error {
 
 	if err := validate.Required("outputShrinkage", "body", m.OutputShrinkage); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *AssumedStrainSimulationParameters) validateOutputStateMap(formats strfmt.Registry) error {
-
-	if err := validate.Required("outputStateMap", "body", m.OutputStateMap); err != nil {
 		return err
 	}
 

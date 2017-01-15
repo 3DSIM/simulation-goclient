@@ -69,6 +69,9 @@ type MaterialConfiguration struct {
 	// Required: true
 	LiquidusTemperature *float64 `json:"liquidusTemperature"`
 
+	// Location where the lookup file is stored in S3.  Set server side.  Only used internally within 3DSIM.
+	LookupFileLocation string `json:"lookupFileLocation,omitempty"`
+
 	// material identifier for this material configuration
 	// Required: true
 	MaterialID *int32 `json:"materialId"`
