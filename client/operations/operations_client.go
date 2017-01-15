@@ -806,6 +806,93 @@ func (a *Client) GetSimulation(params *GetSimulationParams, authInfo runtime.Cli
 }
 
 /*
+GetSimulationActivities Gets a list of all activities for a simulation
+*/
+func (a *Client) GetSimulationActivities(params *GetSimulationActivitiesParams, authInfo runtime.ClientAuthInfoWriter) (*GetSimulationActivitiesOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetSimulationActivitiesParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "getSimulationActivities",
+		Method:             "GET",
+		PathPattern:        "/simulations/{id}/activities",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &GetSimulationActivitiesReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*GetSimulationActivitiesOK), nil
+
+}
+
+/*
+GetSimulationLogs Gets a list of all logs for a simulation
+*/
+func (a *Client) GetSimulationLogs(params *GetSimulationLogsParams, authInfo runtime.ClientAuthInfoWriter) (*GetSimulationLogsOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetSimulationLogsParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "getSimulationLogs",
+		Method:             "GET",
+		PathPattern:        "/simulations/{id}/logs",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &GetSimulationLogsReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*GetSimulationLogsOK), nil
+
+}
+
+/*
+GetSimulationOutputs Gets a list of all outputs for a simulation
+*/
+func (a *Client) GetSimulationOutputs(params *GetSimulationOutputsParams, authInfo runtime.ClientAuthInfoWriter) (*GetSimulationOutputsOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetSimulationOutputsParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "getSimulationOutputs",
+		Method:             "GET",
+		PathPattern:        "/simulations/{id}/outputs",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &GetSimulationOutputsReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*GetSimulationOutputsOK), nil
+
+}
+
+/*
 GetSimulations Gets a list of all simulations
 */
 func (a *Client) GetSimulations(params *GetSimulationsParams, authInfo runtime.ClientAuthInfoWriter) (*GetSimulationsOK, error) {
@@ -1096,6 +1183,93 @@ func (a *Client) PostScanPatternSimulation(params *PostScanPatternSimulationPara
 }
 
 /*
+PostSimulationActivity Creates a new activity for the simulation
+*/
+func (a *Client) PostSimulationActivity(params *PostSimulationActivityParams, authInfo runtime.ClientAuthInfoWriter) (*PostSimulationActivityOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewPostSimulationActivityParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "postSimulationActivity",
+		Method:             "POST",
+		PathPattern:        "/simulations/{id}/activities",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &PostSimulationActivityReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*PostSimulationActivityOK), nil
+
+}
+
+/*
+PostSimulationLog Creates a new log entry in the simulation
+*/
+func (a *Client) PostSimulationLog(params *PostSimulationLogParams, authInfo runtime.ClientAuthInfoWriter) (*PostSimulationLogOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewPostSimulationLogParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "postSimulationLog",
+		Method:             "POST",
+		PathPattern:        "/simulations/{id}/logs",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &PostSimulationLogReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*PostSimulationLogOK), nil
+
+}
+
+/*
+PostSimulationOutput Creates a new output for the simulation
+*/
+func (a *Client) PostSimulationOutput(params *PostSimulationOutputParams, authInfo runtime.ClientAuthInfoWriter) (*PostSimulationOutputOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewPostSimulationOutputParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "postSimulationOutput",
+		Method:             "POST",
+		PathPattern:        "/simulations/{id}/outputs",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &PostSimulationOutputReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*PostSimulationOutputOK), nil
+
+}
+
+/*
 PostSingleBeadSimulation Posts a new single bead simulation
 */
 func (a *Client) PostSingleBeadSimulation(params *PostSingleBeadSimulationParams, authInfo runtime.ClientAuthInfoWriter) (*PostSingleBeadSimulationOK, error) {
@@ -1266,6 +1440,35 @@ func (a *Client) PutScanPatternSimulation(params *PutScanPatternSimulationParams
 		return nil, err
 	}
 	return result.(*PutScanPatternSimulationOK), nil
+
+}
+
+/*
+PutSimulationActivity Updates an activity for a simulation
+*/
+func (a *Client) PutSimulationActivity(params *PutSimulationActivityParams, authInfo runtime.ClientAuthInfoWriter) (*PutSimulationActivityOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewPutSimulationActivityParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "putSimulationActivity",
+		Method:             "PUT",
+		PathPattern:        "/simulations/{id}/activities",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &PutSimulationActivityReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*PutSimulationActivityOK), nil
 
 }
 
