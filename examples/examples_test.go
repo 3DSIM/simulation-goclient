@@ -37,7 +37,6 @@ func _TestExampleUseOfAPIWithAuthentication(t *testing.T) {
 		MinimumWallDistance:                        float64ToPointer(0),
 		MinimumWallThickness:                       float64ToPointer(5e-5),
 		OutputShrinkage:                            boolToPointer(true),
-		OutputStateMap:                             boolToPointer(true),
 		PoissonRatio:                               float64ToPointer(0.33),
 		StrainScalingFactor:                        float64ToPointer(1.0),
 		ScanSpeed:                                  float64ToPointer(1.0),
