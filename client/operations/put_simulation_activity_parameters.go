@@ -59,6 +59,11 @@ type PutSimulationActivityParams struct {
 
 	*/
 	SimulationActivity *models.SimulationActivity
+	/*ActivityID
+	  activity identifier
+
+	*/
+	ActivityID int32
 	/*ID
 	  simulation identifier
 
@@ -103,6 +108,17 @@ func (o *PutSimulationActivityParams) SetSimulationActivity(simulationActivity *
 	o.SimulationActivity = simulationActivity
 }
 
+// WithActivityID adds the activityID to the put simulation activity params
+func (o *PutSimulationActivityParams) WithActivityID(activityID int32) *PutSimulationActivityParams {
+	o.SetActivityID(activityID)
+	return o
+}
+
+// SetActivityID adds the activityId to the put simulation activity params
+func (o *PutSimulationActivityParams) SetActivityID(activityID int32) {
+	o.ActivityID = activityID
+}
+
 // WithID adds the id to the put simulation activity params
 func (o *PutSimulationActivityParams) WithID(id int32) *PutSimulationActivityParams {
 	o.SetID(id)
@@ -125,6 +141,11 @@ func (o *PutSimulationActivityParams) WriteToRequest(r runtime.ClientRequest, re
 	}
 
 	if err := r.SetBodyParam(o.SimulationActivity); err != nil {
+		return err
+	}
+
+	// path param activityId
+	if err := r.SetPathParam("activityId", swag.FormatInt32(o.ActivityID)); err != nil {
 		return err
 	}
 
