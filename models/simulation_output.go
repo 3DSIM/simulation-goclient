@@ -14,8 +14,9 @@ import (
 // swagger:model SimulationOutput
 type SimulationOutput struct {
 
-	// created time stamp, if not set, will be set server-side to the current time
-	CreatedAt strfmt.DateTime `json:"createdAt,omitempty"`
+	// created time stamp
+	// Required: true
+	CreatedAt *strfmt.DateTime `json:"createdAt"`
 
 	// Location of file, usually an S3 location
 	// Required: true
@@ -36,6 +37,11 @@ type SimulationOutput struct {
 func (m *SimulationOutput) Validate(formats strfmt.Registry) error {
 	var res []error
 
+	if err := m.validateCreatedAt(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
 	if err := m.validateFileLocation(formats); err != nil {
 		// prop
 		res = append(res, err)
@@ -49,6 +55,15 @@ func (m *SimulationOutput) Validate(formats strfmt.Registry) error {
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
+	return nil
+}
+
+func (m *SimulationOutput) validateCreatedAt(formats strfmt.Registry) error {
+
+	if err := validate.Required("createdAt", "body", m.CreatedAt); err != nil {
+		return err
+	}
+
 	return nil
 }
 
