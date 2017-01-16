@@ -17,8 +17,9 @@ type SimulationLog struct {
 	// id
 	ID int32 `json:"id,omitempty"`
 
-	// time stamp of log, if not set, will be set server-side to the current time
-	LoggedAt strfmt.DateTime `json:"loggedAt,omitempty"`
+	// time stamp of log
+	// Required: true
+	LoggedAt *strfmt.DateTime `json:"loggedAt"`
 
 	// message
 	// Required: true
@@ -32,6 +33,11 @@ type SimulationLog struct {
 func (m *SimulationLog) Validate(formats strfmt.Registry) error {
 	var res []error
 
+	if err := m.validateLoggedAt(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
 	if err := m.validateMessage(formats); err != nil {
 		// prop
 		res = append(res, err)
@@ -40,6 +46,15 @@ func (m *SimulationLog) Validate(formats strfmt.Registry) error {
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
+	return nil
+}
+
+func (m *SimulationLog) validateLoggedAt(formats strfmt.Registry) error {
+
+	if err := validate.Required("loggedAt", "body", m.LoggedAt); err != nil {
+		return err
+	}
+
 	return nil
 }
 
