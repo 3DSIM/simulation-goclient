@@ -8,6 +8,7 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/validate"
+	"time"
 )
 
 // SimulationActivity simulation activity
@@ -23,7 +24,7 @@ type SimulationActivity struct {
 	ActivityName *string `json:"activityName"`
 
 	// completed time stamp
-	CompletedAt strfmt.DateTime `json:"completedAt,omitempty"`
+	CompletedAt *time.Time `json:"completedAt,omitempty"`
 
 	// id
 	ID int32 `json:"id,omitempty"`
@@ -33,7 +34,7 @@ type SimulationActivity struct {
 	SimulationID *int32 `json:"simulationId"`
 
 	// started time stamp
-	StartedAt strfmt.DateTime `json:"startedAt,omitempty"`
+	StartedAt *time.Time `json:"startedAt,omitempty"`
 
 	// the version of the worker, e.g. 1.9.0
 	// Required: true
