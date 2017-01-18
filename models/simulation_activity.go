@@ -23,7 +23,7 @@ type SimulationActivity struct {
 	ActivityName *string `json:"activityName"`
 
 	// completed time stamp
-	CompletedAt strfmt.DateTime `json:"completedAt,omitempty"`
+	CompletedAt *strfmt.DateTime `json:"completedAt,omitempty"`
 
 	// id
 	ID int32 `json:"id,omitempty"`
