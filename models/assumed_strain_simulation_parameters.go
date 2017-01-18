@@ -607,7 +607,7 @@ var assumedStrainSimulationParametersTypeStressModePropEnum []interface{}
 
 func init() {
 	var res []string
-	if err := json.Unmarshal([]byte(`["LinearElastic","J2Plasticity"]`), &res); err != nil {
+	if err := json.Unmarshal([]byte(`["linearElastic","j2Plasticity"]`), &res); err != nil {
 		panic(err)
 	}
 	for _, v := range res {
@@ -616,10 +616,10 @@ func init() {
 }
 
 const (
-	// AssumedStrainSimulationParametersStressModeLinearElastic captures enum value "LinearElastic"
-	AssumedStrainSimulationParametersStressModeLinearElastic string = "LinearElastic"
-	// AssumedStrainSimulationParametersStressModeJ2Plasticity captures enum value "J2Plasticity"
-	AssumedStrainSimulationParametersStressModeJ2Plasticity string = "J2Plasticity"
+	// AssumedStrainSimulationParametersStressModeLinearElastic captures enum value "linearElastic"
+	AssumedStrainSimulationParametersStressModeLinearElastic string = "linearElastic"
+	// AssumedStrainSimulationParametersStressModeJ2Plasticity captures enum value "j2Plasticity"
+	AssumedStrainSimulationParametersStressModeJ2Plasticity string = "j2Plasticity"
 )
 
 // prop value enum
