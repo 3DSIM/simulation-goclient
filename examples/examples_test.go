@@ -48,7 +48,6 @@ func _TestExampleUseOfAPIWithAuthentication(t *testing.T) {
 		SupportOptimization:                        boolToPointer(true),
 		SupportYieldStrength:                       float64ToPointer(480e6),
 		SupportYieldStrengthRatio:                  float64ToPointer(0.4375),
-		UsePeriodicAnalysis:                        boolToPointer(false),
 		VoxelSize:                                  float64ToPointer(5e-4),
 	}
 	simulationToCreate := &models.AssumedStrainSimulation{
