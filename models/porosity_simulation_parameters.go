@@ -74,10 +74,6 @@ type PorositySimulationParameters struct {
 	// Maximum: 180
 	// Minimum: 0
 	StartingLayerAngle *float64 `json:"startingLayerAngle"`
-
-	// use periodic analysis
-	// Required: true
-	UsePeriodicAnalysis *bool `json:"usePeriodicAnalysis"`
 }
 
 // Validate validates this porosity simulation parameters
@@ -140,11 +136,6 @@ func (m *PorositySimulationParameters) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateStartingLayerAngle(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
-	if err := m.validateUsePeriodicAnalysis(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -389,15 +380,6 @@ func (m *PorositySimulationParameters) validateStartingLayerAngle(formats strfmt
 	}
 
 	if err := validate.Maximum("startingLayerAngle", "body", float64(*m.StartingLayerAngle), 180, false); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *PorositySimulationParameters) validateUsePeriodicAnalysis(formats strfmt.Registry) error {
-
-	if err := validate.Required("usePeriodicAnalysis", "body", m.UsePeriodicAnalysis); err != nil {
 		return err
 	}
 

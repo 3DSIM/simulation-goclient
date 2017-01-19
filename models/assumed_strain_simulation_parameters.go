@@ -152,10 +152,6 @@ type AssumedStrainSimulationParameters struct {
 	// Required: true
 	SupportYieldStrengthRatio *float64 `json:"supportYieldStrengthRatio"`
 
-	// use periodic analysis
-	// Required: true
-	UsePeriodicAnalysis *bool `json:"usePeriodicAnalysis"`
-
 	// Must be between 0.00002 to 0.002 meters
 	// Required: true
 	// Maximum: 0.002
@@ -298,11 +294,6 @@ func (m *AssumedStrainSimulationParameters) Validate(formats strfmt.Registry) er
 	}
 
 	if err := m.validateSupportYieldStrengthRatio(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
-	if err := m.validateUsePeriodicAnalysis(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -699,15 +690,6 @@ func (m *AssumedStrainSimulationParameters) validateSupportYieldStrength(formats
 func (m *AssumedStrainSimulationParameters) validateSupportYieldStrengthRatio(formats strfmt.Registry) error {
 
 	if err := validate.Required("supportYieldStrengthRatio", "body", m.SupportYieldStrengthRatio); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *AssumedStrainSimulationParameters) validateUsePeriodicAnalysis(formats strfmt.Registry) error {
-
-	if err := validate.Required("usePeriodicAnalysis", "body", m.UsePeriodicAnalysis); err != nil {
 		return err
 	}
 
