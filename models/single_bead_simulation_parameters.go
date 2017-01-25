@@ -33,7 +33,7 @@ type SingleBeadSimulationParameters struct {
 
 	// Array of laser power values to simulate across, Each value must be between 10 to 1000 watts
 	// Required: true
-	LaserPowerValues []float64 `json:"laserPowerValues"`
+	LaserWattageValues []float64 `json:"laserWattageValues"`
 
 	// Must be between 0.00001 to 0.0001 meters
 	// Required: true
@@ -89,7 +89,7 @@ func (m *SingleBeadSimulationParameters) Validate(formats strfmt.Registry) error
 		res = append(res, err)
 	}
 
-	if err := m.validateLaserPowerValues(formats); err != nil {
+	if err := m.validateLaserWattageValues(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -207,19 +207,19 @@ func (m *SingleBeadSimulationParameters) validateLaserAbsorptivityInSolidValues(
 	return nil
 }
 
-func (m *SingleBeadSimulationParameters) validateLaserPowerValues(formats strfmt.Registry) error {
+func (m *SingleBeadSimulationParameters) validateLaserWattageValues(formats strfmt.Registry) error {
 
-	if err := validate.Required("laserPowerValues", "body", m.LaserPowerValues); err != nil {
+	if err := validate.Required("laserWattageValues", "body", m.LaserWattageValues); err != nil {
 		return err
 	}
 
-	for i := 0; i < len(m.LaserPowerValues); i++ {
+	for i := 0; i < len(m.LaserWattageValues); i++ {
 
-		if err := validate.Minimum("laserPowerValues"+"."+strconv.Itoa(i), "body", float64(m.LaserPowerValues[i]), 10, false); err != nil {
+		if err := validate.Minimum("laserWattageValues"+"."+strconv.Itoa(i), "body", float64(m.LaserWattageValues[i]), 10, false); err != nil {
 			return err
 		}
 
-		if err := validate.Maximum("laserPowerValues"+"."+strconv.Itoa(i), "body", float64(m.LaserPowerValues[i]), 1000, false); err != nil {
+		if err := validate.Maximum("laserWattageValues"+"."+strconv.Itoa(i), "body", float64(m.LaserWattageValues[i]), 1000, false); err != nil {
 			return err
 		}
 

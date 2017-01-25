@@ -41,7 +41,7 @@ type PorositySimulationParameters struct {
 
 	// Array of laser power values to simulate across, Each value must be between 10 to 1000 watts
 	// Required: true
-	LaserPowerValues []float64 `json:"laserPowerValues"`
+	LaserWattageValues []float64 `json:"laserWattageValues"`
 
 	// Must be between 0 to 180 degrees
 	// Required: true
@@ -100,7 +100,7 @@ func (m *PorositySimulationParameters) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
-	if err := m.validateLaserPowerValues(formats); err != nil {
+	if err := m.validateLaserWattageValues(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -218,19 +218,19 @@ func (m *PorositySimulationParameters) validateHatchSpacingValues(formats strfmt
 	return nil
 }
 
-func (m *PorositySimulationParameters) validateLaserPowerValues(formats strfmt.Registry) error {
+func (m *PorositySimulationParameters) validateLaserWattageValues(formats strfmt.Registry) error {
 
-	if err := validate.Required("laserPowerValues", "body", m.LaserPowerValues); err != nil {
+	if err := validate.Required("laserWattageValues", "body", m.LaserWattageValues); err != nil {
 		return err
 	}
 
-	for i := 0; i < len(m.LaserPowerValues); i++ {
+	for i := 0; i < len(m.LaserWattageValues); i++ {
 
-		if err := validate.Minimum("laserPowerValues"+"."+strconv.Itoa(i), "body", float64(m.LaserPowerValues[i]), 10, false); err != nil {
+		if err := validate.Minimum("laserWattageValues"+"."+strconv.Itoa(i), "body", float64(m.LaserWattageValues[i]), 10, false); err != nil {
 			return err
 		}
 
-		if err := validate.Maximum("laserPowerValues"+"."+strconv.Itoa(i), "body", float64(m.LaserPowerValues[i]), 1000, false); err != nil {
+		if err := validate.Maximum("laserWattageValues"+"."+strconv.Itoa(i), "body", float64(m.LaserWattageValues[i]), 1000, false); err != nil {
 			return err
 		}
 
