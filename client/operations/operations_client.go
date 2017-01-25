@@ -52,6 +52,64 @@ func (a *Client) ArchivePart(params *ArchivePartParams, authInfo runtime.ClientA
 }
 
 /*
+ConfirmCancellation Confirms full cancellation of an active simulation.
+*/
+func (a *Client) ConfirmCancellation(params *ConfirmCancellationParams, authInfo runtime.ClientAuthInfoWriter) (*ConfirmCancellationOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewConfirmCancellationParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "ConfirmCancellation",
+		Method:             "PUT",
+		PathPattern:        "/simulations/{id}/cancelled",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &ConfirmCancellationReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*ConfirmCancellationOK), nil
+
+}
+
+/*
+RequestCancellation Request a cancellation of a simulation.
+*/
+func (a *Client) RequestCancellation(params *RequestCancellationParams, authInfo runtime.ClientAuthInfoWriter) (*RequestCancellationOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewRequestCancellationParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "RequestCancellation",
+		Method:             "PUT",
+		PathPattern:        "/simulations/{id}/cancel",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &RequestCancellationReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*RequestCancellationOK), nil
+
+}
+
+/*
 UpdatePart Updates a Part
 */
 func (a *Client) UpdatePart(params *UpdatePartParams, authInfo runtime.ClientAuthInfoWriter) (*UpdatePartOK, error) {
