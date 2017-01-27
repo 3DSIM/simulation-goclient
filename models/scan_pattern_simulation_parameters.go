@@ -5,8 +5,10 @@ package models
 
 import (
 	"encoding/json"
+	"strconv"
 
 	strfmt "github.com/go-openapi/strfmt"
+	"github.com/go-openapi/swag"
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/validate"
@@ -93,6 +95,9 @@ type ScanPatternSimulationParameters struct {
 	// poisson ratio
 	// Required: true
 	PoissonRatio *float64 `json:"poissonRatio"`
+
+	// List of parts to simulate (current limit is one part, imposed by server)
+	SimulationParts []*SimulationPart `json:"simulationParts"`
 
 	// Must be between 0 to 180 degrees
 	// Required: true
@@ -215,6 +220,11 @@ func (m *ScanPatternSimulationParameters) Validate(formats strfmt.Registry) erro
 	}
 
 	if err := m.validatePoissonRatio(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateSimulationParts(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -460,6 +470,33 @@ func (m *ScanPatternSimulationParameters) validatePoissonRatio(formats strfmt.Re
 
 	if err := validate.Required("poissonRatio", "body", m.PoissonRatio); err != nil {
 		return err
+	}
+
+	return nil
+}
+
+func (m *ScanPatternSimulationParameters) validateSimulationParts(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.SimulationParts) { // not required
+		return nil
+	}
+
+	for i := 0; i < len(m.SimulationParts); i++ {
+
+		if swag.IsZero(m.SimulationParts[i]) { // not required
+			continue
+		}
+
+		if m.SimulationParts[i] != nil {
+
+			if err := m.SimulationParts[i].Validate(formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("simulationParts" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
 	}
 
 	return nil
