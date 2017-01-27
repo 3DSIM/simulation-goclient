@@ -5,8 +5,10 @@ package models
 
 import (
 	"encoding/json"
+	"strconv"
 
 	strfmt "github.com/go-openapi/strfmt"
+	"github.com/go-openapi/swag"
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/validate"
@@ -102,6 +104,9 @@ type ThermalSimulationParameters struct {
 	// Maximum: 10
 	// Minimum: 0.01
 	ScanSpeed *float64 `json:"scanSpeed"`
+
+	// List of parts to simulate (current limit is one part, imposed by server)
+	SimulationParts []*SimulationPart `json:"simulationParts"`
 
 	// Must be between 0.001 to 0.1 meters
 	// Required: true
@@ -234,6 +239,11 @@ func (m *ThermalSimulationParameters) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateScanSpeed(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateSimulationParts(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -513,6 +523,33 @@ func (m *ThermalSimulationParameters) validateScanSpeed(formats strfmt.Registry)
 
 	if err := validate.Maximum("scanSpeed", "body", float64(*m.ScanSpeed), 10, false); err != nil {
 		return err
+	}
+
+	return nil
+}
+
+func (m *ThermalSimulationParameters) validateSimulationParts(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.SimulationParts) { // not required
+		return nil
+	}
+
+	for i := 0; i < len(m.SimulationParts); i++ {
+
+		if swag.IsZero(m.SimulationParts[i]) { // not required
+			continue
+		}
+
+		if m.SimulationParts[i] != nil {
+
+			if err := m.SimulationParts[i].Validate(formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("simulationParts" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
 	}
 
 	return nil
