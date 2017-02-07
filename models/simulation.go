@@ -17,6 +17,9 @@ import (
 // swagger:model Simulation
 type Simulation struct {
 
+	// True if simulation has been archived, false otherwise
+	Archived bool `json:"archived,omitempty"`
+
 	// time stamp, set server-side, read only
 	Completed strfmt.DateTime `json:"completed,omitempty"`
 
