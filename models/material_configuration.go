@@ -132,9 +132,9 @@ type MaterialConfiguration struct {
 	// Required: true
 	SolidusTemperature *float64 `json:"solidusTemperature"`
 
-	// strain plasticity relaxation factor
+	// strain scaling factor
 	// Required: true
-	StrainPlasticityRelaxationFactor *float64 `json:"strainPlasticityRelaxationFactor"`
+	StrainScalingFactor *float64 `json:"strainScalingFactor"`
 
 	// support yield strength ratio
 	// Required: true
@@ -310,7 +310,7 @@ func (m *MaterialConfiguration) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
-	if err := m.validateStrainPlasticityRelaxationFactor(formats); err != nil {
+	if err := m.validateStrainScalingFactor(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -608,9 +608,9 @@ func (m *MaterialConfiguration) validateSolidusTemperature(formats strfmt.Regist
 	return nil
 }
 
-func (m *MaterialConfiguration) validateStrainPlasticityRelaxationFactor(formats strfmt.Registry) error {
+func (m *MaterialConfiguration) validateStrainScalingFactor(formats strfmt.Registry) error {
 
-	if err := validate.Required("strainPlasticityRelaxationFactor", "body", m.StrainPlasticityRelaxationFactor); err != nil {
+	if err := validate.Required("strainScalingFactor", "body", m.StrainScalingFactor); err != nil {
 		return err
 	}
 
