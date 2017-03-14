@@ -30,6 +30,13 @@ type ScanPatternSimulationParameters struct {
 	// Required: true
 	AnisotropicStrainCoefficientsZ *float64 `json:"anisotropicStrainCoefficientsZ"`
 
+	// should be a number between 0.5 and 1.5
+	BladeCrashThreshold float64 `json:"bladeCrashThreshold,omitempty"`
+
+	// detect blade crash
+	// Required: true
+	DetectBladeCrash *bool `json:"detectBladeCrash"`
+
 	// elastic modulus
 	// Required: true
 	ElasticModulus *float64 `json:"elasticModulus"`
@@ -155,6 +162,11 @@ func (m *ScanPatternSimulationParameters) Validate(formats strfmt.Registry) erro
 	}
 
 	if err := m.validateAnisotropicStrainCoefficientsZ(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateDetectBladeCrash(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -296,6 +308,15 @@ func (m *ScanPatternSimulationParameters) validateAnisotropicStrainCoefficientsP
 func (m *ScanPatternSimulationParameters) validateAnisotropicStrainCoefficientsZ(formats strfmt.Registry) error {
 
 	if err := validate.Required("anisotropicStrainCoefficientsZ", "body", m.AnisotropicStrainCoefficientsZ); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *ScanPatternSimulationParameters) validateDetectBladeCrash(formats strfmt.Registry) error {
+
+	if err := validate.Required("detectBladeCrash", "body", m.DetectBladeCrash); err != nil {
 		return err
 	}
 

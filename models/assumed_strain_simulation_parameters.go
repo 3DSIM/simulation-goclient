@@ -34,6 +34,13 @@ type AssumedStrainSimulationParameters struct {
 	// Required: true
 	AssumedStrain *float64 `json:"assumedStrain"`
 
+	// should be a number between 0.5 and 1.5
+	BladeCrashThreshold float64 `json:"bladeCrashThreshold,omitempty"`
+
+	// detect blade crash
+	// Required: true
+	DetectBladeCrash *bool `json:"detectBladeCrash"`
+
 	// elastic modulus
 	// Required: true
 	ElasticModulus *float64 `json:"elasticModulus"`
@@ -184,6 +191,11 @@ func (m *AssumedStrainSimulationParameters) Validate(formats strfmt.Registry) er
 	}
 
 	if err := m.validateAssumedStrain(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateDetectBladeCrash(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -349,6 +361,15 @@ func (m *AssumedStrainSimulationParameters) validateAnisotropicStrainCoefficient
 func (m *AssumedStrainSimulationParameters) validateAssumedStrain(formats strfmt.Registry) error {
 
 	if err := validate.Required("assumedStrain", "body", m.AssumedStrain); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *AssumedStrainSimulationParameters) validateDetectBladeCrash(formats strfmt.Registry) error {
+
+	if err := validate.Required("detectBladeCrash", "body", m.DetectBladeCrash); err != nil {
 		return err
 	}
 
