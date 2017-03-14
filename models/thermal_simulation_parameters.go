@@ -18,6 +18,13 @@ import (
 // swagger:model ThermalSimulationParameters
 type ThermalSimulationParameters struct {
 
+	// should be a number between 0.5 and 1.5
+	BladeCrashThreshold float64 `json:"bladeCrashThreshold,omitempty"`
+
+	// detect blade crash
+	// Required: true
+	DetectBladeCrash *bool `json:"detectBladeCrash"`
+
 	// elastic modulus
 	// Required: true
 	ElasticModulus *float64 `json:"elasticModulus"`
@@ -163,6 +170,11 @@ type ThermalSimulationParameters struct {
 func (m *ThermalSimulationParameters) Validate(formats strfmt.Registry) error {
 	var res []error
 
+	if err := m.validateDetectBladeCrash(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
 	if err := m.validateElasticModulus(formats); err != nil {
 		// prop
 		res = append(res, err)
@@ -301,6 +313,15 @@ func (m *ThermalSimulationParameters) Validate(formats strfmt.Registry) error {
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
+	return nil
+}
+
+func (m *ThermalSimulationParameters) validateDetectBladeCrash(formats strfmt.Registry) error {
+
+	if err := validate.Required("detectBladeCrash", "body", m.DetectBladeCrash); err != nil {
+		return err
+	}
+
 	return nil
 }
 

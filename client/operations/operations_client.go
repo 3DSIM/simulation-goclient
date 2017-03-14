@@ -52,6 +52,35 @@ func (a *Client) ArchivePart(params *ArchivePartParams, authInfo runtime.ClientA
 }
 
 /*
+AssumedStrainEstimate Get an estimate, in minutes, for running an assumed strain simulation for the selected part and specified voxel size.
+*/
+func (a *Client) AssumedStrainEstimate(params *AssumedStrainEstimateParams, authInfo runtime.ClientAuthInfoWriter) (*AssumedStrainEstimateOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewAssumedStrainEstimateParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "AssumedStrainEstimate",
+		Method:             "GET",
+		PathPattern:        "/assumedstrainsimulations/{id}/estimate",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &AssumedStrainEstimateReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*AssumedStrainEstimateOK), nil
+
+}
+
+/*
 ConfirmCancellation Confirms full cancellation of an active simulation.
 */
 func (a *Client) ConfirmCancellation(params *ConfirmCancellationParams, authInfo runtime.ClientAuthInfoWriter) (*ConfirmCancellationOK, error) {
