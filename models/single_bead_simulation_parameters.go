@@ -169,11 +169,11 @@ func (m *SingleBeadSimulationParameters) validateLaserAbsorptivityInPowderValues
 			continue
 		}
 
-		if err := validate.Minimum("laserAbsorptivityInPowderValues"+"."+strconv.Itoa(i), "body", float64(*m.LaserAbsorptivityInPowderValues[i]), 0, false); err != nil {
+		if err := validate.Minimum("laserAbsorptivityInPowderValues"+"."+strconv.Itoa(i), "body", m.LaserAbsorptivityInPowderValues[i], 0, false); err != nil {
 			return err
 		}
 
-		if err := validate.Maximum("laserAbsorptivityInPowderValues"+"."+strconv.Itoa(i), "body", float64(*m.LaserAbsorptivityInPowderValues[i]), 1, false); err != nil {
+		if err := validate.Maximum("laserAbsorptivityInPowderValues"+"."+strconv.Itoa(i), "body", m.LaserAbsorptivityInPowderValues[i], 1, false); err != nil {
 			return err
 		}
 
@@ -194,11 +194,11 @@ func (m *SingleBeadSimulationParameters) validateLaserAbsorptivityInSolidValues(
 			continue
 		}
 
-		if err := validate.Minimum("laserAbsorptivityInSolidValues"+"."+strconv.Itoa(i), "body", float64(*m.LaserAbsorptivityInSolidValues[i]), 0, false); err != nil {
+		if err := validate.Minimum("laserAbsorptivityInSolidValues"+"."+strconv.Itoa(i), "body", m.LaserAbsorptivityInSolidValues[i], 0, false); err != nil {
 			return err
 		}
 
-		if err := validate.Maximum("laserAbsorptivityInSolidValues"+"."+strconv.Itoa(i), "body", float64(*m.LaserAbsorptivityInSolidValues[i]), 1, false); err != nil {
+		if err := validate.Maximum("laserAbsorptivityInSolidValues"+"."+strconv.Itoa(i), "body", m.LaserAbsorptivityInSolidValues[i], 1, false); err != nil {
 			return err
 		}
 
@@ -266,11 +266,11 @@ func (m *SingleBeadSimulationParameters) validateMeanFreePathInPowderValues(form
 			continue
 		}
 
-		if err := validate.Minimum("meanFreePathInPowderValues"+"."+strconv.Itoa(i), "body", float64(*m.MeanFreePathInPowderValues[i]), 0, false); err != nil {
+		if err := validate.Minimum("meanFreePathInPowderValues"+"."+strconv.Itoa(i), "body", m.MeanFreePathInPowderValues[i], 0, false); err != nil {
 			return err
 		}
 
-		if err := validate.Maximum("meanFreePathInPowderValues"+"."+strconv.Itoa(i), "body", float64(*m.MeanFreePathInPowderValues[i]), 125000, false); err != nil {
+		if err := validate.Maximum("meanFreePathInPowderValues"+"."+strconv.Itoa(i), "body", m.MeanFreePathInPowderValues[i], 125000, false); err != nil {
 			return err
 		}
 
@@ -291,11 +291,11 @@ func (m *SingleBeadSimulationParameters) validateMeanFreePathInSolidValues(forma
 			continue
 		}
 
-		if err := validate.Minimum("meanFreePathInSolidValues"+"."+strconv.Itoa(i), "body", float64(*m.MeanFreePathInSolidValues[i]), 0, false); err != nil {
+		if err := validate.Minimum("meanFreePathInSolidValues"+"."+strconv.Itoa(i), "body", m.MeanFreePathInSolidValues[i], 0, false); err != nil {
 			return err
 		}
 
-		if err := validate.Maximum("meanFreePathInSolidValues"+"."+strconv.Itoa(i), "body", float64(*m.MeanFreePathInSolidValues[i]), 125000, false); err != nil {
+		if err := validate.Maximum("meanFreePathInSolidValues"+"."+strconv.Itoa(i), "body", m.MeanFreePathInSolidValues[i], 125000, false); err != nil {
 			return err
 		}
 
@@ -316,11 +316,11 @@ func (m *SingleBeadSimulationParameters) validatePowderPackingDensityValues(form
 			continue
 		}
 
-		if err := validate.Minimum("powderPackingDensityValues"+"."+strconv.Itoa(i), "body", float64(*m.PowderPackingDensityValues[i]), 0, false); err != nil {
+		if err := validate.Minimum("powderPackingDensityValues"+"."+strconv.Itoa(i), "body", m.PowderPackingDensityValues[i], 0, false); err != nil {
 			return err
 		}
 
-		if err := validate.Maximum("powderPackingDensityValues"+"."+strconv.Itoa(i), "body", float64(*m.PowderPackingDensityValues[i]), 1, false); err != nil {
+		if err := validate.Maximum("powderPackingDensityValues"+"."+strconv.Itoa(i), "body", m.PowderPackingDensityValues[i], 1, false); err != nil {
 			return err
 		}
 
@@ -341,11 +341,11 @@ func (m *SingleBeadSimulationParameters) validatePowderThermalConductivityValues
 			continue
 		}
 
-		if err := validate.Minimum("powderThermalConductivityValues"+"."+strconv.Itoa(i), "body", float64(*m.PowderThermalConductivityValues[i]), 0, false); err != nil {
+		if err := validate.Minimum("powderThermalConductivityValues"+"."+strconv.Itoa(i), "body", m.PowderThermalConductivityValues[i], 0, false); err != nil {
 			return err
 		}
 
-		if err := validate.Maximum("powderThermalConductivityValues"+"."+strconv.Itoa(i), "body", float64(*m.PowderThermalConductivityValues[i]), 1, false); err != nil {
+		if err := validate.Maximum("powderThermalConductivityValues"+"."+strconv.Itoa(i), "body", m.PowderThermalConductivityValues[i], 1, false); err != nil {
 			return err
 		}
 
