@@ -97,9 +97,6 @@ func (m *SimulationPart) validatePart(formats strfmt.Registry) error {
 	if m.Part != nil {
 
 		if err := m.Part.Validate(formats); err != nil {
-			if ve, ok := err.(*errors.Validation); ok {
-				return ve.ValidateName("part")
-			}
 			return err
 		}
 	}

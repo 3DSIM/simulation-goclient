@@ -5,7 +5,6 @@ package models
 
 import (
 	"encoding/json"
-	"strconv"
 
 	strfmt "github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
@@ -25,6 +24,9 @@ type ThermalSimulationParameters struct {
 	// Required: true
 	DetectBladeCrash *bool `json:"detectBladeCrash"`
 
+	// should be a number between 0.5 and 1.5 mm
+	DynamicVirtualSensorRadius float64 `json:"dynamicVirtualSensorRadius,omitempty"`
+
 	// elastic modulus
 	// Required: true
 	ElasticModulus *float64 `json:"elasticModulus"`
@@ -34,6 +36,10 @@ type ThermalSimulationParameters struct {
 	// Maximum: 0.001
 	// Minimum: 1e-05
 	HatchSpacing *float64 `json:"hatchSpacing"`
+
+	// false indicates that only the thermal solver will run, while true indicates that the mechanics solver will run after the thermal solver
+	// Required: true
+	IncludeStressAnalysis *bool `json:"includeStressAnalysis"`
 
 	// Must be between 10 to 1000 watts
 	// Required: true
@@ -87,6 +93,14 @@ type ThermalSimulationParameters struct {
 	// Required: true
 	OutputDisplacementAfterCutoff *bool `json:"outputDisplacementAfterCutoff"`
 
+	// if true, mechanics solver output will include a zip file with the stress / distortion state at the end of each voxel layer
+	// Required: true
+	OutputLayerVTK *bool `json:"outputLayerVTK"`
+
+	// for each slectedPoint, a series of vtk files will output thermal history around that point with a radius of staticVirtualSensorRadius.
+	// Required: true
+	OutputPointThermalHistory *bool `json:"outputPointThermalHistory"`
+
 	// output shrinkage
 	// Required: true
 	OutputShrinkage *bool `json:"outputShrinkage"`
@@ -102,6 +116,10 @@ type ThermalSimulationParameters struct {
 	// output thermal vtk layers
 	OutputThermalVtkLayers string `json:"outputThermalVtkLayers,omitempty"`
 
+	// Outputs meltpool dimensions and thermal history within a VTK file. Thermal history is output as the average temperature within the user-specified dynamicVirtualSensorRadius, centered at the middle of the laser beam.
+	// Required: true
+	OutputVirtualSensorData *bool `json:"outputVirtualSensorData"`
+
 	// poisson ratio
 	// Required: true
 	PoissonRatio *float64 `json:"poissonRatio"`
@@ -111,6 +129,9 @@ type ThermalSimulationParameters struct {
 	// Maximum: 10
 	// Minimum: 0.01
 	ScanSpeed *float64 `json:"scanSpeed"`
+
+	// List of points where the thermal solver will collect thermal history - limit 10
+	SelectedPoints []*SelectedPoint `json:"selectedPoints"`
 
 	// List of parts to simulate (current limit is one part, imposed by server)
 	SimulationParts []*SimulationPart `json:"simulationParts"`
@@ -126,6 +147,9 @@ type ThermalSimulationParameters struct {
 	// Maximum: 180
 	// Minimum: 0
 	StartingLayerAngle *float64 `json:"startingLayerAngle"`
+
+	// should be a number between 0.05 and 5.0 mm
+	StaticVirtualSensorRadius float64 `json:"staticVirtualSensorRadius,omitempty"`
 
 	// strain scaling factor
 	// Required: true
@@ -185,6 +209,11 @@ func (m *ThermalSimulationParameters) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
+	if err := m.validateIncludeStressAnalysis(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
 	if err := m.validateLaserWattage(formats); err != nil {
 		// prop
 		res = append(res, err)
@@ -230,6 +259,16 @@ func (m *ThermalSimulationParameters) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
+	if err := m.validateOutputLayerVTK(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateOutputPointThermalHistory(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
 	if err := m.validateOutputShrinkage(formats); err != nil {
 		// prop
 		res = append(res, err)
@@ -245,12 +284,22 @@ func (m *ThermalSimulationParameters) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
+	if err := m.validateOutputVirtualSensorData(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
 	if err := m.validatePoissonRatio(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
 
 	if err := m.validateScanSpeed(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateSelectedPoints(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -345,6 +394,15 @@ func (m *ThermalSimulationParameters) validateHatchSpacing(formats strfmt.Regist
 	}
 
 	if err := validate.Maximum("hatchSpacing", "body", float64(*m.HatchSpacing), 0.001, false); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *ThermalSimulationParameters) validateIncludeStressAnalysis(formats strfmt.Registry) error {
+
+	if err := validate.Required("includeStressAnalysis", "body", m.IncludeStressAnalysis); err != nil {
 		return err
 	}
 
@@ -496,6 +554,24 @@ func (m *ThermalSimulationParameters) validateOutputDisplacementAfterCutoff(form
 	return nil
 }
 
+func (m *ThermalSimulationParameters) validateOutputLayerVTK(formats strfmt.Registry) error {
+
+	if err := validate.Required("outputLayerVTK", "body", m.OutputLayerVTK); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *ThermalSimulationParameters) validateOutputPointThermalHistory(formats strfmt.Registry) error {
+
+	if err := validate.Required("outputPointThermalHistory", "body", m.OutputPointThermalHistory); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (m *ThermalSimulationParameters) validateOutputShrinkage(formats strfmt.Registry) error {
 
 	if err := validate.Required("outputShrinkage", "body", m.OutputShrinkage); err != nil {
@@ -517,6 +593,15 @@ func (m *ThermalSimulationParameters) validateOutputStateMap(formats strfmt.Regi
 func (m *ThermalSimulationParameters) validateOutputThermalVtk(formats strfmt.Registry) error {
 
 	if err := validate.Required("outputThermalVtk", "body", m.OutputThermalVtk); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *ThermalSimulationParameters) validateOutputVirtualSensorData(formats strfmt.Registry) error {
+
+	if err := validate.Required("outputVirtualSensorData", "body", m.OutputVirtualSensorData); err != nil {
 		return err
 	}
 
@@ -549,6 +634,30 @@ func (m *ThermalSimulationParameters) validateScanSpeed(formats strfmt.Registry)
 	return nil
 }
 
+func (m *ThermalSimulationParameters) validateSelectedPoints(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.SelectedPoints) { // not required
+		return nil
+	}
+
+	for i := 0; i < len(m.SelectedPoints); i++ {
+
+		if swag.IsZero(m.SelectedPoints[i]) { // not required
+			continue
+		}
+
+		if m.SelectedPoints[i] != nil {
+
+			if err := m.SelectedPoints[i].Validate(formats); err != nil {
+				return err
+			}
+		}
+
+	}
+
+	return nil
+}
+
 func (m *ThermalSimulationParameters) validateSimulationParts(formats strfmt.Registry) error {
 
 	if swag.IsZero(m.SimulationParts) { // not required
@@ -564,9 +673,6 @@ func (m *ThermalSimulationParameters) validateSimulationParts(formats strfmt.Reg
 		if m.SimulationParts[i] != nil {
 
 			if err := m.SimulationParts[i].Validate(formats); err != nil {
-				if ve, ok := err.(*errors.Validation); ok {
-					return ve.ValidateName("simulationParts" + "." + strconv.Itoa(i))
-				}
 				return err
 			}
 		}

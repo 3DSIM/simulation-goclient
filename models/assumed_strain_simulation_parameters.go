@@ -5,7 +5,6 @@ package models
 
 import (
 	"encoding/json"
-	"strconv"
 
 	strfmt "github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
@@ -102,6 +101,10 @@ type AssumedStrainSimulationParameters struct {
 	// output displacement after cutoff
 	// Required: true
 	OutputDisplacementAfterCutoff *bool `json:"outputDisplacementAfterCutoff"`
+
+	// if true, mechanics solver output will include a zip file with the stress / distortion state at the end of each voxel layer
+	// Required: true
+	OutputLayerVTK *bool `json:"outputLayerVTK"`
 
 	// output shrinkage
 	// Required: true
@@ -251,6 +254,11 @@ func (m *AssumedStrainSimulationParameters) Validate(formats strfmt.Registry) er
 	}
 
 	if err := m.validateOutputDisplacementAfterCutoff(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateOutputLayerVTK(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -547,6 +555,15 @@ func (m *AssumedStrainSimulationParameters) validateOutputDisplacementAfterCutof
 	return nil
 }
 
+func (m *AssumedStrainSimulationParameters) validateOutputLayerVTK(formats strfmt.Registry) error {
+
+	if err := validate.Required("outputLayerVTK", "body", m.OutputLayerVTK); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (m *AssumedStrainSimulationParameters) validateOutputShrinkage(formats strfmt.Registry) error {
 
 	if err := validate.Required("outputShrinkage", "body", m.OutputShrinkage); err != nil {
@@ -597,9 +614,6 @@ func (m *AssumedStrainSimulationParameters) validateSimulationParts(formats strf
 		if m.SimulationParts[i] != nil {
 
 			if err := m.SimulationParts[i].Validate(formats); err != nil {
-				if ve, ok := err.(*errors.Validation); ok {
-					return ve.ValidateName("simulationParts" + "." + strconv.Itoa(i))
-				}
 				return err
 			}
 		}
