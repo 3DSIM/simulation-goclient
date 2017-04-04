@@ -25,11 +25,11 @@ type SingleBeadSimulationParameters struct {
 
 	// Array of Powder Laser Absorptivity Values to simulate across, Each value must be between 0% and 100%, expressed as a decimal
 	// Required: true
-	LaserAbsorptivityInPowderValues []*float64 `json:"laserAbsorptivityInPowderValues"`
+	LaserAbsorptivityInPowderValues []float64 `json:"laserAbsorptivityInPowderValues"`
 
 	// Array of Solid Laser Absorptivity Values to simulate across, Each value must be between 0% and 100%, expressed as a decimal
 	// Required: true
-	LaserAbsorptivityInSolidValues []*float64 `json:"laserAbsorptivityInSolidValues"`
+	LaserAbsorptivityInSolidValues []float64 `json:"laserAbsorptivityInSolidValues"`
 
 	// Array of laser power values to simulate across, Each value must be between 10 to 1000 watts
 	// Required: true
@@ -47,19 +47,19 @@ type SingleBeadSimulationParameters struct {
 
 	// Array of Mean Free Path of Laser in Powder Values to simulate across, Each value must be between 0 and 1.25e5
 	// Required: true
-	MeanFreePathInPowderValues []*float64 `json:"meanFreePathInPowderValues"`
+	MeanFreePathInPowderValues []float64 `json:"meanFreePathInPowderValues"`
 
 	// Array of Mean Free Path of Laser in Solid Values to simulate across, Each value must be between 0 and 1.25e5
 	// Required: true
-	MeanFreePathInSolidValues []*float64 `json:"meanFreePathInSolidValues"`
+	MeanFreePathInSolidValues []float64 `json:"meanFreePathInSolidValues"`
 
 	// Array of Powder Packing Density Percentage Values to simulate across, Each value must be between 0% and 100%, expressed as a decimal
 	// Required: true
-	PowderPackingDensityValues []*float64 `json:"powderPackingDensityValues"`
+	PowderPackingDensityValues []float64 `json:"powderPackingDensityValues"`
 
 	// Array of Powder Thermal Conductivity Percentage Values to simulate across, Each value must be between 0% and 100%, expressed as a decimal
 	// Required: true
-	PowderThermalConductivityValues []*float64 `json:"powderThermalConductivityValues"`
+	PowderThermalConductivityValues []float64 `json:"powderThermalConductivityValues"`
 
 	// Array of scan speed values to simulate across, Each value must be between 0.01 to 10 meters/second
 	// Required: true

@@ -4,8 +4,6 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
-	"strconv"
-
 	strfmt "github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
@@ -172,9 +170,6 @@ func (m *Machine) validateConfiguration(formats strfmt.Registry) error {
 	if m.Configuration != nil {
 
 		if err := m.Configuration.Validate(formats); err != nil {
-			if ve, ok := err.(*errors.Validation); ok {
-				return ve.ValidateName("configuration")
-			}
 			return err
 		}
 	}
@@ -197,9 +192,6 @@ func (m *Machine) validateConfigurationHistory(formats strfmt.Registry) error {
 		if m.ConfigurationHistory[i] != nil {
 
 			if err := m.ConfigurationHistory[i].Validate(formats); err != nil {
-				if ve, ok := err.(*errors.Validation); ok {
-					return ve.ValidateName("configurationHistory" + "." + strconv.Itoa(i))
-				}
 				return err
 			}
 		}
