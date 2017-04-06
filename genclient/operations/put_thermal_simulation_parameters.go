@@ -49,6 +49,15 @@ func NewPutThermalSimulationParamsWithContext(ctx context.Context) *PutThermalSi
 	}
 }
 
+// NewPutThermalSimulationParamsWithHTTPClient creates a new PutThermalSimulationParams object
+// with the default values initialized, and the ability to set a custom HTTPClient for a request
+func NewPutThermalSimulationParamsWithHTTPClient(client *http.Client) *PutThermalSimulationParams {
+	var ()
+	return &PutThermalSimulationParams{
+		HTTPClient: client,
+	}
+}
+
 /*PutThermalSimulationParams contains all the parameters to send to the API endpoint
 for the put thermal simulation operation typically these are written to a http.Request
 */
@@ -92,6 +101,17 @@ func (o *PutThermalSimulationParams) SetContext(ctx context.Context) {
 	o.Context = ctx
 }
 
+// WithHTTPClient adds the HTTPClient to the put thermal simulation params
+func (o *PutThermalSimulationParams) WithHTTPClient(client *http.Client) *PutThermalSimulationParams {
+	o.SetHTTPClient(client)
+	return o
+}
+
+// SetHTTPClient adds the HTTPClient to the put thermal simulation params
+func (o *PutThermalSimulationParams) SetHTTPClient(client *http.Client) {
+	o.HTTPClient = client
+}
+
 // WithThermalSimulation adds the thermalSimulation to the put thermal simulation params
 func (o *PutThermalSimulationParams) WithThermalSimulation(thermalSimulation *models.ThermalSimulation) *PutThermalSimulationParams {
 	o.SetThermalSimulation(thermalSimulation)
@@ -117,7 +137,9 @@ func (o *PutThermalSimulationParams) SetID(id int32) {
 // WriteToRequest writes these params to a swagger request
 func (o *PutThermalSimulationParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
-	r.SetTimeout(o.timeout)
+	if err := r.SetTimeout(o.timeout); err != nil {
+		return err
+	}
 	var res []error
 
 	if o.ThermalSimulation == nil {

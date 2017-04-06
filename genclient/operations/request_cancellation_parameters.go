@@ -47,6 +47,15 @@ func NewRequestCancellationParamsWithContext(ctx context.Context) *RequestCancel
 	}
 }
 
+// NewRequestCancellationParamsWithHTTPClient creates a new RequestCancellationParams object
+// with the default values initialized, and the ability to set a custom HTTPClient for a request
+func NewRequestCancellationParamsWithHTTPClient(client *http.Client) *RequestCancellationParams {
+	var ()
+	return &RequestCancellationParams{
+		HTTPClient: client,
+	}
+}
+
 /*RequestCancellationParams contains all the parameters to send to the API endpoint
 for the request cancellation operation typically these are written to a http.Request
 */
@@ -85,6 +94,17 @@ func (o *RequestCancellationParams) SetContext(ctx context.Context) {
 	o.Context = ctx
 }
 
+// WithHTTPClient adds the HTTPClient to the request cancellation params
+func (o *RequestCancellationParams) WithHTTPClient(client *http.Client) *RequestCancellationParams {
+	o.SetHTTPClient(client)
+	return o
+}
+
+// SetHTTPClient adds the HTTPClient to the request cancellation params
+func (o *RequestCancellationParams) SetHTTPClient(client *http.Client) {
+	o.HTTPClient = client
+}
+
 // WithID adds the id to the request cancellation params
 func (o *RequestCancellationParams) WithID(id int32) *RequestCancellationParams {
 	o.SetID(id)
@@ -99,7 +119,9 @@ func (o *RequestCancellationParams) SetID(id int32) {
 // WriteToRequest writes these params to a swagger request
 func (o *RequestCancellationParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
-	r.SetTimeout(o.timeout)
+	if err := r.SetTimeout(o.timeout); err != nil {
+		return err
+	}
 	var res []error
 
 	// path param id

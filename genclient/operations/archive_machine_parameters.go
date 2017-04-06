@@ -47,6 +47,15 @@ func NewArchiveMachineParamsWithContext(ctx context.Context) *ArchiveMachinePara
 	}
 }
 
+// NewArchiveMachineParamsWithHTTPClient creates a new ArchiveMachineParams object
+// with the default values initialized, and the ability to set a custom HTTPClient for a request
+func NewArchiveMachineParamsWithHTTPClient(client *http.Client) *ArchiveMachineParams {
+	var ()
+	return &ArchiveMachineParams{
+		HTTPClient: client,
+	}
+}
+
 /*ArchiveMachineParams contains all the parameters to send to the API endpoint
 for the archive machine operation typically these are written to a http.Request
 */
@@ -85,6 +94,17 @@ func (o *ArchiveMachineParams) SetContext(ctx context.Context) {
 	o.Context = ctx
 }
 
+// WithHTTPClient adds the HTTPClient to the archive machine params
+func (o *ArchiveMachineParams) WithHTTPClient(client *http.Client) *ArchiveMachineParams {
+	o.SetHTTPClient(client)
+	return o
+}
+
+// SetHTTPClient adds the HTTPClient to the archive machine params
+func (o *ArchiveMachineParams) SetHTTPClient(client *http.Client) {
+	o.HTTPClient = client
+}
+
 // WithID adds the id to the archive machine params
 func (o *ArchiveMachineParams) WithID(id int32) *ArchiveMachineParams {
 	o.SetID(id)
@@ -99,7 +119,9 @@ func (o *ArchiveMachineParams) SetID(id int32) {
 // WriteToRequest writes these params to a swagger request
 func (o *ArchiveMachineParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
-	r.SetTimeout(o.timeout)
+	if err := r.SetTimeout(o.timeout); err != nil {
+		return err
+	}
 	var res []error
 
 	// path param id

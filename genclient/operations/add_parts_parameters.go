@@ -48,6 +48,15 @@ func NewAddPartsParamsWithContext(ctx context.Context) *AddPartsParams {
 	}
 }
 
+// NewAddPartsParamsWithHTTPClient creates a new AddPartsParams object
+// with the default values initialized, and the ability to set a custom HTTPClient for a request
+func NewAddPartsParamsWithHTTPClient(client *http.Client) *AddPartsParams {
+	var ()
+	return &AddPartsParams{
+		HTTPClient: client,
+	}
+}
+
 /*AddPartsParams contains all the parameters to send to the API endpoint
 for the add parts operation typically these are written to a http.Request
 */
@@ -86,6 +95,17 @@ func (o *AddPartsParams) SetContext(ctx context.Context) {
 	o.Context = ctx
 }
 
+// WithHTTPClient adds the HTTPClient to the add parts params
+func (o *AddPartsParams) WithHTTPClient(client *http.Client) *AddPartsParams {
+	o.SetHTTPClient(client)
+	return o
+}
+
+// SetHTTPClient adds the HTTPClient to the add parts params
+func (o *AddPartsParams) SetHTTPClient(client *http.Client) {
+	o.HTTPClient = client
+}
+
 // WithPart adds the part to the add parts params
 func (o *AddPartsParams) WithPart(part *models.PartPost) *AddPartsParams {
 	o.SetPart(part)
@@ -100,7 +120,9 @@ func (o *AddPartsParams) SetPart(part *models.PartPost) {
 // WriteToRequest writes these params to a swagger request
 func (o *AddPartsParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
-	r.SetTimeout(o.timeout)
+	if err := r.SetTimeout(o.timeout); err != nil {
+		return err
+	}
 	var res []error
 
 	if o.Part == nil {

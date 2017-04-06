@@ -49,6 +49,15 @@ func NewPatchSimulationParamsWithContext(ctx context.Context) *PatchSimulationPa
 	}
 }
 
+// NewPatchSimulationParamsWithHTTPClient creates a new PatchSimulationParams object
+// with the default values initialized, and the ability to set a custom HTTPClient for a request
+func NewPatchSimulationParamsWithHTTPClient(client *http.Client) *PatchSimulationParams {
+	var ()
+	return &PatchSimulationParams{
+		HTTPClient: client,
+	}
+}
+
 /*PatchSimulationParams contains all the parameters to send to the API endpoint
 for the patch simulation operation typically these are written to a http.Request
 */
@@ -92,6 +101,17 @@ func (o *PatchSimulationParams) SetContext(ctx context.Context) {
 	o.Context = ctx
 }
 
+// WithHTTPClient adds the HTTPClient to the patch simulation params
+func (o *PatchSimulationParams) WithHTTPClient(client *http.Client) *PatchSimulationParams {
+	o.SetHTTPClient(client)
+	return o
+}
+
+// SetHTTPClient adds the HTTPClient to the patch simulation params
+func (o *PatchSimulationParams) SetHTTPClient(client *http.Client) {
+	o.HTTPClient = client
+}
+
 // WithID adds the id to the patch simulation params
 func (o *PatchSimulationParams) WithID(id int32) *PatchSimulationParams {
 	o.SetID(id)
@@ -117,7 +137,9 @@ func (o *PatchSimulationParams) SetSimulationPatch(simulationPatch []*models.Pat
 // WriteToRequest writes these params to a swagger request
 func (o *PatchSimulationParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
-	r.SetTimeout(o.timeout)
+	if err := r.SetTimeout(o.timeout); err != nil {
+		return err
+	}
 	var res []error
 
 	// path param id

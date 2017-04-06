@@ -47,6 +47,15 @@ func NewGetPorositySimulationsParamsWithContext(ctx context.Context) *GetPorosit
 	}
 }
 
+// NewGetPorositySimulationsParamsWithHTTPClient creates a new GetPorositySimulationsParams object
+// with the default values initialized, and the ability to set a custom HTTPClient for a request
+func NewGetPorositySimulationsParamsWithHTTPClient(client *http.Client) *GetPorositySimulationsParams {
+	var ()
+	return &GetPorositySimulationsParams{
+		HTTPClient: client,
+	}
+}
+
 /*GetPorositySimulationsParams contains all the parameters to send to the API endpoint
 for the get porosity simulations operation typically these are written to a http.Request
 */
@@ -103,6 +112,17 @@ func (o *GetPorositySimulationsParams) WithContext(ctx context.Context) *GetPoro
 // SetContext adds the context to the get porosity simulations params
 func (o *GetPorositySimulationsParams) SetContext(ctx context.Context) {
 	o.Context = ctx
+}
+
+// WithHTTPClient adds the HTTPClient to the get porosity simulations params
+func (o *GetPorositySimulationsParams) WithHTTPClient(client *http.Client) *GetPorositySimulationsParams {
+	o.SetHTTPClient(client)
+	return o
+}
+
+// SetHTTPClient adds the HTTPClient to the get porosity simulations params
+func (o *GetPorositySimulationsParams) SetHTTPClient(client *http.Client) {
+	o.HTTPClient = client
 }
 
 // WithLimit adds the limit to the get porosity simulations params
@@ -163,7 +183,9 @@ func (o *GetPorositySimulationsParams) SetStatus(status []string) {
 // WriteToRequest writes these params to a swagger request
 func (o *GetPorositySimulationsParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
-	r.SetTimeout(o.timeout)
+	if err := r.SetTimeout(o.timeout); err != nil {
+		return err
+	}
 	var res []error
 
 	if o.Limit != nil {

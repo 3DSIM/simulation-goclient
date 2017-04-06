@@ -47,6 +47,15 @@ func NewGetScanPatternSimulationsParamsWithContext(ctx context.Context) *GetScan
 	}
 }
 
+// NewGetScanPatternSimulationsParamsWithHTTPClient creates a new GetScanPatternSimulationsParams object
+// with the default values initialized, and the ability to set a custom HTTPClient for a request
+func NewGetScanPatternSimulationsParamsWithHTTPClient(client *http.Client) *GetScanPatternSimulationsParams {
+	var ()
+	return &GetScanPatternSimulationsParams{
+		HTTPClient: client,
+	}
+}
+
 /*GetScanPatternSimulationsParams contains all the parameters to send to the API endpoint
 for the get scan pattern simulations operation typically these are written to a http.Request
 */
@@ -103,6 +112,17 @@ func (o *GetScanPatternSimulationsParams) WithContext(ctx context.Context) *GetS
 // SetContext adds the context to the get scan pattern simulations params
 func (o *GetScanPatternSimulationsParams) SetContext(ctx context.Context) {
 	o.Context = ctx
+}
+
+// WithHTTPClient adds the HTTPClient to the get scan pattern simulations params
+func (o *GetScanPatternSimulationsParams) WithHTTPClient(client *http.Client) *GetScanPatternSimulationsParams {
+	o.SetHTTPClient(client)
+	return o
+}
+
+// SetHTTPClient adds the HTTPClient to the get scan pattern simulations params
+func (o *GetScanPatternSimulationsParams) SetHTTPClient(client *http.Client) {
+	o.HTTPClient = client
 }
 
 // WithLimit adds the limit to the get scan pattern simulations params
@@ -163,7 +183,9 @@ func (o *GetScanPatternSimulationsParams) SetStatus(status []string) {
 // WriteToRequest writes these params to a swagger request
 func (o *GetScanPatternSimulationsParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
-	r.SetTimeout(o.timeout)
+	if err := r.SetTimeout(o.timeout); err != nil {
+		return err
+	}
 	var res []error
 
 	if o.Limit != nil {

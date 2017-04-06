@@ -47,6 +47,15 @@ func NewGetSimulationActivityParamsWithContext(ctx context.Context) *GetSimulati
 	}
 }
 
+// NewGetSimulationActivityParamsWithHTTPClient creates a new GetSimulationActivityParams object
+// with the default values initialized, and the ability to set a custom HTTPClient for a request
+func NewGetSimulationActivityParamsWithHTTPClient(client *http.Client) *GetSimulationActivityParams {
+	var ()
+	return &GetSimulationActivityParams{
+		HTTPClient: client,
+	}
+}
+
 /*GetSimulationActivityParams contains all the parameters to send to the API endpoint
 for the get simulation activity operation typically these are written to a http.Request
 */
@@ -90,6 +99,17 @@ func (o *GetSimulationActivityParams) SetContext(ctx context.Context) {
 	o.Context = ctx
 }
 
+// WithHTTPClient adds the HTTPClient to the get simulation activity params
+func (o *GetSimulationActivityParams) WithHTTPClient(client *http.Client) *GetSimulationActivityParams {
+	o.SetHTTPClient(client)
+	return o
+}
+
+// SetHTTPClient adds the HTTPClient to the get simulation activity params
+func (o *GetSimulationActivityParams) SetHTTPClient(client *http.Client) {
+	o.HTTPClient = client
+}
+
 // WithActivityID adds the activityID to the get simulation activity params
 func (o *GetSimulationActivityParams) WithActivityID(activityID int32) *GetSimulationActivityParams {
 	o.SetActivityID(activityID)
@@ -115,7 +135,9 @@ func (o *GetSimulationActivityParams) SetID(id int32) {
 // WriteToRequest writes these params to a swagger request
 func (o *GetSimulationActivityParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
-	r.SetTimeout(o.timeout)
+	if err := r.SetTimeout(o.timeout); err != nil {
+		return err
+	}
 	var res []error
 
 	// path param activityId

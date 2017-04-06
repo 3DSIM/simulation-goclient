@@ -49,6 +49,15 @@ func NewPutMachineParamsWithContext(ctx context.Context) *PutMachineParams {
 	}
 }
 
+// NewPutMachineParamsWithHTTPClient creates a new PutMachineParams object
+// with the default values initialized, and the ability to set a custom HTTPClient for a request
+func NewPutMachineParamsWithHTTPClient(client *http.Client) *PutMachineParams {
+	var ()
+	return &PutMachineParams{
+		HTTPClient: client,
+	}
+}
+
 /*PutMachineParams contains all the parameters to send to the API endpoint
 for the put machine operation typically these are written to a http.Request
 */
@@ -89,6 +98,17 @@ func (o *PutMachineParams) SetContext(ctx context.Context) {
 	o.Context = ctx
 }
 
+// WithHTTPClient adds the HTTPClient to the put machine params
+func (o *PutMachineParams) WithHTTPClient(client *http.Client) *PutMachineParams {
+	o.SetHTTPClient(client)
+	return o
+}
+
+// SetHTTPClient adds the HTTPClient to the put machine params
+func (o *PutMachineParams) SetHTTPClient(client *http.Client) {
+	o.HTTPClient = client
+}
+
 // WithID adds the id to the put machine params
 func (o *PutMachineParams) WithID(id int32) *PutMachineParams {
 	o.SetID(id)
@@ -114,7 +134,9 @@ func (o *PutMachineParams) SetMachine(machine *models.Machine) {
 // WriteToRequest writes these params to a swagger request
 func (o *PutMachineParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
-	r.SetTimeout(o.timeout)
+	if err := r.SetTimeout(o.timeout); err != nil {
+		return err
+	}
 	var res []error
 
 	// path param id

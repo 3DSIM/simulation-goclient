@@ -48,6 +48,15 @@ func NewPostAssumedStrainSimulationParamsWithContext(ctx context.Context) *PostA
 	}
 }
 
+// NewPostAssumedStrainSimulationParamsWithHTTPClient creates a new PostAssumedStrainSimulationParams object
+// with the default values initialized, and the ability to set a custom HTTPClient for a request
+func NewPostAssumedStrainSimulationParamsWithHTTPClient(client *http.Client) *PostAssumedStrainSimulationParams {
+	var ()
+	return &PostAssumedStrainSimulationParams{
+		HTTPClient: client,
+	}
+}
+
 /*PostAssumedStrainSimulationParams contains all the parameters to send to the API endpoint
 for the post assumed strain simulation operation typically these are written to a http.Request
 */
@@ -86,6 +95,17 @@ func (o *PostAssumedStrainSimulationParams) SetContext(ctx context.Context) {
 	o.Context = ctx
 }
 
+// WithHTTPClient adds the HTTPClient to the post assumed strain simulation params
+func (o *PostAssumedStrainSimulationParams) WithHTTPClient(client *http.Client) *PostAssumedStrainSimulationParams {
+	o.SetHTTPClient(client)
+	return o
+}
+
+// SetHTTPClient adds the HTTPClient to the post assumed strain simulation params
+func (o *PostAssumedStrainSimulationParams) SetHTTPClient(client *http.Client) {
+	o.HTTPClient = client
+}
+
 // WithAssumedStrainSimulation adds the assumedStrainSimulation to the post assumed strain simulation params
 func (o *PostAssumedStrainSimulationParams) WithAssumedStrainSimulation(assumedStrainSimulation *models.AssumedStrainSimulation) *PostAssumedStrainSimulationParams {
 	o.SetAssumedStrainSimulation(assumedStrainSimulation)
@@ -100,7 +120,9 @@ func (o *PostAssumedStrainSimulationParams) SetAssumedStrainSimulation(assumedSt
 // WriteToRequest writes these params to a swagger request
 func (o *PostAssumedStrainSimulationParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
-	r.SetTimeout(o.timeout)
+	if err := r.SetTimeout(o.timeout); err != nil {
+		return err
+	}
 	var res []error
 
 	if o.AssumedStrainSimulation == nil {

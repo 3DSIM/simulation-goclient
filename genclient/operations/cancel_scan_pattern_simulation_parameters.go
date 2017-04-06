@@ -47,6 +47,15 @@ func NewCancelScanPatternSimulationParamsWithContext(ctx context.Context) *Cance
 	}
 }
 
+// NewCancelScanPatternSimulationParamsWithHTTPClient creates a new CancelScanPatternSimulationParams object
+// with the default values initialized, and the ability to set a custom HTTPClient for a request
+func NewCancelScanPatternSimulationParamsWithHTTPClient(client *http.Client) *CancelScanPatternSimulationParams {
+	var ()
+	return &CancelScanPatternSimulationParams{
+		HTTPClient: client,
+	}
+}
+
 /*CancelScanPatternSimulationParams contains all the parameters to send to the API endpoint
 for the cancel scan pattern simulation operation typically these are written to a http.Request
 */
@@ -85,6 +94,17 @@ func (o *CancelScanPatternSimulationParams) SetContext(ctx context.Context) {
 	o.Context = ctx
 }
 
+// WithHTTPClient adds the HTTPClient to the cancel scan pattern simulation params
+func (o *CancelScanPatternSimulationParams) WithHTTPClient(client *http.Client) *CancelScanPatternSimulationParams {
+	o.SetHTTPClient(client)
+	return o
+}
+
+// SetHTTPClient adds the HTTPClient to the cancel scan pattern simulation params
+func (o *CancelScanPatternSimulationParams) SetHTTPClient(client *http.Client) {
+	o.HTTPClient = client
+}
+
 // WithID adds the id to the cancel scan pattern simulation params
 func (o *CancelScanPatternSimulationParams) WithID(id int32) *CancelScanPatternSimulationParams {
 	o.SetID(id)
@@ -99,7 +119,9 @@ func (o *CancelScanPatternSimulationParams) SetID(id int32) {
 // WriteToRequest writes these params to a swagger request
 func (o *CancelScanPatternSimulationParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
-	r.SetTimeout(o.timeout)
+	if err := r.SetTimeout(o.timeout); err != nil {
+		return err
+	}
 	var res []error
 
 	// path param id

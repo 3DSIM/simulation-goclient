@@ -47,6 +47,15 @@ func NewArchiveMaterialParamsWithContext(ctx context.Context) *ArchiveMaterialPa
 	}
 }
 
+// NewArchiveMaterialParamsWithHTTPClient creates a new ArchiveMaterialParams object
+// with the default values initialized, and the ability to set a custom HTTPClient for a request
+func NewArchiveMaterialParamsWithHTTPClient(client *http.Client) *ArchiveMaterialParams {
+	var ()
+	return &ArchiveMaterialParams{
+		HTTPClient: client,
+	}
+}
+
 /*ArchiveMaterialParams contains all the parameters to send to the API endpoint
 for the archive material operation typically these are written to a http.Request
 */
@@ -85,6 +94,17 @@ func (o *ArchiveMaterialParams) SetContext(ctx context.Context) {
 	o.Context = ctx
 }
 
+// WithHTTPClient adds the HTTPClient to the archive material params
+func (o *ArchiveMaterialParams) WithHTTPClient(client *http.Client) *ArchiveMaterialParams {
+	o.SetHTTPClient(client)
+	return o
+}
+
+// SetHTTPClient adds the HTTPClient to the archive material params
+func (o *ArchiveMaterialParams) SetHTTPClient(client *http.Client) {
+	o.HTTPClient = client
+}
+
 // WithID adds the id to the archive material params
 func (o *ArchiveMaterialParams) WithID(id int32) *ArchiveMaterialParams {
 	o.SetID(id)
@@ -99,7 +119,9 @@ func (o *ArchiveMaterialParams) SetID(id int32) {
 // WriteToRequest writes these params to a swagger request
 func (o *ArchiveMaterialParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
-	r.SetTimeout(o.timeout)
+	if err := r.SetTimeout(o.timeout); err != nil {
+		return err
+	}
 	var res []error
 
 	// path param id

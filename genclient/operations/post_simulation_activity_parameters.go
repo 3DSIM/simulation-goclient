@@ -49,6 +49,15 @@ func NewPostSimulationActivityParamsWithContext(ctx context.Context) *PostSimula
 	}
 }
 
+// NewPostSimulationActivityParamsWithHTTPClient creates a new PostSimulationActivityParams object
+// with the default values initialized, and the ability to set a custom HTTPClient for a request
+func NewPostSimulationActivityParamsWithHTTPClient(client *http.Client) *PostSimulationActivityParams {
+	var ()
+	return &PostSimulationActivityParams{
+		HTTPClient: client,
+	}
+}
+
 /*PostSimulationActivityParams contains all the parameters to send to the API endpoint
 for the post simulation activity operation typically these are written to a http.Request
 */
@@ -92,6 +101,17 @@ func (o *PostSimulationActivityParams) SetContext(ctx context.Context) {
 	o.Context = ctx
 }
 
+// WithHTTPClient adds the HTTPClient to the post simulation activity params
+func (o *PostSimulationActivityParams) WithHTTPClient(client *http.Client) *PostSimulationActivityParams {
+	o.SetHTTPClient(client)
+	return o
+}
+
+// SetHTTPClient adds the HTTPClient to the post simulation activity params
+func (o *PostSimulationActivityParams) SetHTTPClient(client *http.Client) {
+	o.HTTPClient = client
+}
+
 // WithSimulationActivity adds the simulationActivity to the post simulation activity params
 func (o *PostSimulationActivityParams) WithSimulationActivity(simulationActivity *models.SimulationActivity) *PostSimulationActivityParams {
 	o.SetSimulationActivity(simulationActivity)
@@ -117,7 +137,9 @@ func (o *PostSimulationActivityParams) SetID(id int32) {
 // WriteToRequest writes these params to a swagger request
 func (o *PostSimulationActivityParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
-	r.SetTimeout(o.timeout)
+	if err := r.SetTimeout(o.timeout); err != nil {
+		return err
+	}
 	var res []error
 
 	if o.SimulationActivity == nil {

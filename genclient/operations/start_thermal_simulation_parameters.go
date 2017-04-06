@@ -47,6 +47,15 @@ func NewStartThermalSimulationParamsWithContext(ctx context.Context) *StartTherm
 	}
 }
 
+// NewStartThermalSimulationParamsWithHTTPClient creates a new StartThermalSimulationParams object
+// with the default values initialized, and the ability to set a custom HTTPClient for a request
+func NewStartThermalSimulationParamsWithHTTPClient(client *http.Client) *StartThermalSimulationParams {
+	var ()
+	return &StartThermalSimulationParams{
+		HTTPClient: client,
+	}
+}
+
 /*StartThermalSimulationParams contains all the parameters to send to the API endpoint
 for the start thermal simulation operation typically these are written to a http.Request
 */
@@ -85,6 +94,17 @@ func (o *StartThermalSimulationParams) SetContext(ctx context.Context) {
 	o.Context = ctx
 }
 
+// WithHTTPClient adds the HTTPClient to the start thermal simulation params
+func (o *StartThermalSimulationParams) WithHTTPClient(client *http.Client) *StartThermalSimulationParams {
+	o.SetHTTPClient(client)
+	return o
+}
+
+// SetHTTPClient adds the HTTPClient to the start thermal simulation params
+func (o *StartThermalSimulationParams) SetHTTPClient(client *http.Client) {
+	o.HTTPClient = client
+}
+
 // WithID adds the id to the start thermal simulation params
 func (o *StartThermalSimulationParams) WithID(id int32) *StartThermalSimulationParams {
 	o.SetID(id)
@@ -99,7 +119,9 @@ func (o *StartThermalSimulationParams) SetID(id int32) {
 // WriteToRequest writes these params to a swagger request
 func (o *StartThermalSimulationParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
-	r.SetTimeout(o.timeout)
+	if err := r.SetTimeout(o.timeout); err != nil {
+		return err
+	}
 	var res []error
 
 	// path param id

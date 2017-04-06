@@ -49,6 +49,15 @@ func NewPostSimulationLogParamsWithContext(ctx context.Context) *PostSimulationL
 	}
 }
 
+// NewPostSimulationLogParamsWithHTTPClient creates a new PostSimulationLogParams object
+// with the default values initialized, and the ability to set a custom HTTPClient for a request
+func NewPostSimulationLogParamsWithHTTPClient(client *http.Client) *PostSimulationLogParams {
+	var ()
+	return &PostSimulationLogParams{
+		HTTPClient: client,
+	}
+}
+
 /*PostSimulationLogParams contains all the parameters to send to the API endpoint
 for the post simulation log operation typically these are written to a http.Request
 */
@@ -92,6 +101,17 @@ func (o *PostSimulationLogParams) SetContext(ctx context.Context) {
 	o.Context = ctx
 }
 
+// WithHTTPClient adds the HTTPClient to the post simulation log params
+func (o *PostSimulationLogParams) WithHTTPClient(client *http.Client) *PostSimulationLogParams {
+	o.SetHTTPClient(client)
+	return o
+}
+
+// SetHTTPClient adds the HTTPClient to the post simulation log params
+func (o *PostSimulationLogParams) SetHTTPClient(client *http.Client) {
+	o.HTTPClient = client
+}
+
 // WithSimulationLog adds the simulationLog to the post simulation log params
 func (o *PostSimulationLogParams) WithSimulationLog(simulationLog *models.SimulationLog) *PostSimulationLogParams {
 	o.SetSimulationLog(simulationLog)
@@ -117,7 +137,9 @@ func (o *PostSimulationLogParams) SetID(id int32) {
 // WriteToRequest writes these params to a swagger request
 func (o *PostSimulationLogParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
-	r.SetTimeout(o.timeout)
+	if err := r.SetTimeout(o.timeout); err != nil {
+		return err
+	}
 	var res []error
 
 	if o.SimulationLog == nil {

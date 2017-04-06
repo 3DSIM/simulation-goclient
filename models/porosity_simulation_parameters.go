@@ -7,9 +7,9 @@ import (
 	"strconv"
 
 	strfmt "github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
 	"github.com/go-openapi/errors"
+	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
 )
 
@@ -55,11 +55,11 @@ type PorositySimulationParameters struct {
 
 	// Array of origin x values to simulate across, Each value must be between 0 to 0.2 meters
 	// Required: true
-	OriginXValues []float64 `json:"originXValues"`
+	OriginXValues []*float64 `json:"originXValues"`
 
 	// Array of origin y values to simulate across, Each value must be between 0 to 0.2 meters
 	// Required: true
-	OriginYValues []float64 `json:"originYValues"`
+	OriginYValues []*float64 `json:"originYValues"`
 
 	// Array of scan speed values to simulate across, Each value must be between 0.01 to 10 meters/second
 	// Required: true

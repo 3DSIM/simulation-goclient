@@ -47,6 +47,15 @@ func NewGetMaterialsParamsWithContext(ctx context.Context) *GetMaterialsParams {
 	}
 }
 
+// NewGetMaterialsParamsWithHTTPClient creates a new GetMaterialsParams object
+// with the default values initialized, and the ability to set a custom HTTPClient for a request
+func NewGetMaterialsParamsWithHTTPClient(client *http.Client) *GetMaterialsParams {
+	var ()
+	return &GetMaterialsParams{
+		HTTPClient: client,
+	}
+}
+
 /*GetMaterialsParams contains all the parameters to send to the API endpoint
 for the get materials operation typically these are written to a http.Request
 */
@@ -103,6 +112,17 @@ func (o *GetMaterialsParams) WithContext(ctx context.Context) *GetMaterialsParam
 // SetContext adds the context to the get materials params
 func (o *GetMaterialsParams) SetContext(ctx context.Context) {
 	o.Context = ctx
+}
+
+// WithHTTPClient adds the HTTPClient to the get materials params
+func (o *GetMaterialsParams) WithHTTPClient(client *http.Client) *GetMaterialsParams {
+	o.SetHTTPClient(client)
+	return o
+}
+
+// SetHTTPClient adds the HTTPClient to the get materials params
+func (o *GetMaterialsParams) SetHTTPClient(client *http.Client) {
+	o.HTTPClient = client
 }
 
 // WithArchived adds the archived to the get materials params
@@ -163,7 +183,9 @@ func (o *GetMaterialsParams) SetSort(sort []string) {
 // WriteToRequest writes these params to a swagger request
 func (o *GetMaterialsParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
-	r.SetTimeout(o.timeout)
+	if err := r.SetTimeout(o.timeout); err != nil {
+		return err
+	}
 	var res []error
 
 	if o.Archived != nil {

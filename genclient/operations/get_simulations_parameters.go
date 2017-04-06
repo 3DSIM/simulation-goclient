@@ -47,6 +47,15 @@ func NewGetSimulationsParamsWithContext(ctx context.Context) *GetSimulationsPara
 	}
 }
 
+// NewGetSimulationsParamsWithHTTPClient creates a new GetSimulationsParams object
+// with the default values initialized, and the ability to set a custom HTTPClient for a request
+func NewGetSimulationsParamsWithHTTPClient(client *http.Client) *GetSimulationsParams {
+	var ()
+	return &GetSimulationsParams{
+		HTTPClient: client,
+	}
+}
+
 /*GetSimulationsParams contains all the parameters to send to the API endpoint
 for the get simulations operation typically these are written to a http.Request
 */
@@ -103,6 +112,17 @@ func (o *GetSimulationsParams) WithContext(ctx context.Context) *GetSimulationsP
 // SetContext adds the context to the get simulations params
 func (o *GetSimulationsParams) SetContext(ctx context.Context) {
 	o.Context = ctx
+}
+
+// WithHTTPClient adds the HTTPClient to the get simulations params
+func (o *GetSimulationsParams) WithHTTPClient(client *http.Client) *GetSimulationsParams {
+	o.SetHTTPClient(client)
+	return o
+}
+
+// SetHTTPClient adds the HTTPClient to the get simulations params
+func (o *GetSimulationsParams) SetHTTPClient(client *http.Client) {
+	o.HTTPClient = client
 }
 
 // WithLimit adds the limit to the get simulations params
@@ -163,7 +183,9 @@ func (o *GetSimulationsParams) SetStatus(status []string) {
 // WriteToRequest writes these params to a swagger request
 func (o *GetSimulationsParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
-	r.SetTimeout(o.timeout)
+	if err := r.SetTimeout(o.timeout); err != nil {
+		return err
+	}
 	var res []error
 
 	if o.Limit != nil {

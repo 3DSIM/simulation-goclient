@@ -47,6 +47,15 @@ func NewCancelPorositySimulationParamsWithContext(ctx context.Context) *CancelPo
 	}
 }
 
+// NewCancelPorositySimulationParamsWithHTTPClient creates a new CancelPorositySimulationParams object
+// with the default values initialized, and the ability to set a custom HTTPClient for a request
+func NewCancelPorositySimulationParamsWithHTTPClient(client *http.Client) *CancelPorositySimulationParams {
+	var ()
+	return &CancelPorositySimulationParams{
+		HTTPClient: client,
+	}
+}
+
 /*CancelPorositySimulationParams contains all the parameters to send to the API endpoint
 for the cancel porosity simulation operation typically these are written to a http.Request
 */
@@ -85,6 +94,17 @@ func (o *CancelPorositySimulationParams) SetContext(ctx context.Context) {
 	o.Context = ctx
 }
 
+// WithHTTPClient adds the HTTPClient to the cancel porosity simulation params
+func (o *CancelPorositySimulationParams) WithHTTPClient(client *http.Client) *CancelPorositySimulationParams {
+	o.SetHTTPClient(client)
+	return o
+}
+
+// SetHTTPClient adds the HTTPClient to the cancel porosity simulation params
+func (o *CancelPorositySimulationParams) SetHTTPClient(client *http.Client) {
+	o.HTTPClient = client
+}
+
 // WithID adds the id to the cancel porosity simulation params
 func (o *CancelPorositySimulationParams) WithID(id int32) *CancelPorositySimulationParams {
 	o.SetID(id)
@@ -99,7 +119,9 @@ func (o *CancelPorositySimulationParams) SetID(id int32) {
 // WriteToRequest writes these params to a swagger request
 func (o *CancelPorositySimulationParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
-	r.SetTimeout(o.timeout)
+	if err := r.SetTimeout(o.timeout); err != nil {
+		return err
+	}
 	var res []error
 
 	// path param id

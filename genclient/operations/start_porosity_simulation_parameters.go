@@ -47,6 +47,15 @@ func NewStartPorositySimulationParamsWithContext(ctx context.Context) *StartPoro
 	}
 }
 
+// NewStartPorositySimulationParamsWithHTTPClient creates a new StartPorositySimulationParams object
+// with the default values initialized, and the ability to set a custom HTTPClient for a request
+func NewStartPorositySimulationParamsWithHTTPClient(client *http.Client) *StartPorositySimulationParams {
+	var ()
+	return &StartPorositySimulationParams{
+		HTTPClient: client,
+	}
+}
+
 /*StartPorositySimulationParams contains all the parameters to send to the API endpoint
 for the start porosity simulation operation typically these are written to a http.Request
 */
@@ -85,6 +94,17 @@ func (o *StartPorositySimulationParams) SetContext(ctx context.Context) {
 	o.Context = ctx
 }
 
+// WithHTTPClient adds the HTTPClient to the start porosity simulation params
+func (o *StartPorositySimulationParams) WithHTTPClient(client *http.Client) *StartPorositySimulationParams {
+	o.SetHTTPClient(client)
+	return o
+}
+
+// SetHTTPClient adds the HTTPClient to the start porosity simulation params
+func (o *StartPorositySimulationParams) SetHTTPClient(client *http.Client) {
+	o.HTTPClient = client
+}
+
 // WithID adds the id to the start porosity simulation params
 func (o *StartPorositySimulationParams) WithID(id int32) *StartPorositySimulationParams {
 	o.SetID(id)
@@ -99,7 +119,9 @@ func (o *StartPorositySimulationParams) SetID(id int32) {
 // WriteToRequest writes these params to a swagger request
 func (o *StartPorositySimulationParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
-	r.SetTimeout(o.timeout)
+	if err := r.SetTimeout(o.timeout); err != nil {
+		return err
+	}
 	var res []error
 
 	// path param id

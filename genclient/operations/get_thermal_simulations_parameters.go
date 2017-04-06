@@ -47,6 +47,15 @@ func NewGetThermalSimulationsParamsWithContext(ctx context.Context) *GetThermalS
 	}
 }
 
+// NewGetThermalSimulationsParamsWithHTTPClient creates a new GetThermalSimulationsParams object
+// with the default values initialized, and the ability to set a custom HTTPClient for a request
+func NewGetThermalSimulationsParamsWithHTTPClient(client *http.Client) *GetThermalSimulationsParams {
+	var ()
+	return &GetThermalSimulationsParams{
+		HTTPClient: client,
+	}
+}
+
 /*GetThermalSimulationsParams contains all the parameters to send to the API endpoint
 for the get thermal simulations operation typically these are written to a http.Request
 */
@@ -103,6 +112,17 @@ func (o *GetThermalSimulationsParams) WithContext(ctx context.Context) *GetTherm
 // SetContext adds the context to the get thermal simulations params
 func (o *GetThermalSimulationsParams) SetContext(ctx context.Context) {
 	o.Context = ctx
+}
+
+// WithHTTPClient adds the HTTPClient to the get thermal simulations params
+func (o *GetThermalSimulationsParams) WithHTTPClient(client *http.Client) *GetThermalSimulationsParams {
+	o.SetHTTPClient(client)
+	return o
+}
+
+// SetHTTPClient adds the HTTPClient to the get thermal simulations params
+func (o *GetThermalSimulationsParams) SetHTTPClient(client *http.Client) {
+	o.HTTPClient = client
 }
 
 // WithLimit adds the limit to the get thermal simulations params
@@ -163,7 +183,9 @@ func (o *GetThermalSimulationsParams) SetStatus(status []string) {
 // WriteToRequest writes these params to a swagger request
 func (o *GetThermalSimulationsParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
-	r.SetTimeout(o.timeout)
+	if err := r.SetTimeout(o.timeout); err != nil {
+		return err
+	}
 	var res []error
 
 	if o.Limit != nil {

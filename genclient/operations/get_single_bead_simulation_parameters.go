@@ -47,6 +47,15 @@ func NewGetSingleBeadSimulationParamsWithContext(ctx context.Context) *GetSingle
 	}
 }
 
+// NewGetSingleBeadSimulationParamsWithHTTPClient creates a new GetSingleBeadSimulationParams object
+// with the default values initialized, and the ability to set a custom HTTPClient for a request
+func NewGetSingleBeadSimulationParamsWithHTTPClient(client *http.Client) *GetSingleBeadSimulationParams {
+	var ()
+	return &GetSingleBeadSimulationParams{
+		HTTPClient: client,
+	}
+}
+
 /*GetSingleBeadSimulationParams contains all the parameters to send to the API endpoint
 for the get single bead simulation operation typically these are written to a http.Request
 */
@@ -85,6 +94,17 @@ func (o *GetSingleBeadSimulationParams) SetContext(ctx context.Context) {
 	o.Context = ctx
 }
 
+// WithHTTPClient adds the HTTPClient to the get single bead simulation params
+func (o *GetSingleBeadSimulationParams) WithHTTPClient(client *http.Client) *GetSingleBeadSimulationParams {
+	o.SetHTTPClient(client)
+	return o
+}
+
+// SetHTTPClient adds the HTTPClient to the get single bead simulation params
+func (o *GetSingleBeadSimulationParams) SetHTTPClient(client *http.Client) {
+	o.HTTPClient = client
+}
+
 // WithID adds the id to the get single bead simulation params
 func (o *GetSingleBeadSimulationParams) WithID(id int32) *GetSingleBeadSimulationParams {
 	o.SetID(id)
@@ -99,7 +119,9 @@ func (o *GetSingleBeadSimulationParams) SetID(id int32) {
 // WriteToRequest writes these params to a swagger request
 func (o *GetSingleBeadSimulationParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
-	r.SetTimeout(o.timeout)
+	if err := r.SetTimeout(o.timeout); err != nil {
+		return err
+	}
 	var res []error
 
 	// path param id

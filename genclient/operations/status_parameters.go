@@ -46,6 +46,15 @@ func NewStatusParamsWithContext(ctx context.Context) *StatusParams {
 	}
 }
 
+// NewStatusParamsWithHTTPClient creates a new StatusParams object
+// with the default values initialized, and the ability to set a custom HTTPClient for a request
+func NewStatusParamsWithHTTPClient(client *http.Client) *StatusParams {
+
+	return &StatusParams{
+		HTTPClient: client,
+	}
+}
+
 /*StatusParams contains all the parameters to send to the API endpoint
 for the status operation typically these are written to a http.Request
 */
@@ -77,10 +86,23 @@ func (o *StatusParams) SetContext(ctx context.Context) {
 	o.Context = ctx
 }
 
+// WithHTTPClient adds the HTTPClient to the status params
+func (o *StatusParams) WithHTTPClient(client *http.Client) *StatusParams {
+	o.SetHTTPClient(client)
+	return o
+}
+
+// SetHTTPClient adds the HTTPClient to the status params
+func (o *StatusParams) SetHTTPClient(client *http.Client) {
+	o.HTTPClient = client
+}
+
 // WriteToRequest writes these params to a swagger request
 func (o *StatusParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
-	r.SetTimeout(o.timeout)
+	if err := r.SetTimeout(o.timeout); err != nil {
+		return err
+	}
 	var res []error
 
 	if len(res) > 0 {

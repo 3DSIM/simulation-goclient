@@ -47,6 +47,15 @@ func NewCancelThermalSimulationParamsWithContext(ctx context.Context) *CancelThe
 	}
 }
 
+// NewCancelThermalSimulationParamsWithHTTPClient creates a new CancelThermalSimulationParams object
+// with the default values initialized, and the ability to set a custom HTTPClient for a request
+func NewCancelThermalSimulationParamsWithHTTPClient(client *http.Client) *CancelThermalSimulationParams {
+	var ()
+	return &CancelThermalSimulationParams{
+		HTTPClient: client,
+	}
+}
+
 /*CancelThermalSimulationParams contains all the parameters to send to the API endpoint
 for the cancel thermal simulation operation typically these are written to a http.Request
 */
@@ -85,6 +94,17 @@ func (o *CancelThermalSimulationParams) SetContext(ctx context.Context) {
 	o.Context = ctx
 }
 
+// WithHTTPClient adds the HTTPClient to the cancel thermal simulation params
+func (o *CancelThermalSimulationParams) WithHTTPClient(client *http.Client) *CancelThermalSimulationParams {
+	o.SetHTTPClient(client)
+	return o
+}
+
+// SetHTTPClient adds the HTTPClient to the cancel thermal simulation params
+func (o *CancelThermalSimulationParams) SetHTTPClient(client *http.Client) {
+	o.HTTPClient = client
+}
+
 // WithID adds the id to the cancel thermal simulation params
 func (o *CancelThermalSimulationParams) WithID(id int32) *CancelThermalSimulationParams {
 	o.SetID(id)
@@ -99,7 +119,9 @@ func (o *CancelThermalSimulationParams) SetID(id int32) {
 // WriteToRequest writes these params to a swagger request
 func (o *CancelThermalSimulationParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
-	r.SetTimeout(o.timeout)
+	if err := r.SetTimeout(o.timeout); err != nil {
+		return err
+	}
 	var res []error
 
 	// path param id

@@ -49,6 +49,15 @@ func NewPutSimulationActivityParamsWithContext(ctx context.Context) *PutSimulati
 	}
 }
 
+// NewPutSimulationActivityParamsWithHTTPClient creates a new PutSimulationActivityParams object
+// with the default values initialized, and the ability to set a custom HTTPClient for a request
+func NewPutSimulationActivityParamsWithHTTPClient(client *http.Client) *PutSimulationActivityParams {
+	var ()
+	return &PutSimulationActivityParams{
+		HTTPClient: client,
+	}
+}
+
 /*PutSimulationActivityParams contains all the parameters to send to the API endpoint
 for the put simulation activity operation typically these are written to a http.Request
 */
@@ -97,6 +106,17 @@ func (o *PutSimulationActivityParams) SetContext(ctx context.Context) {
 	o.Context = ctx
 }
 
+// WithHTTPClient adds the HTTPClient to the put simulation activity params
+func (o *PutSimulationActivityParams) WithHTTPClient(client *http.Client) *PutSimulationActivityParams {
+	o.SetHTTPClient(client)
+	return o
+}
+
+// SetHTTPClient adds the HTTPClient to the put simulation activity params
+func (o *PutSimulationActivityParams) SetHTTPClient(client *http.Client) {
+	o.HTTPClient = client
+}
+
 // WithSimulationActivity adds the simulationActivity to the put simulation activity params
 func (o *PutSimulationActivityParams) WithSimulationActivity(simulationActivity *models.SimulationActivity) *PutSimulationActivityParams {
 	o.SetSimulationActivity(simulationActivity)
@@ -133,7 +153,9 @@ func (o *PutSimulationActivityParams) SetID(id int32) {
 // WriteToRequest writes these params to a swagger request
 func (o *PutSimulationActivityParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
-	r.SetTimeout(o.timeout)
+	if err := r.SetTimeout(o.timeout); err != nil {
+		return err
+	}
 	var res []error
 
 	if o.SimulationActivity == nil {

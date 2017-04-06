@@ -47,6 +47,15 @@ func NewCancelSingleBeadSimulationParamsWithContext(ctx context.Context) *Cancel
 	}
 }
 
+// NewCancelSingleBeadSimulationParamsWithHTTPClient creates a new CancelSingleBeadSimulationParams object
+// with the default values initialized, and the ability to set a custom HTTPClient for a request
+func NewCancelSingleBeadSimulationParamsWithHTTPClient(client *http.Client) *CancelSingleBeadSimulationParams {
+	var ()
+	return &CancelSingleBeadSimulationParams{
+		HTTPClient: client,
+	}
+}
+
 /*CancelSingleBeadSimulationParams contains all the parameters to send to the API endpoint
 for the cancel single bead simulation operation typically these are written to a http.Request
 */
@@ -85,6 +94,17 @@ func (o *CancelSingleBeadSimulationParams) SetContext(ctx context.Context) {
 	o.Context = ctx
 }
 
+// WithHTTPClient adds the HTTPClient to the cancel single bead simulation params
+func (o *CancelSingleBeadSimulationParams) WithHTTPClient(client *http.Client) *CancelSingleBeadSimulationParams {
+	o.SetHTTPClient(client)
+	return o
+}
+
+// SetHTTPClient adds the HTTPClient to the cancel single bead simulation params
+func (o *CancelSingleBeadSimulationParams) SetHTTPClient(client *http.Client) {
+	o.HTTPClient = client
+}
+
 // WithID adds the id to the cancel single bead simulation params
 func (o *CancelSingleBeadSimulationParams) WithID(id int32) *CancelSingleBeadSimulationParams {
 	o.SetID(id)
@@ -99,7 +119,9 @@ func (o *CancelSingleBeadSimulationParams) SetID(id int32) {
 // WriteToRequest writes these params to a swagger request
 func (o *CancelSingleBeadSimulationParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
-	r.SetTimeout(o.timeout)
+	if err := r.SetTimeout(o.timeout); err != nil {
+		return err
+	}
 	var res []error
 
 	// path param id

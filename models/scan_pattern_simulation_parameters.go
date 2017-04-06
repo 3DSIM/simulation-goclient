@@ -5,11 +5,12 @@ package models
 
 import (
 	"encoding/json"
+	"strconv"
 
 	strfmt "github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
 	"github.com/go-openapi/errors"
+	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
 )
 
@@ -528,6 +529,9 @@ func (m *ScanPatternSimulationParameters) validateSimulationParts(formats strfmt
 		if m.SimulationParts[i] != nil {
 
 			if err := m.SimulationParts[i].Validate(formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("simulationParts" + "." + strconv.Itoa(i))
+				}
 				return err
 			}
 		}

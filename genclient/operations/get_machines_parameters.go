@@ -47,6 +47,15 @@ func NewGetMachinesParamsWithContext(ctx context.Context) *GetMachinesParams {
 	}
 }
 
+// NewGetMachinesParamsWithHTTPClient creates a new GetMachinesParams object
+// with the default values initialized, and the ability to set a custom HTTPClient for a request
+func NewGetMachinesParamsWithHTTPClient(client *http.Client) *GetMachinesParams {
+	var ()
+	return &GetMachinesParams{
+		HTTPClient: client,
+	}
+}
+
 /*GetMachinesParams contains all the parameters to send to the API endpoint
 for the get machines operation typically these are written to a http.Request
 */
@@ -103,6 +112,17 @@ func (o *GetMachinesParams) WithContext(ctx context.Context) *GetMachinesParams 
 // SetContext adds the context to the get machines params
 func (o *GetMachinesParams) SetContext(ctx context.Context) {
 	o.Context = ctx
+}
+
+// WithHTTPClient adds the HTTPClient to the get machines params
+func (o *GetMachinesParams) WithHTTPClient(client *http.Client) *GetMachinesParams {
+	o.SetHTTPClient(client)
+	return o
+}
+
+// SetHTTPClient adds the HTTPClient to the get machines params
+func (o *GetMachinesParams) SetHTTPClient(client *http.Client) {
+	o.HTTPClient = client
 }
 
 // WithArchived adds the archived to the get machines params
@@ -163,7 +183,9 @@ func (o *GetMachinesParams) SetSort(sort []string) {
 // WriteToRequest writes these params to a swagger request
 func (o *GetMachinesParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
-	r.SetTimeout(o.timeout)
+	if err := r.SetTimeout(o.timeout); err != nil {
+		return err
+	}
 	var res []error
 
 	if o.Archived != nil {

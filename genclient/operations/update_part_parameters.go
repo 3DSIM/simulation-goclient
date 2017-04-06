@@ -48,6 +48,15 @@ func NewUpdatePartParamsWithContext(ctx context.Context) *UpdatePartParams {
 	}
 }
 
+// NewUpdatePartParamsWithHTTPClient creates a new UpdatePartParams object
+// with the default values initialized, and the ability to set a custom HTTPClient for a request
+func NewUpdatePartParamsWithHTTPClient(client *http.Client) *UpdatePartParams {
+	var ()
+	return &UpdatePartParams{
+		HTTPClient: client,
+	}
+}
+
 /*UpdatePartParams contains all the parameters to send to the API endpoint
 for the update part operation typically these are written to a http.Request
 */
@@ -86,6 +95,17 @@ func (o *UpdatePartParams) SetContext(ctx context.Context) {
 	o.Context = ctx
 }
 
+// WithHTTPClient adds the HTTPClient to the update part params
+func (o *UpdatePartParams) WithHTTPClient(client *http.Client) *UpdatePartParams {
+	o.SetHTTPClient(client)
+	return o
+}
+
+// SetHTTPClient adds the HTTPClient to the update part params
+func (o *UpdatePartParams) SetHTTPClient(client *http.Client) {
+	o.HTTPClient = client
+}
+
 // WithPart adds the part to the update part params
 func (o *UpdatePartParams) WithPart(part *models.Part) *UpdatePartParams {
 	o.SetPart(part)
@@ -100,7 +120,9 @@ func (o *UpdatePartParams) SetPart(part *models.Part) {
 // WriteToRequest writes these params to a swagger request
 func (o *UpdatePartParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
-	r.SetTimeout(o.timeout)
+	if err := r.SetTimeout(o.timeout); err != nil {
+		return err
+	}
 	var res []error
 
 	if o.Part == nil {

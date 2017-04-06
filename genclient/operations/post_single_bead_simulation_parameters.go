@@ -48,6 +48,15 @@ func NewPostSingleBeadSimulationParamsWithContext(ctx context.Context) *PostSing
 	}
 }
 
+// NewPostSingleBeadSimulationParamsWithHTTPClient creates a new PostSingleBeadSimulationParams object
+// with the default values initialized, and the ability to set a custom HTTPClient for a request
+func NewPostSingleBeadSimulationParamsWithHTTPClient(client *http.Client) *PostSingleBeadSimulationParams {
+	var ()
+	return &PostSingleBeadSimulationParams{
+		HTTPClient: client,
+	}
+}
+
 /*PostSingleBeadSimulationParams contains all the parameters to send to the API endpoint
 for the post single bead simulation operation typically these are written to a http.Request
 */
@@ -86,6 +95,17 @@ func (o *PostSingleBeadSimulationParams) SetContext(ctx context.Context) {
 	o.Context = ctx
 }
 
+// WithHTTPClient adds the HTTPClient to the post single bead simulation params
+func (o *PostSingleBeadSimulationParams) WithHTTPClient(client *http.Client) *PostSingleBeadSimulationParams {
+	o.SetHTTPClient(client)
+	return o
+}
+
+// SetHTTPClient adds the HTTPClient to the post single bead simulation params
+func (o *PostSingleBeadSimulationParams) SetHTTPClient(client *http.Client) {
+	o.HTTPClient = client
+}
+
 // WithSingleBeadSimulation adds the singleBeadSimulation to the post single bead simulation params
 func (o *PostSingleBeadSimulationParams) WithSingleBeadSimulation(singleBeadSimulation *models.SingleBeadSimulation) *PostSingleBeadSimulationParams {
 	o.SetSingleBeadSimulation(singleBeadSimulation)
@@ -100,7 +120,9 @@ func (o *PostSingleBeadSimulationParams) SetSingleBeadSimulation(singleBeadSimul
 // WriteToRequest writes these params to a swagger request
 func (o *PostSingleBeadSimulationParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
-	r.SetTimeout(o.timeout)
+	if err := r.SetTimeout(o.timeout); err != nil {
+		return err
+	}
 	var res []error
 
 	if o.SingleBeadSimulation == nil {

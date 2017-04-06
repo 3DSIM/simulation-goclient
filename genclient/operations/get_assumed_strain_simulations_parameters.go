@@ -47,6 +47,15 @@ func NewGetAssumedStrainSimulationsParamsWithContext(ctx context.Context) *GetAs
 	}
 }
 
+// NewGetAssumedStrainSimulationsParamsWithHTTPClient creates a new GetAssumedStrainSimulationsParams object
+// with the default values initialized, and the ability to set a custom HTTPClient for a request
+func NewGetAssumedStrainSimulationsParamsWithHTTPClient(client *http.Client) *GetAssumedStrainSimulationsParams {
+	var ()
+	return &GetAssumedStrainSimulationsParams{
+		HTTPClient: client,
+	}
+}
+
 /*GetAssumedStrainSimulationsParams contains all the parameters to send to the API endpoint
 for the get assumed strain simulations operation typically these are written to a http.Request
 */
@@ -103,6 +112,17 @@ func (o *GetAssumedStrainSimulationsParams) WithContext(ctx context.Context) *Ge
 // SetContext adds the context to the get assumed strain simulations params
 func (o *GetAssumedStrainSimulationsParams) SetContext(ctx context.Context) {
 	o.Context = ctx
+}
+
+// WithHTTPClient adds the HTTPClient to the get assumed strain simulations params
+func (o *GetAssumedStrainSimulationsParams) WithHTTPClient(client *http.Client) *GetAssumedStrainSimulationsParams {
+	o.SetHTTPClient(client)
+	return o
+}
+
+// SetHTTPClient adds the HTTPClient to the get assumed strain simulations params
+func (o *GetAssumedStrainSimulationsParams) SetHTTPClient(client *http.Client) {
+	o.HTTPClient = client
 }
 
 // WithLimit adds the limit to the get assumed strain simulations params
@@ -163,7 +183,9 @@ func (o *GetAssumedStrainSimulationsParams) SetStatus(status []string) {
 // WriteToRequest writes these params to a swagger request
 func (o *GetAssumedStrainSimulationsParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
-	r.SetTimeout(o.timeout)
+	if err := r.SetTimeout(o.timeout); err != nil {
+		return err
+	}
 	var res []error
 
 	if o.Limit != nil {

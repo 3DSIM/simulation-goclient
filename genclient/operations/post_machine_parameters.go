@@ -48,6 +48,15 @@ func NewPostMachineParamsWithContext(ctx context.Context) *PostMachineParams {
 	}
 }
 
+// NewPostMachineParamsWithHTTPClient creates a new PostMachineParams object
+// with the default values initialized, and the ability to set a custom HTTPClient for a request
+func NewPostMachineParamsWithHTTPClient(client *http.Client) *PostMachineParams {
+	var ()
+	return &PostMachineParams{
+		HTTPClient: client,
+	}
+}
+
 /*PostMachineParams contains all the parameters to send to the API endpoint
 for the post machine operation typically these are written to a http.Request
 */
@@ -83,6 +92,17 @@ func (o *PostMachineParams) SetContext(ctx context.Context) {
 	o.Context = ctx
 }
 
+// WithHTTPClient adds the HTTPClient to the post machine params
+func (o *PostMachineParams) WithHTTPClient(client *http.Client) *PostMachineParams {
+	o.SetHTTPClient(client)
+	return o
+}
+
+// SetHTTPClient adds the HTTPClient to the post machine params
+func (o *PostMachineParams) SetHTTPClient(client *http.Client) {
+	o.HTTPClient = client
+}
+
 // WithMachine adds the machine to the post machine params
 func (o *PostMachineParams) WithMachine(machine *models.Machine) *PostMachineParams {
 	o.SetMachine(machine)
@@ -97,7 +117,9 @@ func (o *PostMachineParams) SetMachine(machine *models.Machine) {
 // WriteToRequest writes these params to a swagger request
 func (o *PostMachineParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
-	r.SetTimeout(o.timeout)
+	if err := r.SetTimeout(o.timeout); err != nil {
+		return err
+	}
 	var res []error
 
 	if o.Machine == nil {

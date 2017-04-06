@@ -47,6 +47,15 @@ func NewUnarchiveMachineParamsWithContext(ctx context.Context) *UnarchiveMachine
 	}
 }
 
+// NewUnarchiveMachineParamsWithHTTPClient creates a new UnarchiveMachineParams object
+// with the default values initialized, and the ability to set a custom HTTPClient for a request
+func NewUnarchiveMachineParamsWithHTTPClient(client *http.Client) *UnarchiveMachineParams {
+	var ()
+	return &UnarchiveMachineParams{
+		HTTPClient: client,
+	}
+}
+
 /*UnarchiveMachineParams contains all the parameters to send to the API endpoint
 for the unarchive machine operation typically these are written to a http.Request
 */
@@ -85,6 +94,17 @@ func (o *UnarchiveMachineParams) SetContext(ctx context.Context) {
 	o.Context = ctx
 }
 
+// WithHTTPClient adds the HTTPClient to the unarchive machine params
+func (o *UnarchiveMachineParams) WithHTTPClient(client *http.Client) *UnarchiveMachineParams {
+	o.SetHTTPClient(client)
+	return o
+}
+
+// SetHTTPClient adds the HTTPClient to the unarchive machine params
+func (o *UnarchiveMachineParams) SetHTTPClient(client *http.Client) {
+	o.HTTPClient = client
+}
+
 // WithID adds the id to the unarchive machine params
 func (o *UnarchiveMachineParams) WithID(id int32) *UnarchiveMachineParams {
 	o.SetID(id)
@@ -99,7 +119,9 @@ func (o *UnarchiveMachineParams) SetID(id int32) {
 // WriteToRequest writes these params to a swagger request
 func (o *UnarchiveMachineParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
-	r.SetTimeout(o.timeout)
+	if err := r.SetTimeout(o.timeout); err != nil {
+		return err
+	}
 	var res []error
 
 	// path param id

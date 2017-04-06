@@ -48,6 +48,15 @@ func NewPostPorositySimulationParamsWithContext(ctx context.Context) *PostPorosi
 	}
 }
 
+// NewPostPorositySimulationParamsWithHTTPClient creates a new PostPorositySimulationParams object
+// with the default values initialized, and the ability to set a custom HTTPClient for a request
+func NewPostPorositySimulationParamsWithHTTPClient(client *http.Client) *PostPorositySimulationParams {
+	var ()
+	return &PostPorositySimulationParams{
+		HTTPClient: client,
+	}
+}
+
 /*PostPorositySimulationParams contains all the parameters to send to the API endpoint
 for the post porosity simulation operation typically these are written to a http.Request
 */
@@ -86,6 +95,17 @@ func (o *PostPorositySimulationParams) SetContext(ctx context.Context) {
 	o.Context = ctx
 }
 
+// WithHTTPClient adds the HTTPClient to the post porosity simulation params
+func (o *PostPorositySimulationParams) WithHTTPClient(client *http.Client) *PostPorositySimulationParams {
+	o.SetHTTPClient(client)
+	return o
+}
+
+// SetHTTPClient adds the HTTPClient to the post porosity simulation params
+func (o *PostPorositySimulationParams) SetHTTPClient(client *http.Client) {
+	o.HTTPClient = client
+}
+
 // WithPorositySimulation adds the porositySimulation to the post porosity simulation params
 func (o *PostPorositySimulationParams) WithPorositySimulation(porositySimulation *models.PorositySimulation) *PostPorositySimulationParams {
 	o.SetPorositySimulation(porositySimulation)
@@ -100,7 +120,9 @@ func (o *PostPorositySimulationParams) SetPorositySimulation(porositySimulation 
 // WriteToRequest writes these params to a swagger request
 func (o *PostPorositySimulationParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
-	r.SetTimeout(o.timeout)
+	if err := r.SetTimeout(o.timeout); err != nil {
+		return err
+	}
 	var res []error
 
 	if o.PorositySimulation == nil {

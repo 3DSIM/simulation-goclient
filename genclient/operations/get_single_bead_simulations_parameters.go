@@ -47,6 +47,15 @@ func NewGetSingleBeadSimulationsParamsWithContext(ctx context.Context) *GetSingl
 	}
 }
 
+// NewGetSingleBeadSimulationsParamsWithHTTPClient creates a new GetSingleBeadSimulationsParams object
+// with the default values initialized, and the ability to set a custom HTTPClient for a request
+func NewGetSingleBeadSimulationsParamsWithHTTPClient(client *http.Client) *GetSingleBeadSimulationsParams {
+	var ()
+	return &GetSingleBeadSimulationsParams{
+		HTTPClient: client,
+	}
+}
+
 /*GetSingleBeadSimulationsParams contains all the parameters to send to the API endpoint
 for the get single bead simulations operation typically these are written to a http.Request
 */
@@ -103,6 +112,17 @@ func (o *GetSingleBeadSimulationsParams) WithContext(ctx context.Context) *GetSi
 // SetContext adds the context to the get single bead simulations params
 func (o *GetSingleBeadSimulationsParams) SetContext(ctx context.Context) {
 	o.Context = ctx
+}
+
+// WithHTTPClient adds the HTTPClient to the get single bead simulations params
+func (o *GetSingleBeadSimulationsParams) WithHTTPClient(client *http.Client) *GetSingleBeadSimulationsParams {
+	o.SetHTTPClient(client)
+	return o
+}
+
+// SetHTTPClient adds the HTTPClient to the get single bead simulations params
+func (o *GetSingleBeadSimulationsParams) SetHTTPClient(client *http.Client) {
+	o.HTTPClient = client
 }
 
 // WithLimit adds the limit to the get single bead simulations params
@@ -163,7 +183,9 @@ func (o *GetSingleBeadSimulationsParams) SetStatus(status []string) {
 // WriteToRequest writes these params to a swagger request
 func (o *GetSingleBeadSimulationsParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
-	r.SetTimeout(o.timeout)
+	if err := r.SetTimeout(o.timeout); err != nil {
+		return err
+	}
 	var res []error
 
 	if o.Limit != nil {

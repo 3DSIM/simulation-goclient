@@ -47,6 +47,15 @@ func NewGetSimulationLogsParamsWithContext(ctx context.Context) *GetSimulationLo
 	}
 }
 
+// NewGetSimulationLogsParamsWithHTTPClient creates a new GetSimulationLogsParams object
+// with the default values initialized, and the ability to set a custom HTTPClient for a request
+func NewGetSimulationLogsParamsWithHTTPClient(client *http.Client) *GetSimulationLogsParams {
+	var ()
+	return &GetSimulationLogsParams{
+		HTTPClient: client,
+	}
+}
+
 /*GetSimulationLogsParams contains all the parameters to send to the API endpoint
 for the get simulation logs operation typically these are written to a http.Request
 */
@@ -100,6 +109,17 @@ func (o *GetSimulationLogsParams) SetContext(ctx context.Context) {
 	o.Context = ctx
 }
 
+// WithHTTPClient adds the HTTPClient to the get simulation logs params
+func (o *GetSimulationLogsParams) WithHTTPClient(client *http.Client) *GetSimulationLogsParams {
+	o.SetHTTPClient(client)
+	return o
+}
+
+// SetHTTPClient adds the HTTPClient to the get simulation logs params
+func (o *GetSimulationLogsParams) SetHTTPClient(client *http.Client) {
+	o.HTTPClient = client
+}
+
 // WithID adds the id to the get simulation logs params
 func (o *GetSimulationLogsParams) WithID(id int32) *GetSimulationLogsParams {
 	o.SetID(id)
@@ -147,7 +167,9 @@ func (o *GetSimulationLogsParams) SetSort(sort []string) {
 // WriteToRequest writes these params to a swagger request
 func (o *GetSimulationLogsParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
-	r.SetTimeout(o.timeout)
+	if err := r.SetTimeout(o.timeout); err != nil {
+		return err
+	}
 	var res []error
 
 	// path param id

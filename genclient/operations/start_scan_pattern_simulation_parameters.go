@@ -47,6 +47,15 @@ func NewStartScanPatternSimulationParamsWithContext(ctx context.Context) *StartS
 	}
 }
 
+// NewStartScanPatternSimulationParamsWithHTTPClient creates a new StartScanPatternSimulationParams object
+// with the default values initialized, and the ability to set a custom HTTPClient for a request
+func NewStartScanPatternSimulationParamsWithHTTPClient(client *http.Client) *StartScanPatternSimulationParams {
+	var ()
+	return &StartScanPatternSimulationParams{
+		HTTPClient: client,
+	}
+}
+
 /*StartScanPatternSimulationParams contains all the parameters to send to the API endpoint
 for the start scan pattern simulation operation typically these are written to a http.Request
 */
@@ -85,6 +94,17 @@ func (o *StartScanPatternSimulationParams) SetContext(ctx context.Context) {
 	o.Context = ctx
 }
 
+// WithHTTPClient adds the HTTPClient to the start scan pattern simulation params
+func (o *StartScanPatternSimulationParams) WithHTTPClient(client *http.Client) *StartScanPatternSimulationParams {
+	o.SetHTTPClient(client)
+	return o
+}
+
+// SetHTTPClient adds the HTTPClient to the start scan pattern simulation params
+func (o *StartScanPatternSimulationParams) SetHTTPClient(client *http.Client) {
+	o.HTTPClient = client
+}
+
 // WithID adds the id to the start scan pattern simulation params
 func (o *StartScanPatternSimulationParams) WithID(id int32) *StartScanPatternSimulationParams {
 	o.SetID(id)
@@ -99,7 +119,9 @@ func (o *StartScanPatternSimulationParams) SetID(id int32) {
 // WriteToRequest writes these params to a swagger request
 func (o *StartScanPatternSimulationParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
-	r.SetTimeout(o.timeout)
+	if err := r.SetTimeout(o.timeout); err != nil {
+		return err
+	}
 	var res []error
 
 	// path param id

@@ -47,6 +47,15 @@ func NewArchivePartParamsWithContext(ctx context.Context) *ArchivePartParams {
 	}
 }
 
+// NewArchivePartParamsWithHTTPClient creates a new ArchivePartParams object
+// with the default values initialized, and the ability to set a custom HTTPClient for a request
+func NewArchivePartParamsWithHTTPClient(client *http.Client) *ArchivePartParams {
+	var ()
+	return &ArchivePartParams{
+		HTTPClient: client,
+	}
+}
+
 /*ArchivePartParams contains all the parameters to send to the API endpoint
 for the archive part operation typically these are written to a http.Request
 */
@@ -85,6 +94,17 @@ func (o *ArchivePartParams) SetContext(ctx context.Context) {
 	o.Context = ctx
 }
 
+// WithHTTPClient adds the HTTPClient to the archive part params
+func (o *ArchivePartParams) WithHTTPClient(client *http.Client) *ArchivePartParams {
+	o.SetHTTPClient(client)
+	return o
+}
+
+// SetHTTPClient adds the HTTPClient to the archive part params
+func (o *ArchivePartParams) SetHTTPClient(client *http.Client) {
+	o.HTTPClient = client
+}
+
 // WithID adds the id to the archive part params
 func (o *ArchivePartParams) WithID(id int32) *ArchivePartParams {
 	o.SetID(id)
@@ -99,7 +119,9 @@ func (o *ArchivePartParams) SetID(id int32) {
 // WriteToRequest writes these params to a swagger request
 func (o *ArchivePartParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
-	r.SetTimeout(o.timeout)
+	if err := r.SetTimeout(o.timeout); err != nil {
+		return err
+	}
 	var res []error
 
 	// path param id

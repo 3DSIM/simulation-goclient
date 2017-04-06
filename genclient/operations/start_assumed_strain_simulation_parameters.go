@@ -47,6 +47,15 @@ func NewStartAssumedStrainSimulationParamsWithContext(ctx context.Context) *Star
 	}
 }
 
+// NewStartAssumedStrainSimulationParamsWithHTTPClient creates a new StartAssumedStrainSimulationParams object
+// with the default values initialized, and the ability to set a custom HTTPClient for a request
+func NewStartAssumedStrainSimulationParamsWithHTTPClient(client *http.Client) *StartAssumedStrainSimulationParams {
+	var ()
+	return &StartAssumedStrainSimulationParams{
+		HTTPClient: client,
+	}
+}
+
 /*StartAssumedStrainSimulationParams contains all the parameters to send to the API endpoint
 for the start assumed strain simulation operation typically these are written to a http.Request
 */
@@ -85,6 +94,17 @@ func (o *StartAssumedStrainSimulationParams) SetContext(ctx context.Context) {
 	o.Context = ctx
 }
 
+// WithHTTPClient adds the HTTPClient to the start assumed strain simulation params
+func (o *StartAssumedStrainSimulationParams) WithHTTPClient(client *http.Client) *StartAssumedStrainSimulationParams {
+	o.SetHTTPClient(client)
+	return o
+}
+
+// SetHTTPClient adds the HTTPClient to the start assumed strain simulation params
+func (o *StartAssumedStrainSimulationParams) SetHTTPClient(client *http.Client) {
+	o.HTTPClient = client
+}
+
 // WithID adds the id to the start assumed strain simulation params
 func (o *StartAssumedStrainSimulationParams) WithID(id int32) *StartAssumedStrainSimulationParams {
 	o.SetID(id)
@@ -99,7 +119,9 @@ func (o *StartAssumedStrainSimulationParams) SetID(id int32) {
 // WriteToRequest writes these params to a swagger request
 func (o *StartAssumedStrainSimulationParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
-	r.SetTimeout(o.timeout)
+	if err := r.SetTimeout(o.timeout); err != nil {
+		return err
+	}
 	var res []error
 
 	// path param id

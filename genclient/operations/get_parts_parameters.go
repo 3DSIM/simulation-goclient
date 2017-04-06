@@ -47,6 +47,15 @@ func NewGetPartsParamsWithContext(ctx context.Context) *GetPartsParams {
 	}
 }
 
+// NewGetPartsParamsWithHTTPClient creates a new GetPartsParams object
+// with the default values initialized, and the ability to set a custom HTTPClient for a request
+func NewGetPartsParamsWithHTTPClient(client *http.Client) *GetPartsParams {
+	var ()
+	return &GetPartsParams{
+		HTTPClient: client,
+	}
+}
+
 /*GetPartsParams contains all the parameters to send to the API endpoint
 for the get parts operation typically these are written to a http.Request
 */
@@ -108,6 +117,17 @@ func (o *GetPartsParams) WithContext(ctx context.Context) *GetPartsParams {
 // SetContext adds the context to the get parts params
 func (o *GetPartsParams) SetContext(ctx context.Context) {
 	o.Context = ctx
+}
+
+// WithHTTPClient adds the HTTPClient to the get parts params
+func (o *GetPartsParams) WithHTTPClient(client *http.Client) *GetPartsParams {
+	o.SetHTTPClient(client)
+	return o
+}
+
+// SetHTTPClient adds the HTTPClient to the get parts params
+func (o *GetPartsParams) SetHTTPClient(client *http.Client) {
+	o.HTTPClient = client
 }
 
 // WithArchived adds the archived to the get parts params
@@ -179,7 +199,9 @@ func (o *GetPartsParams) SetSort(sort []string) {
 // WriteToRequest writes these params to a swagger request
 func (o *GetPartsParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
-	r.SetTimeout(o.timeout)
+	if err := r.SetTimeout(o.timeout); err != nil {
+		return err
+	}
 	var res []error
 
 	if o.Archived != nil {

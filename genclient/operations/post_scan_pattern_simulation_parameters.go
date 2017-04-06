@@ -48,6 +48,15 @@ func NewPostScanPatternSimulationParamsWithContext(ctx context.Context) *PostSca
 	}
 }
 
+// NewPostScanPatternSimulationParamsWithHTTPClient creates a new PostScanPatternSimulationParams object
+// with the default values initialized, and the ability to set a custom HTTPClient for a request
+func NewPostScanPatternSimulationParamsWithHTTPClient(client *http.Client) *PostScanPatternSimulationParams {
+	var ()
+	return &PostScanPatternSimulationParams{
+		HTTPClient: client,
+	}
+}
+
 /*PostScanPatternSimulationParams contains all the parameters to send to the API endpoint
 for the post scan pattern simulation operation typically these are written to a http.Request
 */
@@ -86,6 +95,17 @@ func (o *PostScanPatternSimulationParams) SetContext(ctx context.Context) {
 	o.Context = ctx
 }
 
+// WithHTTPClient adds the HTTPClient to the post scan pattern simulation params
+func (o *PostScanPatternSimulationParams) WithHTTPClient(client *http.Client) *PostScanPatternSimulationParams {
+	o.SetHTTPClient(client)
+	return o
+}
+
+// SetHTTPClient adds the HTTPClient to the post scan pattern simulation params
+func (o *PostScanPatternSimulationParams) SetHTTPClient(client *http.Client) {
+	o.HTTPClient = client
+}
+
 // WithScanPatternSimulation adds the scanPatternSimulation to the post scan pattern simulation params
 func (o *PostScanPatternSimulationParams) WithScanPatternSimulation(scanPatternSimulation *models.ScanPatternSimulation) *PostScanPatternSimulationParams {
 	o.SetScanPatternSimulation(scanPatternSimulation)
@@ -100,7 +120,9 @@ func (o *PostScanPatternSimulationParams) SetScanPatternSimulation(scanPatternSi
 // WriteToRequest writes these params to a swagger request
 func (o *PostScanPatternSimulationParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
-	r.SetTimeout(o.timeout)
+	if err := r.SetTimeout(o.timeout); err != nil {
+		return err
+	}
 	var res []error
 
 	if o.ScanPatternSimulation == nil {

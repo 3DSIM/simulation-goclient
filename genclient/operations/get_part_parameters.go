@@ -47,6 +47,15 @@ func NewGetPartParamsWithContext(ctx context.Context) *GetPartParams {
 	}
 }
 
+// NewGetPartParamsWithHTTPClient creates a new GetPartParams object
+// with the default values initialized, and the ability to set a custom HTTPClient for a request
+func NewGetPartParamsWithHTTPClient(client *http.Client) *GetPartParams {
+	var ()
+	return &GetPartParams{
+		HTTPClient: client,
+	}
+}
+
 /*GetPartParams contains all the parameters to send to the API endpoint
 for the get part operation typically these are written to a http.Request
 */
@@ -85,6 +94,17 @@ func (o *GetPartParams) SetContext(ctx context.Context) {
 	o.Context = ctx
 }
 
+// WithHTTPClient adds the HTTPClient to the get part params
+func (o *GetPartParams) WithHTTPClient(client *http.Client) *GetPartParams {
+	o.SetHTTPClient(client)
+	return o
+}
+
+// SetHTTPClient adds the HTTPClient to the get part params
+func (o *GetPartParams) SetHTTPClient(client *http.Client) {
+	o.HTTPClient = client
+}
+
 // WithID adds the id to the get part params
 func (o *GetPartParams) WithID(id int32) *GetPartParams {
 	o.SetID(id)
@@ -99,7 +119,9 @@ func (o *GetPartParams) SetID(id int32) {
 // WriteToRequest writes these params to a swagger request
 func (o *GetPartParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
-	r.SetTimeout(o.timeout)
+	if err := r.SetTimeout(o.timeout); err != nil {
+		return err
+	}
 	var res []error
 
 	// path param id

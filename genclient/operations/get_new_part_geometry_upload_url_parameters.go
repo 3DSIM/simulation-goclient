@@ -46,6 +46,15 @@ func NewGetNewPartGeometryUploadURLParamsWithContext(ctx context.Context) *GetNe
 	}
 }
 
+// NewGetNewPartGeometryUploadURLParamsWithHTTPClient creates a new GetNewPartGeometryUploadURLParams object
+// with the default values initialized, and the ability to set a custom HTTPClient for a request
+func NewGetNewPartGeometryUploadURLParamsWithHTTPClient(client *http.Client) *GetNewPartGeometryUploadURLParams {
+
+	return &GetNewPartGeometryUploadURLParams{
+		HTTPClient: client,
+	}
+}
+
 /*GetNewPartGeometryUploadURLParams contains all the parameters to send to the API endpoint
 for the get new part geometry upload Url operation typically these are written to a http.Request
 */
@@ -77,10 +86,23 @@ func (o *GetNewPartGeometryUploadURLParams) SetContext(ctx context.Context) {
 	o.Context = ctx
 }
 
+// WithHTTPClient adds the HTTPClient to the get new part geometry upload Url params
+func (o *GetNewPartGeometryUploadURLParams) WithHTTPClient(client *http.Client) *GetNewPartGeometryUploadURLParams {
+	o.SetHTTPClient(client)
+	return o
+}
+
+// SetHTTPClient adds the HTTPClient to the get new part geometry upload Url params
+func (o *GetNewPartGeometryUploadURLParams) SetHTTPClient(client *http.Client) {
+	o.HTTPClient = client
+}
+
 // WriteToRequest writes these params to a swagger request
 func (o *GetNewPartGeometryUploadURLParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
-	r.SetTimeout(o.timeout)
+	if err := r.SetTimeout(o.timeout); err != nil {
+		return err
+	}
 	var res []error
 
 	if len(res) > 0 {

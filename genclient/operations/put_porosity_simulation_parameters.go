@@ -49,6 +49,15 @@ func NewPutPorositySimulationParamsWithContext(ctx context.Context) *PutPorosity
 	}
 }
 
+// NewPutPorositySimulationParamsWithHTTPClient creates a new PutPorositySimulationParams object
+// with the default values initialized, and the ability to set a custom HTTPClient for a request
+func NewPutPorositySimulationParamsWithHTTPClient(client *http.Client) *PutPorositySimulationParams {
+	var ()
+	return &PutPorositySimulationParams{
+		HTTPClient: client,
+	}
+}
+
 /*PutPorositySimulationParams contains all the parameters to send to the API endpoint
 for the put porosity simulation operation typically these are written to a http.Request
 */
@@ -92,6 +101,17 @@ func (o *PutPorositySimulationParams) SetContext(ctx context.Context) {
 	o.Context = ctx
 }
 
+// WithHTTPClient adds the HTTPClient to the put porosity simulation params
+func (o *PutPorositySimulationParams) WithHTTPClient(client *http.Client) *PutPorositySimulationParams {
+	o.SetHTTPClient(client)
+	return o
+}
+
+// SetHTTPClient adds the HTTPClient to the put porosity simulation params
+func (o *PutPorositySimulationParams) SetHTTPClient(client *http.Client) {
+	o.HTTPClient = client
+}
+
 // WithPorositySimulation adds the porositySimulation to the put porosity simulation params
 func (o *PutPorositySimulationParams) WithPorositySimulation(porositySimulation *models.PorositySimulation) *PutPorositySimulationParams {
 	o.SetPorositySimulation(porositySimulation)
@@ -117,7 +137,9 @@ func (o *PutPorositySimulationParams) SetID(id int32) {
 // WriteToRequest writes these params to a swagger request
 func (o *PutPorositySimulationParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
-	r.SetTimeout(o.timeout)
+	if err := r.SetTimeout(o.timeout); err != nil {
+		return err
+	}
 	var res []error
 
 	if o.PorositySimulation == nil {

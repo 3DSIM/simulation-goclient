@@ -47,6 +47,15 @@ func NewGetSimulationOutputsParamsWithContext(ctx context.Context) *GetSimulatio
 	}
 }
 
+// NewGetSimulationOutputsParamsWithHTTPClient creates a new GetSimulationOutputsParams object
+// with the default values initialized, and the ability to set a custom HTTPClient for a request
+func NewGetSimulationOutputsParamsWithHTTPClient(client *http.Client) *GetSimulationOutputsParams {
+	var ()
+	return &GetSimulationOutputsParams{
+		HTTPClient: client,
+	}
+}
+
 /*GetSimulationOutputsParams contains all the parameters to send to the API endpoint
 for the get simulation outputs operation typically these are written to a http.Request
 */
@@ -100,6 +109,17 @@ func (o *GetSimulationOutputsParams) SetContext(ctx context.Context) {
 	o.Context = ctx
 }
 
+// WithHTTPClient adds the HTTPClient to the get simulation outputs params
+func (o *GetSimulationOutputsParams) WithHTTPClient(client *http.Client) *GetSimulationOutputsParams {
+	o.SetHTTPClient(client)
+	return o
+}
+
+// SetHTTPClient adds the HTTPClient to the get simulation outputs params
+func (o *GetSimulationOutputsParams) SetHTTPClient(client *http.Client) {
+	o.HTTPClient = client
+}
+
 // WithID adds the id to the get simulation outputs params
 func (o *GetSimulationOutputsParams) WithID(id int32) *GetSimulationOutputsParams {
 	o.SetID(id)
@@ -147,7 +167,9 @@ func (o *GetSimulationOutputsParams) SetSort(sort []string) {
 // WriteToRequest writes these params to a swagger request
 func (o *GetSimulationOutputsParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
-	r.SetTimeout(o.timeout)
+	if err := r.SetTimeout(o.timeout); err != nil {
+		return err
+	}
 	var res []error
 
 	// path param id

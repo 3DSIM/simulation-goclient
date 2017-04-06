@@ -47,6 +47,15 @@ func NewGetMaterialParamsWithContext(ctx context.Context) *GetMaterialParams {
 	}
 }
 
+// NewGetMaterialParamsWithHTTPClient creates a new GetMaterialParams object
+// with the default values initialized, and the ability to set a custom HTTPClient for a request
+func NewGetMaterialParamsWithHTTPClient(client *http.Client) *GetMaterialParams {
+	var ()
+	return &GetMaterialParams{
+		HTTPClient: client,
+	}
+}
+
 /*GetMaterialParams contains all the parameters to send to the API endpoint
 for the get material operation typically these are written to a http.Request
 */
@@ -85,6 +94,17 @@ func (o *GetMaterialParams) SetContext(ctx context.Context) {
 	o.Context = ctx
 }
 
+// WithHTTPClient adds the HTTPClient to the get material params
+func (o *GetMaterialParams) WithHTTPClient(client *http.Client) *GetMaterialParams {
+	o.SetHTTPClient(client)
+	return o
+}
+
+// SetHTTPClient adds the HTTPClient to the get material params
+func (o *GetMaterialParams) SetHTTPClient(client *http.Client) {
+	o.HTTPClient = client
+}
+
 // WithID adds the id to the get material params
 func (o *GetMaterialParams) WithID(id int32) *GetMaterialParams {
 	o.SetID(id)
@@ -99,7 +119,9 @@ func (o *GetMaterialParams) SetID(id int32) {
 // WriteToRequest writes these params to a swagger request
 func (o *GetMaterialParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
-	r.SetTimeout(o.timeout)
+	if err := r.SetTimeout(o.timeout); err != nil {
+		return err
+	}
 	var res []error
 
 	// path param id

@@ -49,6 +49,15 @@ func NewPutScanPatternSimulationParamsWithContext(ctx context.Context) *PutScanP
 	}
 }
 
+// NewPutScanPatternSimulationParamsWithHTTPClient creates a new PutScanPatternSimulationParams object
+// with the default values initialized, and the ability to set a custom HTTPClient for a request
+func NewPutScanPatternSimulationParamsWithHTTPClient(client *http.Client) *PutScanPatternSimulationParams {
+	var ()
+	return &PutScanPatternSimulationParams{
+		HTTPClient: client,
+	}
+}
+
 /*PutScanPatternSimulationParams contains all the parameters to send to the API endpoint
 for the put scan pattern simulation operation typically these are written to a http.Request
 */
@@ -92,6 +101,17 @@ func (o *PutScanPatternSimulationParams) SetContext(ctx context.Context) {
 	o.Context = ctx
 }
 
+// WithHTTPClient adds the HTTPClient to the put scan pattern simulation params
+func (o *PutScanPatternSimulationParams) WithHTTPClient(client *http.Client) *PutScanPatternSimulationParams {
+	o.SetHTTPClient(client)
+	return o
+}
+
+// SetHTTPClient adds the HTTPClient to the put scan pattern simulation params
+func (o *PutScanPatternSimulationParams) SetHTTPClient(client *http.Client) {
+	o.HTTPClient = client
+}
+
 // WithScanPatternSimulation adds the scanPatternSimulation to the put scan pattern simulation params
 func (o *PutScanPatternSimulationParams) WithScanPatternSimulation(scanPatternSimulation *models.ScanPatternSimulation) *PutScanPatternSimulationParams {
 	o.SetScanPatternSimulation(scanPatternSimulation)
@@ -117,7 +137,9 @@ func (o *PutScanPatternSimulationParams) SetID(id int32) {
 // WriteToRequest writes these params to a swagger request
 func (o *PutScanPatternSimulationParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
-	r.SetTimeout(o.timeout)
+	if err := r.SetTimeout(o.timeout); err != nil {
+		return err
+	}
 	var res []error
 
 	if o.ScanPatternSimulation == nil {
