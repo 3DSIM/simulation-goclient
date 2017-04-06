@@ -7,6 +7,7 @@ import (
 	"github.com/3dsim/simulation-goclient/models"
 	openapiclient "github.com/go-openapi/runtime/client"
 	"github.com/go-openapi/strfmt"
+	"github.com/go-openapi/swag"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -18,37 +19,37 @@ func _TestExampleUseOfAPIWithAuthentication(t *testing.T) {
 	client := simulationclient.New(openapiclient.New("3dsim-qa.cloud.tyk.io", "simulation-api", []string{"https"}), strfmt.Default)
 
 	simulation := models.Simulation{
-		OrganizationID: int32ToPointer(1),
-		Title:          stringToPointer("Title"),
+		OrganizationID: swag.Int32(1),
+		Title:          swag.String("Title"),
 	}
 	assumedStrainParams := models.AssumedStrainSimulationParameters{
-		AnisotropicStrainCoefficientsZ:             float64ToPointer(1.0),
-		AnisotropicStrainCoefficientsParallel:      float64ToPointer(1.5),
-		AnisotropicStrainCoefficientsPerpendicular: float64ToPointer(0.5),
-		AssumedStrain:                              float64ToPointer(1.0),
-		ElasticModulus:                             float64ToPointer(208e9),
-		HatchSpacing:                               float64ToPointer(100e-6),
-		LaserWattage:                               float64ToPointer(195),
-		LayerThickness:                             float64ToPointer(50e-6),
-		LayerRotationAngle:                         float64ToPointer(67),
-		MaximumWallDistance:                        float64ToPointer(3e-3),
-		MaximumWallThickness:                       float64ToPointer(1e-3),
-		MinimumSupportHeight:                       float64ToPointer(5e-3),
-		MinimumWallDistance:                        float64ToPointer(0),
-		MinimumWallThickness:                       float64ToPointer(5e-5),
-		OutputShrinkage:                            boolToPointer(true),
-		PoissonRatio:                               float64ToPointer(0.33),
-		StrainScalingFactor:                        float64ToPointer(1.0),
-		ScanSpeed:                                  float64ToPointer(1.0),
-		SlicingStripeWidth:                         float64ToPointer(2e-3),
-		StartingLayerAngle:                         float64ToPointer(57),
-		StressMode:                                 stringToPointer("LinearElastic"),
-		SupportAngle:                               float64ToPointer(45),
-		SupportFactorOfSafety:                      float64ToPointer(1.0),
-		SupportOptimization:                        boolToPointer(true),
-		SupportYieldStrength:                       float64ToPointer(480e6),
-		SupportYieldStrengthRatio:                  float64ToPointer(0.4375),
-		VoxelSize:                                  float64ToPointer(5e-4),
+		AnisotropicStrainCoefficientsZ:             swag.Float64(1.0),
+		AnisotropicStrainCoefficientsParallel:      swag.Float64(1.5),
+		AnisotropicStrainCoefficientsPerpendicular: swag.Float64(0.5),
+		AssumedStrain:                              swag.Float64(1.0),
+		ElasticModulus:                             swag.Float64(208e9),
+		HatchSpacing:                               swag.Float64(100e-6),
+		LaserWattage:                               swag.Float64(195),
+		LayerThickness:                             swag.Float64(50e-6),
+		LayerRotationAngle:                         swag.Float64(67),
+		MaximumWallDistance:                        swag.Float64(3e-3),
+		MaximumWallThickness:                       swag.Float64(1e-3),
+		MinimumSupportHeight:                       swag.Float64(5e-3),
+		MinimumWallDistance:                        swag.Float64(0),
+		MinimumWallThickness:                       swag.Float64(5e-5),
+		OutputShrinkage:                            swag.Bool(true),
+		PoissonRatio:                               swag.Float64(0.33),
+		StrainScalingFactor:                        swag.Float64(1.0),
+		ScanSpeed:                                  swag.Float64(1.0),
+		SlicingStripeWidth:                         swag.Float64(2e-3),
+		StartingLayerAngle:                         swag.Float64(57),
+		StressMode:                                 swag.String("LinearElastic"),
+		SupportAngle:                               swag.Float64(45),
+		SupportFactorOfSafety:                      swag.Float64(1.0),
+		SupportOptimization:                        swag.Bool(true),
+		SupportYieldStrength:                       swag.Float64(480e6),
+		SupportYieldStrengthRatio:                  swag.Float64(0.4375),
+		VoxelSize:                                  swag.Float64(5e-4),
 	}
 	simulationToCreate := &models.AssumedStrainSimulation{
 		Simulation:                        simulation,
@@ -83,8 +84,8 @@ func _TestPatch(t *testing.T) {
 
 	client := simulationclient.New(openapiclient.New("localhost:5000", "", []string{"http"}), strfmt.Default)
 
-	patch := &models.PatchDocument{Op: stringToPointer(models.PatchDocumentOpReplace), Path: stringToPointer("/title"), Value: "Test Patch"}
-	patch2 := &models.PatchDocument{Op: stringToPointer(models.PatchDocumentOpReplace), Path: stringToPointer("/status"), Value: models.SimulationStatusInProgress}
+	patch := &models.PatchDocument{Op: swag.String(models.PatchDocumentOpReplace), Path: swag.String("/title"), Value: "Test Patch"}
+	patch2 := &models.PatchDocument{Op: swag.String(models.PatchDocumentOpReplace), Path: swag.String("/status"), Value: models.SimulationStatusInProgress}
 	patchList := []*models.PatchDocument{patch, patch2}
 	patchedSimulation, err := client.Operations.PatchSimulation(operations.NewPatchSimulationParams().WithSimulationPatch(patchList).WithID(65), bearerTokenAuth)
 	if err != nil {
@@ -92,24 +93,4 @@ func _TestPatch(t *testing.T) {
 	}
 
 	fmt.Printf("Result: %v\n", patchedSimulation)
-}
-
-func stringToPointer(text string) *string {
-	return &text
-}
-
-func boolToPointer(b bool) *bool {
-	return &b
-}
-
-func int64ToPointer(i int64) *int64 {
-	return &i
-}
-
-func int32ToPointer(i int32) *int32 {
-	return &i
-}
-
-func float64ToPointer(f float64) *float64 {
-	return &f
 }

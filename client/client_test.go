@@ -4,11 +4,10 @@ import (
 	"errors"
 	"testing"
 
+	"encoding/json"
 	"github.com/3dsim/go-library/jwt"
 	"github.com/3dsim/simulation-goclient/models"
-
-	"encoding/json"
-	s "github.com/3dsim/go-library/sugar"
+	"github.com/go-openapi/swag"
 	"github.com/gorilla/mux"
 	"github.com/stretchr/testify/assert"
 	"net/http"
@@ -79,8 +78,8 @@ func TestMachineWhenSuccessfulExpectsMachineReturned(t *testing.T) {
 
 	// Machine
 	machineToReturn := &models.Machine{
-		ID:   s.Int32(machineID),
-		Name: s.String("Machine name"),
+		ID:   swag.Int32(machineID),
+		Name: swag.String("Machine name"),
 	}
 	machineHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
@@ -175,8 +174,8 @@ func TestMaterialWhenSuccessfulExpectsMaterialReturned(t *testing.T) {
 
 	// Material
 	materialToReturn := &models.Material{
-		ID:   s.Int32(materialID),
-		Name: s.String("Material name"),
+		ID:   swag.Int32(materialID),
+		Name: swag.String("Material name"),
 	}
 	materialHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
@@ -272,7 +271,7 @@ func TestSimulationWhenSuccessfulExpectsSimulationReturned(t *testing.T) {
 	// Simulation
 	simulationToReturn := &models.Simulation{
 		ID:    simulationID,
-		Title: s.String("Simulation name"),
+		Title: swag.String("Simulation name"),
 	}
 	simulationHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
@@ -369,10 +368,10 @@ func TestThermalSimulationWhenSuccessfulExpectsThermalSimulationReturned(t *test
 	thermalSimulationToReturn := &models.ThermalSimulation{
 		Simulation: models.Simulation{
 			ID:    thermalSimulationID,
-			Title: s.String("ThermalSimulation name"),
+			Title: swag.String("ThermalSimulation name"),
 		},
 		ThermalSimulationParameters: models.ThermalSimulationParameters{
-			ElasticModulus: s.Float64(21),
+			ElasticModulus: swag.Float64(21),
 		},
 	}
 	thermalSimulationHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -471,10 +470,10 @@ func TestScanPatternSimulationWhenSuccessfulExpectsScanPatternSimulationReturned
 	scanPatternSimulationToReturn := &models.ScanPatternSimulation{
 		Simulation: models.Simulation{
 			ID:    scanPatternSimulationID,
-			Title: s.String("ScanPatternSimulation name"),
+			Title: swag.String("ScanPatternSimulation name"),
 		},
 		ScanPatternSimulationParameters: models.ScanPatternSimulationParameters{
-			ElasticModulus: s.Float64(21),
+			ElasticModulus: swag.Float64(21),
 		},
 	}
 	scanPatternSimulationHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -573,10 +572,10 @@ func TestAssumedStrainSimulationWhenSuccessfulExpectsAssumedStrainSimulationRetu
 	assumedStrainSimulationToReturn := &models.AssumedStrainSimulation{
 		Simulation: models.Simulation{
 			ID:    assumedStrainSimulationID,
-			Title: s.String("AssumedStrainSimulation name"),
+			Title: swag.String("AssumedStrainSimulation name"),
 		},
 		AssumedStrainSimulationParameters: models.AssumedStrainSimulationParameters{
-			ElasticModulus: s.Float64(21),
+			ElasticModulus: swag.Float64(21),
 		},
 	}
 	assumedStrainSimulationHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

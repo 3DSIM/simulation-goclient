@@ -6,9 +6,9 @@ import (
 	"github.com/3dsim/simulation-goclient/genclient"
 	"github.com/3dsim/simulation-goclient/genclient/operations"
 	"github.com/3dsim/simulation-goclient/models"
-	"github.com/3dsim/simulation-goclient/sugar"
 	openapiclient "github.com/go-openapi/runtime/client"
 	"github.com/go-openapi/strfmt"
+	"github.com/go-openapi/swag"
 	log "github.com/inconshreveable/log15"
 	"net/url"
 	"time"
@@ -213,8 +213,8 @@ func (c *client) Simulations(organizationID int32, status []string, sort []strin
 		WithOrganizationID(organizationID).
 		WithStatus(status).
 		WithSort(sort).
-		WithLimit(sugar.Int32(limit)).
-		WithOffset(sugar.Int32(offset))
+		WithLimit(swag.Int32(limit)).
+		WithOffset(swag.Int32(offset))
 
 	response, err := c.client.Operations.GetSimulations(params, openapiclient.BearerToken(token))
 	if err != nil {
@@ -282,7 +282,7 @@ func (c *client) PostAssumedStrainSimulation(simulation *models.AssumedStrainSim
 	// new simulation part entries
 	for _, part := range simulation.AssumedStrainSimulationParameters.SimulationParts {
 		part.ID = 0
-		part.SimulationID = sugar.Int32(0)
+		part.SimulationID = swag.Int32(0)
 	}
 	params := operations.NewPostAssumedStrainSimulationParams().WithAssumedStrainSimulation(simulation)
 	response, err := c.client.Operations.PostAssumedStrainSimulation(params, openapiclient.BearerToken(token))
@@ -314,7 +314,7 @@ func (c *client) PostScanPatternSimulation(simulation *models.ScanPatternSimulat
 	// new simulation part entries
 	for _, part := range simulation.ScanPatternSimulationParameters.SimulationParts {
 		part.ID = 0
-		part.SimulationID = sugar.Int32(0)
+		part.SimulationID = swag.Int32(0)
 	}
 	params := operations.NewPostScanPatternSimulationParams().WithScanPatternSimulation(simulation)
 	response, err := c.client.Operations.PostScanPatternSimulation(params, openapiclient.BearerToken(token))
@@ -346,7 +346,7 @@ func (c *client) PostThermalSimulation(simulation *models.ThermalSimulation) (*m
 	// new simulation part entries
 	for _, part := range simulation.ThermalSimulationParameters.SimulationParts {
 		part.ID = 0
-		part.SimulationID = sugar.Int32(0)
+		part.SimulationID = swag.Int32(0)
 	}
 	params := operations.NewPostThermalSimulationParams().WithThermalSimulation(simulation)
 	response, err := c.client.Operations.PostThermalSimulation(params, openapiclient.BearerToken(token))
