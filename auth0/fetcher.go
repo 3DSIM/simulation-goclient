@@ -15,8 +15,8 @@ type TokenFetcher interface {
 // NewTokenFetcher creates a tokenFetcher that can get an access
 // token for a client_credentials grant from Auth0.
 //
-// The 3DSIM prod token endpoint is: https://3dsim.auth0.com/oauth/token
-// The 3DSIM token endpoint is: https://3dsim-qa.auth0.com/oauth/token
+// The 3DSIM prod and gov token endpoint is: https://3dsim.auth0.com/oauth/token
+// The 3DSIM qa token endpoint is: https://3dsim-qa.auth0.com/oauth/token
 func NewTokenFetcher(httpClient *http.Client, tokenURL, clientID, clientSecret string) TokenFetcher {
 	return &tokenFetcher{
 		httpClient:   httpClient,
