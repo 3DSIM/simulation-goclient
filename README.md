@@ -18,14 +18,14 @@ directory was all generated using the `go-swagger` tools.
 ## Organization
 * `auth0` - package for getting auth0 tokens
 * `client` - the client package that adds convenience methods for common operations
-* `examples` - examples of how to use the `genclient` package
 * `genclient` - the generated client code
+   * `client/examples` - examples of how to use the `genclient` package
 * `helpers` - a few simple helper utilities
 * `models` - the generated models
 * `sugar` - syntactic sugar for easily working with pointers
 
 ## Regenerating code
-First install the swagger generator.  Currently we are using release 0.8.0
+First install the swagger generator.  Currently we are using commit 5da5a44596c2c9e69568ea9b9f06ef4c48c6c5fe of https://github.com/go-swagger/go-swagger.
 
 For mac users:
 * brew tap go-swagger/go-swagger
@@ -40,9 +40,8 @@ is cloned as a sibling project, the command to run to generate new client code i
 swagger generate client -A SimulationAPI -f ../simulation-api-specification/swagger.yaml --client-package genclient
 ```
 
-## Using the client and handling authentication
-See `examples_test.go`
-
+## Using the client
+TODO
 
 ## Client to API version compatibility
 
