@@ -11,17 +11,30 @@ to generate the server code.
 Additionally, this allows us to automatically generate client code.  The code in this
 directory was all generated using the `go-swagger` tools.
 
-## Organization
 
-* `client` - the generated client code
+## Organization
+* `auth0` - package for getting auth0 tokens
+* `client` - the client package that adds convenience methods for common operations
+* `examples` - examples of how to use the `genclient` package
+* `genclient` - the generated client code
+* `helpers` - a few simple helper utilities
 * `models` - the generated models
+* `sugar` - syntactic sugar for easily working with pointers
 
 ## Regenerating code
+First install the swagger generator.  Currently we are using release 0.8.0
+
+For mac users:
+* brew tap go-swagger/go-swagger
+* brew install go-swagger
+
+For windows users:
+* See https://github.com/go-swagger/go-swagger for options
 
 The code generator needs a specification file.  The specification for the simulation API is stored in `github.com/3dsim/simulation-api-specification/swagger.yaml`.  Assuming that project
 is cloned as a sibling project, the command to run to generate new client code is:
 ```
-swagger generate client -A SimulationAPI -f ../simulation-api-specification/swagger.yaml
+swagger generate genclient -A SimulationAPI -f ../simulation-api-specification/swagger.yaml
 ```
 
 ## Using the client and handling authentication
