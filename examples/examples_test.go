@@ -2,8 +2,8 @@ package examples
 
 import (
 	"fmt"
-	simulationclient "github.com/3dsim/simulation-goclient/client"
-	"github.com/3dsim/simulation-goclient/client/operations"
+	simulationclient "github.com/3dsim/simulation-goclient/genclient"
+	"github.com/3dsim/simulation-goclient/genclient/operations"
 	"github.com/3dsim/simulation-goclient/models"
 	openapiclient "github.com/go-openapi/runtime/client"
 	"github.com/go-openapi/strfmt"
