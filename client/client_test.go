@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"encoding/json"
-	"github.com/3dsim/go-library/jwt"
+	"github.com/3dsim/simulation-goclient/auth0/mocks"
 	"github.com/3dsim/simulation-goclient/models"
 	"github.com/go-openapi/swag"
 	"github.com/gorilla/mux"
@@ -25,7 +25,7 @@ func TestMachineWhenFetcherErrorsExpectsErrorReturned(t *testing.T) {
 	expectedError := errors.New("Some auth0 error")
 
 	// Token
-	mockTokenFetcher := &jwt.MockFetcher{}
+	mockTokenFetcher := &mocks.TokenFetcher{}
 	mockTokenFetcher.On("Token", audience).Return("", expectedError)
 
 	simulationService := New(mockTokenFetcher, "apiGatewayURL", audience)
@@ -43,7 +43,7 @@ func TestMachineWhenSimulationAPIErrorsExpectsErrorReturned(t *testing.T) {
 	machineID := int32(2)
 
 	// Token
-	mockTokenFetcher := &jwt.MockFetcher{}
+	mockTokenFetcher := &mocks.TokenFetcher{}
 	mockTokenFetcher.On("Token", audience).Return("Token", nil)
 
 	// Machine
@@ -73,7 +73,7 @@ func TestMachineWhenSuccessfulExpectsMachineReturned(t *testing.T) {
 	machineID := int32(2)
 
 	// Token
-	mockTokenFetcher := &jwt.MockFetcher{}
+	mockTokenFetcher := &mocks.TokenFetcher{}
 	mockTokenFetcher.On("Token", audience).Return("Token", nil)
 
 	// Machine
@@ -121,7 +121,7 @@ func TestMaterialWhenFetcherErrorsExpectsErrorReturned(t *testing.T) {
 	expectedError := errors.New("Some auth0 error")
 
 	// Token
-	mockTokenFetcher := &jwt.MockFetcher{}
+	mockTokenFetcher := &mocks.TokenFetcher{}
 	mockTokenFetcher.On("Token", audience).Return("", expectedError)
 
 	simulationService := New(mockTokenFetcher, "", audience)
@@ -139,7 +139,7 @@ func TestMaterialWhenSimulationAPIErrorsExpectsErrorReturned(t *testing.T) {
 	materialID := int32(2)
 
 	// Token
-	mockTokenFetcher := &jwt.MockFetcher{}
+	mockTokenFetcher := &mocks.TokenFetcher{}
 	mockTokenFetcher.On("Token", audience).Return("Token", nil)
 
 	// Material
@@ -169,7 +169,7 @@ func TestMaterialWhenSuccessfulExpectsMaterialReturned(t *testing.T) {
 	materialID := int32(2)
 
 	// Token
-	mockTokenFetcher := &jwt.MockFetcher{}
+	mockTokenFetcher := &mocks.TokenFetcher{}
 	mockTokenFetcher.On("Token", audience).Return("Token", nil)
 
 	// Material
@@ -217,7 +217,7 @@ func TestSimulationWhenFetcherErrorsExpectsErrorReturned(t *testing.T) {
 	expectedError := errors.New("Some auth0 error")
 
 	// Token
-	mockTokenFetcher := &jwt.MockFetcher{}
+	mockTokenFetcher := &mocks.TokenFetcher{}
 	mockTokenFetcher.On("Token", audience).Return("", expectedError)
 
 	simulationService := New(mockTokenFetcher, "", audience)
@@ -235,7 +235,7 @@ func TestSimulationWhenSimulationAPIErrorsExpectsErrorReturned(t *testing.T) {
 	simulationID := int32(2)
 
 	// Token
-	mockTokenFetcher := &jwt.MockFetcher{}
+	mockTokenFetcher := &mocks.TokenFetcher{}
 	mockTokenFetcher.On("Token", audience).Return("Token", nil)
 
 	// Simulation
@@ -265,7 +265,7 @@ func TestSimulationWhenSuccessfulExpectsSimulationReturned(t *testing.T) {
 	simulationID := int32(2)
 
 	// Token
-	mockTokenFetcher := &jwt.MockFetcher{}
+	mockTokenFetcher := &mocks.TokenFetcher{}
 	mockTokenFetcher.On("Token", audience).Return("Token", nil)
 
 	// Simulation
@@ -313,7 +313,7 @@ func TestThermalSimulationWhenFetcherErrorsExpectsErrorReturned(t *testing.T) {
 	expectedError := errors.New("Some auth0 error")
 
 	// Token
-	mockTokenFetcher := &jwt.MockFetcher{}
+	mockTokenFetcher := &mocks.TokenFetcher{}
 	mockTokenFetcher.On("Token", audience).Return("", expectedError)
 
 	thermalSimulationService := New(mockTokenFetcher, "", audience)
@@ -331,7 +331,7 @@ func TestThermalSimulationWhenThermalSimulationAPIErrorsExpectsErrorReturned(t *
 	thermalSimulationID := int32(2)
 
 	// Token
-	mockTokenFetcher := &jwt.MockFetcher{}
+	mockTokenFetcher := &mocks.TokenFetcher{}
 	mockTokenFetcher.On("Token", audience).Return("Token", nil)
 
 	// ThermalSimulation
@@ -361,7 +361,7 @@ func TestThermalSimulationWhenSuccessfulExpectsThermalSimulationReturned(t *test
 	thermalSimulationID := int32(2)
 
 	// Token
-	mockTokenFetcher := &jwt.MockFetcher{}
+	mockTokenFetcher := &mocks.TokenFetcher{}
 	mockTokenFetcher.On("Token", audience).Return("Token", nil)
 
 	// ThermalSimulation
@@ -415,7 +415,7 @@ func TestScanPatternSimulationWhenFetcherErrorsExpectsErrorReturned(t *testing.T
 	expectedError := errors.New("Some auth0 error")
 
 	// Token
-	mockTokenFetcher := &jwt.MockFetcher{}
+	mockTokenFetcher := &mocks.TokenFetcher{}
 	mockTokenFetcher.On("Token", audience).Return("", expectedError)
 
 	scanPatternSimulationService := New(mockTokenFetcher, "", audience)
@@ -433,7 +433,7 @@ func TestScanPatternSimulationWhenScanPatternSimulationAPIErrorsExpectsErrorRetu
 	scanPatternSimulationID := int32(2)
 
 	// Token
-	mockTokenFetcher := &jwt.MockFetcher{}
+	mockTokenFetcher := &mocks.TokenFetcher{}
 	mockTokenFetcher.On("Token", audience).Return("Token", nil)
 
 	// ScanPatternSimulation
@@ -463,7 +463,7 @@ func TestScanPatternSimulationWhenSuccessfulExpectsScanPatternSimulationReturned
 	scanPatternSimulationID := int32(2)
 
 	// Token
-	mockTokenFetcher := &jwt.MockFetcher{}
+	mockTokenFetcher := &mocks.TokenFetcher{}
 	mockTokenFetcher.On("Token", audience).Return("Token", nil)
 
 	// ScanPatternSimulation
@@ -517,7 +517,7 @@ func TestAssumedStrainSimulationWhenFetcherErrorsExpectsErrorReturned(t *testing
 	expectedError := errors.New("Some auth0 error")
 
 	// Token
-	mockTokenFetcher := &jwt.MockFetcher{}
+	mockTokenFetcher := &mocks.TokenFetcher{}
 	mockTokenFetcher.On("Token", audience).Return("", expectedError)
 
 	assumedStrainSimulationService := New(mockTokenFetcher, "", audience)
@@ -535,7 +535,7 @@ func TestAssumedStrainSimulationWhenAssumedStrainSimulationAPIErrorsExpectsError
 	assumedStrainSimulationID := int32(2)
 
 	// Token
-	mockTokenFetcher := &jwt.MockFetcher{}
+	mockTokenFetcher := &mocks.TokenFetcher{}
 	mockTokenFetcher.On("Token", audience).Return("Token", nil)
 
 	// AssumedStrainSimulation
@@ -565,7 +565,7 @@ func TestAssumedStrainSimulationWhenSuccessfulExpectsAssumedStrainSimulationRetu
 	assumedStrainSimulationID := int32(2)
 
 	// Token
-	mockTokenFetcher := &jwt.MockFetcher{}
+	mockTokenFetcher := &mocks.TokenFetcher{}
 	mockTokenFetcher.On("Token", audience).Return("Token", nil)
 
 	// AssumedStrainSimulation
