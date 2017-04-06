@@ -289,11 +289,11 @@ func (m *PorositySimulationParameters) validateOriginXValues(formats strfmt.Regi
 			continue
 		}
 
-		if err := validate.Minimum("originXValues"+"."+strconv.Itoa(i), "body", m.OriginXValues[i], 0, false); err != nil {
+		if err := validate.Minimum("originXValues"+"."+strconv.Itoa(i), "body", float64(*m.OriginXValues[i]), 0, false); err != nil {
 			return err
 		}
 
-		if err := validate.Maximum("originXValues"+"."+strconv.Itoa(i), "body", m.OriginXValues[i], 0.2, false); err != nil {
+		if err := validate.Maximum("originXValues"+"."+strconv.Itoa(i), "body", float64(*m.OriginXValues[i]), 0.2, false); err != nil {
 			return err
 		}
 
@@ -314,11 +314,11 @@ func (m *PorositySimulationParameters) validateOriginYValues(formats strfmt.Regi
 			continue
 		}
 
-		if err := validate.Minimum("originYValues"+"."+strconv.Itoa(i), "body", m.OriginYValues[i], 0, false); err != nil {
+		if err := validate.Minimum("originYValues"+"."+strconv.Itoa(i), "body", float64(*m.OriginYValues[i]), 0, false); err != nil {
 			return err
 		}
 
-		if err := validate.Maximum("originYValues"+"."+strconv.Itoa(i), "body", m.OriginYValues[i], 0.2, false); err != nil {
+		if err := validate.Maximum("originYValues"+"."+strconv.Itoa(i), "body", float64(*m.OriginYValues[i]), 0.2, false); err != nil {
 			return err
 		}
 

@@ -78,7 +78,7 @@ type GetPartsParams struct {
 	*/
 	OrganizationID int32
 	/*Sort
-	  key:direction pairs for one or multiple field sort orders
+	  key:direction pairs for one or multiple field sort orders.  e.g. sort=key1:desc,key2:asc
 
 	*/
 	Sort []string
