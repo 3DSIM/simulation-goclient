@@ -1,14 +1,6 @@
 hash: 9ce0fae5bfe5990c43d25e1a5f56d41892b313ae2e4d53f80807c5ea6225e45e
 updated: 2017-04-06T10:45:26.605370862-06:00
 imports:
-- name: github.com/3dsim/go-library
-  version: 9005ab62fa976ce5a6494623b4b29dab5d124ded
-  repo: git@github.com:3DSIM/go-library.git
-  vcs: git
-  subpackages:
-  - auth0
-  - jwt
-  - sugar
 - name: github.com/asaskevich/govalidator
   version: fdf19785fd3558d619ef81212f5edf1d6c2a5911
 - name: github.com/davecgh/go-spew
