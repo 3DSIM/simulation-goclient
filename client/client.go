@@ -2,6 +2,7 @@ package client
 
 import (
 	"errors"
+	"fmt"
 	"github.com/3dsim/simulation-goclient/auth0"
 	"github.com/3dsim/simulation-goclient/genclient"
 	"github.com/3dsim/simulation-goclient/genclient/operations"
@@ -51,10 +52,15 @@ type Client interface {
 	ScanPatternSimulation(simulationID int32) (*models.ScanPatternSimulation, error)
 	AssumedStrainSimulation(simulationID int32) (*models.AssumedStrainSimulation, error)
 	PorositySimulation(simulationID int32) (*models.PorositySimulation, error)
-	AddLogWithTime(simulationID int, messageDate time.Time, message string) error
-	AddLog(simulationID int, message string) error
-	PatchSimulation(simulationID int, patch *models.PatchDocument) error
-	MultiPatchSimulation(simulationID int, patches []*models.PatchDocument) error
+	PostLogWithTime(simulationID int32, messageDate time.Time, message string) error
+	PostLog(simulationID int32, message string) error
+	PatchSimulation(simulationID int32, patch *models.PatchDocument) error
+	MultiPatchSimulation(simulationID int32, patches []*models.PatchDocument) error
+	PostSimulationActivity(simulationActivity *models.SimulationActivity) (*models.SimulationActivity, error)
+	SimulationActivityByActivityID(simulationID int32, activityID string) (*models.SimulationActivity, error)
+	PutSimulationActivity(simulationActivity *models.SimulationActivity) error
+	AddSimulationOutput(simulationID int32, outputType, outputFileLocation string) (*models.SimulationOutput, error)
+	UpdateSimulationStatus(simulationID int32, status string) error
 }
 
 type client struct {
@@ -187,14 +193,14 @@ func (c *client) SingleBeadSimulation(simulationID int32) (*models.SingleBeadSim
 	return response.Payload, nil
 }
 
-func (c *client) AddLogWithTime(simulationID int, messageDate time.Time, message string) error {
+func (c *client) PostLogWithTime(simulationID int32, messageDate time.Time, message string) error {
 	token, err := c.tokenFetcher.Token(c.audience)
 	if err != nil {
 		return err
 	}
 	loggedAt := strfmt.DateTime(messageDate)
-	simulationLog := models.SimulationLog{LoggedAt: &loggedAt, Message: &message, SimulationID: int32(simulationID)}
-	_, err = c.client.Operations.PostSimulationLog(operations.NewPostSimulationLogParams().WithID(int32(simulationID)).
+	simulationLog := models.SimulationLog{LoggedAt: &loggedAt, Message: &message, SimulationID: simulationID}
+	_, err = c.client.Operations.PostSimulationLog(operations.NewPostSimulationLogParams().WithID(simulationID).
 		WithSimulationLog(&simulationLog), openapiclient.BearerToken(token))
 	if err != nil {
 		return err
@@ -202,8 +208,8 @@ func (c *client) AddLogWithTime(simulationID int, messageDate time.Time, message
 	return nil
 }
 
-func (c *client) AddLog(simulationID int, message string) error {
-	return c.AddLogWithTime(simulationID, time.Now().UTC(), message)
+func (c *client) PostLog(simulationID int32, message string) error {
+	return c.PostLogWithTime(simulationID, time.Now().UTC(), message)
 }
 
 func (c *client) Simulations(organizationID int32, status []string, sort []string, limit, offset int32) ([]*models.Simulation, error) {
@@ -307,6 +313,40 @@ func (c *client) PostPorositySimulation(simulation *models.PorositySimulation) (
 	return response.Payload, nil
 }
 
+// AddSimulationOutput adds the given output type and output file location to the
+// simulations_outputs table, iff the output type and output file location don't
+// exist already for this simulation.
+func (c *client) AddSimulationOutput(simulationID int32, outputType, outputFileLocation string) (*models.SimulationOutput, error) {
+	token, err := c.tokenFetcher.Token(c.audience)
+	if err != nil {
+		return nil, err
+	}
+	simulationOutputsResponse, err := c.client.Operations.GetSimulationOutputs(operations.NewGetSimulationOutputsParams().WithID(simulationID),
+		openapiclient.BearerToken(token))
+	if err != nil {
+		return nil, err
+	}
+	for _, simulationOutput := range simulationOutputsResponse.Payload {
+		if *simulationOutput.FileLocation == outputFileLocation {
+			// output already added, so no-op
+			return simulationOutput, nil
+		}
+	}
+	createdAt := strfmt.DateTime(time.Now().UTC())
+	simulationOutput := &models.SimulationOutput{
+		Label:        swag.String(outputType),
+		FileLocation: swag.String(outputFileLocation),
+		SimulationID: simulationID,
+		CreatedAt:    &createdAt,
+	}
+	response, err := c.client.Operations.PostSimulationOutput(operations.NewPostSimulationOutputParams().WithID(simulationID).
+		WithSimulationOutput(simulationOutput), openapiclient.BearerToken(token))
+	if err != nil {
+		return nil, err
+	}
+	return response.Payload, nil
+}
+
 func (c *client) PostScanPatternSimulation(simulation *models.ScanPatternSimulation) (*models.ScanPatternSimulation, error) {
 	token, err := c.tokenFetcher.Token(c.audience)
 	if err != nil {
@@ -339,6 +379,50 @@ func (c *client) PostSingleBeadSimulation(simulation *models.SingleBeadSimulatio
 	return response.Payload, nil
 }
 
+func (c *client) PostSimulationActivity(simulationActivity *models.SimulationActivity) (*models.SimulationActivity, error) {
+	token, err := c.tokenFetcher.Token(c.audience)
+	if err != nil {
+		return nil, err
+	}
+	params := operations.NewPostSimulationActivityParams().WithSimulationActivity(simulationActivity)
+	response, err := c.client.Operations.PostSimulationActivity(params, openapiclient.BearerToken(token))
+	if err != nil {
+		return nil, err
+	}
+	return response.Payload, nil
+}
+
+func (c *client) SimulationActivityByActivityID(simulationID int32, activityID string) (*models.SimulationActivity, error) {
+	token, err := c.tokenFetcher.Token(c.audience)
+	if err != nil {
+		return nil, err
+	}
+	activitiesResponse, err := c.client.Operations.GetSimulationActivities(operations.NewGetSimulationActivitiesParams().
+		WithID(simulationID), openapiclient.BearerToken(token))
+	if err != nil {
+		return nil, err
+	}
+	for _, activity := range activitiesResponse.Payload {
+		if *activity.ActivityID == activityID {
+			return activity, nil
+		}
+	}
+	return nil, fmt.Errorf("SimulationActivity with activity id %v not found for simulation %v.", activityID, simulationID)
+}
+
+func (c *client) PutSimulationActivity(simulationActivity *models.SimulationActivity) error {
+	token, err := c.tokenFetcher.Token(c.audience)
+	if err != nil {
+		return err
+	}
+	params := operations.NewPutSimulationActivityParams().WithSimulationActivity(simulationActivity)
+	_, err = c.client.Operations.PutSimulationActivity(params, openapiclient.BearerToken(token))
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func (c *client) PostThermalSimulation(simulation *models.ThermalSimulation) (*models.ThermalSimulation, error) {
 	token, err := c.tokenFetcher.Token(c.audience)
 	if err != nil {
@@ -360,20 +444,25 @@ func (c *client) PostThermalSimulation(simulation *models.ThermalSimulation) (*m
 }
 
 // PatchSimulation is only available to internal clients that have full access to the API
-func (c *client) PatchSimulation(simulationID int, patch *models.PatchDocument) error {
+func (c *client) PatchSimulation(simulationID int32, patch *models.PatchDocument) error {
 	return c.MultiPatchSimulation(simulationID, []*models.PatchDocument{patch})
 }
 
 // MultiPatchSimulation is only available to internal clients that have full access to the API
-func (c *client) MultiPatchSimulation(simulationID int, patches []*models.PatchDocument) error {
+func (c *client) MultiPatchSimulation(simulationID int32, patches []*models.PatchDocument) error {
 	token, err := c.tokenFetcher.Token(c.audience)
 	if err != nil {
 		return err
 	}
 	_, err = c.client.Operations.PatchSimulation(operations.NewPatchSimulationParams().
-		WithSimulationPatch(patches).WithID(int32(simulationID)), openapiclient.BearerToken(token))
+		WithSimulationPatch(patches).WithID(simulationID), openapiclient.BearerToken(token))
 	if err != nil {
 		return err
 	}
 	return nil
+}
+
+func (c *client) UpdateSimulationStatus(simulationID int32, status string) error {
+	patch := &models.PatchDocument{Op: swag.String(models.PatchDocumentOpReplace), Path: swag.String("/status"), Value: status}
+	return c.PatchSimulation(simulationID, patch)
 }

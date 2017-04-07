@@ -47,5 +47,5 @@ TODO
 
 | Simulation API | Simulation Client |
 | ------------- | ------------- |
-| 0.14.x  | 0.2.x |
+| 0.14.x  | 0.3.x |
 
