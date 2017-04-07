@@ -53,6 +53,8 @@ type Client interface {
 	PorositySimulation(simulationID int32) (*models.PorositySimulation, error)
 	AddLogWithTime(simulationID int, messageDate time.Time, message string) error
 	AddLog(simulationID int, message string) error
+	PatchSimulation(simulationID int, patch *models.PatchDocument) error
+	MultiPatchSimulation(simulationID int, patches []*models.PatchDocument) error
 }
 
 type client struct {
@@ -353,5 +355,25 @@ func (c *client) PostThermalSimulation(simulation *models.ThermalSimulation) (*m
 	if err != nil {
 		return nil, err
 	}
+
 	return response.Payload, nil
+}
+
+// PatchSimulation is only available to internal clients that have full access to the API
+func (c *client) PatchSimulation(simulationID int, patch *models.PatchDocument) error {
+	return c.MultiPatchSimulation(simulationID, []*models.PatchDocument{patch})
+}
+
+// MultiPatchSimulation is only available to internal clients that have full access to the API
+func (c *client) MultiPatchSimulation(simulationID int, patches []*models.PatchDocument) error {
+	token, err := c.tokenFetcher.Token(c.audience)
+	if err != nil {
+		return err
+	}
+	_, err = c.client.Operations.PatchSimulation(operations.NewPatchSimulationParams().
+		WithSimulationPatch(patches).WithID(int32(simulationID)), openapiclient.BearerToken(token))
+	if err != nil {
+		return err
+	}
+	return nil
 }
