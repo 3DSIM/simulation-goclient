@@ -611,3 +611,106 @@ func TestAssumedStrainSimulationWhenSuccessfulExpectsAssumedStrainSimulationRetu
 	assert.Equal(t, assumedStrainSimulationToReturn.ID, assumedStrainSimulation.ID, "Expected IDs to match")
 	assert.EqualValues(t, assumedStrainSimulationToReturn.ElasticModulus, assumedStrainSimulation.ElasticModulus, "Expected ElasticModulus values to match")
 }
+
+func TestSimulationsWhenNilValuesExpectsSuccess(t *testing.T) {
+	// arrange
+	var organizationID int32 = 10
+	offset := 2
+	limit := 10
+
+	// Token
+	mockTokenFetcher := &mocks.TokenFetcher{}
+	mockTokenFetcher.On("Token", audience).Return("Token", nil)
+
+	// Simulation
+	simulationsToReturn := []models.Simulation{
+		models.Simulation{
+			ID: 1,
+		},
+		models.Simulation{
+			ID: 2,
+		},
+	}
+
+	simulationsHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		assert.NotEmpty(t, r.Header.Get("Authorization"), "Authorization header should not be empty")
+		assert.Equal(t, strconv.Itoa(offset), r.URL.Query().Get("offset"), "Expected offset to be passed as query param")
+		assert.Equal(t, strconv.Itoa(limit), r.URL.Query().Get("limit"), "Expected limit to be passed as query param")
+		bytes, err := json.Marshal(simulationsToReturn)
+		if err != nil {
+			t.Error("Failed to marshal simulations")
+		}
+		w.Write(bytes)
+	})
+
+	// Setup routes
+	r := mux.NewRouter()
+	simulationEndpoint := "/" + SimulationAPIBasePath + "/simulations"
+	r.HandleFunc(simulationEndpoint, simulationsHandler)
+	testServer := httptest.NewServer(r)
+	defer testServer.Close()
+	simulationService := New(mockTokenFetcher, testServer.URL, audience)
+
+	// act
+	simulations, err := simulationService.Simulations(organizationID, nil, nil, int32(offset), int32(limit))
+
+	// assert
+	mockTokenFetcher.AssertExpectations(t)
+	assert.Nil(t, err, "Expected no error returned")
+	assert.Len(t, simulations, 2, "Expected 2 simulations returned.")
+}
+
+func TestSimulationsWhenNonNilValuesExpectsSuccess(t *testing.T) {
+	// arrange
+	var organizationID int32 = 10
+	offset := 2
+	limit := 10
+	sort := "field1:asc"
+	status := models.SimulationStatusInProgress
+
+	// Token
+	mockTokenFetcher := &mocks.TokenFetcher{}
+	mockTokenFetcher.On("Token", audience).Return("Token", nil)
+
+	// Simulation
+	simulationsToReturn := []models.Simulation{
+		models.Simulation{
+			ID: 1,
+		},
+		models.Simulation{
+			ID: 2,
+		},
+	}
+
+	simulationsHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		assert.NotEmpty(t, r.Header.Get("Authorization"), "Authorization header should not be empty")
+		assert.Equal(t, strconv.Itoa(offset), r.URL.Query().Get("offset"), "Expected offset to be passed as query param")
+		assert.Equal(t, strconv.Itoa(limit), r.URL.Query().Get("limit"), "Expected limit to be passed as query param")
+		assert.Equal(t, status, r.URL.Query().Get("status"), "Expected status to be passed as query param")
+		assert.Equal(t, sort, r.URL.Query().Get("sort"), "Expected sort to be passed as query param")
+		bytes, err := json.Marshal(simulationsToReturn)
+		if err != nil {
+			t.Error("Failed to marshal simulations")
+		}
+		w.Write(bytes)
+	})
+
+	// Setup routes
+	r := mux.NewRouter()
+	simulationEndpoint := "/" + SimulationAPIBasePath + "/simulations"
+	r.HandleFunc(simulationEndpoint, simulationsHandler)
+	testServer := httptest.NewServer(r)
+	defer testServer.Close()
+	simulationService := New(mockTokenFetcher, testServer.URL, audience)
+
+	// act
+	simulations, err := simulationService.Simulations(organizationID, []string{status}, []string{sort},
+		int32(offset), int32(limit))
+
+	// assert
+	mockTokenFetcher.AssertExpectations(t)
+	assert.Nil(t, err, "Expected no error returned")
+	assert.Len(t, simulations, 2, "Expected 2 simulations returned.")
+}
