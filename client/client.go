@@ -37,7 +37,7 @@ const (
 // for common operations.  If the operation needed is not found in Client, use the "genclient" package using this client
 // as an example of how to utilize the genclient.  PRs are welcome if more functionality is wanted in this client package.
 type Client interface {
-	Simulations(organizationID int32, status []string, sort []string, limit, offset int32) ([]*models.Simulation, error)
+	Simulations(organizationID int32, status []string, sort []string, offset, limit int32) ([]*models.Simulation, error)
 	StartSimulation(simulationID int32) error
 	ThermalSimulation(simulationID int32) (*models.ThermalSimulation, error)
 	SingleBeadSimulation(simulationID int32) (*models.SingleBeadSimulation, error)
@@ -212,7 +212,7 @@ func (c *client) PostLog(simulationID int32, message string) error {
 	return c.PostLogWithTime(simulationID, time.Now().UTC(), message)
 }
 
-func (c *client) Simulations(organizationID int32, status []string, sort []string, limit, offset int32) ([]*models.Simulation, error) {
+func (c *client) Simulations(organizationID int32, status []string, sort []string, offset, limit int32) ([]*models.Simulation, error) {
 	token, err := c.tokenFetcher.Token(c.audience)
 	if err != nil {
 		return nil, err
