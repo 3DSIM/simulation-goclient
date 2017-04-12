@@ -96,7 +96,7 @@ type ThermalSimulationParameters struct {
 
 	// if true, mechanics solver output will include a zip file with the stress / distortion state at the end of each voxel layer
 	// Required: true
-	OutputLayerVTK *bool `json:"outputLayerVTK"`
+	OutputLayerVtk *bool `json:"outputLayerVtk"`
 
 	// for each slectedPoint, a series of vtk files will output thermal history around that point with a radius of staticVirtualSensorRadius.
 	// Required: true
@@ -260,7 +260,7 @@ func (m *ThermalSimulationParameters) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
-	if err := m.validateOutputLayerVTK(formats); err != nil {
+	if err := m.validateOutputLayerVtk(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -555,9 +555,9 @@ func (m *ThermalSimulationParameters) validateOutputDisplacementAfterCutoff(form
 	return nil
 }
 
-func (m *ThermalSimulationParameters) validateOutputLayerVTK(formats strfmt.Registry) error {
+func (m *ThermalSimulationParameters) validateOutputLayerVtk(formats strfmt.Registry) error {
 
-	if err := validate.Required("outputLayerVTK", "body", m.OutputLayerVTK); err != nil {
+	if err := validate.Required("outputLayerVtk", "body", m.OutputLayerVtk); err != nil {
 		return err
 	}
 

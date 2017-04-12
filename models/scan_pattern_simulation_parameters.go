@@ -93,7 +93,7 @@ type ScanPatternSimulationParameters struct {
 
 	// if true, mechanics solver output will include a zip file with the stress / distortion state at the end of each voxel layer
 	// Required: true
-	OutputLayerVTK *bool `json:"outputLayerVTK"`
+	OutputLayerVtk *bool `json:"outputLayerVtk"`
 
 	// output shrinkage
 	// Required: true
@@ -225,7 +225,7 @@ func (m *ScanPatternSimulationParameters) Validate(formats strfmt.Registry) erro
 		res = append(res, err)
 	}
 
-	if err := m.validateOutputLayerVTK(formats); err != nil {
+	if err := m.validateOutputLayerVtk(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -478,9 +478,9 @@ func (m *ScanPatternSimulationParameters) validateOutputDisplacementAfterCutoff(
 	return nil
 }
 
-func (m *ScanPatternSimulationParameters) validateOutputLayerVTK(formats strfmt.Registry) error {
+func (m *ScanPatternSimulationParameters) validateOutputLayerVtk(formats strfmt.Registry) error {
 
-	if err := validate.Required("outputLayerVTK", "body", m.OutputLayerVTK); err != nil {
+	if err := validate.Required("outputLayerVtk", "body", m.OutputLayerVtk); err != nil {
 		return err
 	}
 
