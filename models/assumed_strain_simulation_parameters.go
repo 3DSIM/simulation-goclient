@@ -105,7 +105,7 @@ type AssumedStrainSimulationParameters struct {
 
 	// if true, mechanics solver output will include a zip file with the stress / distortion state at the end of each voxel layer
 	// Required: true
-	OutputLayerVTK *bool `json:"outputLayerVTK"`
+	OutputLayerVtk *bool `json:"outputLayerVtk"`
 
 	// output shrinkage
 	// Required: true
@@ -259,7 +259,7 @@ func (m *AssumedStrainSimulationParameters) Validate(formats strfmt.Registry) er
 		res = append(res, err)
 	}
 
-	if err := m.validateOutputLayerVTK(formats); err != nil {
+	if err := m.validateOutputLayerVtk(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -556,9 +556,9 @@ func (m *AssumedStrainSimulationParameters) validateOutputDisplacementAfterCutof
 	return nil
 }
 
-func (m *AssumedStrainSimulationParameters) validateOutputLayerVTK(formats strfmt.Registry) error {
+func (m *AssumedStrainSimulationParameters) validateOutputLayerVtk(formats strfmt.Registry) error {
 
-	if err := validate.Required("outputLayerVTK", "body", m.OutputLayerVTK); err != nil {
+	if err := validate.Required("outputLayerVtk", "body", m.OutputLayerVtk); err != nil {
 		return err
 	}
 
