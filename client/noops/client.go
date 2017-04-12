@@ -102,8 +102,8 @@ func (_m *Client) MultiPatchSimulation(simulationID int32, patches []*models.Pat
 	return nil
 }
 
-// PostSimulationActivity provides a noop function with given fields: simulationActivity
-func (_m *Client) PostSimulationActivity(simulationActivity *models.SimulationActivity) (*models.SimulationActivity, error) {
+// PostSimulationActivity provides a noop function with given fields: simulationID, simulationActivity
+func (_m *Client) PostSimulationActivity(simulationID int32, simulationActivity *models.SimulationActivity) (*models.SimulationActivity, error) {
 	return nil, nil
 }
 
@@ -112,8 +112,8 @@ func (_m *Client) SimulationActivityByActivityID(simulationID int32, activityID 
 	return nil, nil
 }
 
-// PutSimulationActivity provides a noop function with given fields: simulationActivity
-func (_m *Client) PutSimulationActivity(simulationActivity *models.SimulationActivity) error {
+// PutSimulationActivity provides a noop function with given fields: simulationID, simulationActivity
+func (_m *Client) PutSimulationActivity(simulationID int32, simulationActivity *models.SimulationActivity) error {
 	return nil
 }
 

@@ -56,9 +56,9 @@ type Client interface {
 	PostLog(simulationID int32, message string) error
 	PatchSimulation(simulationID int32, patch *models.PatchDocument) error
 	MultiPatchSimulation(simulationID int32, patches []*models.PatchDocument) error
-	PostSimulationActivity(simulationActivity *models.SimulationActivity) (*models.SimulationActivity, error)
+	PostSimulationActivity(simulationID int32, simulationActivity *models.SimulationActivity) (*models.SimulationActivity, error)
 	SimulationActivityByActivityID(simulationID int32, activityID string) (*models.SimulationActivity, error)
-	PutSimulationActivity(simulationActivity *models.SimulationActivity) error
+	PutSimulationActivity(simulationID int32, simulationActivity *models.SimulationActivity) error
 	AddSimulationOutput(simulationID int32, outputType, outputFileLocation string) (*models.SimulationOutput, error)
 	UpdateSimulationStatus(simulationID int32, status string) error
 }
@@ -379,12 +379,12 @@ func (c *client) PostSingleBeadSimulation(simulation *models.SingleBeadSimulatio
 	return response.Payload, nil
 }
 
-func (c *client) PostSimulationActivity(simulationActivity *models.SimulationActivity) (*models.SimulationActivity, error) {
+func (c *client) PostSimulationActivity(simulationID int32, simulationActivity *models.SimulationActivity) (*models.SimulationActivity, error) {
 	token, err := c.tokenFetcher.Token(c.audience)
 	if err != nil {
 		return nil, err
 	}
-	params := operations.NewPostSimulationActivityParams().WithSimulationActivity(simulationActivity)
+	params := operations.NewPostSimulationActivityParams().WithSimulationActivity(simulationActivity).WithID(simulationID)
 	response, err := c.client.Operations.PostSimulationActivity(params, openapiclient.BearerToken(token))
 	if err != nil {
 		return nil, err
@@ -410,12 +410,12 @@ func (c *client) SimulationActivityByActivityID(simulationID int32, activityID s
 	return nil, fmt.Errorf("SimulationActivity with activity id %v not found for simulation %v.", activityID, simulationID)
 }
 
-func (c *client) PutSimulationActivity(simulationActivity *models.SimulationActivity) error {
+func (c *client) PutSimulationActivity(simulationID int32, simulationActivity *models.SimulationActivity) error {
 	token, err := c.tokenFetcher.Token(c.audience)
 	if err != nil {
 		return err
 	}
-	params := operations.NewPutSimulationActivityParams().WithSimulationActivity(simulationActivity)
+	params := operations.NewPutSimulationActivityParams().WithSimulationActivity(simulationActivity).WithID(simulationID)
 	_, err = c.client.Operations.PutSimulationActivity(params, openapiclient.BearerToken(token))
 	if err != nil {
 		return err
