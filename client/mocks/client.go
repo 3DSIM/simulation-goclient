@@ -10,13 +10,13 @@ type Client struct {
 	mock.Mock
 }
 
-// Simulations provides a mock function with given fields: organizationID, status, sort, limit, offset
-func (_m *Client) Simulations(organizationID int32, status []string, sort []string, limit int32, offset int32) ([]*models.Simulation, error) {
-	ret := _m.Called(organizationID, status, sort, limit, offset)
+// Simulations provides a mock function with given fields: organizationID, status, sort, offset, limit
+func (_m *Client) Simulations(organizationID int32, status []string, sort []string, offset int32, limit int32) ([]*models.Simulation, error) {
+	ret := _m.Called(organizationID, status, sort, offset, limit)
 
 	var r0 []*models.Simulation
 	if rf, ok := ret.Get(0).(func(int32, []string, []string, int32, int32) []*models.Simulation); ok {
-		r0 = rf(organizationID, status, sort, limit, offset)
+		r0 = rf(organizationID, status, sort, offset, limit)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).([]*models.Simulation)
@@ -25,7 +25,7 @@ func (_m *Client) Simulations(organizationID int32, status []string, sort []stri
 
 	var r1 error
 	if rf, ok := ret.Get(1).(func(int32, []string, []string, int32, int32) error); ok {
-		r1 = rf(organizationID, status, sort, limit, offset)
+		r1 = rf(organizationID, status, sort, offset, limit)
 	} else {
 		r1 = ret.Error(1)
 	}
@@ -402,13 +402,13 @@ func (_m *Client) MultiPatchSimulation(simulationID int32, patches []*models.Pat
 	return r0
 }
 
-// PostSimulationActivity provides a mock function with given fields: simulationActivity
-func (_m *Client) PostSimulationActivity(simulationActivity *models.SimulationActivity) (*models.SimulationActivity, error) {
-	ret := _m.Called(simulationActivity)
+// PostSimulationActivity provides a mock function with given fields: simulationID, simulationActivity
+func (_m *Client) PostSimulationActivity(simulationID int32, simulationActivity *models.SimulationActivity) (*models.SimulationActivity, error) {
+	ret := _m.Called(simulationID, simulationActivity)
 
 	var r0 *models.SimulationActivity
-	if rf, ok := ret.Get(0).(func(*models.SimulationActivity) *models.SimulationActivity); ok {
-		r0 = rf(simulationActivity)
+	if rf, ok := ret.Get(0).(func(int32, *models.SimulationActivity) *models.SimulationActivity); ok {
+		r0 = rf(simulationID, simulationActivity)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(*models.SimulationActivity)
@@ -416,8 +416,8 @@ func (_m *Client) PostSimulationActivity(simulationActivity *models.SimulationAc
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(*models.SimulationActivity) error); ok {
-		r1 = rf(simulationActivity)
+	if rf, ok := ret.Get(1).(func(int32, *models.SimulationActivity) error); ok {
+		r1 = rf(simulationID, simulationActivity)
 	} else {
 		r1 = ret.Error(1)
 	}
@@ -448,13 +448,13 @@ func (_m *Client) SimulationActivityByActivityID(simulationID int32, activityID 
 	return r0, r1
 }
 
-// PutSimulationActivity provides a mock function with given fields: simulationActivity
-func (_m *Client) PutSimulationActivity(simulationActivity *models.SimulationActivity) error {
-	ret := _m.Called(simulationActivity)
+// PutSimulationActivity provides a mock function with given fields: simulationID, simulationActivity
+func (_m *Client) PutSimulationActivity(simulationID int32, simulationActivity *models.SimulationActivity) error {
+	ret := _m.Called(simulationID, simulationActivity)
 
 	var r0 error
-	if rf, ok := ret.Get(0).(func(*models.SimulationActivity) error); ok {
-		r0 = rf(simulationActivity)
+	if rf, ok := ret.Get(0).(func(int32, *models.SimulationActivity) error); ok {
+		r0 = rf(simulationID, simulationActivity)
 	} else {
 		r0 = ret.Error(0)
 	}
