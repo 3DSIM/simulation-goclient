@@ -37,6 +37,12 @@ type ScanPatternSimulationParameters struct {
 	// Required: true
 	DetectBladeCrash *bool `json:"detectBladeCrash"`
 
+	// detect support failure
+	DetectSupportFailure bool `json:"detectSupportFailure,omitempty"`
+
+	// a value that is used to scale the simulated distortion value
+	DistortionScaleFactor float64 `json:"distortionScaleFactor,omitempty"`
+
 	// elastic modulus
 	// Required: true
 	ElasticModulus *float64 `json:"elasticModulus"`
@@ -99,6 +105,12 @@ type ScanPatternSimulationParameters struct {
 	// Required: true
 	OutputShrinkage *bool `json:"outputShrinkage"`
 
+	// if true, a VTK file of the support structure will be created
+	OutputSupportsVtk bool `json:"outputSupportsVtk,omitempty"`
+
+	// if true, a predistorted STL file will be created using the distortion simulated by the mechanics solver
+	PerformDistortionCompensation bool `json:"performDistortionCompensation,omitempty"`
+
 	// perform support optimization
 	// Required: true
 	PerformSupportOptimization *bool `json:"performSupportOptimization"`
@@ -135,6 +147,9 @@ type ScanPatternSimulationParameters struct {
 	// Maximum: 10
 	// Minimum: 0.1
 	SupportFactorOfSafety *float64 `json:"supportFactorOfSafety"`
+
+	// should be a number between 0.5 and 1.5
+	SupportFailureThreshold float64 `json:"supportFailureThreshold,omitempty"`
 
 	// support yield strength
 	// Required: true

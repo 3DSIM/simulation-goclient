@@ -18,12 +18,30 @@ import (
 // swagger:model ThermalSimulationParameters
 type ThermalSimulationParameters struct {
 
+	// anisotropic strain coefficients parallel
+	// Required: true
+	AnisotropicStrainCoefficientsParallel *float64 `json:"anisotropicStrainCoefficientsParallel"`
+
+	// anisotropic strain coefficients perpendicular
+	// Required: true
+	AnisotropicStrainCoefficientsPerpendicular *float64 `json:"anisotropicStrainCoefficientsPerpendicular"`
+
+	// anisotropic strain coefficients z
+	// Required: true
+	AnisotropicStrainCoefficientsZ *float64 `json:"anisotropicStrainCoefficientsZ"`
+
 	// should be a number between 0.5 and 1.5
 	BladeCrashThreshold float64 `json:"bladeCrashThreshold,omitempty"`
 
 	// detect blade crash
 	// Required: true
 	DetectBladeCrash *bool `json:"detectBladeCrash"`
+
+	// detect support failure
+	DetectSupportFailure bool `json:"detectSupportFailure,omitempty"`
+
+	// a value that is used to scale the simulated distortion value
+	DistortionScaleFactor float64 `json:"distortionScaleFactor,omitempty"`
 
 	// should be a number between 0.5 and 1.5 mm
 	DynamicVirtualSensorRadius float64 `json:"dynamicVirtualSensorRadius,omitempty"`
@@ -110,6 +128,9 @@ type ThermalSimulationParameters struct {
 	// Required: true
 	OutputStateMap *bool `json:"outputStateMap"`
 
+	// if true, a VTK file of the support structure will be created
+	OutputSupportsVtk bool `json:"outputSupportsVtk,omitempty"`
+
 	// output thermal vtk
 	// Required: true
 	OutputThermalVtk *bool `json:"outputThermalVtk"`
@@ -120,6 +141,9 @@ type ThermalSimulationParameters struct {
 	// Outputs meltpool dimensions and thermal history within a VTK file. Thermal history is output as the average temperature within the user-specified dynamicVirtualSensorRadius, centered at the middle of the laser beam.
 	// Required: true
 	OutputVirtualSensorData *bool `json:"outputVirtualSensorData"`
+
+	// if true, a predistorted STL file will be created using the distortion simulated by the mechanics solver
+	PerformDistortionCompensation bool `json:"performDistortionCompensation,omitempty"`
 
 	// poisson ratio
 	// Required: true
@@ -172,6 +196,9 @@ type ThermalSimulationParameters struct {
 	// Minimum: 0.1
 	SupportFactorOfSafety *float64 `json:"supportFactorOfSafety"`
 
+	// should be a number between 0.5 and 1.5
+	SupportFailureThreshold float64 `json:"supportFailureThreshold,omitempty"`
+
 	// support optimization
 	// Required: true
 	SupportOptimization *bool `json:"supportOptimization"`
@@ -194,6 +221,21 @@ type ThermalSimulationParameters struct {
 // Validate validates this thermal simulation parameters
 func (m *ThermalSimulationParameters) Validate(formats strfmt.Registry) error {
 	var res []error
+
+	if err := m.validateAnisotropicStrainCoefficientsParallel(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateAnisotropicStrainCoefficientsPerpendicular(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateAnisotropicStrainCoefficientsZ(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
 
 	if err := m.validateDetectBladeCrash(formats); err != nil {
 		// prop
@@ -363,6 +405,33 @@ func (m *ThermalSimulationParameters) Validate(formats strfmt.Registry) error {
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
+	return nil
+}
+
+func (m *ThermalSimulationParameters) validateAnisotropicStrainCoefficientsParallel(formats strfmt.Registry) error {
+
+	if err := validate.Required("anisotropicStrainCoefficientsParallel", "body", m.AnisotropicStrainCoefficientsParallel); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *ThermalSimulationParameters) validateAnisotropicStrainCoefficientsPerpendicular(formats strfmt.Registry) error {
+
+	if err := validate.Required("anisotropicStrainCoefficientsPerpendicular", "body", m.AnisotropicStrainCoefficientsPerpendicular); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *ThermalSimulationParameters) validateAnisotropicStrainCoefficientsZ(formats strfmt.Registry) error {
+
+	if err := validate.Required("anisotropicStrainCoefficientsZ", "body", m.AnisotropicStrainCoefficientsZ); err != nil {
+		return err
+	}
+
 	return nil
 }
 
