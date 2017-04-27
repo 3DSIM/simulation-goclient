@@ -48,7 +48,6 @@ func TestMachineWhenSimulationAPIErrorsExpectsErrorReturned(t *testing.T) {
 
 	// Machine
 	machineHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(500)
 	})
 
@@ -144,7 +143,6 @@ func TestMaterialWhenSimulationAPIErrorsExpectsErrorReturned(t *testing.T) {
 
 	// Material
 	materialHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(500)
 	})
 
@@ -240,7 +238,6 @@ func TestSimulationWhenSimulationAPIErrorsExpectsErrorReturned(t *testing.T) {
 
 	// Simulation
 	simulationHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(500)
 	})
 
@@ -336,7 +333,6 @@ func TestThermalSimulationWhenThermalSimulationAPIErrorsExpectsErrorReturned(t *
 
 	// ThermalSimulation
 	thermalSimulationHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(500)
 	})
 
@@ -438,7 +434,6 @@ func TestScanPatternSimulationWhenScanPatternSimulationAPIErrorsExpectsErrorRetu
 
 	// ScanPatternSimulation
 	scanPatternSimulationHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(500)
 	})
 
@@ -540,7 +535,6 @@ func TestAssumedStrainSimulationWhenAssumedStrainSimulationAPIErrorsExpectsError
 
 	// AssumedStrainSimulation
 	assumedStrainSimulationHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(500)
 	})
 

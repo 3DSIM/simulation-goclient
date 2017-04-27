@@ -97,7 +97,14 @@ func New(tokenFetcher auth0.TokenFetcher, apiGatewayURL, audience string) Client
 	}
 }
 
-func (c *client) Machine(machineID int32) (*models.Machine, error) {
+func (c *client) Machine(machineID int32) (machine *models.Machine, err error) {
+	defer func() {
+		// Until this issue is resolved: https://github.com/go-swagger/go-swagger/issues/1021, we need to recover from
+		// panics.
+		if r := recover(); r != nil {
+			err = fmt.Errorf("Recovered from panic: %v", r)
+		}
+	}()
 	token, err := c.tokenFetcher.Token(c.audience)
 	if err != nil {
 		return nil, err
@@ -109,7 +116,14 @@ func (c *client) Machine(machineID int32) (*models.Machine, error) {
 	return response.Payload, nil
 }
 
-func (c *client) Material(materialID int32) (*models.Material, error) {
+func (c *client) Material(materialID int32) (material *models.Material, err error) {
+	defer func() {
+		// Until this issue is resolved: https://github.com/go-swagger/go-swagger/issues/1021, we need to recover from
+		// panics.
+		if r := recover(); r != nil {
+			err = fmt.Errorf("Recovered from panic: %v", r)
+		}
+	}()
 	token, err := c.tokenFetcher.Token(c.audience)
 	if err != nil {
 		return nil, err
@@ -121,7 +135,14 @@ func (c *client) Material(materialID int32) (*models.Material, error) {
 	return response.Payload, nil
 }
 
-func (c *client) Simulation(simulationID int32) (*models.Simulation, error) {
+func (c *client) Simulation(simulationID int32) (simulation *models.Simulation, err error) {
+	defer func() {
+		// Until this issue is resolved: https://github.com/go-swagger/go-swagger/issues/1021, we need to recover from
+		// panics.
+		if r := recover(); r != nil {
+			err = fmt.Errorf("Recovered from panic: %v", r)
+		}
+	}()
 	token, err := c.tokenFetcher.Token(c.audience)
 	if err != nil {
 		return nil, err
@@ -133,7 +154,14 @@ func (c *client) Simulation(simulationID int32) (*models.Simulation, error) {
 	return response.Payload, nil
 }
 
-func (c *client) ThermalSimulation(simulationID int32) (*models.ThermalSimulation, error) {
+func (c *client) ThermalSimulation(simulationID int32) (thermalSimulation *models.ThermalSimulation, err error) {
+	defer func() {
+		// Until this issue is resolved: https://github.com/go-swagger/go-swagger/issues/1021, we need to recover from
+		// panics.
+		if r := recover(); r != nil {
+			err = fmt.Errorf("Recovered from panic: %v", r)
+		}
+	}()
 	token, err := c.tokenFetcher.Token(c.audience)
 	if err != nil {
 		return nil, err
@@ -145,7 +173,14 @@ func (c *client) ThermalSimulation(simulationID int32) (*models.ThermalSimulatio
 	return response.Payload, nil
 }
 
-func (c *client) ScanPatternSimulation(simulationID int32) (*models.ScanPatternSimulation, error) {
+func (c *client) ScanPatternSimulation(simulationID int32) (sps *models.ScanPatternSimulation, err error) {
+	defer func() {
+		// Until this issue is resolved: https://github.com/go-swagger/go-swagger/issues/1021, we need to recover from
+		// panics.
+		if r := recover(); r != nil {
+			err = fmt.Errorf("Recovered from panic: %v", r)
+		}
+	}()
 	token, err := c.tokenFetcher.Token(c.audience)
 	if err != nil {
 		return nil, err
@@ -157,7 +192,14 @@ func (c *client) ScanPatternSimulation(simulationID int32) (*models.ScanPatternS
 	return response.Payload, nil
 }
 
-func (c *client) AssumedStrainSimulation(simulationID int32) (*models.AssumedStrainSimulation, error) {
+func (c *client) AssumedStrainSimulation(simulationID int32) (a *models.AssumedStrainSimulation, err error) {
+	defer func() {
+		// Until this issue is resolved: https://github.com/go-swagger/go-swagger/issues/1021, we need to recover from
+		// panics.
+		if r := recover(); r != nil {
+			err = fmt.Errorf("Recovered from panic: %v", r)
+		}
+	}()
 	token, err := c.tokenFetcher.Token(c.audience)
 	if err != nil {
 		return nil, err
@@ -169,7 +211,14 @@ func (c *client) AssumedStrainSimulation(simulationID int32) (*models.AssumedStr
 	return response.Payload, nil
 }
 
-func (c *client) PorositySimulation(simulationID int32) (*models.PorositySimulation, error) {
+func (c *client) PorositySimulation(simulationID int32) (p *models.PorositySimulation, err error) {
+	defer func() {
+		// Until this issue is resolved: https://github.com/go-swagger/go-swagger/issues/1021, we need to recover from
+		// panics.
+		if r := recover(); r != nil {
+			err = fmt.Errorf("Recovered from panic: %v", r)
+		}
+	}()
 	token, err := c.tokenFetcher.Token(c.audience)
 	if err != nil {
 		return nil, err
@@ -181,7 +230,14 @@ func (c *client) PorositySimulation(simulationID int32) (*models.PorositySimulat
 	return response.Payload, nil
 }
 
-func (c *client) SingleBeadSimulation(simulationID int32) (*models.SingleBeadSimulation, error) {
+func (c *client) SingleBeadSimulation(simulationID int32) (s *models.SingleBeadSimulation, err error) {
+	defer func() {
+		// Until this issue is resolved: https://github.com/go-swagger/go-swagger/issues/1021, we need to recover from
+		// panics.
+		if r := recover(); r != nil {
+			err = fmt.Errorf("Recovered from panic: %v", r)
+		}
+	}()
 	token, err := c.tokenFetcher.Token(c.audience)
 	if err != nil {
 		return nil, err
@@ -193,7 +249,14 @@ func (c *client) SingleBeadSimulation(simulationID int32) (*models.SingleBeadSim
 	return response.Payload, nil
 }
 
-func (c *client) PostLogWithTime(simulationID int32, messageDate time.Time, message string) error {
+func (c *client) PostLogWithTime(simulationID int32, messageDate time.Time, message string) (err error) {
+	defer func() {
+		// Until this issue is resolved: https://github.com/go-swagger/go-swagger/issues/1021, we need to recover from
+		// panics.
+		if r := recover(); r != nil {
+			err = fmt.Errorf("Recovered from panic: %v", r)
+		}
+	}()
 	token, err := c.tokenFetcher.Token(c.audience)
 	if err != nil {
 		return err
@@ -212,7 +275,14 @@ func (c *client) PostLog(simulationID int32, message string) error {
 	return c.PostLogWithTime(simulationID, time.Now().UTC(), message)
 }
 
-func (c *client) Simulations(organizationID int32, status []string, sort []string, offset, limit int32) ([]*models.Simulation, error) {
+func (c *client) Simulations(organizationID int32, status []string, sort []string, offset, limit int32) (simulations []*models.Simulation, err error) {
+	defer func() {
+		// Until this issue is resolved: https://github.com/go-swagger/go-swagger/issues/1021, we need to recover from
+		// panics.
+		if r := recover(); r != nil {
+			err = fmt.Errorf("Recovered from panic: %v", r)
+		}
+	}()
 	token, err := c.tokenFetcher.Token(c.audience)
 	if err != nil {
 		return nil, err
@@ -231,7 +301,14 @@ func (c *client) Simulations(organizationID int32, status []string, sort []strin
 	return response.Payload, nil
 }
 
-func (c *client) StartSimulation(simulationID int32) error {
+func (c *client) StartSimulation(simulationID int32) (err error) {
+	defer func() {
+		// Until this issue is resolved: https://github.com/go-swagger/go-swagger/issues/1021, we need to recover from
+		// panics.
+		if r := recover(); r != nil {
+			err = fmt.Errorf("Recovered from panic: %v", r)
+		}
+	}()
 	token, err := c.tokenFetcher.Token(c.audience)
 	if err != nil {
 		return err
@@ -281,7 +358,14 @@ func (c *client) StartSimulation(simulationID int32) error {
 	return nil
 }
 
-func (c *client) PostAssumedStrainSimulation(simulation *models.AssumedStrainSimulation) (*models.AssumedStrainSimulation, error) {
+func (c *client) PostAssumedStrainSimulation(simulation *models.AssumedStrainSimulation) (a *models.AssumedStrainSimulation, err error) {
+	defer func() {
+		// Until this issue is resolved: https://github.com/go-swagger/go-swagger/issues/1021, we need to recover from
+		// panics.
+		if r := recover(); r != nil {
+			err = fmt.Errorf("Recovered from panic: %v", r)
+		}
+	}()
 	token, err := c.tokenFetcher.Token(c.audience)
 	if err != nil {
 		return nil, err
@@ -300,7 +384,14 @@ func (c *client) PostAssumedStrainSimulation(simulation *models.AssumedStrainSim
 	return response.Payload, nil
 }
 
-func (c *client) PostPorositySimulation(simulation *models.PorositySimulation) (*models.PorositySimulation, error) {
+func (c *client) PostPorositySimulation(simulation *models.PorositySimulation) (p *models.PorositySimulation, err error) {
+	defer func() {
+		// Until this issue is resolved: https://github.com/go-swagger/go-swagger/issues/1021, we need to recover from
+		// panics.
+		if r := recover(); r != nil {
+			err = fmt.Errorf("Recovered from panic: %v", r)
+		}
+	}()
 	token, err := c.tokenFetcher.Token(c.audience)
 	if err != nil {
 		return nil, err
@@ -316,7 +407,14 @@ func (c *client) PostPorositySimulation(simulation *models.PorositySimulation) (
 // AddSimulationOutput adds the given output type and output file location to the
 // simulations_outputs table, iff the output type and output file location don't
 // exist already for this simulation.
-func (c *client) AddSimulationOutput(simulationID int32, outputType, outputFileLocation string) (*models.SimulationOutput, error) {
+func (c *client) AddSimulationOutput(simulationID int32, outputType, outputFileLocation string) (so *models.SimulationOutput, err error) {
+	defer func() {
+		// Until this issue is resolved: https://github.com/go-swagger/go-swagger/issues/1021, we need to recover from
+		// panics.
+		if r := recover(); r != nil {
+			err = fmt.Errorf("Recovered from panic: %v", r)
+		}
+	}()
 	token, err := c.tokenFetcher.Token(c.audience)
 	if err != nil {
 		return nil, err
@@ -347,7 +445,14 @@ func (c *client) AddSimulationOutput(simulationID int32, outputType, outputFileL
 	return response.Payload, nil
 }
 
-func (c *client) PostScanPatternSimulation(simulation *models.ScanPatternSimulation) (*models.ScanPatternSimulation, error) {
+func (c *client) PostScanPatternSimulation(simulation *models.ScanPatternSimulation) (s *models.ScanPatternSimulation, err error) {
+	defer func() {
+		// Until this issue is resolved: https://github.com/go-swagger/go-swagger/issues/1021, we need to recover from
+		// panics.
+		if r := recover(); r != nil {
+			err = fmt.Errorf("Recovered from panic: %v", r)
+		}
+	}()
 	token, err := c.tokenFetcher.Token(c.audience)
 	if err != nil {
 		return nil, err
@@ -366,7 +471,14 @@ func (c *client) PostScanPatternSimulation(simulation *models.ScanPatternSimulat
 	return response.Payload, nil
 }
 
-func (c *client) PostSingleBeadSimulation(simulation *models.SingleBeadSimulation) (*models.SingleBeadSimulation, error) {
+func (c *client) PostSingleBeadSimulation(simulation *models.SingleBeadSimulation) (s *models.SingleBeadSimulation, err error) {
+	defer func() {
+		// Until this issue is resolved: https://github.com/go-swagger/go-swagger/issues/1021, we need to recover from
+		// panics.
+		if r := recover(); r != nil {
+			err = fmt.Errorf("Recovered from panic: %v", r)
+		}
+	}()
 	token, err := c.tokenFetcher.Token(c.audience)
 	if err != nil {
 		return nil, err
@@ -379,7 +491,14 @@ func (c *client) PostSingleBeadSimulation(simulation *models.SingleBeadSimulatio
 	return response.Payload, nil
 }
 
-func (c *client) PostSimulationActivity(simulationID int32, simulationActivity *models.SimulationActivity) (*models.SimulationActivity, error) {
+func (c *client) PostSimulationActivity(simulationID int32, simulationActivity *models.SimulationActivity) (s *models.SimulationActivity, err error) {
+	defer func() {
+		// Until this issue is resolved: https://github.com/go-swagger/go-swagger/issues/1021, we need to recover from
+		// panics.
+		if r := recover(); r != nil {
+			err = fmt.Errorf("Recovered from panic: %v", r)
+		}
+	}()
 	token, err := c.tokenFetcher.Token(c.audience)
 	if err != nil {
 		return nil, err
@@ -392,7 +511,14 @@ func (c *client) PostSimulationActivity(simulationID int32, simulationActivity *
 	return response.Payload, nil
 }
 
-func (c *client) SimulationActivityByActivityID(simulationID int32, activityID string) (*models.SimulationActivity, error) {
+func (c *client) SimulationActivityByActivityID(simulationID int32, activityID string) (sa *models.SimulationActivity, err error) {
+	defer func() {
+		// Until this issue is resolved: https://github.com/go-swagger/go-swagger/issues/1021, we need to recover from
+		// panics.
+		if r := recover(); r != nil {
+			err = fmt.Errorf("Recovered from panic: %v", r)
+		}
+	}()
 	token, err := c.tokenFetcher.Token(c.audience)
 	if err != nil {
 		return nil, err
@@ -410,7 +536,14 @@ func (c *client) SimulationActivityByActivityID(simulationID int32, activityID s
 	return nil, fmt.Errorf("SimulationActivity with activity id %v not found for simulation %v.", activityID, simulationID)
 }
 
-func (c *client) PutSimulationActivity(simulationID int32, simulationActivity *models.SimulationActivity) error {
+func (c *client) PutSimulationActivity(simulationID int32, simulationActivity *models.SimulationActivity) (err error) {
+	defer func() {
+		// Until this issue is resolved: https://github.com/go-swagger/go-swagger/issues/1021, we need to recover from
+		// panics.
+		if r := recover(); r != nil {
+			err = fmt.Errorf("Recovered from panic: %v", r)
+		}
+	}()
 	token, err := c.tokenFetcher.Token(c.audience)
 	if err != nil {
 		return err
@@ -423,7 +556,14 @@ func (c *client) PutSimulationActivity(simulationID int32, simulationActivity *m
 	return nil
 }
 
-func (c *client) PostThermalSimulation(simulation *models.ThermalSimulation) (*models.ThermalSimulation, error) {
+func (c *client) PostThermalSimulation(simulation *models.ThermalSimulation) (t *models.ThermalSimulation, err error) {
+	defer func() {
+		// Until this issue is resolved: https://github.com/go-swagger/go-swagger/issues/1021, we need to recover from
+		// panics.
+		if r := recover(); r != nil {
+			err = fmt.Errorf("Recovered from panic: %v", r)
+		}
+	}()
 	token, err := c.tokenFetcher.Token(c.audience)
 	if err != nil {
 		return nil, err
@@ -444,12 +584,26 @@ func (c *client) PostThermalSimulation(simulation *models.ThermalSimulation) (*m
 }
 
 // PatchSimulation is only available to internal clients that have full access to the API
-func (c *client) PatchSimulation(simulationID int32, patch *models.PatchDocument) error {
+func (c *client) PatchSimulation(simulationID int32, patch *models.PatchDocument) (err error) {
+	defer func() {
+		// Until this issue is resolved: https://github.com/go-swagger/go-swagger/issues/1021, we need to recover from
+		// panics.
+		if r := recover(); r != nil {
+			err = fmt.Errorf("Recovered from panic: %v", r)
+		}
+	}()
 	return c.MultiPatchSimulation(simulationID, []*models.PatchDocument{patch})
 }
 
 // MultiPatchSimulation is only available to internal clients that have full access to the API
-func (c *client) MultiPatchSimulation(simulationID int32, patches []*models.PatchDocument) error {
+func (c *client) MultiPatchSimulation(simulationID int32, patches []*models.PatchDocument) (err error) {
+	defer func() {
+		// Until this issue is resolved: https://github.com/go-swagger/go-swagger/issues/1021, we need to recover from
+		// panics.
+		if r := recover(); r != nil {
+			err = fmt.Errorf("Recovered from panic: %v", r)
+		}
+	}()
 	token, err := c.tokenFetcher.Token(c.audience)
 	if err != nil {
 		return err
@@ -462,7 +616,14 @@ func (c *client) MultiPatchSimulation(simulationID int32, patches []*models.Patc
 	return nil
 }
 
-func (c *client) UpdateSimulationStatus(simulationID int32, status string) error {
+func (c *client) UpdateSimulationStatus(simulationID int32, status string) (err error) {
+	defer func() {
+		// Until this issue is resolved: https://github.com/go-swagger/go-swagger/issues/1021, we need to recover from
+		// panics.
+		if r := recover(); r != nil {
+			err = fmt.Errorf("Recovered from panic: %v", r)
+		}
+	}()
 	patch := &models.PatchDocument{Op: swag.String(models.PatchDocumentOpReplace), Path: swag.String("/status"), Value: status}
 	return c.PatchSimulation(simulationID, patch)
 }
