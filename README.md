@@ -16,7 +16,6 @@ directory was all generated using the `go-swagger` tools.
 
 
 ## Organization
-* `auth0` - package for getting auth0 tokens
 * `simulation` - the client package that adds convenience methods for common simulation operations
 * `genclient` - the generated client code
    * `genclient/examples` - examples of how to use the `genclient` package
