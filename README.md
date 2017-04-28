@@ -39,6 +39,15 @@ is cloned as a sibling project, the command to run to generate new client code i
 swagger generate client -A SimulationAPI -f ../simulation-api-specification/swagger.yaml --client-package genclient
 ```
 
+* Generate fakes using counterfeiter
+```
+go get github.com/maxbrunsfeld/counterfeiter
+```
+From inside package folder
+```
+go generate
+```
+
 ## Using the client
 TODO
 
