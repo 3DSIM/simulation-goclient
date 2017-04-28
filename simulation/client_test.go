@@ -28,10 +28,10 @@ func TestMachineWhenFetcherErrorsExpectsErrorReturned(t *testing.T) {
 	fakeTokenFetcher := &auth0fakes.FakeTokenFetcher{}
 	fakeTokenFetcher.TokenReturns("", expectedError)
 
-	simulationService := New(fakeTokenFetcher, "apiGatewayURL", audience)
+	client := NewClient(fakeTokenFetcher, "apiGatewayURL", audience)
 
 	// act
-	_, err := simulationService.Machine(machineID)
+	_, err := client.Machine(machineID)
 
 	// assert
 
@@ -57,10 +57,10 @@ func TestMachineWhenSimulationAPIErrorsExpectsErrorReturned(t *testing.T) {
 	r.HandleFunc(machineEndpoint, machineHandler)
 	testServer := httptest.NewServer(r)
 	defer testServer.Close()
-	simulationService := New(fakeTokenFetcher, testServer.URL, audience)
+	client := NewClient(fakeTokenFetcher, testServer.URL, audience)
 
 	// act
-	_, err := simulationService.Machine(machineID)
+	_, err := client.Machine(machineID)
 
 	// assert
 
@@ -101,10 +101,10 @@ func TestMachineWhenSuccessfulExpectsMachineReturned(t *testing.T) {
 	r.HandleFunc(machineEndpoint, machineHandler)
 	testServer := httptest.NewServer(r)
 	defer testServer.Close()
-	simulationService := New(fakeTokenFetcher, testServer.URL, audience)
+	client := NewClient(fakeTokenFetcher, testServer.URL, audience)
 
 	// act
-	machine, err := simulationService.Machine(machineID)
+	machine, err := client.Machine(machineID)
 
 	// assert
 
@@ -123,10 +123,10 @@ func TestMaterialWhenFetcherErrorsExpectsErrorReturned(t *testing.T) {
 	fakeTokenFetcher := &auth0fakes.FakeTokenFetcher{}
 	fakeTokenFetcher.TokenReturns("", expectedError)
 
-	simulationService := New(fakeTokenFetcher, "", audience)
+	client := NewClient(fakeTokenFetcher, "", audience)
 
 	// act
-	_, err := simulationService.Material(materialID)
+	_, err := client.Material(materialID)
 
 	// assert
 
@@ -152,10 +152,10 @@ func TestMaterialWhenSimulationAPIErrorsExpectsErrorReturned(t *testing.T) {
 	r.HandleFunc(materialEndpoint, materialHandler)
 	testServer := httptest.NewServer(r)
 	defer testServer.Close()
-	simulationService := New(fakeTokenFetcher, testServer.URL, audience)
+	client := NewClient(fakeTokenFetcher, testServer.URL, audience)
 
 	// act
-	_, err := simulationService.Material(materialID)
+	_, err := client.Material(materialID)
 
 	// assert
 
@@ -196,10 +196,10 @@ func TestMaterialWhenSuccessfulExpectsMaterialReturned(t *testing.T) {
 	r.HandleFunc(materialEndpoint, materialHandler)
 	testServer := httptest.NewServer(r)
 	defer testServer.Close()
-	simulationService := New(fakeTokenFetcher, testServer.URL, audience)
+	client := NewClient(fakeTokenFetcher, testServer.URL, audience)
 
 	// act
-	material, err := simulationService.Material(materialID)
+	material, err := client.Material(materialID)
 
 	// assert
 
@@ -218,10 +218,10 @@ func TestSimulationWhenFetcherErrorsExpectsErrorReturned(t *testing.T) {
 	fakeTokenFetcher := &auth0fakes.FakeTokenFetcher{}
 	fakeTokenFetcher.TokenReturns("", expectedError)
 
-	simulationService := New(fakeTokenFetcher, "", audience)
+	client := NewClient(fakeTokenFetcher, "", audience)
 
 	// act
-	_, err := simulationService.Simulation(simulationID)
+	_, err := client.Simulation(simulationID)
 
 	// assert
 
@@ -247,10 +247,10 @@ func TestSimulationWhenSimulationAPIErrorsExpectsErrorReturned(t *testing.T) {
 	r.HandleFunc(simulationEndpoint, simulationHandler)
 	testServer := httptest.NewServer(r)
 	defer testServer.Close()
-	simulationService := New(fakeTokenFetcher, testServer.URL, audience)
+	client := NewClient(fakeTokenFetcher, testServer.URL, audience)
 
 	// act
-	_, err := simulationService.Simulation(simulationID)
+	_, err := client.Simulation(simulationID)
 
 	// assert
 
@@ -291,10 +291,10 @@ func TestSimulationWhenSuccessfulExpectsSimulationReturned(t *testing.T) {
 	r.HandleFunc(simulationEndpoint, simulationHandler)
 	testServer := httptest.NewServer(r)
 	defer testServer.Close()
-	simulationService := New(fakeTokenFetcher, testServer.URL, audience)
+	client := NewClient(fakeTokenFetcher, testServer.URL, audience)
 
 	// act
-	simulation, err := simulationService.Simulation(simulationID)
+	simulation, err := client.Simulation(simulationID)
 
 	// assert
 
@@ -313,7 +313,7 @@ func TestThermalSimulationWhenFetcherErrorsExpectsErrorReturned(t *testing.T) {
 	fakeTokenFetcher := &auth0fakes.FakeTokenFetcher{}
 	fakeTokenFetcher.TokenReturns("", expectedError)
 
-	thermalSimulationService := New(fakeTokenFetcher, "", audience)
+	thermalSimulationService := NewClient(fakeTokenFetcher, "", audience)
 
 	// act
 	_, err := thermalSimulationService.ThermalSimulation(thermalSimulationID)
@@ -342,7 +342,7 @@ func TestThermalSimulationWhenThermalSimulationAPIErrorsExpectsErrorReturned(t *
 	r.HandleFunc(thermalSimulationEndpoint, thermalSimulationHandler)
 	testServer := httptest.NewServer(r)
 	defer testServer.Close()
-	thermalSimulationService := New(fakeTokenFetcher, testServer.URL, audience)
+	thermalSimulationService := NewClient(fakeTokenFetcher, testServer.URL, audience)
 
 	// act
 	_, err := thermalSimulationService.ThermalSimulation(thermalSimulationID)
@@ -391,7 +391,7 @@ func TestThermalSimulationWhenSuccessfulExpectsThermalSimulationReturned(t *test
 	r.HandleFunc(thermalSimulationEndpoint, thermalSimulationHandler)
 	testServer := httptest.NewServer(r)
 	defer testServer.Close()
-	thermalSimulationService := New(fakeTokenFetcher, testServer.URL, audience)
+	thermalSimulationService := NewClient(fakeTokenFetcher, testServer.URL, audience)
 
 	// act
 	thermalSimulation, err := thermalSimulationService.ThermalSimulation(thermalSimulationID)
@@ -414,7 +414,7 @@ func TestScanPatternSimulationWhenFetcherErrorsExpectsErrorReturned(t *testing.T
 	fakeTokenFetcher := &auth0fakes.FakeTokenFetcher{}
 	fakeTokenFetcher.TokenReturns("", expectedError)
 
-	scanPatternSimulationService := New(fakeTokenFetcher, "", audience)
+	scanPatternSimulationService := NewClient(fakeTokenFetcher, "", audience)
 
 	// act
 	_, err := scanPatternSimulationService.ScanPatternSimulation(scanPatternSimulationID)
@@ -443,7 +443,7 @@ func TestScanPatternSimulationWhenScanPatternSimulationAPIErrorsExpectsErrorRetu
 	r.HandleFunc(scanPatternSimulationEndpoint, scanPatternSimulationHandler)
 	testServer := httptest.NewServer(r)
 	defer testServer.Close()
-	scanPatternSimulationService := New(fakeTokenFetcher, testServer.URL, audience)
+	scanPatternSimulationService := NewClient(fakeTokenFetcher, testServer.URL, audience)
 
 	// act
 	_, err := scanPatternSimulationService.ScanPatternSimulation(scanPatternSimulationID)
@@ -492,7 +492,7 @@ func TestScanPatternSimulationWhenSuccessfulExpectsScanPatternSimulationReturned
 	r.HandleFunc(scanPatternSimulationEndpoint, scanPatternSimulationHandler)
 	testServer := httptest.NewServer(r)
 	defer testServer.Close()
-	scanPatternSimulationService := New(fakeTokenFetcher, testServer.URL, audience)
+	scanPatternSimulationService := NewClient(fakeTokenFetcher, testServer.URL, audience)
 
 	// act
 	scanPatternSimulation, err := scanPatternSimulationService.ScanPatternSimulation(scanPatternSimulationID)
@@ -515,7 +515,7 @@ func TestAssumedStrainSimulationWhenFetcherErrorsExpectsErrorReturned(t *testing
 	fakeTokenFetcher := &auth0fakes.FakeTokenFetcher{}
 	fakeTokenFetcher.TokenReturns("", expectedError)
 
-	assumedStrainSimulationService := New(fakeTokenFetcher, "", audience)
+	assumedStrainSimulationService := NewClient(fakeTokenFetcher, "", audience)
 
 	// act
 	_, err := assumedStrainSimulationService.AssumedStrainSimulation(assumedStrainSimulationID)
@@ -544,7 +544,7 @@ func TestAssumedStrainSimulationWhenAssumedStrainSimulationAPIErrorsExpectsError
 	r.HandleFunc(assumedStrainSimulationEndpoint, assumedStrainSimulationHandler)
 	testServer := httptest.NewServer(r)
 	defer testServer.Close()
-	assumedStrainSimulationService := New(fakeTokenFetcher, testServer.URL, audience)
+	assumedStrainSimulationService := NewClient(fakeTokenFetcher, testServer.URL, audience)
 
 	// act
 	_, err := assumedStrainSimulationService.AssumedStrainSimulation(assumedStrainSimulationID)
@@ -593,7 +593,7 @@ func TestAssumedStrainSimulationWhenSuccessfulExpectsAssumedStrainSimulationRetu
 	r.HandleFunc(assumedStrainSimulationEndpoint, assumedStrainSimulationHandler)
 	testServer := httptest.NewServer(r)
 	defer testServer.Close()
-	assumedStrainSimulationService := New(fakeTokenFetcher, testServer.URL, audience)
+	assumedStrainSimulationService := NewClient(fakeTokenFetcher, testServer.URL, audience)
 
 	// act
 	assumedStrainSimulation, err := assumedStrainSimulationService.AssumedStrainSimulation(assumedStrainSimulationID)
@@ -644,10 +644,10 @@ func TestSimulationsWhenNilValuesExpectsSuccess(t *testing.T) {
 	r.HandleFunc(simulationEndpoint, simulationsHandler)
 	testServer := httptest.NewServer(r)
 	defer testServer.Close()
-	simulationService := New(fakeTokenFetcher, testServer.URL, audience)
+	client := NewClient(fakeTokenFetcher, testServer.URL, audience)
 
 	// act
-	simulations, err := simulationService.Simulations(organizationID, nil, nil, int32(offset), int32(limit))
+	simulations, err := client.Simulations(organizationID, nil, nil, int32(offset), int32(limit))
 
 	// assert
 
@@ -697,10 +697,10 @@ func TestSimulationsWhenNonNilValuesExpectsSuccess(t *testing.T) {
 	r.HandleFunc(simulationEndpoint, simulationsHandler)
 	testServer := httptest.NewServer(r)
 	defer testServer.Close()
-	simulationService := New(fakeTokenFetcher, testServer.URL, audience)
+	client := NewClient(fakeTokenFetcher, testServer.URL, audience)
 
 	// act
-	simulations, err := simulationService.Simulations(organizationID, []string{status}, []string{sort},
+	simulations, err := client.Simulations(organizationID, []string{status}, []string{sort},
 		int32(offset), int32(limit))
 
 	// assert
