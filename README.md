@@ -17,12 +17,11 @@ directory was all generated using the `go-swagger` tools.
 
 ## Organization
 * `auth0` - package for getting auth0 tokens
-* `client` - the client package that adds convenience methods for common operations
+* `simulation` - the client package that adds convenience methods for common simulation operations
 * `genclient` - the generated client code
-   * `client/examples` - examples of how to use the `genclient` package
+   * `genclient/examples` - examples of how to use the `genclient` package
 * `helpers` - a few simple helper utilities
 * `models` - the generated models
-* `sugar` - syntactic sugar for easily working with pointers
 
 ## Regenerating code
 First install the swagger generator.  Currently we are using commit 5da5a44596c2c9e69568ea9b9f06ef4c48c6c5fe of https://github.com/go-swagger/go-swagger.
@@ -38,6 +37,15 @@ The code generator needs a specification file.  The specification for the simula
 is cloned as a sibling project, the command to run to generate new client code is:
 ```
 swagger generate client -A SimulationAPI -f ../simulation-api-specification/swagger.yaml --client-package genclient
+```
+
+* Generate fakes using counterfeiter
+```
+go get github.com/maxbrunsfeld/counterfeiter
+```
+From inside package folder
+```
+go generate
 ```
 
 ## Using the client

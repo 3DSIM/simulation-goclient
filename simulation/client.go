@@ -1,9 +1,11 @@
-package client
+//go:generate counterfeiter ./ Client
+
+package simulation
 
 import (
 	"errors"
 	"fmt"
-	"github.com/3dsim/simulation-goclient/auth0"
+	"github.com/3dsim/auth0"
 	"github.com/3dsim/simulation-goclient/genclient"
 	"github.com/3dsim/simulation-goclient/genclient/operations"
 	"github.com/3dsim/simulation-goclient/models"
@@ -80,7 +82,7 @@ type client struct {
 // 		QA 		= https://simulation-qa.3dsim.com/v2
 //		Prod 	= https://simulation.3dsim.com/v2
 // 		Gov 	= https://simulation-gov.3dsim.com
-func New(tokenFetcher auth0.TokenFetcher, apiGatewayURL, audience string) Client {
+func NewClient(tokenFetcher auth0.TokenFetcher, apiGatewayURL, audience string) Client {
 	parsedURL, err := url.Parse(apiGatewayURL)
 	if err != nil {
 		message := "API Gateway URL was invalid!"
