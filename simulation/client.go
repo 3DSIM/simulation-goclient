@@ -1,9 +1,11 @@
-package client
+//go:generate counterfeiter ./ Client
+
+package simulation
 
 import (
 	"errors"
 	"fmt"
-	"github.com/3dsim/simulation-goclient/auth0"
+	"github.com/3dsim/auth0"
 	"github.com/3dsim/simulation-goclient/genclient"
 	"github.com/3dsim/simulation-goclient/genclient/operations"
 	"github.com/3dsim/simulation-goclient/models"
