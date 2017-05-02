@@ -3,6 +3,7 @@
 package simulation
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"github.com/3dsim/auth0"
@@ -63,6 +64,8 @@ type Client interface {
 	PutSimulationActivity(simulationID int32, simulationActivity *models.SimulationActivity) error
 	AddSimulationOutput(simulationID int32, outputType, outputFileLocation string) (*models.SimulationOutput, error)
 	UpdateSimulationStatus(simulationID int32, status string) error
+	// RawSimulation gets a simulation as a map instead of a struct
+	RawSimulation(simulationID int32) (map[string]interface{}, error)
 }
 
 type client struct {
@@ -628,4 +631,74 @@ func (c *client) UpdateSimulationStatus(simulationID int32, status string) (err 
 	}()
 	patch := &models.PatchDocument{Op: swag.String(models.PatchDocumentOpReplace), Path: swag.String("/status"), Value: status}
 	return c.PatchSimulation(simulationID, patch)
+}
+
+func (c *client) RawSimulation(simulationID int32) (s map[string]interface{}, err error) {
+	defer func() {
+		// Until this issue is resolved: https://github.com/go-swagger/go-swagger/issues/1021, we need to recover from
+		// panics.
+		if r := recover(); r != nil {
+			err = fmt.Errorf("Recovered from panic: %v", r)
+		}
+	}()
+	token, err := c.tokenFetcher.Token(c.audience)
+	if err != nil {
+		return nil, err
+	}
+	bearerToken := openapiclient.BearerToken(token)
+
+	simulation, err := c.Simulation(simulationID)
+	if err != nil {
+		return nil, err
+	}
+
+	var rawSimulation interface{}
+	switch simulation.Type {
+	case models.SimulationTypeAssumedStrainSimulation:
+		params := operations.NewGetAssumedStrainSimulationParams().WithID(simulationID)
+		payload, err := c.client.Operations.GetAssumedStrainSimulation(params, bearerToken)
+		if err != nil {
+			return nil, err
+		}
+		rawSimulation = *payload.Payload
+	case models.SimulationTypePorositySimulation:
+		params := operations.NewGetPorositySimulationParams().WithID(simulationID)
+		payload, err := c.client.Operations.GetPorositySimulation(params, bearerToken)
+		if err != nil {
+			return nil, err
+		}
+		rawSimulation = *payload.Payload
+	case models.SimulationTypeScanPatternSimulation:
+		params := operations.NewGetScanPatternSimulationParams().WithID(simulationID)
+		payload, err := c.client.Operations.GetScanPatternSimulation(params, bearerToken)
+		if err != nil {
+			return nil, err
+		}
+		rawSimulation = *payload.Payload
+	case models.SimulationTypeSingleBeadSimulation:
+		params := operations.NewGetSingleBeadSimulationParams().WithID(simulationID)
+		payload, err := c.client.Operations.GetSingleBeadSimulation(params, bearerToken)
+		if err != nil {
+			return nil, err
+		}
+		rawSimulation = *payload.Payload
+	case models.SimulationTypeThermalSimulation:
+		params := operations.NewGetThermalSimulationParams().WithID(simulationID)
+		payload, err := c.client.Operations.GetThermalSimulation(params, bearerToken)
+		if err != nil {
+			return nil, err
+		}
+		rawSimulation = *payload.Payload
+	default:
+		return nil, errors.New("Unrecognized simulation type")
+	}
+	rawBytes, err := json.Marshal(rawSimulation)
+	if err != nil {
+		return nil, err
+	}
+	var m map[string]interface{}
+	if err := json.Unmarshal(rawBytes, &m); err != nil {
+		return nil, err
+	}
+	return m, nil
 }

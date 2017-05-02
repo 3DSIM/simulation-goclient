@@ -323,6 +323,19 @@ type FakeClient struct {
 	updateSimulationStatusReturnsOnCall map[int]struct {
 		result1 error
 	}
+	RawSimulationStub        func(simulationID int32) (map[string]interface{}, error)
+	rawSimulationMutex       sync.RWMutex
+	rawSimulationArgsForCall []struct {
+		simulationID int32
+	}
+	rawSimulationReturns struct {
+		result1 map[string]interface{}
+		result2 error
+	}
+	rawSimulationReturnsOnCall map[int]struct {
+		result1 map[string]interface{}
+		result2 error
+	}
 	invocations      map[string][][]interface{}
 	invocationsMutex sync.RWMutex
 }
@@ -1560,6 +1573,57 @@ func (fake *FakeClient) UpdateSimulationStatusReturnsOnCall(i int, result1 error
 	}{result1}
 }
 
+func (fake *FakeClient) RawSimulation(simulationID int32) (map[string]interface{}, error) {
+	fake.rawSimulationMutex.Lock()
+	ret, specificReturn := fake.rawSimulationReturnsOnCall[len(fake.rawSimulationArgsForCall)]
+	fake.rawSimulationArgsForCall = append(fake.rawSimulationArgsForCall, struct {
+		simulationID int32
+	}{simulationID})
+	fake.recordInvocation("RawSimulation", []interface{}{simulationID})
+	fake.rawSimulationMutex.Unlock()
+	if fake.RawSimulationStub != nil {
+		return fake.RawSimulationStub(simulationID)
+	}
+	if specificReturn {
+		return ret.result1, ret.result2
+	}
+	return fake.rawSimulationReturns.result1, fake.rawSimulationReturns.result2
+}
+
+func (fake *FakeClient) RawSimulationCallCount() int {
+	fake.rawSimulationMutex.RLock()
+	defer fake.rawSimulationMutex.RUnlock()
+	return len(fake.rawSimulationArgsForCall)
+}
+
+func (fake *FakeClient) RawSimulationArgsForCall(i int) int32 {
+	fake.rawSimulationMutex.RLock()
+	defer fake.rawSimulationMutex.RUnlock()
+	return fake.rawSimulationArgsForCall[i].simulationID
+}
+
+func (fake *FakeClient) RawSimulationReturns(result1 map[string]interface{}, result2 error) {
+	fake.RawSimulationStub = nil
+	fake.rawSimulationReturns = struct {
+		result1 map[string]interface{}
+		result2 error
+	}{result1, result2}
+}
+
+func (fake *FakeClient) RawSimulationReturnsOnCall(i int, result1 map[string]interface{}, result2 error) {
+	fake.RawSimulationStub = nil
+	if fake.rawSimulationReturnsOnCall == nil {
+		fake.rawSimulationReturnsOnCall = make(map[int]struct {
+			result1 map[string]interface{}
+			result2 error
+		})
+	}
+	fake.rawSimulationReturnsOnCall[i] = struct {
+		result1 map[string]interface{}
+		result2 error
+	}{result1, result2}
+}
+
 func (fake *FakeClient) Invocations() map[string][][]interface{} {
 	fake.invocationsMutex.RLock()
 	defer fake.invocationsMutex.RUnlock()
@@ -1611,6 +1675,8 @@ func (fake *FakeClient) Invocations() map[string][][]interface{} {
 	defer fake.addSimulationOutputMutex.RUnlock()
 	fake.updateSimulationStatusMutex.RLock()
 	defer fake.updateSimulationStatusMutex.RUnlock()
+	fake.rawSimulationMutex.RLock()
+	defer fake.rawSimulationMutex.RUnlock()
 	return fake.invocations
 }
 

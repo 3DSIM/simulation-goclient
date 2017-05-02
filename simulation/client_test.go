@@ -708,3 +708,78 @@ func TestSimulationsWhenNonNilValuesExpectsSuccess(t *testing.T) {
 	assert.Nil(t, err, "Expected no error returned")
 	assert.Len(t, simulations, 2, "Expected 2 simulations returned.")
 }
+
+func TestRawSimulationWhenSuccessfulExpectsSimulationMapReturned(t *testing.T) {
+	// arrange
+	simulationID := int32(2)
+
+	// Token
+	fakeTokenFetcher := &auth0fakes.FakeTokenFetcher{}
+	fakeTokenFetcher.TokenReturns("Token", nil)
+
+	// Simulation
+	simulationToReturn := &models.Simulation{
+		ID:    simulationID,
+		Title: swag.String("Simulation name"),
+		Type:  models.SimulationTypeAssumedStrainSimulation,
+	}
+	simulationHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		assert.NotEmpty(t, r.Header.Get("Authorization"), "Authorization header should not be empty")
+		receivedSimulationID, err := strconv.Atoi(mux.Vars(r)["simulationID"])
+		if err != nil {
+			t.Fatal(err)
+		}
+		assert.EqualValues(t, int(simulationID), receivedSimulationID, "Expected simulation id received to match what was passed in")
+		bytes, err := json.Marshal(simulationToReturn)
+		if err != nil {
+			t.Error("Failed to marshal simulation")
+		}
+		w.Write(bytes)
+	})
+
+	assumedStrainSimulationToReturn := &models.AssumedStrainSimulation{
+		Simulation: models.Simulation{
+			ID:    simulationID,
+			Title: swag.String("Simulation name"),
+			Type:  models.SimulationTypeAssumedStrainSimulation,
+		},
+		AssumedStrainSimulationParameters: models.AssumedStrainSimulationParameters{
+			OutputDisplacementAfterCutoff: swag.Bool(true),
+		},
+	}
+	assumedStrainSimulationHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		assert.NotEmpty(t, r.Header.Get("Authorization"), "Authorization header should not be empty")
+		receivedSimulationID, err := strconv.Atoi(mux.Vars(r)["simulationID"])
+		if err != nil {
+			t.Fatal(err)
+		}
+		assert.EqualValues(t, int(simulationID), receivedSimulationID, "Expected simulation id received to match what was passed in")
+		bytes, err := json.Marshal(assumedStrainSimulationToReturn)
+		if err != nil {
+			t.Error("Failed to marshal simulation")
+		}
+		w.Write(bytes)
+	})
+
+	// Setup routes
+	r := mux.NewRouter()
+	simulationEndpoint := "/" + SimulationAPIBasePath + "/simulations/{simulationID}"
+	assumedStrainSimulationEndpoint := "/" + SimulationAPIBasePath + "/assumedstrainsimulations/{simulationID}"
+	r.HandleFunc(simulationEndpoint, simulationHandler)
+	r.HandleFunc(assumedStrainSimulationEndpoint, assumedStrainSimulationHandler)
+	testServer := httptest.NewServer(r)
+	defer testServer.Close()
+	client := NewClient(fakeTokenFetcher, testServer.URL, audience)
+
+	// act
+	simulation, err := client.RawSimulation(simulationID)
+
+	// assert
+	assert.Nil(t, err, "Expected no error returned")
+	assert.Equal(t, *simulationToReturn.Title, simulation["title"], "Expected names to match")
+	assert.EqualValues(t, simulationToReturn.ID, simulation["id"], "Expected IDs to match")
+	_, ok := simulation["outputDisplacementAfterCutoff"].(bool)
+	assert.True(t, ok, "Expected outputDisplacementAfterCutoff to be of type bool")
+}
