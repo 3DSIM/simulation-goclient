@@ -123,6 +123,10 @@ type AssumedStrainSimulationParameters struct {
 	// if true, a predistorted STL file will be created using the distortion simulated by the mechanics solver
 	PerformDistortionCompensation bool `json:"performDistortionCompensation,omitempty"`
 
+	// perform support optimization
+	// Required: true
+	PerformSupportOptimization *bool `json:"performSupportOptimization"`
+
 	// poisson ratio
 	// Required: true
 	PoissonRatio *float64 `json:"poissonRatio"`
@@ -280,6 +284,11 @@ func (m *AssumedStrainSimulationParameters) Validate(formats strfmt.Registry) er
 	}
 
 	if err := m.validateOutputShrinkage(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validatePerformSupportOptimization(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -583,6 +592,15 @@ func (m *AssumedStrainSimulationParameters) validateOutputLayerVtk(formats strfm
 func (m *AssumedStrainSimulationParameters) validateOutputShrinkage(formats strfmt.Registry) error {
 
 	if err := validate.Required("outputShrinkage", "body", m.OutputShrinkage); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *AssumedStrainSimulationParameters) validatePerformSupportOptimization(formats strfmt.Registry) error {
+
+	if err := validate.Required("performSupportOptimization", "body", m.PerformSupportOptimization); err != nil {
 		return err
 	}
 

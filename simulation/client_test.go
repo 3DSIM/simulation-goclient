@@ -746,6 +746,7 @@ func TestRawSimulationWhenSuccessfulExpectsSimulationMapReturned(t *testing.T) {
 		},
 		AssumedStrainSimulationParameters: models.AssumedStrainSimulationParameters{
 			OutputDisplacementAfterCutoff: swag.Bool(true),
+			PerformDistortionCompensation: true,
 		},
 	}
 	assumedStrainSimulationHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -782,4 +783,6 @@ func TestRawSimulationWhenSuccessfulExpectsSimulationMapReturned(t *testing.T) {
 	assert.EqualValues(t, simulationToReturn.ID, simulation["id"], "Expected IDs to match")
 	_, ok := simulation["outputDisplacementAfterCutoff"].(bool)
 	assert.True(t, ok, "Expected outputDisplacementAfterCutoff to be of type bool")
+	_, ok = simulation["performDistortionCompensation"].(bool)
+	assert.True(t, ok, "Expected performDistortionCompensation to be of type bool")
 }

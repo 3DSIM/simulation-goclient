@@ -16,8 +16,8 @@ type PartUploadRequest struct {
 	// s3 key
 	S3Key string `json:"s3Key,omitempty"`
 
-	// signed URL
-	SignedURL string `json:"signedURL,omitempty"`
+	// signed Url
+	SignedURL string `json:"signedUrl,omitempty"`
 }
 
 // Validate validates this part upload request

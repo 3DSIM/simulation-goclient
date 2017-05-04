@@ -145,6 +145,10 @@ type ThermalSimulationParameters struct {
 	// if true, a predistorted STL file will be created using the distortion simulated by the mechanics solver
 	PerformDistortionCompensation bool `json:"performDistortionCompensation,omitempty"`
 
+	// perform support optimization
+	// Required: true
+	PerformSupportOptimization *bool `json:"performSupportOptimization"`
+
 	// poisson ratio
 	// Required: true
 	PoissonRatio *float64 `json:"poissonRatio"`
@@ -328,6 +332,11 @@ func (m *ThermalSimulationParameters) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateOutputVirtualSensorData(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validatePerformSupportOptimization(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -672,6 +681,15 @@ func (m *ThermalSimulationParameters) validateOutputThermalVtk(formats strfmt.Re
 func (m *ThermalSimulationParameters) validateOutputVirtualSensorData(formats strfmt.Registry) error {
 
 	if err := validate.Required("outputVirtualSensorData", "body", m.OutputVirtualSensorData); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *ThermalSimulationParameters) validatePerformSupportOptimization(formats strfmt.Registry) error {
+
+	if err := validate.Required("performSupportOptimization", "body", m.PerformSupportOptimization); err != nil {
 		return err
 	}
 

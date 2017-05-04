@@ -13,8 +13,8 @@ import (
 // swagger:model PartGeometryUrl
 type PartGeometryURL struct {
 
-	// signed URL
-	SignedURL string `json:"signedURL,omitempty"`
+	// signed Url
+	SignedURL string `json:"signedUrl,omitempty"`
 }
 
 // Validate validates this part geometry Url
