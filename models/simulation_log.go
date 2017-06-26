@@ -4,9 +4,12 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"encoding/json"
+
 	strfmt "github.com/go-openapi/strfmt"
 
 	"github.com/go-openapi/errors"
+	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
 )
 
@@ -14,8 +17,14 @@ import (
 // swagger:model SimulationLog
 type SimulationLog struct {
 
+	// the Amazon SWF activity id
+	ActivityID string `json:"activityId,omitempty"`
+
 	// id
 	ID int32 `json:"id,omitempty"`
+
+	// level of the log
+	Level string `json:"level,omitempty"`
 
 	// time stamp of log
 	// Required: true
@@ -33,6 +42,11 @@ type SimulationLog struct {
 func (m *SimulationLog) Validate(formats strfmt.Registry) error {
 	var res []error
 
+	if err := m.validateLevel(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
 	if err := m.validateLoggedAt(formats); err != nil {
 		// prop
 		res = append(res, err)
@@ -46,6 +60,51 @@ func (m *SimulationLog) Validate(formats strfmt.Registry) error {
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
+	return nil
+}
+
+var simulationLogTypeLevelPropEnum []interface{}
+
+func init() {
+	var res []string
+	if err := json.Unmarshal([]byte(`["Info","Trace","Error","Warn"]`), &res); err != nil {
+		panic(err)
+	}
+	for _, v := range res {
+		simulationLogTypeLevelPropEnum = append(simulationLogTypeLevelPropEnum, v)
+	}
+}
+
+const (
+	// SimulationLogLevelInfo captures enum value "Info"
+	SimulationLogLevelInfo string = "Info"
+	// SimulationLogLevelTrace captures enum value "Trace"
+	SimulationLogLevelTrace string = "Trace"
+	// SimulationLogLevelError captures enum value "Error"
+	SimulationLogLevelError string = "Error"
+	// SimulationLogLevelWarn captures enum value "Warn"
+	SimulationLogLevelWarn string = "Warn"
+)
+
+// prop value enum
+func (m *SimulationLog) validateLevelEnum(path, location string, value string) error {
+	if err := validate.Enum(path, location, value, simulationLogTypeLevelPropEnum); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (m *SimulationLog) validateLevel(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.Level) { // not required
+		return nil
+	}
+
+	// value enum
+	if err := m.validateLevelEnum("level", "body", m.Level); err != nil {
+		return err
+	}
+
 	return nil
 }
 
