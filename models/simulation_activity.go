@@ -35,6 +35,9 @@ type SimulationActivity struct {
 	// started time stamp
 	StartedAt strfmt.DateTime `json:"startedAt,omitempty"`
 
+	// status of the activity
+	Status string `json:"status,omitempty"`
+
 	// the version of the worker, e.g. 1.9.0
 	// Required: true
 	WorkerVersion *string `json:"workerVersion"`
