@@ -4,9 +4,12 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"encoding/json"
+
 	strfmt "github.com/go-openapi/strfmt"
 
 	"github.com/go-openapi/errors"
+	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
 )
 
@@ -62,6 +65,11 @@ func (m *SimulationActivity) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
+	if err := m.validateStatus(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
 	if err := m.validateWorkerVersion(formats); err != nil {
 		// prop
 		res = append(res, err)
@@ -94,6 +102,53 @@ func (m *SimulationActivity) validateActivityName(formats strfmt.Registry) error
 func (m *SimulationActivity) validateSimulationID(formats strfmt.Registry) error {
 
 	if err := validate.Required("simulationId", "body", m.SimulationID); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+var simulationActivityTypeStatusPropEnum []interface{}
+
+func init() {
+	var res []string
+	if err := json.Unmarshal([]byte(`["Waiting","Running","Cancelled","Error","Finished"]`), &res); err != nil {
+		panic(err)
+	}
+	for _, v := range res {
+		simulationActivityTypeStatusPropEnum = append(simulationActivityTypeStatusPropEnum, v)
+	}
+}
+
+const (
+	// SimulationActivityStatusWaiting captures enum value "Waiting"
+	SimulationActivityStatusWaiting string = "Waiting"
+	// SimulationActivityStatusRunning captures enum value "Running"
+	SimulationActivityStatusRunning string = "Running"
+	// SimulationActivityStatusCancelled captures enum value "Cancelled"
+	SimulationActivityStatusCancelled string = "Cancelled"
+	// SimulationActivityStatusError captures enum value "Error"
+	SimulationActivityStatusError string = "Error"
+	// SimulationActivityStatusFinished captures enum value "Finished"
+	SimulationActivityStatusFinished string = "Finished"
+)
+
+// prop value enum
+func (m *SimulationActivity) validateStatusEnum(path, location string, value string) error {
+	if err := validate.Enum(path, location, value, simulationActivityTypeStatusPropEnum); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (m *SimulationActivity) validateStatus(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.Status) { // not required
+		return nil
+	}
+
+	// value enum
+	if err := m.validateStatusEnum("status", "body", m.Status); err != nil {
 		return err
 	}
 
