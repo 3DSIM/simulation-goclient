@@ -206,12 +206,12 @@ type FakeClient struct {
 		result1 *models.PorositySimulation
 		result2 error
 	}
-	PostLogStub        func(level string, message string, simulationID int, activityID string) (err error)
+	PostLogStub        func(level string, message string, simulationID int32, activityID string) (err error)
 	postLogMutex       sync.RWMutex
 	postLogArgsForCall []struct {
 		level        string
 		message      string
-		simulationID int
+		simulationID int32
 		activityID   string
 	}
 	postLogReturns struct {
@@ -231,11 +231,11 @@ type FakeClient struct {
 	postLogWithObjectReturnsOnCall map[int]struct {
 		result1 error
 	}
-	PostLogInfoStub        func(message string, simulationID int, activityID string) (err error)
+	PostLogInfoStub        func(message string, simulationID int32, activityID string) (err error)
 	postLogInfoMutex       sync.RWMutex
 	postLogInfoArgsForCall []struct {
 		message      string
-		simulationID int
+		simulationID int32
 		activityID   string
 	}
 	postLogInfoReturns struct {
@@ -244,11 +244,11 @@ type FakeClient struct {
 	postLogInfoReturnsOnCall map[int]struct {
 		result1 error
 	}
-	PostLogWarnStub        func(message string, simulationID int, activityID string) (err error)
+	PostLogWarnStub        func(message string, simulationID int32, activityID string) (err error)
 	postLogWarnMutex       sync.RWMutex
 	postLogWarnArgsForCall []struct {
 		message      string
-		simulationID int
+		simulationID int32
 		activityID   string
 	}
 	postLogWarnReturns struct {
@@ -257,11 +257,11 @@ type FakeClient struct {
 	postLogWarnReturnsOnCall map[int]struct {
 		result1 error
 	}
-	PostLogErrorStub        func(message string, simulationID int, activityID string) (err error)
+	PostLogErrorStub        func(message string, simulationID int32, activityID string) (err error)
 	postLogErrorMutex       sync.RWMutex
 	postLogErrorArgsForCall []struct {
 		message      string
-		simulationID int
+		simulationID int32
 		activityID   string
 	}
 	postLogErrorReturns struct {
@@ -1154,13 +1154,13 @@ func (fake *FakeClient) PorositySimulationReturnsOnCall(i int, result1 *models.P
 	}{result1, result2}
 }
 
-func (fake *FakeClient) PostLog(level string, message string, simulationID int, activityID string) (err error) {
+func (fake *FakeClient) PostLog(level string, message string, simulationID int32, activityID string) (err error) {
 	fake.postLogMutex.Lock()
 	ret, specificReturn := fake.postLogReturnsOnCall[len(fake.postLogArgsForCall)]
 	fake.postLogArgsForCall = append(fake.postLogArgsForCall, struct {
 		level        string
 		message      string
-		simulationID int
+		simulationID int32
 		activityID   string
 	}{level, message, simulationID, activityID})
 	fake.recordInvocation("PostLog", []interface{}{level, message, simulationID, activityID})
@@ -1180,7 +1180,7 @@ func (fake *FakeClient) PostLogCallCount() int {
 	return len(fake.postLogArgsForCall)
 }
 
-func (fake *FakeClient) PostLogArgsForCall(i int) (string, string, int, string) {
+func (fake *FakeClient) PostLogArgsForCall(i int) (string, string, int32, string) {
 	fake.postLogMutex.RLock()
 	defer fake.postLogMutex.RUnlock()
 	return fake.postLogArgsForCall[i].level, fake.postLogArgsForCall[i].message, fake.postLogArgsForCall[i].simulationID, fake.postLogArgsForCall[i].activityID
@@ -1253,12 +1253,12 @@ func (fake *FakeClient) PostLogWithObjectReturnsOnCall(i int, result1 error) {
 	}{result1}
 }
 
-func (fake *FakeClient) PostLogInfo(message string, simulationID int, activityID string) (err error) {
+func (fake *FakeClient) PostLogInfo(message string, simulationID int32, activityID string) (err error) {
 	fake.postLogInfoMutex.Lock()
 	ret, specificReturn := fake.postLogInfoReturnsOnCall[len(fake.postLogInfoArgsForCall)]
 	fake.postLogInfoArgsForCall = append(fake.postLogInfoArgsForCall, struct {
 		message      string
-		simulationID int
+		simulationID int32
 		activityID   string
 	}{message, simulationID, activityID})
 	fake.recordInvocation("PostLogInfo", []interface{}{message, simulationID, activityID})
@@ -1278,7 +1278,7 @@ func (fake *FakeClient) PostLogInfoCallCount() int {
 	return len(fake.postLogInfoArgsForCall)
 }
 
-func (fake *FakeClient) PostLogInfoArgsForCall(i int) (string, int, string) {
+func (fake *FakeClient) PostLogInfoArgsForCall(i int) (string, int32, string) {
 	fake.postLogInfoMutex.RLock()
 	defer fake.postLogInfoMutex.RUnlock()
 	return fake.postLogInfoArgsForCall[i].message, fake.postLogInfoArgsForCall[i].simulationID, fake.postLogInfoArgsForCall[i].activityID
@@ -1303,12 +1303,12 @@ func (fake *FakeClient) PostLogInfoReturnsOnCall(i int, result1 error) {
 	}{result1}
 }
 
-func (fake *FakeClient) PostLogWarn(message string, simulationID int, activityID string) (err error) {
+func (fake *FakeClient) PostLogWarn(message string, simulationID int32, activityID string) (err error) {
 	fake.postLogWarnMutex.Lock()
 	ret, specificReturn := fake.postLogWarnReturnsOnCall[len(fake.postLogWarnArgsForCall)]
 	fake.postLogWarnArgsForCall = append(fake.postLogWarnArgsForCall, struct {
 		message      string
-		simulationID int
+		simulationID int32
 		activityID   string
 	}{message, simulationID, activityID})
 	fake.recordInvocation("PostLogWarn", []interface{}{message, simulationID, activityID})
@@ -1328,7 +1328,7 @@ func (fake *FakeClient) PostLogWarnCallCount() int {
 	return len(fake.postLogWarnArgsForCall)
 }
 
-func (fake *FakeClient) PostLogWarnArgsForCall(i int) (string, int, string) {
+func (fake *FakeClient) PostLogWarnArgsForCall(i int) (string, int32, string) {
 	fake.postLogWarnMutex.RLock()
 	defer fake.postLogWarnMutex.RUnlock()
 	return fake.postLogWarnArgsForCall[i].message, fake.postLogWarnArgsForCall[i].simulationID, fake.postLogWarnArgsForCall[i].activityID
@@ -1353,12 +1353,12 @@ func (fake *FakeClient) PostLogWarnReturnsOnCall(i int, result1 error) {
 	}{result1}
 }
 
-func (fake *FakeClient) PostLogError(message string, simulationID int, activityID string) (err error) {
+func (fake *FakeClient) PostLogError(message string, simulationID int32, activityID string) (err error) {
 	fake.postLogErrorMutex.Lock()
 	ret, specificReturn := fake.postLogErrorReturnsOnCall[len(fake.postLogErrorArgsForCall)]
 	fake.postLogErrorArgsForCall = append(fake.postLogErrorArgsForCall, struct {
 		message      string
-		simulationID int
+		simulationID int32
 		activityID   string
 	}{message, simulationID, activityID})
 	fake.recordInvocation("PostLogError", []interface{}{message, simulationID, activityID})
@@ -1378,7 +1378,7 @@ func (fake *FakeClient) PostLogErrorCallCount() int {
 	return len(fake.postLogErrorArgsForCall)
 }
 
-func (fake *FakeClient) PostLogErrorArgsForCall(i int) (string, int, string) {
+func (fake *FakeClient) PostLogErrorArgsForCall(i int) (string, int32, string) {
 	fake.postLogErrorMutex.RLock()
 	defer fake.postLogErrorMutex.RUnlock()
 	return fake.postLogErrorArgsForCall[i].message, fake.postLogErrorArgsForCall[i].simulationID, fake.postLogErrorArgsForCall[i].activityID
