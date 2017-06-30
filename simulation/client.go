@@ -55,11 +55,11 @@ type Client interface {
 	ScanPatternSimulation(simulationID int32) (*models.ScanPatternSimulation, error)
 	AssumedStrainSimulation(simulationID int32) (*models.AssumedStrainSimulation, error)
 	PorositySimulation(simulationID int32) (*models.PorositySimulation, error)
-	PostLog(level string, message string, simulationID int, activityID string) (err error)
+	PostLog(level string, message string, simulationID int32, activityID string) (err error)
 	PostLogWithObject(simulationLog models.SimulationLog) (err error)
-	PostLogInfo(message string, simulationID int, activityID string) (err error)
-	PostLogWarn(message string, simulationID int, activityID string) (err error)
-	PostLogError(message string, simulationID int, activityID string) (err error)
+	PostLogInfo(message string, simulationID int32, activityID string) (err error)
+	PostLogWarn(message string, simulationID int32, activityID string) (err error)
+	PostLogError(message string, simulationID int32, activityID string) (err error)
 	PatchSimulation(simulationID int32, patch *models.PatchDocument) error
 	MultiPatchSimulation(simulationID int32, patches []*models.PatchDocument) error
 	PostSimulationActivity(simulationID int32, simulationActivity *models.SimulationActivity) (*models.SimulationActivity, error)
@@ -277,24 +277,24 @@ func (c *client) PostLogWithObject(simulationLog models.SimulationLog) (err erro
 	return nil
 }
 
-func (c *client) PostLogInfo(message string, simulationID int, activityID string) (err error) {
+func (c *client) PostLogInfo(message string, simulationID int32, activityID string) (err error) {
 	return c.PostLog(models.SimulationLogLevelInfo, message, simulationID, activityID)
 }
 
-func (c *client) PostLogWarn(message string, simulationID int, activityID string) (err error) {
+func (c *client) PostLogWarn(message string, simulationID int32, activityID string) (err error) {
 	return c.PostLog(models.SimulationLogLevelWarn, message, simulationID, activityID)
 }
 
-func (c *client) PostLogError(message string, simulationID int, activityID string) (err error) {
+func (c *client) PostLogError(message string, simulationID int32, activityID string) (err error) {
 	return c.PostLog(models.SimulationLogLevelError, message, simulationID, activityID)
 }
 
-func (c *client) PostLog(level string, message string, simulationID int, activityID string) (err error) {
+func (c *client) PostLog(level string, message string, simulationID int32, activityID string) (err error) {
 	loggedAt := strfmt.DateTime(time.Now().UTC())
 	simulationLog := models.SimulationLog{
 		Level:        level,
 		Message:      &message,
-		SimulationID: int32(simulationID),
+		SimulationID: simulationID,
 		ActivityID:   activityID,
 		LoggedAt:     &loggedAt,
 	}
