@@ -55,8 +55,11 @@ type Client interface {
 	ScanPatternSimulation(simulationID int32) (*models.ScanPatternSimulation, error)
 	AssumedStrainSimulation(simulationID int32) (*models.AssumedStrainSimulation, error)
 	PorositySimulation(simulationID int32) (*models.PorositySimulation, error)
-	PostLogWithTime(simulationID int32, messageDate time.Time, message string) error
-	PostLog(simulationID int32, message string) error
+	PostLog(level string, message string, simulationID int, activityID string) (err error)
+	PostLogWithObject(simulationLog models.SimulationLog) (err error)
+	PostLogInfo(message string, simulationID int, activityID string) (err error)
+	PostLogWarn(message string, simulationID int, activityID string) (err error)
+	PostLogError(message string, simulationID int, activityID string) (err error)
 	PatchSimulation(simulationID int32, patch *models.PatchDocument) error
 	MultiPatchSimulation(simulationID int32, patches []*models.PatchDocument) error
 	PostSimulationActivity(simulationID int32, simulationActivity *models.SimulationActivity) (*models.SimulationActivity, error)
@@ -74,7 +77,7 @@ type client struct {
 	audience     string
 }
 
-// New creates a new client for interacting with the 3DSIM simulation api.  See the auth0 package for how to construct
+// NewClient creates a client for interacting with the 3DSIM simulation api.  See the auth0 package for how to construct
 // the token fetcher.  The apiGatewayURL's are as follows:
 //
 // 		QA 				= https://3dsim-qa.cloud.tyk.io
@@ -254,7 +257,7 @@ func (c *client) SingleBeadSimulation(simulationID int32) (s *models.SingleBeadS
 	return response.Payload, nil
 }
 
-func (c *client) PostLogWithTime(simulationID int32, messageDate time.Time, message string) (err error) {
+func (c *client) PostLogWithObject(simulationLog models.SimulationLog) (err error) {
 	defer func() {
 		// Until this issue is resolved: https://github.com/go-swagger/go-swagger/issues/1021, we need to recover from
 		// panics.
@@ -266,9 +269,7 @@ func (c *client) PostLogWithTime(simulationID int32, messageDate time.Time, mess
 	if err != nil {
 		return err
 	}
-	loggedAt := strfmt.DateTime(messageDate)
-	simulationLog := models.SimulationLog{LoggedAt: &loggedAt, Message: &message, SimulationID: simulationID}
-	_, err = c.client.Operations.PostSimulationLog(operations.NewPostSimulationLogParams().WithID(simulationID).
+	_, err = c.client.Operations.PostSimulationLog(operations.NewPostSimulationLogParams().WithID(simulationLog.SimulationID).
 		WithSimulationLog(&simulationLog), openapiclient.BearerToken(token))
 	if err != nil {
 		return err
@@ -276,8 +277,28 @@ func (c *client) PostLogWithTime(simulationID int32, messageDate time.Time, mess
 	return nil
 }
 
-func (c *client) PostLog(simulationID int32, message string) error {
-	return c.PostLogWithTime(simulationID, time.Now().UTC(), message)
+func (c *client) PostLogInfo(message string, simulationID int, activityID string) (err error) {
+	return c.PostLog(models.SimulationLogLevelInfo, message, simulationID, activityID)
+}
+
+func (c *client) PostLogWarn(message string, simulationID int, activityID string) (err error) {
+	return c.PostLog(models.SimulationLogLevelWarn, message, simulationID, activityID)
+}
+
+func (c *client) PostLogError(message string, simulationID int, activityID string) (err error) {
+	return c.PostLog(models.SimulationLogLevelError, message, simulationID, activityID)
+}
+
+func (c *client) PostLog(level string, message string, simulationID int, activityID string) (err error) {
+	loggedAt := strfmt.DateTime(time.Now().UTC())
+	simulationLog := models.SimulationLog{
+		Level:        level,
+		Message:      &message,
+		SimulationID: int32(simulationID),
+		ActivityID:   activityID,
+		LoggedAt:     &loggedAt,
+	}
+	return c.PostLogWithObject(simulationLog)
 }
 
 func (c *client) Simulations(organizationID int32, status []string, sort []string, offset, limit int32) (simulations []*models.Simulation, err error) {
