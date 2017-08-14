@@ -23,6 +23,9 @@ type Part struct {
 	// Describes the availabity of the part. Uploaded - the part has been uploaded.  Processing - the part is being processed.  Available - the part was processed successfully and can be used in simulations.  Error - an error occurred, contact support@3dsim.com.
 	Availability string `json:"availability,omitempty"`
 
+	// collapse cost
+	CollapseCost float64 `json:"collapseCost,omitempty"`
+
 	// created time stamp, set server-side, read only
 	Created strfmt.DateTime `json:"created,omitempty"`
 
@@ -31,6 +34,18 @@ type Part struct {
 
 	// description
 	Description string `json:"description,omitempty"`
+
+	// elements
+	Elements int32 `json:"elements,omitempty"`
+
+	// Voxel size used for estimatedMemory, maxMemory, estimatedWork
+	EstimateVoxelSize float64 `json:"estimateVoxelSize,omitempty"`
+
+	// Estimated memory usage for mechanics solver using estimateVoxelSize
+	EstimatedMemory int32 `json:"estimatedMemory,omitempty"`
+
+	// Estimated work using estimateVoxelSize
+	EstimatedWork int32 `json:"estimatedWork,omitempty"`
 
 	// Remote path (s3 key) of part. (read only).
 	FileLocation string `json:"fileLocation,omitempty"`
@@ -45,22 +60,31 @@ type Part struct {
 	// assigned user, set server-side, read only
 	LastModifiedBy string `json:"lastModifiedBy,omitempty"`
 
-	// x location (in meters) where the lower left corner of the bounding box of the part will be placed on the bed, calculated when the part is processed, use 0 for initial post
-	LocationX float64 `json:"locationX,omitempty"`
-
-	// y location (in meters) where the lower left corner of the bounding box of the part will be placed on the bed, calculated when the part is processed, use 0 for initial post
-	LocationY float64 `json:"locationY,omitempty"`
+	// Estimated max memory usage for mechanics solver using estimateVoxelSize
+	MaxMemory int32 `json:"maxMemory,omitempty"`
 
 	// name
 	// Required: true
 	Name *string `json:"name"`
 
-	// Number of triangles in the original STL file, calculated when the part is processed, use 0 for initial post
-	NumberOfTriangles int32 `json:"numberOfTriangles,omitempty"`
+	// nodes
+	Nodes int32 `json:"nodes,omitempty"`
 
 	// Id of the organization that owns this part record
 	// Required: true
 	OrganizationID *int32 `json:"organizationId"`
+
+	// The original file name from the user
+	OriginalFileName string `json:"originalFileName,omitempty"`
+
+	// The smallest x location before transformation
+	OriginalX float64 `json:"originalX,omitempty"`
+
+	// The smallest y location before transformation
+	OriginalY float64 `json:"originalY,omitempty"`
+
+	// The smallest z location before transformation
+	OriginalZ float64 `json:"originalZ,omitempty"`
 
 	// Width of the Part bounding box (in meters), calculated when the part is processed, use 0 for initial post
 	SizeX float64 `json:"sizeX,omitempty"`
@@ -71,11 +95,29 @@ type Part struct {
 	// Height of the Part bounding box (in meters), calculated when the part is processed, use 0 for initial post
 	SizeZ float64 `json:"sizeZ,omitempty"`
 
+	// support volume
+	SupportVolume float64 `json:"supportVolume,omitempty"`
+
+	// surface area
+	SurfaceArea float64 `json:"surfaceArea,omitempty"`
+
 	// tags
 	Tags []string `json:"tags"`
 
+	// Number of triangles in the original STL file, calculated when the part is processed, use 0 for initial post
+	TriangleCount int32 `json:"triangleCount,omitempty"`
+
 	// Approximate volume of the Part (in meters^3), calculated when the part is processed, use 0 for initial post
 	Volume float64 `json:"volume,omitempty"`
+
+	// x location (in meters) where the lower left corner of the bounding box of the part will be placed on the bed, calculated when the part is processed, use 0 for initial post
+	XMin float64 `json:"xMin,omitempty"`
+
+	// y location (in meters) where the lower left corner of the bounding box of the part will be placed on the bed, calculated when the part is processed, use 0 for initial post
+	YMin float64 `json:"yMin,omitempty"`
+
+	// z location (in meters) where the lower left corner of the bounding box of the part will be placed on the bed, calculated when the part is processed, use 0 for initial post
+	ZMin float64 `json:"zMin,omitempty"`
 }
 
 // Validate validates this part
