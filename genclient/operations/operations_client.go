@@ -168,6 +168,35 @@ func (a *Client) UpdatePart(params *UpdatePartParams, authInfo runtime.ClientAut
 }
 
 /*
+AddBuildFile Creates a new build file
+*/
+func (a *Client) AddBuildFile(params *AddBuildFileParams, authInfo runtime.ClientAuthInfoWriter) (*AddBuildFileOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewAddBuildFileParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "addBuildFile",
+		Method:             "POST",
+		PathPattern:        "/buildfiles",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &AddBuildFileReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*AddBuildFileOK), nil
+
+}
+
+/*
 AddMaterial Creates a new material for the organizationId specified
 */
 func (a *Client) AddMaterial(params *AddMaterialParams, authInfo runtime.ClientAuthInfoWriter) (*AddMaterialOK, error) {
@@ -222,6 +251,35 @@ func (a *Client) AddParts(params *AddPartsParams, authInfo runtime.ClientAuthInf
 		return nil, err
 	}
 	return result.(*AddPartsOK), nil
+
+}
+
+/*
+ArchiveBuildFile archives a single build file based on an ID
+*/
+func (a *Client) ArchiveBuildFile(params *ArchiveBuildFileParams, authInfo runtime.ClientAuthInfoWriter) (*ArchiveBuildFileOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewArchiveBuildFileParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "archiveBuildFile",
+		Method:             "PUT",
+		PathPattern:        "/buildfiles/{id}/archive",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &ArchiveBuildFileReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*ArchiveBuildFileOK), nil
 
 }
 
@@ -483,6 +541,150 @@ func (a *Client) GetAssumedStrainSimulations(params *GetAssumedStrainSimulations
 		return nil, err
 	}
 	return result.(*GetAssumedStrainSimulationsOK), nil
+
+}
+
+/*
+GetBuildFile Retrieve a single build file
+*/
+func (a *Client) GetBuildFile(params *GetBuildFileParams, authInfo runtime.ClientAuthInfoWriter) (*GetBuildFileOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetBuildFileParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "getBuildFile",
+		Method:             "GET",
+		PathPattern:        "/buildfiles/{id}",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &GetBuildFileReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*GetBuildFileOK), nil
+
+}
+
+/*
+GetBuildFileGeometry Retrieve the part geometry associated with a specific build file as a list of triangles
+*/
+func (a *Client) GetBuildFileGeometry(params *GetBuildFileGeometryParams, authInfo runtime.ClientAuthInfoWriter) (*GetBuildFileGeometryOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetBuildFileGeometryParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "getBuildFileGeometry",
+		Method:             "GET",
+		PathPattern:        "/buildfiles/{id}/geometry",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &GetBuildFileGeometryReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*GetBuildFileGeometryOK), nil
+
+}
+
+/*
+GetBuildFileGeometryURL Get a url to the part geometry STL file associated with a specific build file
+*/
+func (a *Client) GetBuildFileGeometryURL(params *GetBuildFileGeometryURLParams, authInfo runtime.ClientAuthInfoWriter) (*GetBuildFileGeometryURLOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetBuildFileGeometryURLParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "getBuildFileGeometryUrl",
+		Method:             "GET",
+		PathPattern:        "/buildfiles/{id}/geometryurl",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &GetBuildFileGeometryURLReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*GetBuildFileGeometryURLOK), nil
+
+}
+
+/*
+GetBuildFileUploadURL Returns a url used to upload a ZIP file containing build file components. The returned url is used in a post to buildfiles/.
+*/
+func (a *Client) GetBuildFileUploadURL(params *GetBuildFileUploadURLParams) (*GetBuildFileUploadURLOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetBuildFileUploadURLParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "getBuildFileUploadUrl",
+		Method:             "GET",
+		PathPattern:        "/buildfiles/buildfileuploadurl",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &GetBuildFileUploadURLReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*GetBuildFileUploadURLOK), nil
+
+}
+
+/*
+GetBuildFiles Get list of build files
+*/
+func (a *Client) GetBuildFiles(params *GetBuildFilesParams, authInfo runtime.ClientAuthInfoWriter) (*GetBuildFilesOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetBuildFilesParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "getBuildFiles",
+		Method:             "GET",
+		PathPattern:        "/buildfiles",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &GetBuildFilesReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*GetBuildFilesOK), nil
 
 }
 
@@ -1154,6 +1356,35 @@ func (a *Client) GetThermalSimulations(params *GetThermalSimulationsParams, auth
 }
 
 /*
+PatchBuildFile Update fields within a build file
+*/
+func (a *Client) PatchBuildFile(params *PatchBuildFileParams, authInfo runtime.ClientAuthInfoWriter) (*PatchBuildFileOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewPatchBuildFileParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "patchBuildFile",
+		Method:             "PATCH",
+		PathPattern:        "/buildfiles/{id}",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &PatchBuildFileReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*PatchBuildFileOK), nil
+
+}
+
+/*
 PatchSimulation Patch a simulation
 */
 func (a *Client) PatchSimulation(params *PatchSimulationParams, authInfo runtime.ClientAuthInfoWriter) (*PatchSimulationOK, error) {
@@ -1440,6 +1671,35 @@ func (a *Client) PostThermalSimulation(params *PostThermalSimulationParams, auth
 		return nil, err
 	}
 	return result.(*PostThermalSimulationOK), nil
+
+}
+
+/*
+ProcessBuildFile Process a ZIP file containing build file elements. This should be called after a POST to /buildfiles.
+*/
+func (a *Client) ProcessBuildFile(params *ProcessBuildFileParams, authInfo runtime.ClientAuthInfoWriter) (*ProcessBuildFileOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewProcessBuildFileParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "processBuildFile",
+		Method:             "PUT",
+		PathPattern:        "/buildfiles/{id}/process",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &ProcessBuildFileReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*ProcessBuildFileOK), nil
 
 }
 
@@ -1846,6 +2106,35 @@ func (a *Client) UnarchiveMachine(params *UnarchiveMachineParams, authInfo runti
 		return nil, err
 	}
 	return result.(*UnarchiveMachineOK), nil
+
+}
+
+/*
+UpdateBuildFile Update a single build file
+*/
+func (a *Client) UpdateBuildFile(params *UpdateBuildFileParams, authInfo runtime.ClientAuthInfoWriter) (*UpdateBuildFileOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewUpdateBuildFileParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "updateBuildFile",
+		Method:             "PUT",
+		PathPattern:        "/buildfiles/{id}",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &UpdateBuildFileReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*UpdateBuildFileOK), nil
 
 }
 
