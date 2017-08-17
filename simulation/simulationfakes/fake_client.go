@@ -374,6 +374,77 @@ type FakeClient struct {
 		result1 map[string]interface{}
 		result2 error
 	}
+	BuildFilesStub        func(organizationID int32, availability []string, sort []string, offset, limit int32) ([]*models.BuildFile, error)
+	buildFilesMutex       sync.RWMutex
+	buildFilesArgsForCall []struct {
+		organizationID int32
+		availability   []string
+		sort           []string
+		offset         int32
+		limit          int32
+	}
+	buildFilesReturns struct {
+		result1 []*models.BuildFile
+		result2 error
+	}
+	buildFilesReturnsOnCall map[int]struct {
+		result1 []*models.BuildFile
+		result2 error
+	}
+	BuildFileStub        func(buildFileID int32) (*models.BuildFile, error)
+	buildFileMutex       sync.RWMutex
+	buildFileArgsForCall []struct {
+		buildFileID int32
+	}
+	buildFileReturns struct {
+		result1 *models.BuildFile
+		result2 error
+	}
+	buildFileReturnsOnCall map[int]struct {
+		result1 *models.BuildFile
+		result2 error
+	}
+	PostBuildFileStub        func(*models.BuildFilePost) (*models.BuildFile, error)
+	postBuildFileMutex       sync.RWMutex
+	postBuildFileArgsForCall []struct {
+		arg1 *models.BuildFilePost
+	}
+	postBuildFileReturns struct {
+		result1 *models.BuildFile
+		result2 error
+	}
+	postBuildFileReturnsOnCall map[int]struct {
+		result1 *models.BuildFile
+		result2 error
+	}
+	PatchBuildFileStub        func(buildFileID int32, patches []*models.PatchDocument) (*models.BuildFile, error)
+	patchBuildFileMutex       sync.RWMutex
+	patchBuildFileArgsForCall []struct {
+		buildFileID int32
+		patches     []*models.PatchDocument
+	}
+	patchBuildFileReturns struct {
+		result1 *models.BuildFile
+		result2 error
+	}
+	patchBuildFileReturnsOnCall map[int]struct {
+		result1 *models.BuildFile
+		result2 error
+	}
+	UpdateBuildFileAvailabilityStub        func(buildFileID int32, availability string) (*models.BuildFile, error)
+	updateBuildFileAvailabilityMutex       sync.RWMutex
+	updateBuildFileAvailabilityArgsForCall []struct {
+		buildFileID  int32
+		availability string
+	}
+	updateBuildFileAvailabilityReturns struct {
+		result1 *models.BuildFile
+		result2 error
+	}
+	updateBuildFileAvailabilityReturnsOnCall map[int]struct {
+		result1 *models.BuildFile
+		result2 error
+	}
 	invocations      map[string][][]interface{}
 	invocationsMutex sync.RWMutex
 }
@@ -1812,6 +1883,282 @@ func (fake *FakeClient) RawSimulationReturnsOnCall(i int, result1 map[string]int
 	}{result1, result2}
 }
 
+func (fake *FakeClient) BuildFiles(organizationID int32, availability []string, sort []string, offset int32, limit int32) ([]*models.BuildFile, error) {
+	var availabilityCopy []string
+	if availability != nil {
+		availabilityCopy = make([]string, len(availability))
+		copy(availabilityCopy, availability)
+	}
+	var sortCopy []string
+	if sort != nil {
+		sortCopy = make([]string, len(sort))
+		copy(sortCopy, sort)
+	}
+	fake.buildFilesMutex.Lock()
+	ret, specificReturn := fake.buildFilesReturnsOnCall[len(fake.buildFilesArgsForCall)]
+	fake.buildFilesArgsForCall = append(fake.buildFilesArgsForCall, struct {
+		organizationID int32
+		availability   []string
+		sort           []string
+		offset         int32
+		limit          int32
+	}{organizationID, availabilityCopy, sortCopy, offset, limit})
+	fake.recordInvocation("BuildFiles", []interface{}{organizationID, availabilityCopy, sortCopy, offset, limit})
+	fake.buildFilesMutex.Unlock()
+	if fake.BuildFilesStub != nil {
+		return fake.BuildFilesStub(organizationID, availability, sort, offset, limit)
+	}
+	if specificReturn {
+		return ret.result1, ret.result2
+	}
+	return fake.buildFilesReturns.result1, fake.buildFilesReturns.result2
+}
+
+func (fake *FakeClient) BuildFilesCallCount() int {
+	fake.buildFilesMutex.RLock()
+	defer fake.buildFilesMutex.RUnlock()
+	return len(fake.buildFilesArgsForCall)
+}
+
+func (fake *FakeClient) BuildFilesArgsForCall(i int) (int32, []string, []string, int32, int32) {
+	fake.buildFilesMutex.RLock()
+	defer fake.buildFilesMutex.RUnlock()
+	return fake.buildFilesArgsForCall[i].organizationID, fake.buildFilesArgsForCall[i].availability, fake.buildFilesArgsForCall[i].sort, fake.buildFilesArgsForCall[i].offset, fake.buildFilesArgsForCall[i].limit
+}
+
+func (fake *FakeClient) BuildFilesReturns(result1 []*models.BuildFile, result2 error) {
+	fake.BuildFilesStub = nil
+	fake.buildFilesReturns = struct {
+		result1 []*models.BuildFile
+		result2 error
+	}{result1, result2}
+}
+
+func (fake *FakeClient) BuildFilesReturnsOnCall(i int, result1 []*models.BuildFile, result2 error) {
+	fake.BuildFilesStub = nil
+	if fake.buildFilesReturnsOnCall == nil {
+		fake.buildFilesReturnsOnCall = make(map[int]struct {
+			result1 []*models.BuildFile
+			result2 error
+		})
+	}
+	fake.buildFilesReturnsOnCall[i] = struct {
+		result1 []*models.BuildFile
+		result2 error
+	}{result1, result2}
+}
+
+func (fake *FakeClient) BuildFile(buildFileID int32) (*models.BuildFile, error) {
+	fake.buildFileMutex.Lock()
+	ret, specificReturn := fake.buildFileReturnsOnCall[len(fake.buildFileArgsForCall)]
+	fake.buildFileArgsForCall = append(fake.buildFileArgsForCall, struct {
+		buildFileID int32
+	}{buildFileID})
+	fake.recordInvocation("BuildFile", []interface{}{buildFileID})
+	fake.buildFileMutex.Unlock()
+	if fake.BuildFileStub != nil {
+		return fake.BuildFileStub(buildFileID)
+	}
+	if specificReturn {
+		return ret.result1, ret.result2
+	}
+	return fake.buildFileReturns.result1, fake.buildFileReturns.result2
+}
+
+func (fake *FakeClient) BuildFileCallCount() int {
+	fake.buildFileMutex.RLock()
+	defer fake.buildFileMutex.RUnlock()
+	return len(fake.buildFileArgsForCall)
+}
+
+func (fake *FakeClient) BuildFileArgsForCall(i int) int32 {
+	fake.buildFileMutex.RLock()
+	defer fake.buildFileMutex.RUnlock()
+	return fake.buildFileArgsForCall[i].buildFileID
+}
+
+func (fake *FakeClient) BuildFileReturns(result1 *models.BuildFile, result2 error) {
+	fake.BuildFileStub = nil
+	fake.buildFileReturns = struct {
+		result1 *models.BuildFile
+		result2 error
+	}{result1, result2}
+}
+
+func (fake *FakeClient) BuildFileReturnsOnCall(i int, result1 *models.BuildFile, result2 error) {
+	fake.BuildFileStub = nil
+	if fake.buildFileReturnsOnCall == nil {
+		fake.buildFileReturnsOnCall = make(map[int]struct {
+			result1 *models.BuildFile
+			result2 error
+		})
+	}
+	fake.buildFileReturnsOnCall[i] = struct {
+		result1 *models.BuildFile
+		result2 error
+	}{result1, result2}
+}
+
+func (fake *FakeClient) PostBuildFile(arg1 *models.BuildFilePost) (*models.BuildFile, error) {
+	fake.postBuildFileMutex.Lock()
+	ret, specificReturn := fake.postBuildFileReturnsOnCall[len(fake.postBuildFileArgsForCall)]
+	fake.postBuildFileArgsForCall = append(fake.postBuildFileArgsForCall, struct {
+		arg1 *models.BuildFilePost
+	}{arg1})
+	fake.recordInvocation("PostBuildFile", []interface{}{arg1})
+	fake.postBuildFileMutex.Unlock()
+	if fake.PostBuildFileStub != nil {
+		return fake.PostBuildFileStub(arg1)
+	}
+	if specificReturn {
+		return ret.result1, ret.result2
+	}
+	return fake.postBuildFileReturns.result1, fake.postBuildFileReturns.result2
+}
+
+func (fake *FakeClient) PostBuildFileCallCount() int {
+	fake.postBuildFileMutex.RLock()
+	defer fake.postBuildFileMutex.RUnlock()
+	return len(fake.postBuildFileArgsForCall)
+}
+
+func (fake *FakeClient) PostBuildFileArgsForCall(i int) *models.BuildFilePost {
+	fake.postBuildFileMutex.RLock()
+	defer fake.postBuildFileMutex.RUnlock()
+	return fake.postBuildFileArgsForCall[i].arg1
+}
+
+func (fake *FakeClient) PostBuildFileReturns(result1 *models.BuildFile, result2 error) {
+	fake.PostBuildFileStub = nil
+	fake.postBuildFileReturns = struct {
+		result1 *models.BuildFile
+		result2 error
+	}{result1, result2}
+}
+
+func (fake *FakeClient) PostBuildFileReturnsOnCall(i int, result1 *models.BuildFile, result2 error) {
+	fake.PostBuildFileStub = nil
+	if fake.postBuildFileReturnsOnCall == nil {
+		fake.postBuildFileReturnsOnCall = make(map[int]struct {
+			result1 *models.BuildFile
+			result2 error
+		})
+	}
+	fake.postBuildFileReturnsOnCall[i] = struct {
+		result1 *models.BuildFile
+		result2 error
+	}{result1, result2}
+}
+
+func (fake *FakeClient) PatchBuildFile(buildFileID int32, patches []*models.PatchDocument) (*models.BuildFile, error) {
+	var patchesCopy []*models.PatchDocument
+	if patches != nil {
+		patchesCopy = make([]*models.PatchDocument, len(patches))
+		copy(patchesCopy, patches)
+	}
+	fake.patchBuildFileMutex.Lock()
+	ret, specificReturn := fake.patchBuildFileReturnsOnCall[len(fake.patchBuildFileArgsForCall)]
+	fake.patchBuildFileArgsForCall = append(fake.patchBuildFileArgsForCall, struct {
+		buildFileID int32
+		patches     []*models.PatchDocument
+	}{buildFileID, patchesCopy})
+	fake.recordInvocation("PatchBuildFile", []interface{}{buildFileID, patchesCopy})
+	fake.patchBuildFileMutex.Unlock()
+	if fake.PatchBuildFileStub != nil {
+		return fake.PatchBuildFileStub(buildFileID, patches)
+	}
+	if specificReturn {
+		return ret.result1, ret.result2
+	}
+	return fake.patchBuildFileReturns.result1, fake.patchBuildFileReturns.result2
+}
+
+func (fake *FakeClient) PatchBuildFileCallCount() int {
+	fake.patchBuildFileMutex.RLock()
+	defer fake.patchBuildFileMutex.RUnlock()
+	return len(fake.patchBuildFileArgsForCall)
+}
+
+func (fake *FakeClient) PatchBuildFileArgsForCall(i int) (int32, []*models.PatchDocument) {
+	fake.patchBuildFileMutex.RLock()
+	defer fake.patchBuildFileMutex.RUnlock()
+	return fake.patchBuildFileArgsForCall[i].buildFileID, fake.patchBuildFileArgsForCall[i].patches
+}
+
+func (fake *FakeClient) PatchBuildFileReturns(result1 *models.BuildFile, result2 error) {
+	fake.PatchBuildFileStub = nil
+	fake.patchBuildFileReturns = struct {
+		result1 *models.BuildFile
+		result2 error
+	}{result1, result2}
+}
+
+func (fake *FakeClient) PatchBuildFileReturnsOnCall(i int, result1 *models.BuildFile, result2 error) {
+	fake.PatchBuildFileStub = nil
+	if fake.patchBuildFileReturnsOnCall == nil {
+		fake.patchBuildFileReturnsOnCall = make(map[int]struct {
+			result1 *models.BuildFile
+			result2 error
+		})
+	}
+	fake.patchBuildFileReturnsOnCall[i] = struct {
+		result1 *models.BuildFile
+		result2 error
+	}{result1, result2}
+}
+
+func (fake *FakeClient) UpdateBuildFileAvailability(buildFileID int32, availability string) (*models.BuildFile, error) {
+	fake.updateBuildFileAvailabilityMutex.Lock()
+	ret, specificReturn := fake.updateBuildFileAvailabilityReturnsOnCall[len(fake.updateBuildFileAvailabilityArgsForCall)]
+	fake.updateBuildFileAvailabilityArgsForCall = append(fake.updateBuildFileAvailabilityArgsForCall, struct {
+		buildFileID  int32
+		availability string
+	}{buildFileID, availability})
+	fake.recordInvocation("UpdateBuildFileAvailability", []interface{}{buildFileID, availability})
+	fake.updateBuildFileAvailabilityMutex.Unlock()
+	if fake.UpdateBuildFileAvailabilityStub != nil {
+		return fake.UpdateBuildFileAvailabilityStub(buildFileID, availability)
+	}
+	if specificReturn {
+		return ret.result1, ret.result2
+	}
+	return fake.updateBuildFileAvailabilityReturns.result1, fake.updateBuildFileAvailabilityReturns.result2
+}
+
+func (fake *FakeClient) UpdateBuildFileAvailabilityCallCount() int {
+	fake.updateBuildFileAvailabilityMutex.RLock()
+	defer fake.updateBuildFileAvailabilityMutex.RUnlock()
+	return len(fake.updateBuildFileAvailabilityArgsForCall)
+}
+
+func (fake *FakeClient) UpdateBuildFileAvailabilityArgsForCall(i int) (int32, string) {
+	fake.updateBuildFileAvailabilityMutex.RLock()
+	defer fake.updateBuildFileAvailabilityMutex.RUnlock()
+	return fake.updateBuildFileAvailabilityArgsForCall[i].buildFileID, fake.updateBuildFileAvailabilityArgsForCall[i].availability
+}
+
+func (fake *FakeClient) UpdateBuildFileAvailabilityReturns(result1 *models.BuildFile, result2 error) {
+	fake.UpdateBuildFileAvailabilityStub = nil
+	fake.updateBuildFileAvailabilityReturns = struct {
+		result1 *models.BuildFile
+		result2 error
+	}{result1, result2}
+}
+
+func (fake *FakeClient) UpdateBuildFileAvailabilityReturnsOnCall(i int, result1 *models.BuildFile, result2 error) {
+	fake.UpdateBuildFileAvailabilityStub = nil
+	if fake.updateBuildFileAvailabilityReturnsOnCall == nil {
+		fake.updateBuildFileAvailabilityReturnsOnCall = make(map[int]struct {
+			result1 *models.BuildFile
+			result2 error
+		})
+	}
+	fake.updateBuildFileAvailabilityReturnsOnCall[i] = struct {
+		result1 *models.BuildFile
+		result2 error
+	}{result1, result2}
+}
+
 func (fake *FakeClient) Invocations() map[string][][]interface{} {
 	fake.invocationsMutex.RLock()
 	defer fake.invocationsMutex.RUnlock()
@@ -1871,6 +2218,16 @@ func (fake *FakeClient) Invocations() map[string][][]interface{} {
 	defer fake.updateSimulationStatusMutex.RUnlock()
 	fake.rawSimulationMutex.RLock()
 	defer fake.rawSimulationMutex.RUnlock()
+	fake.buildFilesMutex.RLock()
+	defer fake.buildFilesMutex.RUnlock()
+	fake.buildFileMutex.RLock()
+	defer fake.buildFileMutex.RUnlock()
+	fake.postBuildFileMutex.RLock()
+	defer fake.postBuildFileMutex.RUnlock()
+	fake.patchBuildFileMutex.RLock()
+	defer fake.patchBuildFileMutex.RUnlock()
+	fake.updateBuildFileAvailabilityMutex.RLock()
+	defer fake.updateBuildFileAvailabilityMutex.RUnlock()
 	return fake.invocations
 }
 
