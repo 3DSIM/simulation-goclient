@@ -6,6 +6,9 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"net/url"
+	"time"
+
 	"github.com/3dsim/auth0"
 	"github.com/3dsim/simulation-goclient/genclient"
 	"github.com/3dsim/simulation-goclient/genclient/operations"
@@ -14,8 +17,6 @@ import (
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 	log "github.com/inconshreveable/log15"
-	"net/url"
-	"time"
 )
 
 // Log is a github.com/inconshreveable/log15.Logger.  Log is exposed so that users of this library can set
@@ -69,6 +70,11 @@ type Client interface {
 	UpdateSimulationStatus(simulationID int32, status string) error
 	// RawSimulation gets a simulation as a map instead of a struct
 	RawSimulation(simulationID int32) (map[string]interface{}, error)
+	BuildFiles(organizationID int32, availability []string, sort []string, offset, limit int32) ([]*models.BuildFile, error)
+	BuildFile(buildFileID int32) (*models.BuildFile, error)
+	PostBuildFile(*models.BuildFilePost) (*models.BuildFile, error)
+	PatchBuildFile(buildFileID int32, patches []*models.PatchDocument) (*models.BuildFile, error)
+	UpdateBuildFileAvailability(buildFileID int32, availability string) (*models.BuildFile, error)
 }
 
 type client struct {
@@ -722,4 +728,107 @@ func (c *client) RawSimulation(simulationID int32) (s map[string]interface{}, er
 		return nil, err
 	}
 	return m, nil
+}
+
+func (c *client) BuildFiles(organizationID int32, availability []string, sort []string, offset, limit int32) (buildFiles []*models.BuildFile, err error) {
+	defer func() {
+		// Until this issue is resolved: https://github.com/go-swagger/go-swagger/issues/1021, we need to recover from
+		// panics.
+		if r := recover(); r != nil {
+			err = fmt.Errorf("Recovered from panic: %v", r)
+		}
+	}()
+	token, err := c.tokenFetcher.Token(c.audience)
+	if err != nil {
+		return nil, err
+	}
+	params := operations.NewGetBuildFilesParams().
+		WithOrganizationID(organizationID).
+		WithAvailability(availability).
+		WithSort(sort).
+		WithLimit(swag.Int32(limit)).
+		WithOffset(swag.Int32(offset))
+
+	response, err := c.client.Operations.GetBuildFiles(params, openapiclient.BearerToken(token))
+	if err != nil {
+		return nil, err
+	}
+	return response.Payload, nil
+}
+
+func (c *client) BuildFile(buildFileID int32) (buildFile *models.BuildFile, err error) {
+	defer func() {
+		// Until this issue is resolved: https://github.com/go-swagger/go-swagger/issues/1021, we need to recover from
+		// panics.
+		if r := recover(); r != nil {
+			err = fmt.Errorf("Recovered from panic: %v", r)
+		}
+	}()
+	token, err := c.tokenFetcher.Token(c.audience)
+	if err != nil {
+		return nil, err
+	}
+	params := operations.NewGetBuildFileParams().WithID(buildFileID)
+
+	response, err := c.client.Operations.GetBuildFile(params, openapiclient.BearerToken(token))
+	if err != nil {
+		return nil, err
+	}
+	return response.Payload, nil
+}
+
+func (c *client) PostBuildFile(buildFilePost *models.BuildFilePost) (buildFile *models.BuildFile, err error) {
+	defer func() {
+		// Until this issue is resolved: https://github.com/go-swagger/go-swagger/issues/1021, we need to recover from
+		// panics.
+		if r := recover(); r != nil {
+			err = fmt.Errorf("Recovered from panic: %v", r)
+		}
+	}()
+
+	token, err := c.tokenFetcher.Token(c.audience)
+	if err != nil {
+		return nil, err
+	}
+
+	params := operations.NewPostBuildFileParams().WithBuildFilePost(buildFilePost)
+
+	response, err := c.client.Operations.PostBuildFile(params, openapiclient.BearerToken(token))
+	if err != nil {
+		return nil, err
+	}
+	return response.Payload, nil
+}
+
+func (c *client) PatchBuildFile(buildFileID int32, patches []*models.PatchDocument) (buildFile *models.BuildFile, err error) {
+	defer func() {
+		// Until this issue is resolved: https://github.com/go-swagger/go-swagger/issues/1021, we need to recover from
+		// panics.
+		if r := recover(); r != nil {
+			err = fmt.Errorf("Recovered from panic: %v", r)
+		}
+	}()
+
+	token, err := c.tokenFetcher.Token(c.audience)
+	if err != nil {
+		return nil, err
+	}
+
+	params := operations.NewPatchBuildFileParams().WithBuildFilePatch(patches).WithID(buildFileID)
+
+	response, err := c.client.Operations.PatchBuildFile(params, openapiclient.BearerToken(token))
+	if err != nil {
+		return nil, err
+	}
+	return response.Payload, nil
+}
+func (c *client) UpdateBuildFileAvailability(buildFileID int32, availability string) (buildFile *models.BuildFile, err error) {
+
+	patch := models.PatchDocument{
+		Op:    swag.String(models.PatchDocumentOpReplace),
+		Path:  swag.String("/availability"),
+		Value: availability,
+	}
+
+	return c.PatchBuildFile(buildFileID, []*models.PatchDocument{&patch})
 }
