@@ -1225,3 +1225,49 @@ func TestUpdateBuildFileAvailabilityWhenSimulationAPIErrorsExpectsErrorReturned(
 	// assert
 	assert.NotNil(t, err, "Expected an error returned because simulation api sent a 500 error")
 }
+
+func TestRawBUildFileWhenSuccessfulExpectsBuildFileMapReturned(t *testing.T) {
+	// arrange
+	buildFileID := int64(2)
+
+	// Token
+	fakeTokenFetcher := &auth0fakes.FakeTokenFetcher{}
+	fakeTokenFetcher.TokenReturns("Token", nil)
+
+	// Simulation
+	buildFileToReturn := &models.BuildFile{
+		ID:          buildFileID,
+		Name:        swag.String("Build File Name"),
+		MachineType: swag.String(models.BuildFileMachineTypeAdditiveIndustries),
+	}
+	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		assert.NotEmpty(t, r.Header.Get("Authorization"), "Authorization header should not be empty")
+		receivedSimulationID, err := strconv.Atoi(mux.Vars(r)["id"])
+		if err != nil {
+			t.Fatal(err)
+		}
+		assert.EqualValues(t, int(buildFileID), receivedSimulationID, "Expected build file id received to match what was passed in")
+		bytes, err := json.Marshal(buildFileToReturn)
+		if err != nil {
+			t.Error("Failed to marshal simulation")
+		}
+		w.Write(bytes)
+	})
+
+	// Setup routes
+	r := mux.NewRouter()
+	endpoint := "/" + SimulationAPIBasePath + "/buildfiles/{id}"
+	r.HandleFunc(endpoint, handler)
+	testServer := httptest.NewServer(r)
+	defer testServer.Close()
+	client := NewClient(fakeTokenFetcher, testServer.URL, audience)
+
+	// act
+	buildFileMap, err := client.RawBuildFile(int32(buildFileID))
+
+	// assert
+	assert.Nil(t, err, "Expected no error returned")
+	assert.Equal(t, *buildFileToReturn.Name, buildFileMap["name"], "Expected names to match")
+	assert.EqualValues(t, buildFileToReturn.ID, buildFileMap["id"], "Expected IDs to match")
+}

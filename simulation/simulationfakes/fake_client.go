@@ -445,6 +445,19 @@ type FakeClient struct {
 		result1 *models.BuildFile
 		result2 error
 	}
+	RawBuildFileStub        func(buildFileID int32) (map[string]interface{}, error)
+	rawBuildFileMutex       sync.RWMutex
+	rawBuildFileArgsForCall []struct {
+		buildFileID int32
+	}
+	rawBuildFileReturns struct {
+		result1 map[string]interface{}
+		result2 error
+	}
+	rawBuildFileReturnsOnCall map[int]struct {
+		result1 map[string]interface{}
+		result2 error
+	}
 	invocations      map[string][][]interface{}
 	invocationsMutex sync.RWMutex
 }
@@ -2159,6 +2172,57 @@ func (fake *FakeClient) UpdateBuildFileAvailabilityReturnsOnCall(i int, result1 
 	}{result1, result2}
 }
 
+func (fake *FakeClient) RawBuildFile(buildFileID int32) (map[string]interface{}, error) {
+	fake.rawBuildFileMutex.Lock()
+	ret, specificReturn := fake.rawBuildFileReturnsOnCall[len(fake.rawBuildFileArgsForCall)]
+	fake.rawBuildFileArgsForCall = append(fake.rawBuildFileArgsForCall, struct {
+		buildFileID int32
+	}{buildFileID})
+	fake.recordInvocation("RawBuildFile", []interface{}{buildFileID})
+	fake.rawBuildFileMutex.Unlock()
+	if fake.RawBuildFileStub != nil {
+		return fake.RawBuildFileStub(buildFileID)
+	}
+	if specificReturn {
+		return ret.result1, ret.result2
+	}
+	return fake.rawBuildFileReturns.result1, fake.rawBuildFileReturns.result2
+}
+
+func (fake *FakeClient) RawBuildFileCallCount() int {
+	fake.rawBuildFileMutex.RLock()
+	defer fake.rawBuildFileMutex.RUnlock()
+	return len(fake.rawBuildFileArgsForCall)
+}
+
+func (fake *FakeClient) RawBuildFileArgsForCall(i int) int32 {
+	fake.rawBuildFileMutex.RLock()
+	defer fake.rawBuildFileMutex.RUnlock()
+	return fake.rawBuildFileArgsForCall[i].buildFileID
+}
+
+func (fake *FakeClient) RawBuildFileReturns(result1 map[string]interface{}, result2 error) {
+	fake.RawBuildFileStub = nil
+	fake.rawBuildFileReturns = struct {
+		result1 map[string]interface{}
+		result2 error
+	}{result1, result2}
+}
+
+func (fake *FakeClient) RawBuildFileReturnsOnCall(i int, result1 map[string]interface{}, result2 error) {
+	fake.RawBuildFileStub = nil
+	if fake.rawBuildFileReturnsOnCall == nil {
+		fake.rawBuildFileReturnsOnCall = make(map[int]struct {
+			result1 map[string]interface{}
+			result2 error
+		})
+	}
+	fake.rawBuildFileReturnsOnCall[i] = struct {
+		result1 map[string]interface{}
+		result2 error
+	}{result1, result2}
+}
+
 func (fake *FakeClient) Invocations() map[string][][]interface{} {
 	fake.invocationsMutex.RLock()
 	defer fake.invocationsMutex.RUnlock()
@@ -2228,6 +2292,8 @@ func (fake *FakeClient) Invocations() map[string][][]interface{} {
 	defer fake.patchBuildFileMutex.RUnlock()
 	fake.updateBuildFileAvailabilityMutex.RLock()
 	defer fake.updateBuildFileAvailabilityMutex.RUnlock()
+	fake.rawBuildFileMutex.RLock()
+	defer fake.rawBuildFileMutex.RUnlock()
 	return fake.invocations
 }
 
