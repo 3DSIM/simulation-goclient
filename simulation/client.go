@@ -75,6 +75,7 @@ type Client interface {
 	PostBuildFile(*models.BuildFilePost) (*models.BuildFile, error)
 	PatchBuildFile(buildFileID int32, patches []*models.PatchDocument) (*models.BuildFile, error)
 	UpdateBuildFileAvailability(buildFileID int32, availability string) (*models.BuildFile, error)
+	RawBuildFile(buildFileID int32) (map[string]interface{}, error)
 }
 
 type client struct {
@@ -831,4 +832,34 @@ func (c *client) UpdateBuildFileAvailability(buildFileID int32, availability str
 	}
 
 	return c.PatchBuildFile(buildFileID, []*models.PatchDocument{&patch})
+}
+
+func (c *client) RawBuildFile(buildFileID int32) (s map[string]interface{}, err error) {
+	defer func() {
+		// Until this issue is resolved: https://github.com/go-swagger/go-swagger/issues/1021, we need to recover from
+		// panics.
+		if r := recover(); r != nil {
+			err = fmt.Errorf("Recovered from panic: %v", r)
+		}
+	}()
+	token, err := c.tokenFetcher.Token(c.audience)
+	if err != nil {
+		return nil, err
+	}
+	bearerToken := openapiclient.BearerToken(token)
+
+	params := operations.NewGetBuildFileParams().WithID(buildFileID)
+	payload, err := c.client.Operations.GetBuildFile(params, bearerToken)
+	if err != nil {
+		return nil, err
+	}
+	rawBytes, err := json.Marshal(*payload.Payload)
+	if err != nil {
+		return nil, err
+	}
+	var m map[string]interface{}
+	if err := json.Unmarshal(rawBytes, &m); err != nil {
+		return nil, err
+	}
+	return m, nil
 }
