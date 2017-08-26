@@ -76,6 +76,9 @@ type Client interface {
 	PatchBuildFile(buildFileID int32, patches []*models.PatchDocument) (*models.BuildFile, error)
 	UpdateBuildFileAvailability(buildFileID int32, availability string) (*models.BuildFile, error)
 	RawBuildFile(buildFileID int32) (map[string]interface{}, error)
+	Part(partID int32) (*models.Part, error)
+	UpdatePartAvailability(partID int32, availability string) (*models.Part, error)
+	PatchPart(partID int32, patches []*models.PatchDocument) (*models.Part, error)
 }
 
 type client struct {
@@ -566,7 +569,7 @@ func (c *client) SimulationActivityByActivityID(simulationID int32, activityID s
 			return activity, nil
 		}
 	}
-	return nil, fmt.Errorf("SimulationActivity with activity id %v not found for simulation %v.", activityID, simulationID)
+	return nil, fmt.Errorf("a SimulationActivity with activity id %v not found for simulation %v", activityID, simulationID)
 }
 
 func (c *client) PutSimulationActivity(simulationID int32, simulationActivity *models.SimulationActivity) (err error) {
@@ -823,6 +826,7 @@ func (c *client) PatchBuildFile(buildFileID int32, patches []*models.PatchDocume
 	}
 	return response.Payload, nil
 }
+
 func (c *client) UpdateBuildFileAvailability(buildFileID int32, availability string) (buildFile *models.BuildFile, err error) {
 
 	patch := models.PatchDocument{
@@ -862,4 +866,59 @@ func (c *client) RawBuildFile(buildFileID int32) (s map[string]interface{}, err 
 		return nil, err
 	}
 	return m, nil
+}
+
+func (c *client) Part(partID int32) (part *models.Part, err error) {
+	defer func() {
+		// Until this issue is resolved: https://github.com/go-swagger/go-swagger/issues/1021, we need to recover from
+		// panics.
+		if r := recover(); r != nil {
+			err = fmt.Errorf("Recovered from panic: %v", r)
+		}
+	}()
+	token, err := c.tokenFetcher.Token(c.audience)
+	if err != nil {
+		return nil, err
+	}
+	params := operations.NewGetPartParams().WithID(partID)
+
+	response, err := c.client.Operations.GetPart(params, openapiclient.BearerToken(token))
+	if err != nil {
+		return nil, err
+	}
+	return response.Payload, nil
+}
+
+func (c *client) PatchPart(partID int32, patches []*models.PatchDocument) (part *models.Part, err error) {
+	defer func() {
+		// Until this issue is resolved: https://github.com/go-swagger/go-swagger/issues/1021, we need to recover from
+		// panics.
+		if r := recover(); r != nil {
+			err = fmt.Errorf("Recovered from panic: %v", r)
+		}
+	}()
+
+	token, err := c.tokenFetcher.Token(c.audience)
+	if err != nil {
+		return nil, err
+	}
+
+	params := operations.NewPatchPartParams().WithPartPatch(patches).WithID(partID)
+
+	response, err := c.client.Operations.PatchPart(params, openapiclient.BearerToken(token))
+	if err != nil {
+		return nil, err
+	}
+	return response.Payload, nil
+}
+
+func (c *client) UpdatePartAvailability(partID int32, availability string) (part *models.Part, err error) {
+
+	patch := models.PatchDocument{
+		Op:    swag.String(models.PatchDocumentOpReplace),
+		Path:  swag.String("/availability"),
+		Value: availability,
+	}
+
+	return c.PatchPart(partID, []*models.PatchDocument{&patch})
 }
