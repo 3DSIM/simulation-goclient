@@ -159,7 +159,7 @@ func NewPatchBuildFileNotFound() *PatchBuildFileNotFound {
 
 /*PatchBuildFileNotFound handles this case with default header values.
 
-Simulation not found (id invalid)
+Build file not found (id invalid)
 */
 type PatchBuildFileNotFound struct {
 	Payload *models.Error

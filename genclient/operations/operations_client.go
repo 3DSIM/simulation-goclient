@@ -1358,6 +1358,35 @@ func (a *Client) PatchBuildFile(params *PatchBuildFileParams, authInfo runtime.C
 }
 
 /*
+PatchPart Update fields within a part
+*/
+func (a *Client) PatchPart(params *PatchPartParams, authInfo runtime.ClientAuthInfoWriter) (*PatchPartOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewPatchPartParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "patchPart",
+		Method:             "PATCH",
+		PathPattern:        "/parts/{id}",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &PatchPartReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*PatchPartOK), nil
+
+}
+
+/*
 PatchSimulation Patch a simulation
 */
 func (a *Client) PatchSimulation(params *PatchSimulationParams, authInfo runtime.ClientAuthInfoWriter) (*PatchSimulationOK, error) {

@@ -23,7 +23,7 @@ directory was all generated using the `go-swagger` tools.
 * `models` - the generated models
 
 ## Regenerating code
-First install the swagger generator.  Currently we are using commit 5da5a44596c2c9e69568ea9b9f06ef4c48c6c5fe of https://github.com/go-swagger/go-swagger.
+First install the swagger generator.  Currently we are using release 0.11.0 of https://github.com/go-swagger/go-swagger.
 
 For mac users:
 * brew tap go-swagger/go-swagger
