@@ -1334,7 +1334,7 @@ func TestPatchPartWithNonNilValuesExpectsSuccess(t *testing.T) {
 
 	assert.Nil(t, err, "Expected no error returned")
 	assert.NotNil(t, part)
-	assert.Equal(t, partID, part.ID, "Expected ID values to match")
+	assert.Equal(t, partID, *part.ID, "Expected ID values to match")
 }
 
 func TestPatchPartWhenSimulationAPIErrorsExpectsErrorReturned(t *testing.T) {
