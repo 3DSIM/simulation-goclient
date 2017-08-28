@@ -32,10 +32,6 @@ type AssumedStrainSimulationParameters struct {
 	// Required: true
 	AnisotropicStrainCoefficientsZ *float64 `json:"anisotropicStrainCoefficientsZ"`
 
-	// assumed strain
-	// Required: true
-	AssumedStrain *float64 `json:"assumedStrain"`
-
 	// should be a number between 0.5 and 1.5
 	BladeCrashThreshold float64 `json:"bladeCrashThreshold,omitempty"`
 
@@ -72,10 +68,9 @@ type AssumedStrainSimulationParameters struct {
 	LayerRotationAngle *float64 `json:"layerRotationAngle"`
 
 	// Must be between 0.00001 to 0.0001 meters
-	// Required: true
 	// Maximum: 0.0001
 	// Minimum: 1e-05
-	LayerThickness *float64 `json:"layerThickness"`
+	LayerThickness float64 `json:"layerThickness,omitempty"`
 
 	// Must be between 0 to 0.003 meters, Must be greater than minimumWallDistance
 	// Required: true
@@ -211,11 +206,6 @@ func (m *AssumedStrainSimulationParameters) Validate(formats strfmt.Registry) er
 	}
 
 	if err := m.validateAnisotropicStrainCoefficientsZ(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
-	if err := m.validateAssumedStrain(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -393,15 +383,6 @@ func (m *AssumedStrainSimulationParameters) validateAnisotropicStrainCoefficient
 	return nil
 }
 
-func (m *AssumedStrainSimulationParameters) validateAssumedStrain(formats strfmt.Registry) error {
-
-	if err := validate.Required("assumedStrain", "body", m.AssumedStrain); err != nil {
-		return err
-	}
-
-	return nil
-}
-
 func (m *AssumedStrainSimulationParameters) validateDetectBladeCrash(formats strfmt.Registry) error {
 
 	if err := validate.Required("detectBladeCrash", "body", m.DetectBladeCrash); err != nil {
@@ -473,15 +454,15 @@ func (m *AssumedStrainSimulationParameters) validateLayerRotationAngle(formats s
 
 func (m *AssumedStrainSimulationParameters) validateLayerThickness(formats strfmt.Registry) error {
 
-	if err := validate.Required("layerThickness", "body", m.LayerThickness); err != nil {
+	if swag.IsZero(m.LayerThickness) { // not required
+		return nil
+	}
+
+	if err := validate.Minimum("layerThickness", "body", float64(m.LayerThickness), 1e-05, false); err != nil {
 		return err
 	}
 
-	if err := validate.Minimum("layerThickness", "body", float64(*m.LayerThickness), 1e-05, false); err != nil {
-		return err
-	}
-
-	if err := validate.Maximum("layerThickness", "body", float64(*m.LayerThickness), 0.0001, false); err != nil {
+	if err := validate.Maximum("layerThickness", "body", float64(m.LayerThickness), 0.0001, false); err != nil {
 		return err
 	}
 
