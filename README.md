@@ -47,6 +47,18 @@ From inside package folder
 go generate
 ```
 
+* Generate mocks using https://github.com/vektra/mockery
+
+```
+go get github.com/vektra/mockery/.../
+$GOPATH/bin/mockery -name <interface name> -recursive
+```
+
+If you need to generate mocks in the same package to avoid circular dependencies use
+```
+$GOPATH/bin/mockery -name <interface name> -recursive -inpkg
+```
+
 ## Using the client
 TODO
 
