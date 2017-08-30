@@ -44,7 +44,7 @@ type BuildFile struct {
 	ErrorReason string `json:"errorReason,omitempty"`
 
 	// creation time stamp from original build file
-	FileCreatedDate strfmt.DateTime `json:"fileCreatedDate,omitempty"`
+	FileCreatedDate *strfmt.DateTime `json:"fileCreatedDate,omitempty"`
 
 	// version of this build file
 	FileVersion string `json:"fileVersion,omitempty"`
