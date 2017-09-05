@@ -105,11 +105,11 @@ func NewClient(tokenFetcher auth0.TokenFetcher, apiGatewayURL, audience string) 
 }
 
 // NewClientWithRetry creates the same type of client as NewClient, but allows for retrying any temporary errors or
-// any responses with status >= 404 and < 600 for a specified amount of time.
+// any responses with status >= 400 and < 600 for a specified amount of time.
 func NewClientWithRetry(tokenFetcher auth0.TokenFetcher, apiGatewayURL, audience string, retryTimeout time.Duration) Client {
 	tr := rehttp.NewTransport(
 		nil, // will use http.DefaultTransport
-		rehttp.RetryAny(rehttp.RetryStatusInterval(404, 600), rehttp.RetryTemporaryErr()),
+		rehttp.RetryAny(rehttp.RetryStatusInterval(400, 600), rehttp.RetryTemporaryErr()),
 		rehttp.ExpJitterDelay(1*time.Second, retryTimeout),
 	)
 	return newClient(tokenFetcher, apiGatewayURL, audience, tr, retryTimeout)
