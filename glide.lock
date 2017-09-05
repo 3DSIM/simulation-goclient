@@ -1,5 +1,5 @@
-hash: 4d5b43939936a279d4b9671d2cf4103300cfe92674aac5e9be9e5f1c506668b4
-updated: 2017-08-29T15:12:41.096606919-06:00
+hash: 088ff26e6ae8f42172e8819cf6db34e0f9c6011dce9676756bbc50f0589745ca
+updated: 2017-09-05T14:07:22.720358-06:00
 imports:
 - name: github.com/3dsim/auth0
   version: 3f3ebd1a6c49200c8bffae4a91c4cb06c675347c
@@ -14,7 +14,7 @@ imports:
 - name: github.com/go-openapi/analysis
   version: d5a75b7d751ca3f11ad5d93cfe97405f2c3f6a47
 - name: github.com/go-openapi/errors
-  version: fc3f73a224499b047eda7191e5d22e1e9631e86f
+  version: 03cfca65330da08a5a440053faf994a3c682b5bf
 - name: github.com/go-openapi/jsonpointer
   version: 779f45308c19820f1a69e9a4cd965f496e0da10f
 - name: github.com/go-openapi/jsonreference
@@ -24,7 +24,7 @@ imports:
   subpackages:
   - fmts
 - name: github.com/go-openapi/runtime
-  version: 6c55ee725bbcb3f0756416804a01a42e072de6e0
+  version: af767f4dce066d1bc26dd784dcbe9c8ee6b417ca
   subpackages:
   - client
 - name: github.com/go-openapi/spec
@@ -38,7 +38,7 @@ imports:
 - name: github.com/go-stack/stack
   version: 100eb0c0a9c5b306ca2fb4f165df21d80ada4b82
 - name: github.com/inconshreveable/log15
-  version: 46a701a619de90c65a78c04d1a58bf02585e9701
+  version: 74a0988b5f804e8ce9ff74fca4f16980776dff29
   subpackages:
   - term
 - name: github.com/mailru/easyjson
@@ -59,6 +59,8 @@ imports:
   - difflib
 - name: github.com/PuerkitoBio/purell
   version: 0bcb03f4b4d0a9428594752bd2a3b9aa0a9d4bd4
+- name: github.com/PuerkitoBio/rehttp
+  version: 5989d9566be1c6334786e55385219c2b9ab1c4dc
 - name: github.com/PuerkitoBio/urlesc
   version: 5bd2802263f21d8788851d5305584c82a5c75d7e
 - name: github.com/stretchr/objx
@@ -90,4 +92,4 @@ testImports:
 - name: github.com/gorilla/context
   version: 08b5f424b9271eedf6f9f0ce86cb9396ed337a42
 - name: github.com/gorilla/mux
-  version: 392c28fe23e1c45ddba891b0320b3b5df220beea
+  version: bcd8bc72b08df0f70df986b97f95590779502d31

@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"net/http"
 	"net/url"
 	"time"
 
@@ -13,6 +14,7 @@ import (
 	"github.com/3dsim/simulation-goclient/genclient"
 	"github.com/3dsim/simulation-goclient/genclient/operations"
 	"github.com/3dsim/simulation-goclient/models"
+	"github.com/PuerkitoBio/rehttp"
 	openapiclient "github.com/go-openapi/runtime/client"
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
@@ -99,13 +101,35 @@ type client struct {
 //		Prod 	= https://simulation.3dsim.com/v2
 // 		Gov 	= https://simulation-gov.3dsim.com
 func NewClient(tokenFetcher auth0.TokenFetcher, apiGatewayURL, audience string) Client {
+	return newClient(tokenFetcher, apiGatewayURL, audience, nil, openapiclient.DefaultTimeout)
+}
+
+// NewClientWithRetry creates the same type of client as NewClient, but allows for retrying any temporary errors or
+// any responses with status >= 404 and < 600 for a specified amount of time.
+func NewClientWithRetry(tokenFetcher auth0.TokenFetcher, apiGatewayURL, audience string, retryTimeout time.Duration) Client {
+	tr := rehttp.NewTransport(
+		nil, // will use http.DefaultTransport
+		rehttp.RetryAny(rehttp.RetryStatusInterval(404, 600), rehttp.RetryTemporaryErr()),
+		rehttp.ExpJitterDelay(1*time.Second, retryTimeout),
+	)
+	return newClient(tokenFetcher, apiGatewayURL, audience, tr, retryTimeout)
+}
+
+func newClient(tokenFetcher auth0.TokenFetcher, apiGatewayURL, audience string,
+	roundTripper http.RoundTripper, defaultRequestTimeout time.Duration) Client {
+
 	parsedURL, err := url.Parse(apiGatewayURL)
 	if err != nil {
 		message := "API Gateway URL was invalid!"
 		Log.Error(message, "apiGatewayURL", apiGatewayURL)
 		panic(message + " " + err.Error())
 	}
+
 	simulationTransport := openapiclient.New(parsedURL.Host, SimulationAPIBasePath, []string{parsedURL.Scheme})
+	if roundTripper != nil {
+		simulationTransport.Transport = roundTripper
+	}
+	openapiclient.DefaultTimeout = defaultRequestTimeout
 	simulationTransport.Debug = true
 	simulationClient := genclient.New(simulationTransport, strfmt.Default)
 	return &client{
