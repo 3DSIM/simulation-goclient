@@ -2,7 +2,6 @@ package simulation
 
 import (
 	"errors"
-	"fmt"
 	"io/ioutil"
 	"testing"
 	"time"
@@ -1458,7 +1457,6 @@ func TestNewClientWithRetryWhen500ExpectsRetry(t *testing.T) {
 	callCounter := 0
 	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		callCounter++
-		fmt.Println("Received API call in retry test.")
 		w.WriteHeader(500)
 	})
 
