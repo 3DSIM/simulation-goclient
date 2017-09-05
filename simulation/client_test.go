@@ -2,8 +2,10 @@ package simulation
 
 import (
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"testing"
+	"time"
 
 	"encoding/json"
 	"net/http"
@@ -1445,5 +1447,32 @@ func TestPartWhenSimulationAPIErrorsExpectsErrorReturned(t *testing.T) {
 	_, err := client.Part(buidFileID)
 
 	// assert
+	assert.NotNil(t, err, "Expected an error returned because simulation api sent a 500 error")
+}
+
+func TestNewClientWithRetryWhen500ExpectsRetry(t *testing.T) {
+	// arrange
+	fakeTokenFetcher := &auth0fakes.FakeTokenFetcher{}
+	fakeTokenFetcher.TokenReturns("Token", nil)
+
+	callCounter := 0
+	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		callCounter++
+		fmt.Println("Received API call in retry test.")
+		w.WriteHeader(500)
+	})
+
+	// Setup routes
+	r := mux.NewRouter()
+	r.HandleFunc("/"+SimulationAPIBasePath+"/parts/1", handler)
+	testServer := httptest.NewServer(r)
+	defer testServer.Close()
+	client := NewClientWithRetry(fakeTokenFetcher, testServer.URL, audience, 3*time.Second)
+
+	// act
+	_, err := client.Part(1)
+
+	// assert
+	assert.True(t, callCounter > 1, "Expected to retry the failed call at least once")
 	assert.NotNil(t, err, "Expected an error returned because simulation api sent a 500 error")
 }
