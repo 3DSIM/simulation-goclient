@@ -144,6 +144,9 @@ type ThermalSimulationParameters struct {
 	// Required: true
 	OutputVirtualSensorData *bool `json:"outputVirtualSensorData"`
 
+	// should be a number between 0.01 and 1.0
+	PartFailureThreshold float64 `json:"partFailureThreshold,omitempty"`
+
 	// if true, a predistorted STL file will be created using the distortion simulated by the mechanics solver
 	PerformDistortionCompensation bool `json:"performDistortionCompensation,omitempty"`
 
@@ -186,6 +189,9 @@ type ThermalSimulationParameters struct {
 	// Required: true
 	StrainScalingFactor *float64 `json:"strainScalingFactor"`
 
+	// should be a number between 0.01 and 1.0
+	StrainWarningThreshold float64 `json:"strainWarningThreshold,omitempty"`
+
 	// stress mode
 	// Required: true
 	StressMode *string `json:"stressMode"`
@@ -202,7 +208,7 @@ type ThermalSimulationParameters struct {
 	// Minimum: 0.1
 	SupportFactorOfSafety *float64 `json:"supportFactorOfSafety"`
 
-	// should be a number between 0.5 and 1.5
+	// should be a number between 0.01 and 1.0
 	SupportFailureThreshold float64 `json:"supportFailureThreshold,omitempty"`
 
 	// support optimization
