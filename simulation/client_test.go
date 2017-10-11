@@ -805,10 +805,10 @@ func TestBuildFilesWithNonNilValuesExpectsSuccess(t *testing.T) {
 	// Build Files
 	buildFilesToReturn := []models.BuildFile{
 		models.BuildFile{
-			ID: 1,
+			ID: swag.Int64(1),
 		},
 		models.BuildFile{
-			ID: 2,
+			ID: swag.Int64(2),
 		},
 	}
 
@@ -877,14 +877,14 @@ func TestBuildFilesWhenSimulationAPIErrorsExpectsErrorReturned(t *testing.T) {
 
 func TestBuildFileWithNonNilValuesExpectsSuccess(t *testing.T) {
 	// arrange
-	buildFileID := int32(10)
+	buildFileID := int64(10)
 
 	// Token
 	fakeTokenFetcher := &auth0fakes.FakeTokenFetcher{}
 	fakeTokenFetcher.TokenReturns("Token", nil)
 
 	buildFileToReturn := models.BuildFile{
-		ID:           int64(buildFileID),
+		ID:           swag.Int64(buildFileID),
 		Name:         swag.String("MyBuildFile"),
 		Availability: swag.String("Available"),
 	}
@@ -913,13 +913,13 @@ func TestBuildFileWithNonNilValuesExpectsSuccess(t *testing.T) {
 	client := NewClient(fakeTokenFetcher, testServer.URL, audience)
 
 	// act
-	buildFile, err := client.BuildFile(buildFileID)
+	buildFile, err := client.BuildFile(int32(buildFileID))
 
 	// assert
 
 	assert.Nil(t, err, "Expected no error returned")
 	assert.NotNil(t, buildFile)
-	assert.Equal(t, buildFileToReturn.ID, buildFile.ID, "Expected ID values to match")
+	assert.Equal(t, *buildFileToReturn.ID, *buildFile.ID, "Expected ID values to match")
 	assert.Equal(t, *buildFileToReturn.Name, *buildFile.Name, "Expected Name values to match")
 	assert.Equal(t, *buildFileToReturn.Availability, *buildFile.Availability, "Expected Availability values to match")
 }
@@ -970,7 +970,7 @@ func TestPostBuildFileWithNonNilValuesExpectsSuccess(t *testing.T) {
 	}
 
 	buildFileToReturn := models.BuildFile{
-		ID:             int64(99),
+		ID:             swag.Int64(99),
 		OrganizationID: *buildFileToPost.OrganizationID,
 		Name:           buildFileToPost.Name,
 		Tags:           buildFileToPost.Tags,
@@ -1004,7 +1004,7 @@ func TestPostBuildFileWithNonNilValuesExpectsSuccess(t *testing.T) {
 
 	assert.Nil(t, err, "Expected no error returned")
 	assert.NotNil(t, buildFile)
-	assert.Equal(t, buildFileToReturn.ID, buildFile.ID, "Expected ID values to match")
+	assert.Equal(t, *buildFileToReturn.ID, *buildFile.ID, "Expected ID values to match")
 	assert.Equal(t, *buildFileToReturn.Name, *buildFile.Name, "Expected Name values to match")
 	assert.Equal(t, *buildFileToReturn.Availability, *buildFile.Availability, "Expected Availability values to match")
 	assert.Equal(t, buildFileToReturn.Description, buildFile.Description, "Expected Description values to match")
@@ -1061,7 +1061,7 @@ func TestPatchBuildFileWithNonNilValuesExpectsSuccess(t *testing.T) {
 	}
 
 	buildFileToReturn := models.BuildFile{
-		ID: buildFileID,
+		ID: swag.Int64(buildFileID),
 	}
 
 	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -1105,7 +1105,7 @@ func TestPatchBuildFileWithNonNilValuesExpectsSuccess(t *testing.T) {
 
 	assert.Nil(t, err, "Expected no error returned")
 	assert.NotNil(t, buildFile)
-	assert.Equal(t, buildFileID, buildFile.ID, "Expected ID values to match")
+	assert.Equal(t, buildFileID, *buildFile.ID, "Expected ID values to match")
 }
 
 func TestPatchBuildFileWhenSimulationAPIErrorsExpectsErrorReturned(t *testing.T) {
@@ -1159,7 +1159,7 @@ func TestUpdateBuildFileAvailabilityWithNonNilValuesExpectsSuccess(t *testing.T)
 
 	// Build Files
 	buildFileToReturn := models.BuildFile{
-		ID: buildFileID,
+		ID: swag.Int64(buildFileID),
 	}
 
 	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -1202,7 +1202,7 @@ func TestUpdateBuildFileAvailabilityWithNonNilValuesExpectsSuccess(t *testing.T)
 	// assert
 	assert.Nil(t, err, "Expected no error returned")
 	assert.NotNil(t, buildFile, "Expected buildFile to not be nil")
-	assert.Equal(t, buildFileID, buildFile.ID, "Expected build file IDs to match")
+	assert.Equal(t, buildFileID, *buildFile.ID, "Expected build file IDs to match")
 }
 
 func TestUpdateBuildFileAvailabilityWhenSimulationAPIErrorsExpectsErrorReturned(t *testing.T) {
@@ -1240,7 +1240,7 @@ func TestRawBUildFileWhenSuccessfulExpectsBuildFileMapReturned(t *testing.T) {
 
 	// Simulation
 	buildFileToReturn := &models.BuildFile{
-		ID:          buildFileID,
+		ID:          swag.Int64(buildFileID),
 		Name:        swag.String("Build File Name"),
 		MachineType: swag.String(models.BuildFileMachineTypeAdditiveIndustries),
 	}
@@ -1273,7 +1273,7 @@ func TestRawBUildFileWhenSuccessfulExpectsBuildFileMapReturned(t *testing.T) {
 	// assert
 	assert.Nil(t, err, "Expected no error returned")
 	assert.Equal(t, *buildFileToReturn.Name, buildFileMap["name"], "Expected names to match")
-	assert.EqualValues(t, buildFileToReturn.ID, buildFileMap["id"], "Expected IDs to match")
+	assert.EqualValues(t, *buildFileToReturn.ID, buildFileMap["id"], "Expected IDs to match")
 }
 
 func TestPatchPartWithNonNilValuesExpectsSuccess(t *testing.T) {
