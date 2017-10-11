@@ -75,6 +75,9 @@ type Material struct {
 	// Required: true
 	OrganizationID *int32 `json:"organizationId"`
 
+	// true if the material properites have been tuned for thermal simulations
+	ThermalSimulationApproved bool `json:"thermalSimulationApproved,omitempty"`
+
 	// version label
 	// Required: true
 	// Max Length: 16

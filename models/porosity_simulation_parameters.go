@@ -71,6 +71,10 @@ type PorositySimulationParameters struct {
 	// Required: true
 	SlicingStripeWidthValues []float64 `json:"slicingStripeWidthValues"`
 
+	// Array of solidus temperature values to simulate across
+	// Required: true
+	SolidusTemperatureValues []float64 `json:"solidusTemperatureValues"`
+
 	// Must be between 0 to 180 degrees
 	// Required: true
 	// Maximum: 180
@@ -133,6 +137,11 @@ func (m *PorositySimulationParameters) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateSlicingStripeWidthValues(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateSolidusTemperatureValues(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -366,6 +375,15 @@ func (m *PorositySimulationParameters) validateSlicingStripeWidthValues(formats 
 			return err
 		}
 
+	}
+
+	return nil
+}
+
+func (m *PorositySimulationParameters) validateSolidusTemperatureValues(formats strfmt.Registry) error {
+
+	if err := validate.Required("solidusTemperatureValues", "body", m.SolidusTemperatureValues); err != nil {
+		return err
 	}
 
 	return nil

@@ -58,6 +58,12 @@ type ThermalSimulationParameters struct {
 	// Minimum: 1e-05
 	HatchSpacing *float64 `json:"hatchSpacing"`
 
+	// heater temperature in degrees kelvin
+	// Required: true
+	// Maximum: 1000
+	// Minimum: 0
+	HeaterTemperature *float64 `json:"heaterTemperature"`
+
 	// false indicates that only the thermal solver will run, while true indicates that the mechanics solver will run after the thermal solver
 	// Required: true
 	IncludeStressAnalysis *bool `json:"includeStressAnalysis"`
@@ -260,6 +266,11 @@ func (m *ThermalSimulationParameters) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateHatchSpacing(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateHeaterTemperature(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -481,6 +492,23 @@ func (m *ThermalSimulationParameters) validateHatchSpacing(formats strfmt.Regist
 	}
 
 	if err := validate.Maximum("hatchSpacing", "body", float64(*m.HatchSpacing), 0.001, false); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *ThermalSimulationParameters) validateHeaterTemperature(formats strfmt.Registry) error {
+
+	if err := validate.Required("heaterTemperature", "body", m.HeaterTemperature); err != nil {
+		return err
+	}
+
+	if err := validate.Minimum("heaterTemperature", "body", float64(*m.HeaterTemperature), 0, false); err != nil {
+		return err
+	}
+
+	if err := validate.Maximum("heaterTemperature", "body", float64(*m.HeaterTemperature), 1000, false); err != nil {
 		return err
 	}
 

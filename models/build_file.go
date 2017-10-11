@@ -50,7 +50,8 @@ type BuildFile struct {
 	FileVersion string `json:"fileVersion,omitempty"`
 
 	// internally assigned identifier for this build file
-	ID int64 `json:"id,omitempty"`
+	// Required: true
+	ID *int64 `json:"id"`
 
 	// job number associated with this build file
 	JobID string `json:"jobId,omitempty"`
@@ -84,6 +85,15 @@ type BuildFile struct {
 	// identifier for organization this build file belongs to
 	OrganizationID int64 `json:"organizationId,omitempty"`
 
+	// x position of original part location in millimeters
+	OriginalX float64 `json:"originalX,omitempty"`
+
+	// y position of original part location in millimeters
+	OriginalY float64 `json:"originalY,omitempty"`
+
+	// z position of original part location in millimeters
+	OriginalZ float64 `json:"originalZ,omitempty"`
+
 	// maximum part dimension in X direction
 	// Required: true
 	SizeX *float64 `json:"sizeX"`
@@ -101,6 +111,9 @@ type BuildFile struct {
 
 	// path to STL file describing the part geometry
 	StlFileLocation string `json:"stlFileLocation,omitempty"`
+
+	// path to support model file relative to buildFileLocation
+	SupportModelFileLocation string `json:"supportModelFileLocation,omitempty"`
 
 	// a comma delimited list of tags assigned to this build file
 	Tags []string `json:"tags"`
@@ -124,6 +137,11 @@ func (m *BuildFile) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateBuildFileLocation(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateID(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -221,6 +239,15 @@ func (m *BuildFile) validateAvailability(formats strfmt.Registry) error {
 func (m *BuildFile) validateBuildFileLocation(formats strfmt.Registry) error {
 
 	if err := validate.Required("buildFileLocation", "body", m.BuildFileLocation); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *BuildFile) validateID(formats strfmt.Registry) error {
+
+	if err := validate.Required("id", "body", m.ID); err != nil {
 		return err
 	}
 
