@@ -37,6 +37,12 @@ type MaterialConfiguration struct {
 	// Required: true
 	AtomicWeight *float64 `json:"atomicWeight"`
 
+	// Must be between 0 to 10000 kelvin
+	// Required: true
+	// Maximum: 10000
+	// Minimum: 0
+	CapTemperature *float64 `json:"capTemperature"`
+
 	// created time stamp, set server-side, read only field
 	// Required: true
 	Created *strfmt.DateTime `json:"created"`
@@ -194,6 +200,11 @@ func (m *MaterialConfiguration) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateAtomicWeight(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateCapTemperature(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -398,6 +409,23 @@ func (m *MaterialConfiguration) validateAssumedStrain(formats strfmt.Registry) e
 func (m *MaterialConfiguration) validateAtomicWeight(formats strfmt.Registry) error {
 
 	if err := validate.Required("atomicWeight", "body", m.AtomicWeight); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *MaterialConfiguration) validateCapTemperature(formats strfmt.Registry) error {
+
+	if err := validate.Required("capTemperature", "body", m.CapTemperature); err != nil {
+		return err
+	}
+
+	if err := validate.Minimum("capTemperature", "body", float64(*m.CapTemperature), 0, false); err != nil {
+		return err
+	}
+
+	if err := validate.Maximum("capTemperature", "body", float64(*m.CapTemperature), 10000, false); err != nil {
 		return err
 	}
 
