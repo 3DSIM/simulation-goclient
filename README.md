@@ -73,3 +73,13 @@ TODO
 | ------------- | ------------- |
 | 0.14.x  | 0.3.x |
 
+
+## Contributors
+* Tim Sublette
+* Ryan Walls
+* Chad Queen
+* Pete Krull
+* Alex Drinkwater
+
+## Original release
+January 2017
