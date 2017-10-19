@@ -30,7 +30,7 @@ golang.org/x/net,https://github.com/golang/go/blob/master/LICENSE
 golang.org/x/sys,https://github.com/golang/go/blob/master/LICENSE
 golang.org/x/text,https://github.com/golang/go/blob/master/LICENSE
 gopkg.in/yaml.v2,https://github.com/go-yaml/yaml/blob/v2/LICENSE
-github.com/docker/go-units,No license found.
+github.com/docker/go-units,https://github.com/docker/go-units/blob/master/LICENSE
 golang.org/x/crypto/ssh/terminal,https://github.com/golang/go/blob/master/LICENSE
 golang.org/x/sys/unix,https://github.com/golang/go/blob/master/LICENSE
 golang.org/x/tools/go,https://github.com/golang/go/blob/master/LICENSE
