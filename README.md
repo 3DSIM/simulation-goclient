@@ -4,6 +4,11 @@
 Go client for interacting with the 3DSIM simulation api.  See http://docs.simulationapi.apiary.io for full API documentation.
 Issues and PRs are welcome.  If you are a 3DSIM customer and have questions, feel free to visit https://community.3dsim.com to start a discussion.
 
+## Technical Specifications
+
+### Platforms Supported
+MacOS, Windows, and Linux
+
 ## Background Info
 We use https://goswagger.io to generate our Go APIs and clients.  This allows
 us to build our APIs in a "design first" manner.
