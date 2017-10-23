@@ -100,22 +100,24 @@ type client struct {
 // 		QA 		= https://simulation-qa.3dsim.com/v2
 //		Prod 	= https://simulation.3dsim.com/v2
 // 		Gov 	= https://simulation-gov.3dsim.com
-func NewClient(tokenFetcher auth0.TokenFetcher, apiGatewayURL, audience string) Client {
-	return newClient(tokenFetcher, apiGatewayURL, audience, nil, openapiclient.DefaultTimeout)
+//
+// The apiBasePath is "/simulation-api".
+func NewClient(tokenFetcher auth0.TokenFetcher, apiGatewayURL, apiBasePath, audience string) Client {
+	return newClient(tokenFetcher, apiGatewayURL, apiBasePath, audience, nil, openapiclient.DefaultTimeout)
 }
 
 // NewClientWithRetry creates the same type of client as NewClient, but allows for retrying any temporary errors or
 // any responses with status >= 400 and < 600 for a specified amount of time.
-func NewClientWithRetry(tokenFetcher auth0.TokenFetcher, apiGatewayURL, audience string, retryTimeout time.Duration) Client {
+func NewClientWithRetry(tokenFetcher auth0.TokenFetcher, apiGatewayURL, apiBasePath, audience string, retryTimeout time.Duration) Client {
 	tr := rehttp.NewTransport(
 		nil, // will use http.DefaultTransport
 		rehttp.RetryAny(rehttp.RetryStatusInterval(400, 600), rehttp.RetryTemporaryErr()),
 		rehttp.ExpJitterDelay(1*time.Second, retryTimeout),
 	)
-	return newClient(tokenFetcher, apiGatewayURL, audience, tr, retryTimeout)
+	return newClient(tokenFetcher, apiGatewayURL, apiBasePath, audience, tr, retryTimeout)
 }
 
-func newClient(tokenFetcher auth0.TokenFetcher, apiGatewayURL, audience string,
+func newClient(tokenFetcher auth0.TokenFetcher, apiGatewayURL, apiBasePath, audience string,
 	roundTripper http.RoundTripper, defaultRequestTimeout time.Duration) Client {
 
 	parsedURL, err := url.Parse(apiGatewayURL)
@@ -125,7 +127,7 @@ func newClient(tokenFetcher auth0.TokenFetcher, apiGatewayURL, audience string,
 		panic(message + " " + err.Error())
 	}
 
-	simulationTransport := openapiclient.New(parsedURL.Host, SimulationAPIBasePath, []string{parsedURL.Scheme})
+	simulationTransport := openapiclient.New(parsedURL.Host, apiBasePath, []string{parsedURL.Scheme})
 	if roundTripper != nil {
 		simulationTransport.Transport = roundTripper
 	}
