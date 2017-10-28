@@ -28,8 +28,7 @@ type BuildFile struct {
 	Availability *string `json:"availability"`
 
 	// folder containing build file contents, multiple files may be contained within the folder
-	// Required: true
-	BuildFileLocation *string `json:"buildFileLocation"`
+	BuildFileLocation string `json:"buildFileLocation,omitempty"`
 
 	// time stamp assigned when this build file is created
 	CreatedAt strfmt.DateTime `json:"createdAt,omitempty"`
@@ -120,6 +119,10 @@ type BuildFile struct {
 
 	// total distance laser travels when building the part
 	TotalScanDistance float64 `json:"totalScanDistance,omitempty"`
+
+	// path to uploaded zip file containing build file components, relative to s3 part bucket
+	// Required: true
+	UploadFileLocation *string `json:"uploadFileLocation"`
 }
 
 // Validate validates this build file
@@ -132,11 +135,6 @@ func (m *BuildFile) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateAvailability(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
-	if err := m.validateBuildFileLocation(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -172,6 +170,11 @@ func (m *BuildFile) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateTags(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateUploadFileLocation(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -230,15 +233,6 @@ func (m *BuildFile) validateAvailability(formats strfmt.Registry) error {
 
 	// value enum
 	if err := m.validateAvailabilityEnum("availability", "body", *m.Availability); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *BuildFile) validateBuildFileLocation(formats strfmt.Registry) error {
-
-	if err := validate.Required("buildFileLocation", "body", m.BuildFileLocation); err != nil {
 		return err
 	}
 
@@ -339,6 +333,15 @@ func (m *BuildFile) validateTags(formats strfmt.Registry) error {
 
 	if swag.IsZero(m.Tags) { // not required
 		return nil
+	}
+
+	return nil
+}
+
+func (m *BuildFile) validateUploadFileLocation(formats strfmt.Registry) error {
+
+	if err := validate.Required("uploadFileLocation", "body", m.UploadFileLocation); err != nil {
+		return err
 	}
 
 	return nil

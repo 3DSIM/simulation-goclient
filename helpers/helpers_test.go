@@ -2,17 +2,18 @@ package helpers
 
 import (
 	"fmt"
-	"github.com/3dsim/simulation-goclient/models"
-	"github.com/stretchr/testify/assert"
 	"strings"
 	"testing"
+
+	"github.com/3dsim/simulation-goclient/models"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestIsSimulationUsingMachine(t *testing.T) {
 	// arrange
 	testCases := []struct {
 		name     string
-		value    string
+		value    models.SimulationType
 		expected bool
 	}{
 		{"ThermalSimulation", models.SimulationTypeThermalSimulation, true},
