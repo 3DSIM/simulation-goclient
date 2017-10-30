@@ -6,7 +6,6 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
-	"encoding/json"
 	"strconv"
 
 	strfmt "github.com/go-openapi/strfmt"
@@ -32,25 +31,8 @@ type ThermalSimulationParameters struct {
 	// Required: true
 	AnisotropicStrainCoefficientsZ *float64 `json:"anisotropicStrainCoefficientsZ"`
 
-	// should be a number between 0.5 and 1.5
-	BladeCrashThreshold float64 `json:"bladeCrashThreshold,omitempty"`
-
-	// detect blade crash
-	// Required: true
-	DetectBladeCrash *bool `json:"detectBladeCrash"`
-
-	// detect support failure
-	DetectSupportFailure bool `json:"detectSupportFailure,omitempty"`
-
-	// a value that is used to scale the simulated distortion value
-	DistortionScaleFactor float64 `json:"distortionScaleFactor,omitempty"`
-
 	// should be a number between 0.5 and 1.5 mm
 	DynamicVirtualSensorRadius float64 `json:"dynamicVirtualSensorRadius,omitempty"`
-
-	// elastic modulus
-	// Required: true
-	ElasticModulus *float64 `json:"elasticModulus"`
 
 	// Must be between 0.00001 to 0.001 meters
 	// Required: true
@@ -67,6 +49,19 @@ type ThermalSimulationParameters struct {
 	// false indicates that only the thermal solver will run, while true indicates that the mechanics solver will run after the thermal solver
 	// Required: true
 	IncludeStressAnalysis *bool `json:"includeStressAnalysis"`
+
+	// Array of integer layer numbers where instant dynamic sensor data will be collected
+	InstantDynamicSensorLayers []float64 `json:"instantDynamicSensorLayers"`
+
+	// radius for instant dynamic sensor data collection in mm
+	// Maximum: 1.5
+	// Minimum: 0.05
+	InstantDynamicSensorRadius float64 `json:"instantDynamicSensorRadius,omitempty"`
+
+	// radius for instant static sensor data collection in mm
+	// Maximum: 1.5
+	// Minimum: 0.05
+	InstantStaticSensorRadius float64 `json:"instantStaticSensorRadius,omitempty"`
 
 	// Must be between 10 to 1000 watts
 	// Required: true
@@ -86,47 +81,25 @@ type ThermalSimulationParameters struct {
 	// Minimum: 1e-05
 	LayerThickness *float64 `json:"layerThickness"`
 
-	// Must be between 0 to 0.005 meters, Must be greater than minimumWallDistance
+	// if true, dyanmic sensor data will be collected for each layer specified in the instantDynamicSensorLayers property
 	// Required: true
-	// Maximum: 0.005
-	// Minimum: 0
-	MaximumWallDistance *float64 `json:"maximumWallDistance"`
+	OutputInstantDynamicSensor *bool `json:"outputInstantDynamicSensor"`
 
-	// Must be between 0.00015 to 0.002 meters, Must be greater than minimumWallThickness
+	// if true, instant static sensor data will be collected for each selectedPoint property
 	// Required: true
-	// Maximum: 0.002
-	// Minimum: 0.00015
-	MaximumWallThickness *float64 `json:"maximumWallThickness"`
+	OutputInstantStaticSensor *bool `json:"outputInstantStaticSensor"`
 
-	// Distance to move the part off the base plate for supports, Must be between 0 to 0.005 meters
+	// if true, probe sensor data will be collected for each selectedPoint property
 	// Required: true
-	// Maximum: 0.005
-	// Minimum: 0
-	MinimumSupportHeight *float64 `json:"minimumSupportHeight"`
-
-	// Must be between 0 to 0.0003 meters, Must be less than maximumWallDistance
-	// Required: true
-	// Maximum: 0.0003
-	// Minimum: 0
-	MinimumWallDistance *float64 `json:"minimumWallDistance"`
-
-	// Must be between 0.00005 to 0.0003 meters, Must be less than maximumWallThickness
-	// Required: true
-	// Maximum: 0.0003
-	// Minimum: 5e-05
-	MinimumWallThickness *float64 `json:"minimumWallThickness"`
-
-	// output displacement after cutoff
-	// Required: true
-	OutputDisplacementAfterCutoff *bool `json:"outputDisplacementAfterCutoff"`
-
-	// if true, mechanics solver output will include a zip file with the stress / distortion state at the end of each voxel layer
-	// Required: true
-	OutputLayerVtk *bool `json:"outputLayerVtk"`
+	OutputPointProbe *bool `json:"outputPointProbe"`
 
 	// for each slectedPoint, a series of vtk files will output thermal history around that point with a radius of staticVirtualSensorRadius.
 	// Required: true
 	OutputPointThermalHistory *bool `json:"outputPointThermalHistory"`
+
+	// if true, pyrometer sensor data will be collected for each selectedPoint property
+	// Required: true
+	OutputPyroVirtualSensor *bool `json:"outputPyroVirtualSensor"`
 
 	// output shrinkage
 	// Required: true
@@ -136,12 +109,8 @@ type ThermalSimulationParameters struct {
 	// Required: true
 	OutputStateMap *bool `json:"outputStateMap"`
 
-	// if true, a VTK file of the support structure will be created
-	OutputSupportsVtk bool `json:"outputSupportsVtk,omitempty"`
-
 	// output thermal vtk
-	// Required: true
-	OutputThermalVtk *bool `json:"outputThermalVtk"`
+	OutputThermalVtk bool `json:"outputThermalVtk,omitempty"`
 
 	// output thermal vtk layers
 	OutputThermalVtkLayers string `json:"outputThermalVtkLayers,omitempty"`
@@ -150,19 +119,13 @@ type ThermalSimulationParameters struct {
 	// Required: true
 	OutputVirtualSensorData *bool `json:"outputVirtualSensorData"`
 
-	// should be a number between 0.01 and 1.0
-	PartFailureThreshold float64 `json:"partFailureThreshold,omitempty"`
+	// if true, pyrometer sensor data will be collected for every layer
+	PyroVirtualSensorOutputAllLayers bool `json:"pyroVirtualSensorOutputAllLayers,omitempty"`
 
-	// if true, a predistorted STL file will be created using the distortion simulated by the mechanics solver
-	PerformDistortionCompensation bool `json:"performDistortionCompensation,omitempty"`
-
-	// perform support optimization
-	// Required: true
-	PerformSupportOptimization *bool `json:"performSupportOptimization"`
-
-	// poisson ratio
-	// Required: true
-	PoissonRatio *float64 `json:"poissonRatio"`
+	// radius for pyro sensor data collection in mm
+	// Maximum: 1.5
+	// Minimum: 0.05
+	PyroVirtualSensorRadius float64 `json:"pyroVirtualSensorRadius,omitempty"`
 
 	// Must be between 0.01 to 10 meters/second
 	// Required: true
@@ -172,9 +135,6 @@ type ThermalSimulationParameters struct {
 
 	// List of points where the thermal solver will collect thermal history - limit 10
 	SelectedPoints []*SelectedPoint `json:"selectedPoints"`
-
-	// List of parts to simulate (current limit is one part, imposed by server)
-	SimulationParts []*SimulationPart `json:"simulationParts"`
 
 	// Must be between 0.001 to 0.1 meters
 	// Required: true
@@ -190,50 +150,6 @@ type ThermalSimulationParameters struct {
 
 	// should be a number between 0.05 and 5.0 mm
 	StaticVirtualSensorRadius float64 `json:"staticVirtualSensorRadius,omitempty"`
-
-	// strain scaling factor
-	// Required: true
-	StrainScalingFactor *float64 `json:"strainScalingFactor"`
-
-	// should be a number between 0.01 and 1.0
-	StrainWarningThreshold float64 `json:"strainWarningThreshold,omitempty"`
-
-	// stress mode
-	// Required: true
-	StressMode *string `json:"stressMode"`
-
-	// Must be between 1 to 89 degrees
-	// Required: true
-	// Maximum: 89
-	// Minimum: 1
-	SupportAngle *float64 `json:"supportAngle"`
-
-	// Multiplier for support calculations, Must be between 0.1 to 10
-	// Required: true
-	// Maximum: 10
-	// Minimum: 0.1
-	SupportFactorOfSafety *float64 `json:"supportFactorOfSafety"`
-
-	// should be a number between 0.01 and 1.0
-	SupportFailureThreshold float64 `json:"supportFailureThreshold,omitempty"`
-
-	// support optimization
-	// Required: true
-	SupportOptimization *bool `json:"supportOptimization"`
-
-	// support yield strength
-	// Required: true
-	SupportYieldStrength *float64 `json:"supportYieldStrength"`
-
-	// support yield strength ratio
-	// Required: true
-	SupportYieldStrengthRatio *float64 `json:"supportYieldStrengthRatio"`
-
-	// Must be between 0.00002 to 0.002 meters
-	// Required: true
-	// Maximum: 0.002
-	// Minimum: 2e-05
-	VoxelSize *float64 `json:"voxelSize"`
 }
 
 // Validate validates this thermal simulation parameters
@@ -255,16 +171,6 @@ func (m *ThermalSimulationParameters) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
-	if err := m.validateDetectBladeCrash(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
-	if err := m.validateElasticModulus(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
 	if err := m.validateHatchSpacing(formats); err != nil {
 		// prop
 		res = append(res, err)
@@ -276,6 +182,21 @@ func (m *ThermalSimulationParameters) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateIncludeStressAnalysis(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateInstantDynamicSensorLayers(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateInstantDynamicSensorRadius(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateInstantStaticSensorRadius(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -295,42 +216,27 @@ func (m *ThermalSimulationParameters) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
-	if err := m.validateMaximumWallDistance(formats); err != nil {
+	if err := m.validateOutputInstantDynamicSensor(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
 
-	if err := m.validateMaximumWallThickness(formats); err != nil {
+	if err := m.validateOutputInstantStaticSensor(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
 
-	if err := m.validateMinimumSupportHeight(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
-	if err := m.validateMinimumWallDistance(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
-	if err := m.validateMinimumWallThickness(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
-	if err := m.validateOutputDisplacementAfterCutoff(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
-	if err := m.validateOutputLayerVtk(formats); err != nil {
+	if err := m.validateOutputPointProbe(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
 
 	if err := m.validateOutputPointThermalHistory(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateOutputPyroVirtualSensor(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -345,22 +251,12 @@ func (m *ThermalSimulationParameters) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
-	if err := m.validateOutputThermalVtk(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
 	if err := m.validateOutputVirtualSensorData(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
 
-	if err := m.validatePerformSupportOptimization(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
-	if err := m.validatePoissonRatio(formats); err != nil {
+	if err := m.validatePyroVirtualSensorRadius(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -375,57 +271,12 @@ func (m *ThermalSimulationParameters) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
-	if err := m.validateSimulationParts(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
 	if err := m.validateSlicingStripeWidth(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
 
 	if err := m.validateStartingLayerAngle(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
-	if err := m.validateStrainScalingFactor(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
-	if err := m.validateStressMode(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
-	if err := m.validateSupportAngle(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
-	if err := m.validateSupportFactorOfSafety(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
-	if err := m.validateSupportOptimization(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
-	if err := m.validateSupportYieldStrength(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
-	if err := m.validateSupportYieldStrengthRatio(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
-	if err := m.validateVoxelSize(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -457,24 +308,6 @@ func (m *ThermalSimulationParameters) validateAnisotropicStrainCoefficientsPerpe
 func (m *ThermalSimulationParameters) validateAnisotropicStrainCoefficientsZ(formats strfmt.Registry) error {
 
 	if err := validate.Required("anisotropicStrainCoefficientsZ", "body", m.AnisotropicStrainCoefficientsZ); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *ThermalSimulationParameters) validateDetectBladeCrash(formats strfmt.Registry) error {
-
-	if err := validate.Required("detectBladeCrash", "body", m.DetectBladeCrash); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *ThermalSimulationParameters) validateElasticModulus(formats strfmt.Registry) error {
-
-	if err := validate.Required("elasticModulus", "body", m.ElasticModulus); err != nil {
 		return err
 	}
 
@@ -518,6 +351,49 @@ func (m *ThermalSimulationParameters) validateHeaterTemperature(formats strfmt.R
 func (m *ThermalSimulationParameters) validateIncludeStressAnalysis(formats strfmt.Registry) error {
 
 	if err := validate.Required("includeStressAnalysis", "body", m.IncludeStressAnalysis); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *ThermalSimulationParameters) validateInstantDynamicSensorLayers(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.InstantDynamicSensorLayers) { // not required
+		return nil
+	}
+
+	return nil
+}
+
+func (m *ThermalSimulationParameters) validateInstantDynamicSensorRadius(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.InstantDynamicSensorRadius) { // not required
+		return nil
+	}
+
+	if err := validate.Minimum("instantDynamicSensorRadius", "body", float64(m.InstantDynamicSensorRadius), 0.05, false); err != nil {
+		return err
+	}
+
+	if err := validate.Maximum("instantDynamicSensorRadius", "body", float64(m.InstantDynamicSensorRadius), 1.5, false); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *ThermalSimulationParameters) validateInstantStaticSensorRadius(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.InstantStaticSensorRadius) { // not required
+		return nil
+	}
+
+	if err := validate.Minimum("instantStaticSensorRadius", "body", float64(m.InstantStaticSensorRadius), 0.05, false); err != nil {
+		return err
+	}
+
+	if err := validate.Maximum("instantStaticSensorRadius", "body", float64(m.InstantStaticSensorRadius), 1.5, false); err != nil {
 		return err
 	}
 
@@ -575,103 +451,27 @@ func (m *ThermalSimulationParameters) validateLayerThickness(formats strfmt.Regi
 	return nil
 }
 
-func (m *ThermalSimulationParameters) validateMaximumWallDistance(formats strfmt.Registry) error {
+func (m *ThermalSimulationParameters) validateOutputInstantDynamicSensor(formats strfmt.Registry) error {
 
-	if err := validate.Required("maximumWallDistance", "body", m.MaximumWallDistance); err != nil {
-		return err
-	}
-
-	if err := validate.Minimum("maximumWallDistance", "body", float64(*m.MaximumWallDistance), 0, false); err != nil {
-		return err
-	}
-
-	if err := validate.Maximum("maximumWallDistance", "body", float64(*m.MaximumWallDistance), 0.005, false); err != nil {
+	if err := validate.Required("outputInstantDynamicSensor", "body", m.OutputInstantDynamicSensor); err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func (m *ThermalSimulationParameters) validateMaximumWallThickness(formats strfmt.Registry) error {
+func (m *ThermalSimulationParameters) validateOutputInstantStaticSensor(formats strfmt.Registry) error {
 
-	if err := validate.Required("maximumWallThickness", "body", m.MaximumWallThickness); err != nil {
-		return err
-	}
-
-	if err := validate.Minimum("maximumWallThickness", "body", float64(*m.MaximumWallThickness), 0.00015, false); err != nil {
-		return err
-	}
-
-	if err := validate.Maximum("maximumWallThickness", "body", float64(*m.MaximumWallThickness), 0.002, false); err != nil {
+	if err := validate.Required("outputInstantStaticSensor", "body", m.OutputInstantStaticSensor); err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func (m *ThermalSimulationParameters) validateMinimumSupportHeight(formats strfmt.Registry) error {
+func (m *ThermalSimulationParameters) validateOutputPointProbe(formats strfmt.Registry) error {
 
-	if err := validate.Required("minimumSupportHeight", "body", m.MinimumSupportHeight); err != nil {
-		return err
-	}
-
-	if err := validate.Minimum("minimumSupportHeight", "body", float64(*m.MinimumSupportHeight), 0, false); err != nil {
-		return err
-	}
-
-	if err := validate.Maximum("minimumSupportHeight", "body", float64(*m.MinimumSupportHeight), 0.005, false); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *ThermalSimulationParameters) validateMinimumWallDistance(formats strfmt.Registry) error {
-
-	if err := validate.Required("minimumWallDistance", "body", m.MinimumWallDistance); err != nil {
-		return err
-	}
-
-	if err := validate.Minimum("minimumWallDistance", "body", float64(*m.MinimumWallDistance), 0, false); err != nil {
-		return err
-	}
-
-	if err := validate.Maximum("minimumWallDistance", "body", float64(*m.MinimumWallDistance), 0.0003, false); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *ThermalSimulationParameters) validateMinimumWallThickness(formats strfmt.Registry) error {
-
-	if err := validate.Required("minimumWallThickness", "body", m.MinimumWallThickness); err != nil {
-		return err
-	}
-
-	if err := validate.Minimum("minimumWallThickness", "body", float64(*m.MinimumWallThickness), 5e-05, false); err != nil {
-		return err
-	}
-
-	if err := validate.Maximum("minimumWallThickness", "body", float64(*m.MinimumWallThickness), 0.0003, false); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *ThermalSimulationParameters) validateOutputDisplacementAfterCutoff(formats strfmt.Registry) error {
-
-	if err := validate.Required("outputDisplacementAfterCutoff", "body", m.OutputDisplacementAfterCutoff); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *ThermalSimulationParameters) validateOutputLayerVtk(formats strfmt.Registry) error {
-
-	if err := validate.Required("outputLayerVtk", "body", m.OutputLayerVtk); err != nil {
+	if err := validate.Required("outputPointProbe", "body", m.OutputPointProbe); err != nil {
 		return err
 	}
 
@@ -681,6 +481,15 @@ func (m *ThermalSimulationParameters) validateOutputLayerVtk(formats strfmt.Regi
 func (m *ThermalSimulationParameters) validateOutputPointThermalHistory(formats strfmt.Registry) error {
 
 	if err := validate.Required("outputPointThermalHistory", "body", m.OutputPointThermalHistory); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *ThermalSimulationParameters) validateOutputPyroVirtualSensor(formats strfmt.Registry) error {
+
+	if err := validate.Required("outputPyroVirtualSensor", "body", m.OutputPyroVirtualSensor); err != nil {
 		return err
 	}
 
@@ -705,15 +514,6 @@ func (m *ThermalSimulationParameters) validateOutputStateMap(formats strfmt.Regi
 	return nil
 }
 
-func (m *ThermalSimulationParameters) validateOutputThermalVtk(formats strfmt.Registry) error {
-
-	if err := validate.Required("outputThermalVtk", "body", m.OutputThermalVtk); err != nil {
-		return err
-	}
-
-	return nil
-}
-
 func (m *ThermalSimulationParameters) validateOutputVirtualSensorData(formats strfmt.Registry) error {
 
 	if err := validate.Required("outputVirtualSensorData", "body", m.OutputVirtualSensorData); err != nil {
@@ -723,18 +523,17 @@ func (m *ThermalSimulationParameters) validateOutputVirtualSensorData(formats st
 	return nil
 }
 
-func (m *ThermalSimulationParameters) validatePerformSupportOptimization(formats strfmt.Registry) error {
+func (m *ThermalSimulationParameters) validatePyroVirtualSensorRadius(formats strfmt.Registry) error {
 
-	if err := validate.Required("performSupportOptimization", "body", m.PerformSupportOptimization); err != nil {
+	if swag.IsZero(m.PyroVirtualSensorRadius) { // not required
+		return nil
+	}
+
+	if err := validate.Minimum("pyroVirtualSensorRadius", "body", float64(m.PyroVirtualSensorRadius), 0.05, false); err != nil {
 		return err
 	}
 
-	return nil
-}
-
-func (m *ThermalSimulationParameters) validatePoissonRatio(formats strfmt.Registry) error {
-
-	if err := validate.Required("poissonRatio", "body", m.PoissonRatio); err != nil {
+	if err := validate.Maximum("pyroVirtualSensorRadius", "body", float64(m.PyroVirtualSensorRadius), 1.5, false); err != nil {
 		return err
 	}
 
@@ -785,33 +584,6 @@ func (m *ThermalSimulationParameters) validateSelectedPoints(formats strfmt.Regi
 	return nil
 }
 
-func (m *ThermalSimulationParameters) validateSimulationParts(formats strfmt.Registry) error {
-
-	if swag.IsZero(m.SimulationParts) { // not required
-		return nil
-	}
-
-	for i := 0; i < len(m.SimulationParts); i++ {
-
-		if swag.IsZero(m.SimulationParts[i]) { // not required
-			continue
-		}
-
-		if m.SimulationParts[i] != nil {
-
-			if err := m.SimulationParts[i].Validate(formats); err != nil {
-				if ve, ok := err.(*errors.Validation); ok {
-					return ve.ValidateName("simulationParts" + "." + strconv.Itoa(i))
-				}
-				return err
-			}
-		}
-
-	}
-
-	return nil
-}
-
 func (m *ThermalSimulationParameters) validateSlicingStripeWidth(formats strfmt.Registry) error {
 
 	if err := validate.Required("slicingStripeWidth", "body", m.SlicingStripeWidth); err != nil {
@@ -840,134 +612,6 @@ func (m *ThermalSimulationParameters) validateStartingLayerAngle(formats strfmt.
 	}
 
 	if err := validate.Maximum("startingLayerAngle", "body", float64(*m.StartingLayerAngle), 180, false); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *ThermalSimulationParameters) validateStrainScalingFactor(formats strfmt.Registry) error {
-
-	if err := validate.Required("strainScalingFactor", "body", m.StrainScalingFactor); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-var thermalSimulationParametersTypeStressModePropEnum []interface{}
-
-func init() {
-	var res []string
-	if err := json.Unmarshal([]byte(`["LinearElastic","J2Plasticity"]`), &res); err != nil {
-		panic(err)
-	}
-	for _, v := range res {
-		thermalSimulationParametersTypeStressModePropEnum = append(thermalSimulationParametersTypeStressModePropEnum, v)
-	}
-}
-
-const (
-	// ThermalSimulationParametersStressModeLinearElastic captures enum value "LinearElastic"
-	ThermalSimulationParametersStressModeLinearElastic string = "LinearElastic"
-	// ThermalSimulationParametersStressModeJ2Plasticity captures enum value "J2Plasticity"
-	ThermalSimulationParametersStressModeJ2Plasticity string = "J2Plasticity"
-)
-
-// prop value enum
-func (m *ThermalSimulationParameters) validateStressModeEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, thermalSimulationParametersTypeStressModePropEnum); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (m *ThermalSimulationParameters) validateStressMode(formats strfmt.Registry) error {
-
-	if err := validate.Required("stressMode", "body", m.StressMode); err != nil {
-		return err
-	}
-
-	// value enum
-	if err := m.validateStressModeEnum("stressMode", "body", *m.StressMode); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *ThermalSimulationParameters) validateSupportAngle(formats strfmt.Registry) error {
-
-	if err := validate.Required("supportAngle", "body", m.SupportAngle); err != nil {
-		return err
-	}
-
-	if err := validate.Minimum("supportAngle", "body", float64(*m.SupportAngle), 1, false); err != nil {
-		return err
-	}
-
-	if err := validate.Maximum("supportAngle", "body", float64(*m.SupportAngle), 89, false); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *ThermalSimulationParameters) validateSupportFactorOfSafety(formats strfmt.Registry) error {
-
-	if err := validate.Required("supportFactorOfSafety", "body", m.SupportFactorOfSafety); err != nil {
-		return err
-	}
-
-	if err := validate.Minimum("supportFactorOfSafety", "body", float64(*m.SupportFactorOfSafety), 0.1, false); err != nil {
-		return err
-	}
-
-	if err := validate.Maximum("supportFactorOfSafety", "body", float64(*m.SupportFactorOfSafety), 10, false); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *ThermalSimulationParameters) validateSupportOptimization(formats strfmt.Registry) error {
-
-	if err := validate.Required("supportOptimization", "body", m.SupportOptimization); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *ThermalSimulationParameters) validateSupportYieldStrength(formats strfmt.Registry) error {
-
-	if err := validate.Required("supportYieldStrength", "body", m.SupportYieldStrength); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *ThermalSimulationParameters) validateSupportYieldStrengthRatio(formats strfmt.Registry) error {
-
-	if err := validate.Required("supportYieldStrengthRatio", "body", m.SupportYieldStrengthRatio); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *ThermalSimulationParameters) validateVoxelSize(formats strfmt.Registry) error {
-
-	if err := validate.Required("voxelSize", "body", m.VoxelSize); err != nil {
-		return err
-	}
-
-	if err := validate.Minimum("voxelSize", "body", float64(*m.VoxelSize), 2e-05, false); err != nil {
-		return err
-	}
-
-	if err := validate.Maximum("voxelSize", "body", float64(*m.VoxelSize), 0.002, false); err != nil {
 		return err
 	}
 
