@@ -68,6 +68,19 @@ type ThermalSimulationParameters struct {
 	// Required: true
 	IncludeStressAnalysis *bool `json:"includeStressAnalysis"`
 
+	// Array of integer layer numbers where instant dynamic sensor data will be collected
+	InstantDynamicSensorLayers []float64 `json:"instantDynamicSensorLayers"`
+
+	// radius for instant dynamic sensor data collection in mm
+	// Maximum: 1.5
+	// Minimum: 0.05
+	InstantDynamicSensorRadius float64 `json:"instantDynamicSensorRadius,omitempty"`
+
+	// radius for instant static sensor data collection in mm
+	// Maximum: 1.5
+	// Minimum: 0.05
+	InstantStaticSensorRadius float64 `json:"instantStaticSensorRadius,omitempty"`
+
 	// Must be between 10 to 1000 watts
 	// Required: true
 	// Maximum: 1000
@@ -120,13 +133,29 @@ type ThermalSimulationParameters struct {
 	// Required: true
 	OutputDisplacementAfterCutoff *bool `json:"outputDisplacementAfterCutoff"`
 
+	// if true, dyanmic sensor data will be collected for each layer specified in the instantDynamicSensorLayers property
+	// Required: true
+	OutputInstantDynamicSensor *bool `json:"outputInstantDynamicSensor"`
+
+	// if true, instant static sensor data will be collected for each selectedPoint property
+	// Required: true
+	OutputInstantStaticSensor *bool `json:"outputInstantStaticSensor"`
+
 	// if true, mechanics solver output will include a zip file with the stress / distortion state at the end of each voxel layer
 	// Required: true
 	OutputLayerVtk *bool `json:"outputLayerVtk"`
 
+	// if true, probe sensor data will be collected for each selectedPoint property
+	// Required: true
+	OutputPointProbe *bool `json:"outputPointProbe"`
+
 	// for each slectedPoint, a series of vtk files will output thermal history around that point with a radius of staticVirtualSensorRadius.
 	// Required: true
 	OutputPointThermalHistory *bool `json:"outputPointThermalHistory"`
+
+	// if true, pyrometer sensor data will be collected for each selectedPoint property
+	// Required: true
+	OutputPyroVirtualSensor *bool `json:"outputPyroVirtualSensor"`
 
 	// output shrinkage
 	// Required: true
@@ -163,6 +192,14 @@ type ThermalSimulationParameters struct {
 	// poisson ratio
 	// Required: true
 	PoissonRatio *float64 `json:"poissonRatio"`
+
+	// if true, pyrometer sensor data will be collected for every layer
+	PyroVirtualSensorOutputAllLayers bool `json:"pyroVirtualSensorOutputAllLayers,omitempty"`
+
+	// radius for pyro sensor data collection in mm
+	// Maximum: 1.5
+	// Minimum: 0.05
+	PyroVirtualSensorRadius float64 `json:"pyroVirtualSensorRadius,omitempty"`
 
 	// Must be between 0.01 to 10 meters/second
 	// Required: true
@@ -280,6 +317,21 @@ func (m *ThermalSimulationParameters) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
+	if err := m.validateInstantDynamicSensorLayers(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateInstantDynamicSensorRadius(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateInstantStaticSensorRadius(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
 	if err := m.validateLaserWattage(formats); err != nil {
 		// prop
 		res = append(res, err)
@@ -325,12 +377,32 @@ func (m *ThermalSimulationParameters) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
+	if err := m.validateOutputInstantDynamicSensor(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateOutputInstantStaticSensor(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
 	if err := m.validateOutputLayerVtk(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
 
+	if err := m.validateOutputPointProbe(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
 	if err := m.validateOutputPointThermalHistory(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateOutputPyroVirtualSensor(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -361,6 +433,11 @@ func (m *ThermalSimulationParameters) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validatePoissonRatio(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validatePyroVirtualSensorRadius(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -524,6 +601,49 @@ func (m *ThermalSimulationParameters) validateIncludeStressAnalysis(formats strf
 	return nil
 }
 
+func (m *ThermalSimulationParameters) validateInstantDynamicSensorLayers(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.InstantDynamicSensorLayers) { // not required
+		return nil
+	}
+
+	return nil
+}
+
+func (m *ThermalSimulationParameters) validateInstantDynamicSensorRadius(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.InstantDynamicSensorRadius) { // not required
+		return nil
+	}
+
+	if err := validate.Minimum("instantDynamicSensorRadius", "body", float64(m.InstantDynamicSensorRadius), 0.05, false); err != nil {
+		return err
+	}
+
+	if err := validate.Maximum("instantDynamicSensorRadius", "body", float64(m.InstantDynamicSensorRadius), 1.5, false); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *ThermalSimulationParameters) validateInstantStaticSensorRadius(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.InstantStaticSensorRadius) { // not required
+		return nil
+	}
+
+	if err := validate.Minimum("instantStaticSensorRadius", "body", float64(m.InstantStaticSensorRadius), 0.05, false); err != nil {
+		return err
+	}
+
+	if err := validate.Maximum("instantStaticSensorRadius", "body", float64(m.InstantStaticSensorRadius), 1.5, false); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (m *ThermalSimulationParameters) validateLaserWattage(formats strfmt.Registry) error {
 
 	if err := validate.Required("laserWattage", "body", m.LaserWattage); err != nil {
@@ -669,6 +789,24 @@ func (m *ThermalSimulationParameters) validateOutputDisplacementAfterCutoff(form
 	return nil
 }
 
+func (m *ThermalSimulationParameters) validateOutputInstantDynamicSensor(formats strfmt.Registry) error {
+
+	if err := validate.Required("outputInstantDynamicSensor", "body", m.OutputInstantDynamicSensor); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *ThermalSimulationParameters) validateOutputInstantStaticSensor(formats strfmt.Registry) error {
+
+	if err := validate.Required("outputInstantStaticSensor", "body", m.OutputInstantStaticSensor); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (m *ThermalSimulationParameters) validateOutputLayerVtk(formats strfmt.Registry) error {
 
 	if err := validate.Required("outputLayerVtk", "body", m.OutputLayerVtk); err != nil {
@@ -678,9 +816,27 @@ func (m *ThermalSimulationParameters) validateOutputLayerVtk(formats strfmt.Regi
 	return nil
 }
 
+func (m *ThermalSimulationParameters) validateOutputPointProbe(formats strfmt.Registry) error {
+
+	if err := validate.Required("outputPointProbe", "body", m.OutputPointProbe); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (m *ThermalSimulationParameters) validateOutputPointThermalHistory(formats strfmt.Registry) error {
 
 	if err := validate.Required("outputPointThermalHistory", "body", m.OutputPointThermalHistory); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *ThermalSimulationParameters) validateOutputPyroVirtualSensor(formats strfmt.Registry) error {
+
+	if err := validate.Required("outputPyroVirtualSensor", "body", m.OutputPyroVirtualSensor); err != nil {
 		return err
 	}
 
@@ -735,6 +891,23 @@ func (m *ThermalSimulationParameters) validatePerformSupportOptimization(formats
 func (m *ThermalSimulationParameters) validatePoissonRatio(formats strfmt.Registry) error {
 
 	if err := validate.Required("poissonRatio", "body", m.PoissonRatio); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *ThermalSimulationParameters) validatePyroVirtualSensorRadius(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.PyroVirtualSensorRadius) { // not required
+		return nil
+	}
+
+	if err := validate.Minimum("pyroVirtualSensorRadius", "body", float64(m.PyroVirtualSensorRadius), 0.05, false); err != nil {
+		return err
+	}
+
+	if err := validate.Maximum("pyroVirtualSensorRadius", "body", float64(m.PyroVirtualSensorRadius), 1.5, false); err != nil {
 		return err
 	}
 
