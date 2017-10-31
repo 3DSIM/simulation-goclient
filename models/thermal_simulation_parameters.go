@@ -69,7 +69,7 @@ type ThermalSimulationParameters struct {
 	IncludeStressAnalysis *bool `json:"includeStressAnalysis"`
 
 	// Array of integer layer numbers where instant dynamic sensor data will be collected
-	InstantDynamicSensorLayers []float64 `json:"instantDynamicSensorLayers"`
+	InstantDynamicSensorLayers []int32 `json:"instantDynamicSensorLayers"`
 
 	// radius for instant dynamic sensor data collection in mm
 	// Maximum: 1.5
