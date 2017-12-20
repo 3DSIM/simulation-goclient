@@ -365,12 +365,16 @@ func TestThermalSimulationWhenSuccessfulExpectsThermalSimulationReturned(t *test
 
 	// ThermalSimulation
 	thermalSimulationToReturn := &models.ThermalSimulation{
-		Simulation: models.Simulation{
-			ID:    thermalSimulationID,
-			Title: swag.String("ThermalSimulation name"),
+		PartBasedSimulationParameters: models.PartBasedSimulationParameters{
+			Simulation: models.Simulation{
+				ID:    thermalSimulationID,
+				Title: swag.String("ThermalSimulation name"),
+			},
 		},
 		ThermalSimulationParameters: models.ThermalSimulationParameters{
-			ElasticModulus: swag.Float64(21),
+			AnisotropicStrainCoefficientsParallel: swag.Float64(21),
+			AnisotropicStrainCoefficientsPerpendicular: swag.Float64(22),
+			AnisotropicStrainCoefficientsZ: swag.Float64(23),
 		},
 	}
 	thermalSimulationHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -466,12 +470,14 @@ func TestScanPatternSimulationWhenSuccessfulExpectsScanPatternSimulationReturned
 
 	// ScanPatternSimulation
 	scanPatternSimulationToReturn := &models.ScanPatternSimulation{
-		Simulation: models.Simulation{
-			ID:    scanPatternSimulationID,
-			Title: swag.String("ScanPatternSimulation name"),
+		PartBasedSimulationParameters: models.PartBasedSimulationParameters{
+			Simulation: models.Simulation{
+				ID:    scanPatternSimulationID,
+				Title: swag.String("ScanPatternSimulation name"),
+			},
 		},
 		ScanPatternSimulationParameters: models.ScanPatternSimulationParameters{
-			ElasticModulus: swag.Float64(21),
+			LayerThickness: swag.Float64(21),
 		},
 	}
 	scanPatternSimulationHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -567,12 +573,14 @@ func TestAssumedStrainSimulationWhenSuccessfulExpectsAssumedStrainSimulationRetu
 
 	// AssumedStrainSimulation
 	assumedStrainSimulationToReturn := &models.AssumedStrainSimulation{
-		Simulation: models.Simulation{
-			ID:    assumedStrainSimulationID,
-			Title: swag.String("AssumedStrainSimulation name"),
+		PartBasedSimulationParameters: models.PartBasedSimulationParameters{
+			Simulation: models.Simulation{
+				ID:    assumedStrainSimulationID,
+				Title: swag.String("AssumedStrainSimulation name"),
+			},
 		},
 		AssumedStrainSimulationParameters: models.AssumedStrainSimulationParameters{
-			ElasticModulus: swag.Float64(21),
+			LayerThickness: 50e-6,
 		},
 	}
 	assumedStrainSimulationHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -715,6 +723,7 @@ func TestSimulationsWhenNonNilValuesExpectsSuccess(t *testing.T) {
 func TestRawSimulationWhenSuccessfulExpectsSimulationMapReturned(t *testing.T) {
 	// arrange
 	simulationID := int32(2)
+	layerThickness := float64(50e-6)
 
 	// Token
 	fakeTokenFetcher := &auth0fakes.FakeTokenFetcher{}
@@ -742,14 +751,15 @@ func TestRawSimulationWhenSuccessfulExpectsSimulationMapReturned(t *testing.T) {
 	})
 
 	assumedStrainSimulationToReturn := &models.AssumedStrainSimulation{
-		Simulation: models.Simulation{
-			ID:    simulationID,
-			Title: swag.String("Simulation name"),
-			Type:  models.SimulationTypeAssumedStrainSimulation,
+		PartBasedSimulationParameters: models.PartBasedSimulationParameters{
+			Simulation: models.Simulation{
+				ID:    simulationID,
+				Title: swag.String("Simulation name"),
+				Type:  models.SimulationTypeAssumedStrainSimulation,
+			},
 		},
 		AssumedStrainSimulationParameters: models.AssumedStrainSimulationParameters{
-			OutputDisplacementAfterCutoff: swag.Bool(true),
-			PerformDistortionCompensation: true,
+			LayerThickness: layerThickness,
 		},
 	}
 	assumedStrainSimulationHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -784,10 +794,7 @@ func TestRawSimulationWhenSuccessfulExpectsSimulationMapReturned(t *testing.T) {
 	assert.Nil(t, err, "Expected no error returned")
 	assert.Equal(t, *simulationToReturn.Title, simulation["title"], "Expected names to match")
 	assert.EqualValues(t, simulationToReturn.ID, simulation["id"], "Expected IDs to match")
-	_, ok := simulation["outputDisplacementAfterCutoff"].(bool)
-	assert.True(t, ok, "Expected outputDisplacementAfterCutoff to be of type bool")
-	_, ok = simulation["performDistortionCompensation"].(bool)
-	assert.True(t, ok, "Expected performDistortionCompensation to be of type bool")
+	assert.EqualValues(t, layerThickness, simulation["layerThickness"], "Expected layer thickness to match")
 }
 
 func TestBuildFilesWithNonNilValuesExpectsSuccess(t *testing.T) {
@@ -805,10 +812,10 @@ func TestBuildFilesWithNonNilValuesExpectsSuccess(t *testing.T) {
 	// Build Files
 	buildFilesToReturn := []models.BuildFile{
 		models.BuildFile{
-			ID: swag.Int64(1),
+			ID: swag.Int32(1),
 		},
 		models.BuildFile{
-			ID: swag.Int64(2),
+			ID: swag.Int32(2),
 		},
 	}
 
@@ -877,14 +884,14 @@ func TestBuildFilesWhenSimulationAPIErrorsExpectsErrorReturned(t *testing.T) {
 
 func TestBuildFileWithNonNilValuesExpectsSuccess(t *testing.T) {
 	// arrange
-	buildFileID := int64(10)
+	buildFileID := int32(10)
 
 	// Token
 	fakeTokenFetcher := &auth0fakes.FakeTokenFetcher{}
 	fakeTokenFetcher.TokenReturns("Token", nil)
 
 	buildFileToReturn := models.BuildFile{
-		ID:           swag.Int64(buildFileID),
+		ID:           swag.Int32(buildFileID),
 		Name:         swag.String("MyBuildFile"),
 		Availability: swag.String("Available"),
 	}
@@ -961,7 +968,7 @@ func TestPostBuildFileWithNonNilValuesExpectsSuccess(t *testing.T) {
 
 	// Build Files
 	buildFileToPost := models.BuildFilePost{
-		OrganizationID:     swag.Int64(10),
+		OrganizationID:     swag.Int32(10),
 		FileUploadLocation: swag.String("s3bucket/mybuildfile.zip"),
 		MachineType:        swag.String(models.BuildFileMachineTypeAdditiveIndustries),
 		Name:               swag.String("myBuildFile"),
@@ -970,7 +977,7 @@ func TestPostBuildFileWithNonNilValuesExpectsSuccess(t *testing.T) {
 	}
 
 	buildFileToReturn := models.BuildFile{
-		ID:             swag.Int64(99),
+		ID:             swag.Int32(99),
 		OrganizationID: *buildFileToPost.OrganizationID,
 		Name:           buildFileToPost.Name,
 		Tags:           buildFileToPost.Tags,
@@ -1018,7 +1025,7 @@ func TestPostBuildFileWhenSimulationAPIErrorsExpectsErrorReturned(t *testing.T) 
 	fakeTokenFetcher.TokenReturns("Token", nil)
 
 	buildFileToPost := models.BuildFilePost{
-		OrganizationID:     swag.Int64(10),
+		OrganizationID:     swag.Int32(10),
 		FileUploadLocation: swag.String("s3bucket/mybuildfile.zip"),
 		MachineType:        swag.String(models.BuildFileMachineTypeAdditiveIndustries),
 		Name:               swag.String("myBuildFile"),
@@ -1049,7 +1056,7 @@ func TestPatchBuildFileWithNonNilValuesExpectsSuccess(t *testing.T) {
 
 	// arrange
 	availability := "Available"
-	buildFileID := int64(101)
+	buildFileID := int32(101)
 	// Token
 	fakeTokenFetcher := &auth0fakes.FakeTokenFetcher{}
 	fakeTokenFetcher.TokenReturns("Token", nil)
@@ -1061,7 +1068,7 @@ func TestPatchBuildFileWithNonNilValuesExpectsSuccess(t *testing.T) {
 	}
 
 	buildFileToReturn := models.BuildFile{
-		ID: swag.Int64(buildFileID),
+		ID: swag.Int32(buildFileID),
 	}
 
 	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -1144,7 +1151,7 @@ func TestPatchBuildFileWhenSimulationAPIErrorsExpectsErrorReturned(t *testing.T)
 func TestUpdateBuildFileAvailabilityWithNonNilValuesExpectsSuccess(t *testing.T) {
 
 	// arrange
-	buildFileID := int64(97)
+	buildFileID := int32(97)
 	availability := "Processing"
 
 	// Token
@@ -1159,7 +1166,7 @@ func TestUpdateBuildFileAvailabilityWithNonNilValuesExpectsSuccess(t *testing.T)
 
 	// Build Files
 	buildFileToReturn := models.BuildFile{
-		ID: swag.Int64(buildFileID),
+		ID: swag.Int32(buildFileID),
 	}
 
 	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -1232,7 +1239,7 @@ func TestUpdateBuildFileAvailabilityWhenSimulationAPIErrorsExpectsErrorReturned(
 
 func TestRawBUildFileWhenSuccessfulExpectsBuildFileMapReturned(t *testing.T) {
 	// arrange
-	buildFileID := int64(2)
+	buildFileID := int32(2)
 
 	// Token
 	fakeTokenFetcher := &auth0fakes.FakeTokenFetcher{}
@@ -1240,7 +1247,7 @@ func TestRawBUildFileWhenSuccessfulExpectsBuildFileMapReturned(t *testing.T) {
 
 	// Simulation
 	buildFileToReturn := &models.BuildFile{
-		ID:          swag.Int64(buildFileID),
+		ID:          swag.Int32(buildFileID),
 		Name:        swag.String("Build File Name"),
 		MachineType: swag.String(models.BuildFileMachineTypeAdditiveIndustries),
 	}

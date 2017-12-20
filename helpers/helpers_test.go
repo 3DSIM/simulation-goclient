@@ -13,7 +13,7 @@ func TestIsSimulationUsingMachine(t *testing.T) {
 	// arrange
 	testCases := []struct {
 		name     string
-		value    string
+		value    models.SimulationType
 		expected bool
 	}{
 		{"ThermalSimulation", models.SimulationTypeThermalSimulation, true},
