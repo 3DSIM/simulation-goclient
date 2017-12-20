@@ -73,29 +73,29 @@ type MaterialConfiguration struct {
 	// Required: true
 	EnergyAbsorbingRateBySolid *float64 `json:"energyAbsorbingRateBySolid"`
 
-	// extiction coef of powder laser power coef
+	// extinction coef of powder laser power coef
 	// Required: true
-	ExtictionCoefOfPowderLaserPowerCoef *float64 `json:"extictionCoefOfPowderLaserPowerCoef"`
+	ExtinctionCoefOfPowderLaserPowerCoef *float64 `json:"extinctionCoefOfPowderLaserPowerCoef"`
 
-	// extiction coef of powder laser speed coef
+	// extinction coef of powder laser speed coef
 	// Required: true
-	ExtictionCoefOfPowderLaserSpeedCoef *float64 `json:"extictionCoefOfPowderLaserSpeedCoef"`
+	ExtinctionCoefOfPowderLaserSpeedCoef *float64 `json:"extinctionCoefOfPowderLaserSpeedCoef"`
 
-	// extiction coef of powder offset
+	// extinction coef of powder offset
 	// Required: true
-	ExtictionCoefOfPowderOffset *float64 `json:"extictionCoefOfPowderOffset"`
+	ExtinctionCoefOfPowderOffset *float64 `json:"extinctionCoefOfPowderOffset"`
 
-	// extiction coef of solid laser power coef
+	// extinction coef of solid laser power coef
 	// Required: true
-	ExtictionCoefOfSolidLaserPowerCoef *float64 `json:"extictionCoefOfSolidLaserPowerCoef"`
+	ExtinctionCoefOfSolidLaserPowerCoef *float64 `json:"extinctionCoefOfSolidLaserPowerCoef"`
 
-	// extiction coef of solid laser speed coef
+	// extinction coef of solid laser speed coef
 	// Required: true
-	ExtictionCoefOfSolidLaserSpeedCoef *float64 `json:"extictionCoefOfSolidLaserSpeedCoef"`
+	ExtinctionCoefOfSolidLaserSpeedCoef *float64 `json:"extinctionCoefOfSolidLaserSpeedCoef"`
 
-	// extiction coef of solid offset
+	// extinction coef of solid offset
 	// Required: true
-	ExtictionCoefOfSolidOffset *float64 `json:"extictionCoefOfSolidOffset"`
+	ExtinctionCoefOfSolidOffset *float64 `json:"extinctionCoefOfSolidOffset"`
 
 	// fusion latent heat
 	// Required: true
@@ -266,32 +266,32 @@ func (m *MaterialConfiguration) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
-	if err := m.validateExtictionCoefOfPowderLaserPowerCoef(formats); err != nil {
+	if err := m.validateExtinctionCoefOfPowderLaserPowerCoef(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
 
-	if err := m.validateExtictionCoefOfPowderLaserSpeedCoef(formats); err != nil {
+	if err := m.validateExtinctionCoefOfPowderLaserSpeedCoef(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
 
-	if err := m.validateExtictionCoefOfPowderOffset(formats); err != nil {
+	if err := m.validateExtinctionCoefOfPowderOffset(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
 
-	if err := m.validateExtictionCoefOfSolidLaserPowerCoef(formats); err != nil {
+	if err := m.validateExtinctionCoefOfSolidLaserPowerCoef(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
 
-	if err := m.validateExtictionCoefOfSolidLaserSpeedCoef(formats); err != nil {
+	if err := m.validateExtinctionCoefOfSolidLaserSpeedCoef(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
 
-	if err := m.validateExtictionCoefOfSolidOffset(formats); err != nil {
+	if err := m.validateExtinctionCoefOfSolidOffset(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -538,54 +538,54 @@ func (m *MaterialConfiguration) validateEnergyAbsorbingRateBySolid(formats strfm
 	return nil
 }
 
-func (m *MaterialConfiguration) validateExtictionCoefOfPowderLaserPowerCoef(formats strfmt.Registry) error {
+func (m *MaterialConfiguration) validateExtinctionCoefOfPowderLaserPowerCoef(formats strfmt.Registry) error {
 
-	if err := validate.Required("extictionCoefOfPowderLaserPowerCoef", "body", m.ExtictionCoefOfPowderLaserPowerCoef); err != nil {
+	if err := validate.Required("extinctionCoefOfPowderLaserPowerCoef", "body", m.ExtinctionCoefOfPowderLaserPowerCoef); err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func (m *MaterialConfiguration) validateExtictionCoefOfPowderLaserSpeedCoef(formats strfmt.Registry) error {
+func (m *MaterialConfiguration) validateExtinctionCoefOfPowderLaserSpeedCoef(formats strfmt.Registry) error {
 
-	if err := validate.Required("extictionCoefOfPowderLaserSpeedCoef", "body", m.ExtictionCoefOfPowderLaserSpeedCoef); err != nil {
+	if err := validate.Required("extinctionCoefOfPowderLaserSpeedCoef", "body", m.ExtinctionCoefOfPowderLaserSpeedCoef); err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func (m *MaterialConfiguration) validateExtictionCoefOfPowderOffset(formats strfmt.Registry) error {
+func (m *MaterialConfiguration) validateExtinctionCoefOfPowderOffset(formats strfmt.Registry) error {
 
-	if err := validate.Required("extictionCoefOfPowderOffset", "body", m.ExtictionCoefOfPowderOffset); err != nil {
+	if err := validate.Required("extinctionCoefOfPowderOffset", "body", m.ExtinctionCoefOfPowderOffset); err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func (m *MaterialConfiguration) validateExtictionCoefOfSolidLaserPowerCoef(formats strfmt.Registry) error {
+func (m *MaterialConfiguration) validateExtinctionCoefOfSolidLaserPowerCoef(formats strfmt.Registry) error {
 
-	if err := validate.Required("extictionCoefOfSolidLaserPowerCoef", "body", m.ExtictionCoefOfSolidLaserPowerCoef); err != nil {
+	if err := validate.Required("extinctionCoefOfSolidLaserPowerCoef", "body", m.ExtinctionCoefOfSolidLaserPowerCoef); err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func (m *MaterialConfiguration) validateExtictionCoefOfSolidLaserSpeedCoef(formats strfmt.Registry) error {
+func (m *MaterialConfiguration) validateExtinctionCoefOfSolidLaserSpeedCoef(formats strfmt.Registry) error {
 
-	if err := validate.Required("extictionCoefOfSolidLaserSpeedCoef", "body", m.ExtictionCoefOfSolidLaserSpeedCoef); err != nil {
+	if err := validate.Required("extinctionCoefOfSolidLaserSpeedCoef", "body", m.ExtinctionCoefOfSolidLaserSpeedCoef); err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func (m *MaterialConfiguration) validateExtictionCoefOfSolidOffset(formats strfmt.Registry) error {
+func (m *MaterialConfiguration) validateExtinctionCoefOfSolidOffset(formats strfmt.Registry) error {
 
-	if err := validate.Required("extictionCoefOfSolidOffset", "body", m.ExtictionCoefOfSolidOffset); err != nil {
+	if err := validate.Required("extinctionCoefOfSolidOffset", "body", m.ExtinctionCoefOfSolidOffset); err != nil {
 		return err
 	}
 
