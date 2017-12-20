@@ -79,7 +79,7 @@ type Simulation struct {
 	Title *string `json:"title"`
 
 	// type
-	Type string `json:"type,omitempty"`
+	Type SimulationType `json:"type,omitempty"`
 }
 
 // Validate validates this simulation
@@ -193,47 +193,16 @@ func (m *Simulation) validateTitle(formats strfmt.Registry) error {
 	return nil
 }
 
-var simulationTypeTypePropEnum []interface{}
-
-func init() {
-	var res []string
-	if err := json.Unmarshal([]byte(`["SingleBeadSimulation","ThermalSimulation","PorositySimulation","AssumedStrainSimulation","ScanPatternSimulation"]`), &res); err != nil {
-		panic(err)
-	}
-	for _, v := range res {
-		simulationTypeTypePropEnum = append(simulationTypeTypePropEnum, v)
-	}
-}
-
-const (
-	// SimulationTypeSingleBeadSimulation captures enum value "SingleBeadSimulation"
-	SimulationTypeSingleBeadSimulation string = "SingleBeadSimulation"
-	// SimulationTypeThermalSimulation captures enum value "ThermalSimulation"
-	SimulationTypeThermalSimulation string = "ThermalSimulation"
-	// SimulationTypePorositySimulation captures enum value "PorositySimulation"
-	SimulationTypePorositySimulation string = "PorositySimulation"
-	// SimulationTypeAssumedStrainSimulation captures enum value "AssumedStrainSimulation"
-	SimulationTypeAssumedStrainSimulation string = "AssumedStrainSimulation"
-	// SimulationTypeScanPatternSimulation captures enum value "ScanPatternSimulation"
-	SimulationTypeScanPatternSimulation string = "ScanPatternSimulation"
-)
-
-// prop value enum
-func (m *Simulation) validateTypeEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, simulationTypeTypePropEnum); err != nil {
-		return err
-	}
-	return nil
-}
-
 func (m *Simulation) validateType(formats strfmt.Registry) error {
 
 	if swag.IsZero(m.Type) { // not required
 		return nil
 	}
 
-	// value enum
-	if err := m.validateTypeEnum("type", "body", m.Type); err != nil {
+	if err := m.Type.Validate(formats); err != nil {
+		if ve, ok := err.(*errors.Validation); ok {
+			return ve.ValidateName("type")
+		}
 		return err
 	}
 

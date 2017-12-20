@@ -37,11 +37,17 @@ type MaterialConfiguration struct {
 	// Required: true
 	AtomicWeight *float64 `json:"atomicWeight"`
 
-	// Must be between 0 to 10000 kelvin
+	// cap temperature laser power coef
 	// Required: true
-	// Maximum: 10000
-	// Minimum: 0
-	CapTemperature *float64 `json:"capTemperature"`
+	CapTemperatureLaserPowerCoef *float64 `json:"capTemperatureLaserPowerCoef"`
+
+	// cap temperature laser speed coef
+	// Required: true
+	CapTemperatureLaserSpeedCoef *float64 `json:"capTemperatureLaserSpeedCoef"`
+
+	// cap temperature offset
+	// Required: true
+	CapTemperatureOffset *float64 `json:"capTemperatureOffset"`
 
 	// created time stamp, set server-side, read only field
 	// Required: true
@@ -59,13 +65,29 @@ type MaterialConfiguration struct {
 	// Required: true
 	ElasticModulusOfBase *float64 `json:"elasticModulusOfBase"`
 
-	// energy absorbing rate by powder
+	// energy absorbing rate by powder laser power coef
 	// Required: true
-	EnergyAbsorbingRateByPowder *float64 `json:"energyAbsorbingRateByPowder"`
+	EnergyAbsorbingRateByPowderLaserPowerCoef *float64 `json:"energyAbsorbingRateByPowderLaserPowerCoef"`
 
-	// energy absorbing rate by solid
+	// energy absorbing rate by powder laser speed coef
 	// Required: true
-	EnergyAbsorbingRateBySolid *float64 `json:"energyAbsorbingRateBySolid"`
+	EnergyAbsorbingRateByPowderLaserSpeedCoef *float64 `json:"energyAbsorbingRateByPowderLaserSpeedCoef"`
+
+	// energy absorbing rate by powder offset
+	// Required: true
+	EnergyAbsorbingRateByPowderOffset *float64 `json:"energyAbsorbingRateByPowderOffset"`
+
+	// energy absorbing rate by solid laser power coef
+	// Required: true
+	EnergyAbsorbingRateBySolidLaserPowerCoef *float64 `json:"energyAbsorbingRateBySolidLaserPowerCoef"`
+
+	// energy absorbing rate by solid laser speed coef
+	// Required: true
+	EnergyAbsorbingRateBySolidLaserSpeedCoef *float64 `json:"energyAbsorbingRateBySolidLaserSpeedCoef"`
+
+	// energy absorbing rate by solid offset
+	// Required: true
+	EnergyAbsorbingRateBySolidOffset *float64 `json:"energyAbsorbingRateBySolidOffset"`
 
 	// fusion latent heat
 	// Required: true
@@ -168,11 +190,6 @@ type MaterialConfiguration struct {
 	// vaporization temperature
 	// Required: true
 	VaporizationTemperature *float64 `json:"vaporizationTemperature"`
-
-	// version label for the material configuration
-	// Required: true
-	// Max Length: 16
-	Version *string `json:"version"`
 }
 
 // Validate validates this material configuration
@@ -204,7 +221,17 @@ func (m *MaterialConfiguration) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
-	if err := m.validateCapTemperature(formats); err != nil {
+	if err := m.validateCapTemperatureLaserPowerCoef(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateCapTemperatureLaserSpeedCoef(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateCapTemperatureOffset(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -229,12 +256,32 @@ func (m *MaterialConfiguration) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
-	if err := m.validateEnergyAbsorbingRateByPowder(formats); err != nil {
+	if err := m.validateEnergyAbsorbingRateByPowderLaserPowerCoef(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
 
-	if err := m.validateEnergyAbsorbingRateBySolid(formats); err != nil {
+	if err := m.validateEnergyAbsorbingRateByPowderLaserSpeedCoef(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateEnergyAbsorbingRateByPowderOffset(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateEnergyAbsorbingRateBySolidLaserPowerCoef(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateEnergyAbsorbingRateBySolidLaserSpeedCoef(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateEnergyAbsorbingRateBySolidOffset(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -359,11 +406,6 @@ func (m *MaterialConfiguration) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
-	if err := m.validateVersion(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
@@ -415,17 +457,27 @@ func (m *MaterialConfiguration) validateAtomicWeight(formats strfmt.Registry) er
 	return nil
 }
 
-func (m *MaterialConfiguration) validateCapTemperature(formats strfmt.Registry) error {
+func (m *MaterialConfiguration) validateCapTemperatureLaserPowerCoef(formats strfmt.Registry) error {
 
-	if err := validate.Required("capTemperature", "body", m.CapTemperature); err != nil {
+	if err := validate.Required("capTemperatureLaserPowerCoef", "body", m.CapTemperatureLaserPowerCoef); err != nil {
 		return err
 	}
 
-	if err := validate.Minimum("capTemperature", "body", float64(*m.CapTemperature), 0, false); err != nil {
+	return nil
+}
+
+func (m *MaterialConfiguration) validateCapTemperatureLaserSpeedCoef(formats strfmt.Registry) error {
+
+	if err := validate.Required("capTemperatureLaserSpeedCoef", "body", m.CapTemperatureLaserSpeedCoef); err != nil {
 		return err
 	}
 
-	if err := validate.Maximum("capTemperature", "body", float64(*m.CapTemperature), 10000, false); err != nil {
+	return nil
+}
+
+func (m *MaterialConfiguration) validateCapTemperatureOffset(formats strfmt.Registry) error {
+
+	if err := validate.Required("capTemperatureOffset", "body", m.CapTemperatureOffset); err != nil {
 		return err
 	}
 
@@ -468,18 +520,54 @@ func (m *MaterialConfiguration) validateElasticModulusOfBase(formats strfmt.Regi
 	return nil
 }
 
-func (m *MaterialConfiguration) validateEnergyAbsorbingRateByPowder(formats strfmt.Registry) error {
+func (m *MaterialConfiguration) validateEnergyAbsorbingRateByPowderLaserPowerCoef(formats strfmt.Registry) error {
 
-	if err := validate.Required("energyAbsorbingRateByPowder", "body", m.EnergyAbsorbingRateByPowder); err != nil {
+	if err := validate.Required("energyAbsorbingRateByPowderLaserPowerCoef", "body", m.EnergyAbsorbingRateByPowderLaserPowerCoef); err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func (m *MaterialConfiguration) validateEnergyAbsorbingRateBySolid(formats strfmt.Registry) error {
+func (m *MaterialConfiguration) validateEnergyAbsorbingRateByPowderLaserSpeedCoef(formats strfmt.Registry) error {
 
-	if err := validate.Required("energyAbsorbingRateBySolid", "body", m.EnergyAbsorbingRateBySolid); err != nil {
+	if err := validate.Required("energyAbsorbingRateByPowderLaserSpeedCoef", "body", m.EnergyAbsorbingRateByPowderLaserSpeedCoef); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *MaterialConfiguration) validateEnergyAbsorbingRateByPowderOffset(formats strfmt.Registry) error {
+
+	if err := validate.Required("energyAbsorbingRateByPowderOffset", "body", m.EnergyAbsorbingRateByPowderOffset); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *MaterialConfiguration) validateEnergyAbsorbingRateBySolidLaserPowerCoef(formats strfmt.Registry) error {
+
+	if err := validate.Required("energyAbsorbingRateBySolidLaserPowerCoef", "body", m.EnergyAbsorbingRateBySolidLaserPowerCoef); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *MaterialConfiguration) validateEnergyAbsorbingRateBySolidLaserSpeedCoef(formats strfmt.Registry) error {
+
+	if err := validate.Required("energyAbsorbingRateBySolidLaserSpeedCoef", "body", m.EnergyAbsorbingRateBySolidLaserSpeedCoef); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *MaterialConfiguration) validateEnergyAbsorbingRateBySolidOffset(formats strfmt.Registry) error {
+
+	if err := validate.Required("energyAbsorbingRateBySolidOffset", "body", m.EnergyAbsorbingRateBySolidOffset); err != nil {
 		return err
 	}
 
@@ -696,19 +784,6 @@ func (m *MaterialConfiguration) validateVaporizationStartTemperature(formats str
 func (m *MaterialConfiguration) validateVaporizationTemperature(formats strfmt.Registry) error {
 
 	if err := validate.Required("vaporizationTemperature", "body", m.VaporizationTemperature); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *MaterialConfiguration) validateVersion(formats strfmt.Registry) error {
-
-	if err := validate.Required("version", "body", m.Version); err != nil {
-		return err
-	}
-
-	if err := validate.MaxLength("version", "body", string(*m.Version), 16); err != nil {
 		return err
 	}
 

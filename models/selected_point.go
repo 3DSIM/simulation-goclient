@@ -18,7 +18,7 @@ import (
 type SelectedPoint struct {
 
 	// id
-	ID float64 `json:"id,omitempty"`
+	ID int32 `json:"id,omitempty"`
 
 	// label
 	// Required: true
@@ -26,7 +26,7 @@ type SelectedPoint struct {
 
 	// simulation Id
 	// Required: true
-	SimulationID *float64 `json:"simulationId"`
+	SimulationID *int32 `json:"simulationId"`
 
 	// x
 	// Required: true
