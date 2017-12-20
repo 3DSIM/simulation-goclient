@@ -34,7 +34,7 @@ type BuildFilePost struct {
 
 	// identifier for organization this build file belongs to
 	// Required: true
-	OrganizationID *int64 `json:"organizationId"`
+	OrganizationID *int32 `json:"organizationId"`
 
 	// a list of tags assigned to this build file
 	Tags []string `json:"tags"`

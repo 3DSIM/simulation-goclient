@@ -434,7 +434,7 @@ func (c *client) PostAssumedStrainSimulation(simulation *models.AssumedStrainSim
 	}
 	// clear simulationParts part id and simulation id so server will create
 	// new simulation part entries
-	for _, part := range simulation.AssumedStrainSimulationParameters.SimulationParts {
+	for _, part := range simulation.PartBasedSimulationParameters.SimulationParts{
 		part.ID = 0
 		part.SimulationID = swag.Int32(0)
 	}
@@ -521,7 +521,7 @@ func (c *client) PostScanPatternSimulation(simulation *models.ScanPatternSimulat
 	}
 	// clear simulationParts part id and simulation id so server will create
 	// new simulation part entries
-	for _, part := range simulation.ScanPatternSimulationParameters.SimulationParts {
+	for _, part := range simulation.PartBasedSimulationParameters.SimulationParts {
 		part.ID = 0
 		part.SimulationID = swag.Int32(0)
 	}
@@ -632,7 +632,7 @@ func (c *client) PostThermalSimulation(simulation *models.ThermalSimulation) (t 
 	}
 	// clear simulationParts part id and simulation id so server will create
 	// new simulation part entries
-	for _, part := range simulation.ThermalSimulationParameters.SimulationParts {
+	for _, part := range simulation.PartBasedSimulationParameters.SimulationParts {
 		part.ID = 0
 		part.SimulationID = swag.Int32(0)
 	}

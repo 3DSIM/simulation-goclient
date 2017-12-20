@@ -15,7 +15,7 @@ import (
 // AssumedStrainSimulation assumed strain simulation
 // swagger:model AssumedStrainSimulation
 type AssumedStrainSimulation struct {
-	Simulation
+	PartBasedSimulationParameters
 
 	AssumedStrainSimulationParameters
 }
@@ -23,11 +23,11 @@ type AssumedStrainSimulation struct {
 // UnmarshalJSON unmarshals this object from a JSON structure
 func (m *AssumedStrainSimulation) UnmarshalJSON(raw []byte) error {
 
-	var aO0 Simulation
+	var aO0 PartBasedSimulationParameters
 	if err := swag.ReadJSON(raw, &aO0); err != nil {
 		return err
 	}
-	m.Simulation = aO0
+	m.PartBasedSimulationParameters = aO0
 
 	var aO1 AssumedStrainSimulationParameters
 	if err := swag.ReadJSON(raw, &aO1); err != nil {
@@ -42,7 +42,7 @@ func (m *AssumedStrainSimulation) UnmarshalJSON(raw []byte) error {
 func (m AssumedStrainSimulation) MarshalJSON() ([]byte, error) {
 	var _parts [][]byte
 
-	aO0, err := swag.WriteJSON(m.Simulation)
+	aO0, err := swag.WriteJSON(m.PartBasedSimulationParameters)
 	if err != nil {
 		return nil, err
 	}
@@ -61,7 +61,7 @@ func (m AssumedStrainSimulation) MarshalJSON() ([]byte, error) {
 func (m *AssumedStrainSimulation) Validate(formats strfmt.Registry) error {
 	var res []error
 
-	if err := m.Simulation.Validate(formats); err != nil {
+	if err := m.PartBasedSimulationParameters.Validate(formats); err != nil {
 		res = append(res, err)
 	}
 

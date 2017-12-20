@@ -77,11 +77,6 @@ type Material struct {
 
 	// true if the material properites have been tuned for thermal simulations
 	ThermalSimulationApproved bool `json:"thermalSimulationApproved,omitempty"`
-
-	// version label
-	// Required: true
-	// Max Length: 16
-	Version *string `json:"version"`
 }
 
 // Validate validates this material
@@ -154,11 +149,6 @@ func (m *Material) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateOrganizationID(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
-	if err := m.validateVersion(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -329,19 +319,6 @@ func (m *Material) validateName(formats strfmt.Registry) error {
 func (m *Material) validateOrganizationID(formats strfmt.Registry) error {
 
 	if err := validate.Required("organizationId", "body", m.OrganizationID); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *Material) validateVersion(formats strfmt.Registry) error {
-
-	if err := validate.Required("version", "body", m.Version); err != nil {
-		return err
-	}
-
-	if err := validate.MaxLength("version", "body", string(*m.Version), 16); err != nil {
 		return err
 	}
 

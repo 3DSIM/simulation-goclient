@@ -50,7 +50,7 @@ type BuildFile struct {
 
 	// internally assigned identifier for this build file
 	// Required: true
-	ID *int64 `json:"id"`
+	ID *int32 `json:"id"`
 
 	// job number associated with this build file
 	JobID string `json:"jobId,omitempty"`
@@ -79,10 +79,10 @@ type BuildFile struct {
 	Name *string `json:"name"`
 
 	// number of powder deposition layers
-	NumberOfLayers int64 `json:"numberOfLayers,omitempty"`
+	NumberOfLayers int32 `json:"numberOfLayers,omitempty"`
 
 	// identifier for organization this build file belongs to
-	OrganizationID int64 `json:"organizationId,omitempty"`
+	OrganizationID int32 `json:"organizationId,omitempty"`
 
 	// x position of original part location in millimeters
 	OriginalX float64 `json:"originalX,omitempty"`
