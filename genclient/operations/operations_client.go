@@ -2140,6 +2140,35 @@ func (a *Client) UpdateBuildFile(params *UpdateBuildFileParams, authInfo runtime
 
 }
 
+/*
+UpdateMaterial Update a material
+*/
+func (a *Client) UpdateMaterial(params *UpdateMaterialParams, authInfo runtime.ClientAuthInfoWriter) (*UpdateMaterialOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewUpdateMaterialParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "updateMaterial",
+		Method:             "PUT",
+		PathPattern:        "/materials/{id}",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &UpdateMaterialReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*UpdateMaterialOK), nil
+
+}
+
 // SetTransport changes the transport on the client
 func (a *Client) SetTransport(transport runtime.ClientTransport) {
 	a.transport = transport
