@@ -219,6 +219,10 @@ func (m *MachineConfiguration) validateCreated(formats strfmt.Registry) error {
 		return err
 	}
 
+	if err := validate.FormatOf("created", "body", "date-time", m.Created.String(), formats); err != nil {
+		return err
+	}
+
 	return nil
 }
 

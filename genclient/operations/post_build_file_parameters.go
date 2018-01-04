@@ -127,12 +127,10 @@ func (o *PostBuildFileParams) WriteToRequest(r runtime.ClientRequest, reg strfmt
 	}
 	var res []error
 
-	if o.BuildFilePost == nil {
-		o.BuildFilePost = new(models.BuildFilePost)
-	}
-
-	if err := r.SetBodyParam(o.BuildFilePost); err != nil {
-		return err
+	if o.BuildFilePost != nil {
+		if err := r.SetBodyParam(o.BuildFilePost); err != nil {
+			return err
+		}
 	}
 
 	if len(res) > 0 {

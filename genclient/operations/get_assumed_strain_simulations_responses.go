@@ -68,7 +68,7 @@ func NewGetAssumedStrainSimulationsOK() *GetAssumedStrainSimulationsOK {
 Successfully found the list of items
 */
 type GetAssumedStrainSimulationsOK struct {
-	Payload []*models.AssumedStrainSimulation
+	Payload models.GetAssumedStrainSimulationsOKBody
 }
 
 func (o *GetAssumedStrainSimulationsOK) Error() string {

@@ -144,12 +144,10 @@ func (o *UpdateBuildFileParams) WriteToRequest(r runtime.ClientRequest, reg strf
 	}
 	var res []error
 
-	if o.BuildFile == nil {
-		o.BuildFile = new(models.BuildFile)
-	}
-
-	if err := r.SetBodyParam(o.BuildFile); err != nil {
-		return err
+	if o.BuildFile != nil {
+		if err := r.SetBodyParam(o.BuildFile); err != nil {
+			return err
+		}
 	}
 
 	// path param id

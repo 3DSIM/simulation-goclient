@@ -74,7 +74,7 @@ type PatchPartParams struct {
 	  This endpoint uses JSON Patch, RFC 6092.
 
 	*/
-	PartPatch []*models.PatchDocument
+	PartPatch models.PatchPartParamsBody
 
 	timeout    time.Duration
 	Context    context.Context
@@ -126,13 +126,13 @@ func (o *PatchPartParams) SetID(id int32) {
 }
 
 // WithPartPatch adds the partPatch to the patch part params
-func (o *PatchPartParams) WithPartPatch(partPatch []*models.PatchDocument) *PatchPartParams {
+func (o *PatchPartParams) WithPartPatch(partPatch models.PatchPartParamsBody) *PatchPartParams {
 	o.SetPartPatch(partPatch)
 	return o
 }
 
 // SetPartPatch adds the partPatch to the patch part params
-func (o *PatchPartParams) SetPartPatch(partPatch []*models.PatchDocument) {
+func (o *PatchPartParams) SetPartPatch(partPatch models.PatchPartParamsBody) {
 	o.PartPatch = partPatch
 }
 
@@ -146,10 +146,6 @@ func (o *PatchPartParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Reg
 
 	// path param id
 	if err := r.SetPathParam("id", swag.FormatInt32(o.ID)); err != nil {
-		return err
-	}
-
-	if err := r.SetBodyParam(o.PartPatch); err != nil {
 		return err
 	}
 

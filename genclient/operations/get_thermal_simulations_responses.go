@@ -68,7 +68,7 @@ func NewGetThermalSimulationsOK() *GetThermalSimulationsOK {
 Successfully found the list of items
 */
 type GetThermalSimulationsOK struct {
-	Payload []*models.ThermalSimulation
+	Payload models.GetThermalSimulationsOKBody
 }
 
 func (o *GetThermalSimulationsOK) Error() string {

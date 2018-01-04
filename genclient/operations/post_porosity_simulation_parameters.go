@@ -127,12 +127,10 @@ func (o *PostPorositySimulationParams) WriteToRequest(r runtime.ClientRequest, r
 	}
 	var res []error
 
-	if o.PorositySimulation == nil {
-		o.PorositySimulation = new(models.PorositySimulation)
-	}
-
-	if err := r.SetBodyParam(o.PorositySimulation); err != nil {
-		return err
+	if o.PorositySimulation != nil {
+		if err := r.SetBodyParam(o.PorositySimulation); err != nil {
+			return err
+		}
 	}
 
 	if len(res) > 0 {

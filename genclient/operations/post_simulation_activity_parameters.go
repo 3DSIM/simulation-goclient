@@ -144,12 +144,10 @@ func (o *PostSimulationActivityParams) WriteToRequest(r runtime.ClientRequest, r
 	}
 	var res []error
 
-	if o.SimulationActivity == nil {
-		o.SimulationActivity = new(models.SimulationActivity)
-	}
-
-	if err := r.SetBodyParam(o.SimulationActivity); err != nil {
-		return err
+	if o.SimulationActivity != nil {
+		if err := r.SetBodyParam(o.SimulationActivity); err != nil {
+			return err
+		}
 	}
 
 	// path param id

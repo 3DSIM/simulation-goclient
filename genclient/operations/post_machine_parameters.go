@@ -124,12 +124,10 @@ func (o *PostMachineParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.R
 	}
 	var res []error
 
-	if o.Machine == nil {
-		o.Machine = new(models.Machine)
-	}
-
-	if err := r.SetBodyParam(o.Machine); err != nil {
-		return err
+	if o.Machine != nil {
+		if err := r.SetBodyParam(o.Machine); err != nil {
+			return err
+		}
 	}
 
 	if len(res) > 0 {

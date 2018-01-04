@@ -68,7 +68,7 @@ func NewGetBuildFilesOK() *GetBuildFilesOK {
 Successfully retrieved list of build files
 */
 type GetBuildFilesOK struct {
-	Payload []*models.BuildFile
+	Payload models.GetBuildFilesOKBody
 }
 
 func (o *GetBuildFilesOK) Error() string {

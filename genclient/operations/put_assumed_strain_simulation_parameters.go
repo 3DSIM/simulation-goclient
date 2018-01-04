@@ -144,12 +144,10 @@ func (o *PutAssumedStrainSimulationParams) WriteToRequest(r runtime.ClientReques
 	}
 	var res []error
 
-	if o.AssumedStrainSimulation == nil {
-		o.AssumedStrainSimulation = new(models.AssumedStrainSimulation)
-	}
-
-	if err := r.SetBodyParam(o.AssumedStrainSimulation); err != nil {
-		return err
+	if o.AssumedStrainSimulation != nil {
+		if err := r.SetBodyParam(o.AssumedStrainSimulation); err != nil {
+			return err
+		}
 	}
 
 	// path param id

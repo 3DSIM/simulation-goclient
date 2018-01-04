@@ -68,7 +68,7 @@ func NewGetMachinesOK() *GetMachinesOK {
 Successfully retrieved list of machines
 */
 type GetMachinesOK struct {
-	Payload []*models.Machine
+	Payload models.GetMachinesOKBody
 }
 
 func (o *GetMachinesOK) Error() string {

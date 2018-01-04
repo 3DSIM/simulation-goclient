@@ -69,7 +69,7 @@ type PatchBuildFileParams struct {
 	  This endpoint uses JSON Patch, RFC 6092.
 
 	*/
-	BuildFilePatch []*models.PatchDocument
+	BuildFilePatch models.PatchBuildFileParamsBody
 	/*ID
 	  ID of build file to update
 
@@ -115,13 +115,13 @@ func (o *PatchBuildFileParams) SetHTTPClient(client *http.Client) {
 }
 
 // WithBuildFilePatch adds the buildFilePatch to the patch build file params
-func (o *PatchBuildFileParams) WithBuildFilePatch(buildFilePatch []*models.PatchDocument) *PatchBuildFileParams {
+func (o *PatchBuildFileParams) WithBuildFilePatch(buildFilePatch models.PatchBuildFileParamsBody) *PatchBuildFileParams {
 	o.SetBuildFilePatch(buildFilePatch)
 	return o
 }
 
 // SetBuildFilePatch adds the buildFilePatch to the patch build file params
-func (o *PatchBuildFileParams) SetBuildFilePatch(buildFilePatch []*models.PatchDocument) {
+func (o *PatchBuildFileParams) SetBuildFilePatch(buildFilePatch models.PatchBuildFileParamsBody) {
 	o.BuildFilePatch = buildFilePatch
 }
 
@@ -143,10 +143,6 @@ func (o *PatchBuildFileParams) WriteToRequest(r runtime.ClientRequest, reg strfm
 		return err
 	}
 	var res []error
-
-	if err := r.SetBodyParam(o.BuildFilePatch); err != nil {
-		return err
-	}
 
 	// path param id
 	if err := r.SetPathParam("id", swag.FormatInt32(o.ID)); err != nil {

@@ -75,7 +75,7 @@ func NewGetPartGeometryOK() *GetPartGeometryOK {
 Successfully returns a part geometry triangles
 */
 type GetPartGeometryOK struct {
-	Payload []*models.Triangle
+	Payload models.GetPartGeometryOKBody
 }
 
 func (o *GetPartGeometryOK) Error() string {

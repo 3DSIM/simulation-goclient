@@ -75,7 +75,7 @@ func NewGetBuildFileGeometryOK() *GetBuildFileGeometryOK {
 Part geometry as an array of triangles
 */
 type GetBuildFileGeometryOK struct {
-	Payload []*models.Triangle
+	Payload models.GetBuildFileGeometryOKBody
 }
 
 func (o *GetBuildFileGeometryOK) Error() string {

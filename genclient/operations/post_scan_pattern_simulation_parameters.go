@@ -127,12 +127,10 @@ func (o *PostScanPatternSimulationParams) WriteToRequest(r runtime.ClientRequest
 	}
 	var res []error
 
-	if o.ScanPatternSimulation == nil {
-		o.ScanPatternSimulation = new(models.ScanPatternSimulation)
-	}
-
-	if err := r.SetBodyParam(o.ScanPatternSimulation); err != nil {
-		return err
+	if o.ScanPatternSimulation != nil {
+		if err := r.SetBodyParam(o.ScanPatternSimulation); err != nil {
+			return err
+		}
 	}
 
 	if len(res) > 0 {

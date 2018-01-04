@@ -67,6 +67,10 @@ func (m *SimulationOutput) validateCreatedAt(formats strfmt.Registry) error {
 		return err
 	}
 
+	if err := validate.FormatOf("createdAt", "body", "date-time", m.CreatedAt.String(), formats); err != nil {
+		return err
+	}
+
 	return nil
 }
 

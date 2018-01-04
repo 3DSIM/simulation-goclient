@@ -61,7 +61,7 @@ func NewGetPartsOK() *GetPartsOK {
 Successfully found the list of parts
 */
 type GetPartsOK struct {
-	Payload []*models.Part
+	Payload models.GetPartsOKBody
 }
 
 func (o *GetPartsOK) Error() string {
