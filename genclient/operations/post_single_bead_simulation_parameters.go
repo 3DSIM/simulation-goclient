@@ -127,12 +127,10 @@ func (o *PostSingleBeadSimulationParams) WriteToRequest(r runtime.ClientRequest,
 	}
 	var res []error
 
-	if o.SingleBeadSimulation == nil {
-		o.SingleBeadSimulation = new(models.SingleBeadSimulation)
-	}
-
-	if err := r.SetBodyParam(o.SingleBeadSimulation); err != nil {
-		return err
+	if o.SingleBeadSimulation != nil {
+		if err := r.SetBodyParam(o.SingleBeadSimulation); err != nil {
+			return err
+		}
 	}
 
 	if len(res) > 0 {

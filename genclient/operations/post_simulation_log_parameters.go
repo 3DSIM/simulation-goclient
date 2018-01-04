@@ -144,12 +144,10 @@ func (o *PostSimulationLogParams) WriteToRequest(r runtime.ClientRequest, reg st
 	}
 	var res []error
 
-	if o.SimulationLog == nil {
-		o.SimulationLog = new(models.SimulationLog)
-	}
-
-	if err := r.SetBodyParam(o.SimulationLog); err != nil {
-		return err
+	if o.SimulationLog != nil {
+		if err := r.SetBodyParam(o.SimulationLog); err != nil {
+			return err
+		}
 	}
 
 	// path param id

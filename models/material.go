@@ -6,8 +6,6 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
-	"strconv"
-
 	strfmt "github.com/go-openapi/strfmt"
 
 	"github.com/go-openapi/errors"
@@ -27,7 +25,7 @@ type Material struct {
 	Configuration *MaterialConfiguration `json:"configuration,omitempty"`
 
 	// configuration history
-	ConfigurationHistory []*MaterialConfiguration `json:"configurationHistory"`
+	ConfigurationHistory MaterialConfigurationHistory `json:"configurationHistory"`
 
 	// identifier for the active configuration for this material
 	// Required: true
@@ -89,11 +87,6 @@ func (m *Material) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateConfiguration(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
-	if err := m.validateConfigurationHistory(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -187,33 +180,6 @@ func (m *Material) validateConfiguration(formats strfmt.Registry) error {
 	return nil
 }
 
-func (m *Material) validateConfigurationHistory(formats strfmt.Registry) error {
-
-	if swag.IsZero(m.ConfigurationHistory) { // not required
-		return nil
-	}
-
-	for i := 0; i < len(m.ConfigurationHistory); i++ {
-
-		if swag.IsZero(m.ConfigurationHistory[i]) { // not required
-			continue
-		}
-
-		if m.ConfigurationHistory[i] != nil {
-
-			if err := m.ConfigurationHistory[i].Validate(formats); err != nil {
-				if ve, ok := err.(*errors.Validation); ok {
-					return ve.ValidateName("configurationHistory" + "." + strconv.Itoa(i))
-				}
-				return err
-			}
-		}
-
-	}
-
-	return nil
-}
-
 func (m *Material) validateConfigurationID(formats strfmt.Registry) error {
 
 	if err := validate.Required("configurationId", "body", m.ConfigurationID); err != nil {
@@ -226,6 +192,10 @@ func (m *Material) validateConfigurationID(formats strfmt.Registry) error {
 func (m *Material) validateCreated(formats strfmt.Registry) error {
 
 	if err := validate.Required("created", "body", m.Created); err != nil {
+		return err
+	}
+
+	if err := validate.FormatOf("created", "body", "date-time", m.Created.String(), formats); err != nil {
 		return err
 	}
 
@@ -288,6 +258,10 @@ func (m *Material) validateKey(formats strfmt.Registry) error {
 func (m *Material) validateLastModified(formats strfmt.Registry) error {
 
 	if err := validate.Required("lastModified", "body", m.LastModified); err != nil {
+		return err
+	}
+
+	if err := validate.FormatOf("lastModified", "body", "date-time", m.LastModified.String(), formats); err != nil {
 		return err
 	}
 

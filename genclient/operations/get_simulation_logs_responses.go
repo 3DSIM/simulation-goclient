@@ -68,7 +68,7 @@ func NewGetSimulationLogsOK() *GetSimulationLogsOK {
 Successfully found the list of items
 */
 type GetSimulationLogsOK struct {
-	Payload []*models.SimulationLog
+	Payload models.GetSimulationLogsOKBody
 }
 
 func (o *GetSimulationLogsOK) Error() string {

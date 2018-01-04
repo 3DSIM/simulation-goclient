@@ -127,12 +127,10 @@ func (o *AddMaterialParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.R
 	}
 	var res []error
 
-	if o.Material == nil {
-		o.Material = new(models.Material)
-	}
-
-	if err := r.SetBodyParam(o.Material); err != nil {
-		return err
+	if o.Material != nil {
+		if err := r.SetBodyParam(o.Material); err != nil {
+			return err
+		}
 	}
 
 	if len(res) > 0 {

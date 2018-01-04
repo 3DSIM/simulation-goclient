@@ -127,12 +127,10 @@ func (o *PostThermalSimulationParams) WriteToRequest(r runtime.ClientRequest, re
 	}
 	var res []error
 
-	if o.ThermalSimulation == nil {
-		o.ThermalSimulation = new(models.ThermalSimulation)
-	}
-
-	if err := r.SetBodyParam(o.ThermalSimulation); err != nil {
-		return err
+	if o.ThermalSimulation != nil {
+		if err := r.SetBodyParam(o.ThermalSimulation); err != nil {
+			return err
+		}
 	}
 
 	if len(res) > 0 {

@@ -68,7 +68,7 @@ func NewGetScanPatternSimulationsOK() *GetScanPatternSimulationsOK {
 Successfully found the list of items
 */
 type GetScanPatternSimulationsOK struct {
-	Payload []*models.ScanPatternSimulation
+	Payload models.GetScanPatternSimulationsOKBody
 }
 
 func (o *GetScanPatternSimulationsOK) Error() string {

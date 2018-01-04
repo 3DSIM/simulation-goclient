@@ -6,8 +6,6 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
-	"strconv"
-
 	strfmt "github.com/go-openapi/strfmt"
 
 	"github.com/go-openapi/errors"
@@ -133,8 +131,8 @@ type ThermalSimulationParameters struct {
 	// Minimum: 0.01
 	ScanSpeed *float64 `json:"scanSpeed"`
 
-	// List of points where the thermal solver will collect thermal history - limit 10
-	SelectedPoints []*SelectedPoint `json:"selectedPoints"`
+	// selected points
+	SelectedPoints ThermalSimulationParametersSelectedPoints `json:"selectedPoints"`
 
 	// Must be between 0.001 to 0.1 meters
 	// Required: true
@@ -262,11 +260,6 @@ func (m *ThermalSimulationParameters) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateScanSpeed(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
-	if err := m.validateSelectedPoints(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -552,33 +545,6 @@ func (m *ThermalSimulationParameters) validateScanSpeed(formats strfmt.Registry)
 
 	if err := validate.Maximum("scanSpeed", "body", float64(*m.ScanSpeed), 10, false); err != nil {
 		return err
-	}
-
-	return nil
-}
-
-func (m *ThermalSimulationParameters) validateSelectedPoints(formats strfmt.Registry) error {
-
-	if swag.IsZero(m.SelectedPoints) { // not required
-		return nil
-	}
-
-	for i := 0; i < len(m.SelectedPoints); i++ {
-
-		if swag.IsZero(m.SelectedPoints[i]) { // not required
-			continue
-		}
-
-		if m.SelectedPoints[i] != nil {
-
-			if err := m.SelectedPoints[i].Validate(formats); err != nil {
-				if ve, ok := err.(*errors.Validation); ok {
-					return ve.ValidateName("selectedPoints" + "." + strconv.Itoa(i))
-				}
-				return err
-			}
-		}
-
 	}
 
 	return nil

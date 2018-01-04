@@ -74,7 +74,7 @@ type PatchSimulationParams struct {
 	  This endpoint uses JSON Patch, RFC 6092.
 
 	*/
-	SimulationPatch []*models.PatchDocument
+	SimulationPatch models.PatchSimulationParamsBody
 
 	timeout    time.Duration
 	Context    context.Context
@@ -126,13 +126,13 @@ func (o *PatchSimulationParams) SetID(id int32) {
 }
 
 // WithSimulationPatch adds the simulationPatch to the patch simulation params
-func (o *PatchSimulationParams) WithSimulationPatch(simulationPatch []*models.PatchDocument) *PatchSimulationParams {
+func (o *PatchSimulationParams) WithSimulationPatch(simulationPatch models.PatchSimulationParamsBody) *PatchSimulationParams {
 	o.SetSimulationPatch(simulationPatch)
 	return o
 }
 
 // SetSimulationPatch adds the simulationPatch to the patch simulation params
-func (o *PatchSimulationParams) SetSimulationPatch(simulationPatch []*models.PatchDocument) {
+func (o *PatchSimulationParams) SetSimulationPatch(simulationPatch models.PatchSimulationParamsBody) {
 	o.SimulationPatch = simulationPatch
 }
 
@@ -146,10 +146,6 @@ func (o *PatchSimulationParams) WriteToRequest(r runtime.ClientRequest, reg strf
 
 	// path param id
 	if err := r.SetPathParam("id", swag.FormatInt32(o.ID)); err != nil {
-		return err
-	}
-
-	if err := r.SetBodyParam(o.SimulationPatch); err != nil {
 		return err
 	}
 

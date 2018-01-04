@@ -68,7 +68,7 @@ func NewGetMaterialsOK() *GetMaterialsOK {
 Successfully retrieved list
 */
 type GetMaterialsOK struct {
-	Payload []*models.Material
+	Payload models.GetMaterialsOKBody
 }
 
 func (o *GetMaterialsOK) Error() string {

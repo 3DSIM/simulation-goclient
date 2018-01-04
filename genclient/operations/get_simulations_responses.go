@@ -68,7 +68,7 @@ func NewGetSimulationsOK() *GetSimulationsOK {
 Successfully found the list of items
 */
 type GetSimulationsOK struct {
-	Payload []*models.Simulation
+	Payload models.GetSimulationsOKBody
 }
 
 func (o *GetSimulationsOK) Error() string {

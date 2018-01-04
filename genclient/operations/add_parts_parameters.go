@@ -127,12 +127,10 @@ func (o *AddPartsParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Regi
 	}
 	var res []error
 
-	if o.Part == nil {
-		o.Part = new(models.PartPost)
-	}
-
-	if err := r.SetBodyParam(o.Part); err != nil {
-		return err
+	if o.Part != nil {
+		if err := r.SetBodyParam(o.Part); err != nil {
+			return err
+		}
 	}
 
 	if len(res) > 0 {

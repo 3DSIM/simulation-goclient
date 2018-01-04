@@ -6,8 +6,6 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
-	"strconv"
-
 	strfmt "github.com/go-openapi/strfmt"
 
 	"github.com/go-openapi/errors"
@@ -22,7 +20,7 @@ type Triangle struct {
 	Normal *TriangleNormal `json:"normal,omitempty"`
 
 	// vertices
-	Vertices []*Vertex `json:"vertices"`
+	Vertices TriangleVertices `json:"vertices"`
 }
 
 // Validate validates this triangle
@@ -30,11 +28,6 @@ func (m *Triangle) Validate(formats strfmt.Registry) error {
 	var res []error
 
 	if err := m.validateNormal(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
-	if err := m.validateVertices(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -64,33 +57,6 @@ func (m *Triangle) validateNormal(formats strfmt.Registry) error {
 	return nil
 }
 
-func (m *Triangle) validateVertices(formats strfmt.Registry) error {
-
-	if swag.IsZero(m.Vertices) { // not required
-		return nil
-	}
-
-	for i := 0; i < len(m.Vertices); i++ {
-
-		if swag.IsZero(m.Vertices[i]) { // not required
-			continue
-		}
-
-		if m.Vertices[i] != nil {
-
-			if err := m.Vertices[i].Validate(formats); err != nil {
-				if ve, ok := err.(*errors.Validation); ok {
-					return ve.ValidateName("vertices" + "." + strconv.Itoa(i))
-				}
-				return err
-			}
-		}
-
-	}
-
-	return nil
-}
-
 // MarshalBinary interface implementation
 func (m *Triangle) MarshalBinary() ([]byte, error) {
 	if m == nil {
@@ -102,51 +68,6 @@ func (m *Triangle) MarshalBinary() ([]byte, error) {
 // UnmarshalBinary interface implementation
 func (m *Triangle) UnmarshalBinary(b []byte) error {
 	var res Triangle
-	if err := swag.ReadJSON(b, &res); err != nil {
-		return err
-	}
-	*m = res
-	return nil
-}
-
-// TriangleNormal triangle normal
-// swagger:model TriangleNormal
-type TriangleNormal struct {
-
-	// angle
-	Angle float64 `json:"angle,omitempty"`
-
-	// x
-	X float64 `json:"x,omitempty"`
-
-	// y
-	Y float64 `json:"y,omitempty"`
-
-	// z
-	Z float64 `json:"z,omitempty"`
-}
-
-// Validate validates this triangle normal
-func (m *TriangleNormal) Validate(formats strfmt.Registry) error {
-	var res []error
-
-	if len(res) > 0 {
-		return errors.CompositeValidationError(res...)
-	}
-	return nil
-}
-
-// MarshalBinary interface implementation
-func (m *TriangleNormal) MarshalBinary() ([]byte, error) {
-	if m == nil {
-		return nil, nil
-	}
-	return swag.WriteJSON(m)
-}
-
-// UnmarshalBinary interface implementation
-func (m *TriangleNormal) UnmarshalBinary(b []byte) error {
-	var res TriangleNormal
 	if err := swag.ReadJSON(b, &res); err != nil {
 		return err
 	}

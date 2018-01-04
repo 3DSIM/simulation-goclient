@@ -7,7 +7,6 @@ package models
 
 import (
 	"encoding/json"
-	"strconv"
 
 	strfmt "github.com/go-openapi/strfmt"
 
@@ -103,8 +102,8 @@ type PartBasedSimulationParameters struct {
 	// Required: true
 	PoissonRatio *float64 `json:"poissonRatio"`
 
-	// List of parts to simulate (current limit is one part, imposed by server)
-	SimulationParts []*SimulationPart `json:"simulationParts"`
+	// simulation parts
+	SimulationParts PartBasedSimulationParametersSimulationParts `json:"simulationParts"`
 
 	// strain scaling factor
 	// Required: true
@@ -239,11 +238,6 @@ func (m *PartBasedSimulationParameters) Validate(formats strfmt.Registry) error 
 	}
 
 	if err := m.validatePoissonRatio(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
-	if err := m.validateSimulationParts(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -432,33 +426,6 @@ func (m *PartBasedSimulationParameters) validatePoissonRatio(formats strfmt.Regi
 
 	if err := validate.Required("poissonRatio", "body", m.PoissonRatio); err != nil {
 		return err
-	}
-
-	return nil
-}
-
-func (m *PartBasedSimulationParameters) validateSimulationParts(formats strfmt.Registry) error {
-
-	if swag.IsZero(m.SimulationParts) { // not required
-		return nil
-	}
-
-	for i := 0; i < len(m.SimulationParts); i++ {
-
-		if swag.IsZero(m.SimulationParts[i]) { // not required
-			continue
-		}
-
-		if m.SimulationParts[i] != nil {
-
-			if err := m.SimulationParts[i].Validate(formats); err != nil {
-				if ve, ok := err.(*errors.Validation); ok {
-					return ve.ValidateName("simulationParts" + "." + strconv.Itoa(i))
-				}
-				return err
-			}
-		}
-
 	}
 
 	return nil

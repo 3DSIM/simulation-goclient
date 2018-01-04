@@ -146,12 +146,10 @@ func (o *UpdateMaterialParams) WriteToRequest(r runtime.ClientRequest, reg strfm
 		return err
 	}
 
-	if o.Material == nil {
-		o.Material = new(models.Material)
-	}
-
-	if err := r.SetBodyParam(o.Material); err != nil {
-		return err
+	if o.Material != nil {
+		if err := r.SetBodyParam(o.Material); err != nil {
+			return err
+		}
 	}
 
 	if len(res) > 0 {

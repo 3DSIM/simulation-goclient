@@ -68,7 +68,7 @@ func NewGetPorositySimulationsOK() *GetPorositySimulationsOK {
 Successfully found the list of items
 */
 type GetPorositySimulationsOK struct {
-	Payload []*models.PorositySimulation
+	Payload models.GetPorositySimulationsOKBody
 }
 
 func (o *GetPorositySimulationsOK) Error() string {

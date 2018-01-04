@@ -68,7 +68,7 @@ func NewGetSingleBeadSimulationsOK() *GetSingleBeadSimulationsOK {
 Successfully found the list of items
 */
 type GetSingleBeadSimulationsOK struct {
-	Payload []*models.SingleBeadSimulation
+	Payload models.GetSingleBeadSimulationsOKBody
 }
 
 func (o *GetSingleBeadSimulationsOK) Error() string {

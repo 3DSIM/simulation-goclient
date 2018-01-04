@@ -116,6 +116,10 @@ func (m *SimulationLog) validateLoggedAt(formats strfmt.Registry) error {
 		return err
 	}
 
+	if err := validate.FormatOf("loggedAt", "body", "date-time", m.LoggedAt.String(), formats); err != nil {
+		return err
+	}
+
 	return nil
 }
 
