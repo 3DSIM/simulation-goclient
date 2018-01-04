@@ -19,7 +19,6 @@ import (
 // PartBasedSimulationParameters part based simulation parameters
 // swagger:model PartBasedSimulationParameters
 type PartBasedSimulationParameters struct {
-	Simulation
 
 	// should be a number between 0.5 and 1.5
 	BladeCrashThreshold float64 `json:"bladeCrashThreshold,omitempty"`
@@ -150,38 +149,9 @@ type PartBasedSimulationParameters struct {
 	VoxelSize *float64 `json:"voxelSize"`
 }
 
-// UnmarshalJSON unmarshals this object from a JSON structure
-func (m *PartBasedSimulationParameters) UnmarshalJSON(raw []byte) error {
-
-	var aO0 Simulation
-	if err := swag.ReadJSON(raw, &aO0); err != nil {
-		return err
-	}
-	m.Simulation = aO0
-
-	return nil
-}
-
-// MarshalJSON marshals this object to a JSON structure
-func (m PartBasedSimulationParameters) MarshalJSON() ([]byte, error) {
-	var _parts [][]byte
-
-	aO0, err := swag.WriteJSON(m.Simulation)
-	if err != nil {
-		return nil, err
-	}
-	_parts = append(_parts, aO0)
-
-	return swag.ConcatJSON(_parts...), nil
-}
-
 // Validate validates this part based simulation parameters
 func (m *PartBasedSimulationParameters) Validate(formats strfmt.Registry) error {
 	var res []error
-
-	if err := m.Simulation.Validate(formats); err != nil {
-		res = append(res, err)
-	}
 
 	if err := m.validateDetectBladeCrash(formats); err != nil {
 		// prop

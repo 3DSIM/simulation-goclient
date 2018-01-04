@@ -15,6 +15,8 @@ import (
 // ScanPatternSimulation scan pattern simulation
 // swagger:model ScanPatternSimulation
 type ScanPatternSimulation struct {
+	Simulation
+
 	PartBasedSimulationParameters
 
 	ScanPatternSimulationParameters
@@ -23,17 +25,23 @@ type ScanPatternSimulation struct {
 // UnmarshalJSON unmarshals this object from a JSON structure
 func (m *ScanPatternSimulation) UnmarshalJSON(raw []byte) error {
 
-	var aO0 PartBasedSimulationParameters
+	var aO0 Simulation
 	if err := swag.ReadJSON(raw, &aO0); err != nil {
 		return err
 	}
-	m.PartBasedSimulationParameters = aO0
+	m.Simulation = aO0
 
-	var aO1 ScanPatternSimulationParameters
+	var aO1 PartBasedSimulationParameters
 	if err := swag.ReadJSON(raw, &aO1); err != nil {
 		return err
 	}
-	m.ScanPatternSimulationParameters = aO1
+	m.PartBasedSimulationParameters = aO1
+
+	var aO2 ScanPatternSimulationParameters
+	if err := swag.ReadJSON(raw, &aO2); err != nil {
+		return err
+	}
+	m.ScanPatternSimulationParameters = aO2
 
 	return nil
 }
@@ -42,17 +50,23 @@ func (m *ScanPatternSimulation) UnmarshalJSON(raw []byte) error {
 func (m ScanPatternSimulation) MarshalJSON() ([]byte, error) {
 	var _parts [][]byte
 
-	aO0, err := swag.WriteJSON(m.PartBasedSimulationParameters)
+	aO0, err := swag.WriteJSON(m.Simulation)
 	if err != nil {
 		return nil, err
 	}
 	_parts = append(_parts, aO0)
 
-	aO1, err := swag.WriteJSON(m.ScanPatternSimulationParameters)
+	aO1, err := swag.WriteJSON(m.PartBasedSimulationParameters)
 	if err != nil {
 		return nil, err
 	}
 	_parts = append(_parts, aO1)
+
+	aO2, err := swag.WriteJSON(m.ScanPatternSimulationParameters)
+	if err != nil {
+		return nil, err
+	}
+	_parts = append(_parts, aO2)
 
 	return swag.ConcatJSON(_parts...), nil
 }
@@ -60,6 +74,10 @@ func (m ScanPatternSimulation) MarshalJSON() ([]byte, error) {
 // Validate validates this scan pattern simulation
 func (m *ScanPatternSimulation) Validate(formats strfmt.Registry) error {
 	var res []error
+
+	if err := m.Simulation.Validate(formats); err != nil {
+		res = append(res, err)
+	}
 
 	if err := m.PartBasedSimulationParameters.Validate(formats); err != nil {
 		res = append(res, err)
