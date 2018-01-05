@@ -365,11 +365,12 @@ func TestThermalSimulationWhenSuccessfulExpectsThermalSimulationReturned(t *test
 
 	// ThermalSimulation
 	thermalSimulationToReturn := &models.ThermalSimulation{
+		Simulation: models.Simulation{
+			ID:    thermalSimulationID,
+			Title: swag.String("ThermalSimulation name"),
+		},
 		PartBasedSimulationParameters: models.PartBasedSimulationParameters{
-			Simulation: models.Simulation{
-				ID:    thermalSimulationID,
-				Title: swag.String("ThermalSimulation name"),
-			},
+			ElasticModulus: swag.Float64(10),
 		},
 		ThermalSimulationParameters: models.ThermalSimulationParameters{
 			AnisotropicStrainCoefficientsParallel: swag.Float64(21),
@@ -408,7 +409,11 @@ func TestThermalSimulationWhenSuccessfulExpectsThermalSimulationReturned(t *test
 	assert.Nil(t, err, "Expected no error returned")
 	assert.Equal(t, *thermalSimulationToReturn.Title, *thermalSimulation.Title, "Expected names to match")
 	assert.Equal(t, thermalSimulationToReturn.ID, thermalSimulation.ID, "Expected IDs to match")
-	assert.EqualValues(t, thermalSimulationToReturn.ElasticModulus, thermalSimulation.ElasticModulus, "Expected ElasticModulus values to match")
+	assert.EqualValues(t, *thermalSimulationToReturn.ElasticModulus, *thermalSimulation.ElasticModulus, "Expected ElasticModulus values to match")
+	assert.EqualValues(t,
+		*thermalSimulationToReturn.AnisotropicStrainCoefficientsParallel,
+		*thermalSimulation.AnisotropicStrainCoefficientsParallel,
+		"Expected AnisotropicStrainCoefficientsParallel values to match")
 }
 
 // ScanPatternSimulations
@@ -470,11 +475,12 @@ func TestScanPatternSimulationWhenSuccessfulExpectsScanPatternSimulationReturned
 
 	// ScanPatternSimulation
 	scanPatternSimulationToReturn := &models.ScanPatternSimulation{
+		Simulation: models.Simulation{
+			ID:    scanPatternSimulationID,
+			Title: swag.String("ScanPatternSimulation name"),
+		},
 		PartBasedSimulationParameters: models.PartBasedSimulationParameters{
-			Simulation: models.Simulation{
-				ID:    scanPatternSimulationID,
-				Title: swag.String("ScanPatternSimulation name"),
-			},
+			ElasticModulus: swag.Float64(10),
 		},
 		ScanPatternSimulationParameters: models.ScanPatternSimulationParameters{
 			LayerThickness: swag.Float64(21),
@@ -507,11 +513,12 @@ func TestScanPatternSimulationWhenSuccessfulExpectsScanPatternSimulationReturned
 	scanPatternSimulation, err := scanPatternSimulationService.ScanPatternSimulation(scanPatternSimulationID)
 
 	// assert
-
 	assert.Nil(t, err, "Expected no error returned")
 	assert.Equal(t, *scanPatternSimulationToReturn.Title, *scanPatternSimulation.Title, "Expected names to match")
 	assert.Equal(t, scanPatternSimulationToReturn.ID, scanPatternSimulation.ID, "Expected IDs to match")
-	assert.EqualValues(t, scanPatternSimulationToReturn.ElasticModulus, scanPatternSimulation.ElasticModulus, "Expected ElasticModulus values to match")
+	assert.EqualValues(t, *scanPatternSimulationToReturn.ElasticModulus, *scanPatternSimulation.ElasticModulus, "Expected ElasticModulus values to match")
+	assert.EqualValues(t, *scanPatternSimulationToReturn.LayerThickness, *scanPatternSimulation.LayerThickness, "Expected LayerThickness values to match")
+
 }
 
 // AssumedStrainSimulations
@@ -573,11 +580,12 @@ func TestAssumedStrainSimulationWhenSuccessfulExpectsAssumedStrainSimulationRetu
 
 	// AssumedStrainSimulation
 	assumedStrainSimulationToReturn := &models.AssumedStrainSimulation{
+		Simulation: models.Simulation{
+			ID:    assumedStrainSimulationID,
+			Title: swag.String("AssumedStrainSimulation name"),
+		},
 		PartBasedSimulationParameters: models.PartBasedSimulationParameters{
-			Simulation: models.Simulation{
-				ID:    assumedStrainSimulationID,
-				Title: swag.String("AssumedStrainSimulation name"),
-			},
+			ElasticModulus: swag.Float64(10),
 		},
 		AssumedStrainSimulationParameters: models.AssumedStrainSimulationParameters{
 			LayerThickness: 50e-6,
@@ -614,7 +622,8 @@ func TestAssumedStrainSimulationWhenSuccessfulExpectsAssumedStrainSimulationRetu
 	assert.Nil(t, err, "Expected no error returned")
 	assert.Equal(t, *assumedStrainSimulationToReturn.Title, *assumedStrainSimulation.Title, "Expected names to match")
 	assert.Equal(t, assumedStrainSimulationToReturn.ID, assumedStrainSimulation.ID, "Expected IDs to match")
-	assert.EqualValues(t, assumedStrainSimulationToReturn.ElasticModulus, assumedStrainSimulation.ElasticModulus, "Expected ElasticModulus values to match")
+	assert.EqualValues(t, *assumedStrainSimulationToReturn.ElasticModulus, *assumedStrainSimulation.ElasticModulus, "Expected ElasticModulus values to match")
+	assert.EqualValues(t, assumedStrainSimulationToReturn.LayerThickness, assumedStrainSimulation.LayerThickness, "Expected LayerThickness values to match")
 }
 
 func TestSimulationsWhenNilValuesExpectsSuccess(t *testing.T) {
@@ -751,12 +760,13 @@ func TestRawSimulationWhenSuccessfulExpectsSimulationMapReturned(t *testing.T) {
 	})
 
 	assumedStrainSimulationToReturn := &models.AssumedStrainSimulation{
+		Simulation: models.Simulation{
+			ID:    simulationID,
+			Title: swag.String("Simulation name"),
+			Type:  models.SimulationTypeAssumedStrainSimulation,
+		},
 		PartBasedSimulationParameters: models.PartBasedSimulationParameters{
-			Simulation: models.Simulation{
-				ID:    simulationID,
-				Title: swag.String("Simulation name"),
-				Type:  models.SimulationTypeAssumedStrainSimulation,
-			},
+			ElasticModulus: swag.Float64(10),
 		},
 		AssumedStrainSimulationParameters: models.AssumedStrainSimulationParameters{
 			LayerThickness: layerThickness,
@@ -794,6 +804,7 @@ func TestRawSimulationWhenSuccessfulExpectsSimulationMapReturned(t *testing.T) {
 	assert.Nil(t, err, "Expected no error returned")
 	assert.Equal(t, *simulationToReturn.Title, simulation["title"], "Expected names to match")
 	assert.EqualValues(t, simulationToReturn.ID, simulation["id"], "Expected IDs to match")
+	assert.EqualValues(t, *assumedStrainSimulationToReturn.ElasticModulus, simulation["elasticModulus"].(float64), "Expected elastic modulus to match")
 	assert.EqualValues(t, layerThickness, simulation["layerThickness"], "Expected layer thickness to match")
 }
 

@@ -62,6 +62,9 @@ type Simulation struct {
 	// set server-side, read only
 	PercentComplete float64 `json:"percentComplete,omitempty"`
 
+	// s3 folder used to store input and output files for the simulation
+	SimulationFolder string `json:"simulationFolder,omitempty"`
+
 	// time stamp, set server-side, read only
 	Started strfmt.DateTime `json:"started,omitempty"`
 

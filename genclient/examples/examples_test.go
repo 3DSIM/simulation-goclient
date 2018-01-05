@@ -23,7 +23,6 @@ func _TestExampleUseOfAPIWithAuthentication(t *testing.T) {
 		Title:          swag.String("Title"),
 	}
 	partBasedSimulationParams := models.PartBasedSimulationParameters {
-		Simulation: simulation,
 		ElasticModulus:                             swag.Float64(208e9),
 		MaximumWallDistance:                        swag.Float64(3e-3),
 		MaximumWallThickness:                       swag.Float64(1e-3),
@@ -43,6 +42,7 @@ func _TestExampleUseOfAPIWithAuthentication(t *testing.T) {
 		LayerThickness: 50e-6,
 	}
 	simulationToCreate := &models.AssumedStrainSimulation{
+		Simulation: simulation,
 		PartBasedSimulationParameters: partBasedSimulationParams,
 		AssumedStrainSimulationParameters: assumedStrainParams,
 	}
