@@ -39,6 +39,12 @@ const (
 	SimulationAPIBasePath = "simulation-api"
 )
 
+type NotFoundError struct {
+	msg string // description of error
+}
+
+func (e *NotFoundError) Error() string { return e.msg }
+
 // Client is a wrapper around the generated client found in the "genclient" package.  It provides convenience methods
 // for common operations.  If the operation needed is not found in Client, use the "genclient" package using this client
 // as an example of how to utilize the genclient.  PRs are welcome if more functionality is wanted in this client package.
@@ -434,7 +440,7 @@ func (c *client) PostAssumedStrainSimulation(simulation *models.AssumedStrainSim
 	}
 	// clear simulationParts part id and simulation id so server will create
 	// new simulation part entries
-	for _, part := range simulation.PartBasedSimulationParameters.SimulationParts{
+	for _, part := range simulation.PartBasedSimulationParameters.SimulationParts {
 		part.ID = 0
 		part.SimulationID = swag.Int32(0)
 	}
@@ -595,7 +601,7 @@ func (c *client) SimulationActivityByActivityID(simulationID int32, activityID s
 			return activity, nil
 		}
 	}
-	return nil, fmt.Errorf("a SimulationActivity with activity id %v not found for simulation %v", activityID, simulationID)
+	return nil, &NotFoundError{fmt.Sprintf("a SimulationActivity with activity id %v not found for simulation %v", activityID, simulationID)}
 }
 
 func (c *client) PutSimulationActivity(simulationID int32, simulationActivity *models.SimulationActivity) (err error) {
