@@ -63,6 +63,11 @@ for the get simulations operation typically these are written to a http.Request
 */
 type GetSimulationsParams struct {
 
+	/*Archived
+	  True to get only archived simulations, False to get only unarchived simulations, leave the parameter off to get all simulation types
+
+	*/
+	Archived *bool
 	/*Limit
 	  number of materials to return within the query
 
@@ -127,6 +132,17 @@ func (o *GetSimulationsParams) SetHTTPClient(client *http.Client) {
 	o.HTTPClient = client
 }
 
+// WithArchived adds the archived to the get simulations params
+func (o *GetSimulationsParams) WithArchived(archived *bool) *GetSimulationsParams {
+	o.SetArchived(archived)
+	return o
+}
+
+// SetArchived adds the archived to the get simulations params
+func (o *GetSimulationsParams) SetArchived(archived *bool) {
+	o.Archived = archived
+}
+
 // WithLimit adds the limit to the get simulations params
 func (o *GetSimulationsParams) WithLimit(limit *int32) *GetSimulationsParams {
 	o.SetLimit(limit)
@@ -189,6 +205,22 @@ func (o *GetSimulationsParams) WriteToRequest(r runtime.ClientRequest, reg strfm
 		return err
 	}
 	var res []error
+
+	if o.Archived != nil {
+
+		// query param archived
+		var qrArchived bool
+		if o.Archived != nil {
+			qrArchived = *o.Archived
+		}
+		qArchived := swag.FormatBool(qrArchived)
+		if qArchived != "" {
+			if err := r.SetQueryParam("archived", qArchived); err != nil {
+				return err
+			}
+		}
+
+	}
 
 	if o.Limit != nil {
 
