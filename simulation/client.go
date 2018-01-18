@@ -49,7 +49,7 @@ func (e *NotFoundError) Error() string { return e.msg }
 // for common operations.  If the operation needed is not found in Client, use the "genclient" package using this client
 // as an example of how to utilize the genclient.  PRs are welcome if more functionality is wanted in this client package.
 type Client interface {
-	Simulations(organizationID int32, status []string, sort []string, offset, limit int32) ([]*models.Simulation, error)
+	Simulations(organizationID int32, status []string, sort []string, offset, limit int32, archived *bool) ([]*models.Simulation, error)
 	StartSimulation(simulationID int32) error
 	ThermalSimulation(simulationID int32) (*models.ThermalSimulation, error)
 	SingleBeadSimulation(simulationID int32) (*models.SingleBeadSimulation, error)
@@ -343,7 +343,7 @@ func (c *client) PostLog(level string, message string, simulationID int32, activ
 	return c.PostLogWithObject(simulationLog)
 }
 
-func (c *client) Simulations(organizationID int32, status []string, sort []string, offset, limit int32) (simulations []*models.Simulation, err error) {
+func (c *client) Simulations(organizationID int32, status []string, sort []string, offset, limit int32, archived *bool) (simulations []*models.Simulation, err error) {
 	defer func() {
 		// Until this issue is resolved: https://github.com/go-swagger/go-swagger/issues/1021, we need to recover from
 		// panics.
@@ -361,6 +361,10 @@ func (c *client) Simulations(organizationID int32, status []string, sort []strin
 		WithSort(sort).
 		WithLimit(swag.Int32(limit)).
 		WithOffset(swag.Int32(offset))
+
+	if archived != nil {
+		params.WithArchived(archived)
+	}
 
 	response, err := c.client.Operations.GetSimulations(params, openapiclient.BearerToken(token))
 	if err != nil {
