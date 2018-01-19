@@ -52,7 +52,10 @@ type Part struct {
 	// Estimated work using estimateVoxelSize
 	EstimatedWork int32 `json:"estimatedWork,omitempty"`
 
-	// Remote path (s3 key) of part. (read only).
+	// S3 bucket containing part
+	FileBucket string `json:"fileBucket,omitempty"`
+
+	// File name of part relative to fileBucket
 	FileLocation string `json:"fileLocation,omitempty"`
 
 	// Id of the part

@@ -104,6 +104,22 @@ type MaterialConfiguration struct {
 	// material configuration identifier
 	ID int32 `json:"id,omitempty"`
 
+	// laser power lower bound
+	// Required: true
+	LaserPowerLowerBound *float64 `json:"laserPowerLowerBound"`
+
+	// laser power upper bound
+	// Required: true
+	LaserPowerUpperBound *float64 `json:"laserPowerUpperBound"`
+
+	// laser speed lower bound
+	// Required: true
+	LaserSpeedLowerBound *float64 `json:"laserSpeedLowerBound"`
+
+	// laser speed upper bound
+	// Required: true
+	LaserSpeedUpperBound *float64 `json:"laserSpeedUpperBound"`
+
 	// liquidus temperature
 	// Required: true
 	LiquidusTemperature *float64 `json:"liquidusTemperature"`
@@ -297,6 +313,26 @@ func (m *MaterialConfiguration) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateFusionLatentHeat(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateLaserPowerLowerBound(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateLaserPowerUpperBound(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateLaserSpeedLowerBound(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateLaserSpeedUpperBound(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -595,6 +631,42 @@ func (m *MaterialConfiguration) validateExtinctionCoefOfSolidOffset(formats strf
 func (m *MaterialConfiguration) validateFusionLatentHeat(formats strfmt.Registry) error {
 
 	if err := validate.Required("fusionLatentHeat", "body", m.FusionLatentHeat); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *MaterialConfiguration) validateLaserPowerLowerBound(formats strfmt.Registry) error {
+
+	if err := validate.Required("laserPowerLowerBound", "body", m.LaserPowerLowerBound); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *MaterialConfiguration) validateLaserPowerUpperBound(formats strfmt.Registry) error {
+
+	if err := validate.Required("laserPowerUpperBound", "body", m.LaserPowerUpperBound); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *MaterialConfiguration) validateLaserSpeedLowerBound(formats strfmt.Registry) error {
+
+	if err := validate.Required("laserSpeedLowerBound", "body", m.LaserSpeedLowerBound); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *MaterialConfiguration) validateLaserSpeedUpperBound(formats strfmt.Registry) error {
+
+	if err := validate.Required("laserSpeedUpperBound", "body", m.LaserSpeedUpperBound); err != nil {
 		return err
 	}
 
