@@ -335,6 +335,21 @@ type FakeClient struct {
 	putSimulationActivityReturnsOnCall map[int]struct {
 		result1 error
 	}
+	PatchSimulationActivityStub        func(simulationID, activityID int32, patches []*models.PatchDocument) (*models.SimulationActivity, error)
+	patchSimulationActivityMutex       sync.RWMutex
+	patchSimulationActivityArgsForCall []struct {
+		simulationID int32
+		activityID   int32
+		patches      []*models.PatchDocument
+	}
+	patchSimulationActivityReturns struct {
+		result1 *models.SimulationActivity
+		result2 error
+	}
+	patchSimulationActivityReturnsOnCall map[int]struct {
+		result1 *models.SimulationActivity
+		result2 error
+	}
 	AddSimulationOutputStub        func(simulationID int32, outputType, outputFileLocation string) (*models.SimulationOutput, error)
 	addSimulationOutputMutex       sync.RWMutex
 	addSimulationOutputArgsForCall []struct {
@@ -1786,6 +1801,64 @@ func (fake *FakeClient) PutSimulationActivityReturnsOnCall(i int, result1 error)
 	}{result1}
 }
 
+func (fake *FakeClient) PatchSimulationActivity(simulationID int32, activityID int32, patches []*models.PatchDocument) (*models.SimulationActivity, error) {
+	var patchesCopy []*models.PatchDocument
+	if patches != nil {
+		patchesCopy = make([]*models.PatchDocument, len(patches))
+		copy(patchesCopy, patches)
+	}
+	fake.patchSimulationActivityMutex.Lock()
+	ret, specificReturn := fake.patchSimulationActivityReturnsOnCall[len(fake.patchSimulationActivityArgsForCall)]
+	fake.patchSimulationActivityArgsForCall = append(fake.patchSimulationActivityArgsForCall, struct {
+		simulationID int32
+		activityID   int32
+		patches      []*models.PatchDocument
+	}{simulationID, activityID, patchesCopy})
+	fake.recordInvocation("PatchSimulationActivity", []interface{}{simulationID, activityID, patchesCopy})
+	fake.patchSimulationActivityMutex.Unlock()
+	if fake.PatchSimulationActivityStub != nil {
+		return fake.PatchSimulationActivityStub(simulationID, activityID, patches)
+	}
+	if specificReturn {
+		return ret.result1, ret.result2
+	}
+	return fake.patchSimulationActivityReturns.result1, fake.patchSimulationActivityReturns.result2
+}
+
+func (fake *FakeClient) PatchSimulationActivityCallCount() int {
+	fake.patchSimulationActivityMutex.RLock()
+	defer fake.patchSimulationActivityMutex.RUnlock()
+	return len(fake.patchSimulationActivityArgsForCall)
+}
+
+func (fake *FakeClient) PatchSimulationActivityArgsForCall(i int) (int32, int32, []*models.PatchDocument) {
+	fake.patchSimulationActivityMutex.RLock()
+	defer fake.patchSimulationActivityMutex.RUnlock()
+	return fake.patchSimulationActivityArgsForCall[i].simulationID, fake.patchSimulationActivityArgsForCall[i].activityID, fake.patchSimulationActivityArgsForCall[i].patches
+}
+
+func (fake *FakeClient) PatchSimulationActivityReturns(result1 *models.SimulationActivity, result2 error) {
+	fake.PatchSimulationActivityStub = nil
+	fake.patchSimulationActivityReturns = struct {
+		result1 *models.SimulationActivity
+		result2 error
+	}{result1, result2}
+}
+
+func (fake *FakeClient) PatchSimulationActivityReturnsOnCall(i int, result1 *models.SimulationActivity, result2 error) {
+	fake.PatchSimulationActivityStub = nil
+	if fake.patchSimulationActivityReturnsOnCall == nil {
+		fake.patchSimulationActivityReturnsOnCall = make(map[int]struct {
+			result1 *models.SimulationActivity
+			result2 error
+		})
+	}
+	fake.patchSimulationActivityReturnsOnCall[i] = struct {
+		result1 *models.SimulationActivity
+		result2 error
+	}{result1, result2}
+}
+
 func (fake *FakeClient) AddSimulationOutput(simulationID int32, outputType string, outputFileLocation string) (*models.SimulationOutput, error) {
 	fake.addSimulationOutputMutex.Lock()
 	ret, specificReturn := fake.addSimulationOutputReturnsOnCall[len(fake.addSimulationOutputArgsForCall)]
@@ -2479,6 +2552,8 @@ func (fake *FakeClient) Invocations() map[string][][]interface{} {
 	defer fake.simulationActivityByActivityIDMutex.RUnlock()
 	fake.putSimulationActivityMutex.RLock()
 	defer fake.putSimulationActivityMutex.RUnlock()
+	fake.patchSimulationActivityMutex.RLock()
+	defer fake.patchSimulationActivityMutex.RUnlock()
 	fake.addSimulationOutputMutex.RLock()
 	defer fake.addSimulationOutputMutex.RUnlock()
 	fake.updateSimulationStatusMutex.RLock()

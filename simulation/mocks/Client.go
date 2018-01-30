@@ -502,6 +502,29 @@ func (_m *Client) PutSimulationActivity(simulationID int32, simulationActivity *
 	return r0
 }
 
+// PatchSimulationActivity provides a mock function with given fields: simulationID, activityID, patches
+func (_m *Client) PatchSimulationActivity(simulationID int32, activityID int32, patches []*models.PatchDocument) (*models.SimulationActivity, error) {
+	ret := _m.Called(simulationID, activityID, patches)
+
+	var r0 *models.SimulationActivity
+	if rf, ok := ret.Get(0).(func(int32, int32, []*models.PatchDocument) *models.SimulationActivity); ok {
+		r0 = rf(simulationID, activityID, patches)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*models.SimulationActivity)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(int32, int32, []*models.PatchDocument) error); ok {
+		r1 = rf(simulationID, activityID, patches)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
 // AddSimulationOutput provides a mock function with given fields: simulationID, outputType, outputFileLocation
 func (_m *Client) AddSimulationOutput(simulationID int32, outputType string, outputFileLocation string) (*models.SimulationOutput, error) {
 	ret := _m.Called(simulationID, outputType, outputFileLocation)

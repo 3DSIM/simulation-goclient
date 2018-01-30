@@ -33,6 +33,9 @@ type SimulationActivity struct {
 	// id
 	ID int32 `json:"id,omitempty"`
 
+	// number 0 - 100 representing percentage of activity already completed
+	PercentComplete int32 `json:"percentComplete,omitempty"`
+
 	// id of associated simulation, set server-side, read-only
 	// Required: true
 	SimulationID *int32 `json:"simulationId"`

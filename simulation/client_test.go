@@ -373,9 +373,9 @@ func TestThermalSimulationWhenSuccessfulExpectsThermalSimulationReturned(t *test
 			ElasticModulus: swag.Float64(10),
 		},
 		ThermalSimulationParameters: models.ThermalSimulationParameters{
-			AnisotropicStrainCoefficientsParallel: swag.Float64(21),
+			AnisotropicStrainCoefficientsParallel:      swag.Float64(21),
 			AnisotropicStrainCoefficientsPerpendicular: swag.Float64(22),
-			AnisotropicStrainCoefficientsZ: swag.Float64(23),
+			AnisotropicStrainCoefficientsZ:             swag.Float64(23),
 		},
 	}
 	thermalSimulationHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -682,7 +682,7 @@ func TestSimulationsWhenNonNilValuesExpectsSuccess(t *testing.T) {
 	limit := 10
 	sort := "field1:asc"
 	status := models.SimulationStatusInProgress
-	archived := true;
+	archived := true
 
 	// Token
 	fakeTokenFetcher := &auth0fakes.FakeTokenFetcher{}
@@ -1492,4 +1492,114 @@ func TestNewClientWithRetryWhen500ExpectsRetry(t *testing.T) {
 	// assert
 	assert.True(t, callCounter > 1, "Expected to retry the failed call at least once")
 	assert.NotNil(t, err, "Expected an error returned because simulation api sent a 500 error")
+}
+
+func TestPatchSimulationActivityWithNonNilValuesExpectsSuccess(t *testing.T) {
+
+	// arrange
+	simulationID := int32(10)
+	activityID := int32(11)
+	percentComplete := int32(98)
+	// Token
+	fakeTokenFetcher := &auth0fakes.FakeTokenFetcher{}
+	fakeTokenFetcher.TokenReturns("Token", nil)
+
+	patch := &models.PatchDocument{
+		Op:    swag.String(models.PatchDocumentOpReplace),
+		Path:  swag.String("/percentComplete"),
+		Value: percentComplete,
+	}
+
+	activityToReturn := &models.SimulationActivity{
+		ID:              activityID,
+		SimulationID:    swag.Int32(simulationID),
+		PercentComplete: percentComplete,
+	}
+
+	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		assert.NotEmpty(t, r.Header.Get("Authorization"), "Authorization header should not be empty")
+		receivedID, err := strconv.Atoi(mux.Vars(r)["id"])
+		if err != nil {
+			t.Fatal(err)
+		}
+		assert.EqualValues(t, int(simulationID), receivedID, "Expected simulation id received to match what was passed in")
+		receivedActivityID, err := strconv.Atoi(mux.Vars(r)["activityId"])
+		if err != nil {
+			t.Fatal(err)
+		}
+		assert.EqualValues(t, int(activityID), receivedActivityID, "Expected activity id received to match what was passed in")
+		bodyBytes, err := ioutil.ReadAll(r.Body)
+		if err != nil {
+			t.Fatal(err)
+		}
+		var actualPatchDocuments []models.PatchDocument
+		err = json.Unmarshal(bodyBytes, &actualPatchDocuments)
+		if err != nil {
+			t.Error("Failed to unmarshal patch documents")
+		}
+		actualPatch := actualPatchDocuments[0]
+		assert.Equal(t, *patch.Path, *actualPatch.Path, "Expected patch document path to be passed in body of PATCH request")
+		assert.Equal(t, *patch.Op, *actualPatch.Op, "Expected patch document op to be passed in body of PATCH request")
+		assert.EqualValues(t, patch.Value, actualPatch.Value, "Expected patch document value to be passed in body of PATCH request")
+		bytes, err := json.Marshal(activityToReturn)
+		if err != nil {
+			t.Error("Failed to marshal patch")
+		}
+		w.Write(bytes)
+	})
+
+	// Setup routes
+	r := mux.NewRouter()
+	endpoint := "/" + SimulationAPIBasePath + "/simulations/{id}/activities/{activityId}"
+	r.HandleFunc(endpoint, handler)
+	testServer := httptest.NewServer(r)
+	defer testServer.Close()
+	client := NewClient(fakeTokenFetcher, testServer.URL, SimulationAPIBasePath, audience)
+
+	// act
+	activity, err := client.PatchSimulationActivity(simulationID, activityID, []*models.PatchDocument{patch})
+
+	// assert
+
+	assert.Nil(t, err, "Expected no error returned")
+	assert.NotNil(t, activity)
+	assert.Equal(t, activityID, activity.ID, "Expected ID values to match")
+	assert.Equal(t, simulationID, *activity.SimulationID, "Expected simulation ID values to match")
+	assert.Equal(t, percentComplete, activity.PercentComplete, "Expected percent complete values to match")
+}
+
+func TestPatchSimulationActivityWhenSimulationAPIErrorsExpectsErrorReturned(t *testing.T) {
+	// arrange
+	simulationID := int32(10)
+	activityID := int32(11)
+	percentComplete := int32(98)
+	// Token
+	fakeTokenFetcher := &auth0fakes.FakeTokenFetcher{}
+	fakeTokenFetcher.TokenReturns("Token", nil)
+
+	patch := &models.PatchDocument{
+		Op:    swag.String(models.PatchDocumentOpReplace),
+		Path:  swag.String("/percentComplete"),
+		Value: percentComplete,
+	}
+
+	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(500)
+	})
+
+	// Setup routes
+	r := mux.NewRouter()
+	endpoint := "/" + SimulationAPIBasePath + "/simulations/{id}/activities/{activityId}"
+	r.HandleFunc(endpoint, handler)
+	testServer := httptest.NewServer(r)
+	defer testServer.Close()
+	client := NewClient(fakeTokenFetcher, testServer.URL, SimulationAPIBasePath, audience)
+
+	// act
+	activity, err := client.PatchSimulationActivity(simulationID, activityID, []*models.PatchDocument{patch})
+
+	// assert
+	assert.NotNil(t, err, "Expected an error returned because simulation api sent a 500 error")
+	assert.Nil(t, activity, "Expected activity to be nil due to error from api")
 }
