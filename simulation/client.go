@@ -74,6 +74,7 @@ type Client interface {
 	PostSimulationActivity(simulationID int32, simulationActivity *models.SimulationActivity) (*models.SimulationActivity, error)
 	SimulationActivityByActivityID(simulationID int32, activityID string) (*models.SimulationActivity, error)
 	PutSimulationActivity(simulationID int32, simulationActivity *models.SimulationActivity) error
+	PatchSimulationActivity(simulationID, activityID int32, patches []*models.PatchDocument) (*models.SimulationActivity, error)
 	AddSimulationOutput(simulationID int32, outputType, outputFileLocation string) (*models.SimulationOutput, error)
 	UpdateSimulationStatus(simulationID int32, status string) error
 	// RawSimulation gets a simulation as a map instead of a struct
@@ -957,4 +958,20 @@ func (c *client) UpdatePartAvailability(partID int32, availability string) (part
 	}
 
 	return c.PatchPart(partID, []*models.PatchDocument{&patch})
+}
+
+// Patch a simulation activity. activityID is the ID field on a simulation activity, not the ActivityID string
+func (c *client) PatchSimulationActivity(simulationID, activityID int32, patches []*models.PatchDocument) (activity *models.SimulationActivity, err error) {
+	token, err := c.tokenFetcher.Token(c.audience)
+	if err != nil {
+		return nil, err
+	}
+
+	params := operations.NewPatchActivityParams().WithID(simulationID).WithActivityID(activityID).WithActivityPatch(patches)
+
+	response, err := c.client.Operations.PatchActivity(params, openapiclient.BearerToken(token))
+	if err != nil {
+		return nil, err
+	}
+	return response.Payload, nil
 }

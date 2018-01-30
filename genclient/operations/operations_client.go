@@ -1329,6 +1329,35 @@ func (a *Client) GetThermalSimulations(params *GetThermalSimulationsParams, auth
 }
 
 /*
+PatchActivity Update fields within an activity
+*/
+func (a *Client) PatchActivity(params *PatchActivityParams, authInfo runtime.ClientAuthInfoWriter) (*PatchActivityOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewPatchActivityParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "patchActivity",
+		Method:             "PATCH",
+		PathPattern:        "/simulations/{id}/activities/{activityId}",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &PatchActivityReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*PatchActivityOK), nil
+
+}
+
+/*
 PatchBuildFile Update fields within a build file
 */
 func (a *Client) PatchBuildFile(params *PatchBuildFileParams, authInfo runtime.ClientAuthInfoWriter) (*PatchBuildFileOK, error) {
