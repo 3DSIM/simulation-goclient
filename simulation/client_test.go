@@ -1498,7 +1498,8 @@ func TestPatchSimulationActivityWithNonNilValuesExpectsSuccess(t *testing.T) {
 
 	// arrange
 	simulationID := int32(10)
-	activityID := int32(11)
+	activityID := "activity id"
+	simulationActivityID := int32(11)
 	percentComplete := int32(98)
 	// Token
 	fakeTokenFetcher := &auth0fakes.FakeTokenFetcher{}
@@ -1511,10 +1512,20 @@ func TestPatchSimulationActivityWithNonNilValuesExpectsSuccess(t *testing.T) {
 	}
 
 	activityToReturn := &models.SimulationActivity{
-		ID:              activityID,
+		ID:              simulationActivityID,
+		ActivityID:      swag.String(activityID),
 		SimulationID:    swag.Int32(simulationID),
 		PercentComplete: percentComplete,
 	}
+
+	activitiesHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		activitiesBytes, err := json.Marshal([]models.SimulationActivity{*activityToReturn})
+		if err != nil {
+			t.Fatal(err)
+		}
+		w.Write(activitiesBytes)
+	})
 
 	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
@@ -1528,7 +1539,7 @@ func TestPatchSimulationActivityWithNonNilValuesExpectsSuccess(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		assert.EqualValues(t, int(activityID), receivedActivityID, "Expected activity id received to match what was passed in")
+		assert.EqualValues(t, int(simulationActivityID), receivedActivityID, "Expected activity id received to match what was passed in")
 		bodyBytes, err := ioutil.ReadAll(r.Body)
 		if err != nil {
 			t.Fatal(err)
@@ -1553,6 +1564,7 @@ func TestPatchSimulationActivityWithNonNilValuesExpectsSuccess(t *testing.T) {
 	r := mux.NewRouter()
 	endpoint := "/" + SimulationAPIBasePath + "/simulations/{id}/activities/{activityId}"
 	r.HandleFunc(endpoint, handler)
+	r.HandleFunc("/"+SimulationAPIBasePath+"/simulations/{id}/activities", activitiesHandler)
 	testServer := httptest.NewServer(r)
 	defer testServer.Close()
 	client := NewClient(fakeTokenFetcher, testServer.URL, SimulationAPIBasePath, audience)
@@ -1564,7 +1576,7 @@ func TestPatchSimulationActivityWithNonNilValuesExpectsSuccess(t *testing.T) {
 
 	assert.Nil(t, err, "Expected no error returned")
 	assert.NotNil(t, activity)
-	assert.Equal(t, activityID, activity.ID, "Expected ID values to match")
+	assert.Equal(t, simulationActivityID, activity.ID, "Expected ID values to match")
 	assert.Equal(t, simulationID, *activity.SimulationID, "Expected simulation ID values to match")
 	assert.Equal(t, percentComplete, activity.PercentComplete, "Expected percent complete values to match")
 }
@@ -1572,7 +1584,7 @@ func TestPatchSimulationActivityWithNonNilValuesExpectsSuccess(t *testing.T) {
 func TestPatchSimulationActivityWhenSimulationAPIErrorsExpectsErrorReturned(t *testing.T) {
 	// arrange
 	simulationID := int32(10)
-	activityID := int32(11)
+	activityID := "activity id"
 	percentComplete := int32(98)
 	// Token
 	fakeTokenFetcher := &auth0fakes.FakeTokenFetcher{}
@@ -1584,14 +1596,8 @@ func TestPatchSimulationActivityWhenSimulationAPIErrorsExpectsErrorReturned(t *t
 		Value: percentComplete,
 	}
 
-	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(500)
-	})
-
 	// Setup routes
 	r := mux.NewRouter()
-	endpoint := "/" + SimulationAPIBasePath + "/simulations/{id}/activities/{activityId}"
-	r.HandleFunc(endpoint, handler)
 	testServer := httptest.NewServer(r)
 	defer testServer.Close()
 	client := NewClient(fakeTokenFetcher, testServer.URL, SimulationAPIBasePath, audience)
@@ -1600,6 +1606,6 @@ func TestPatchSimulationActivityWhenSimulationAPIErrorsExpectsErrorReturned(t *t
 	activity, err := client.PatchSimulationActivity(simulationID, activityID, []*models.PatchDocument{patch})
 
 	// assert
-	assert.NotNil(t, err, "Expected an error returned because simulation api sent a 500 error")
+	assert.NotNil(t, err, "Expected an error returned because simulation api sent a 404 error")
 	assert.Nil(t, activity, "Expected activity to be nil due to error from api")
 }
