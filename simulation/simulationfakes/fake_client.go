@@ -335,11 +335,11 @@ type FakeClient struct {
 	putSimulationActivityReturnsOnCall map[int]struct {
 		result1 error
 	}
-	PatchSimulationActivityStub        func(simulationID, activityID int32, patches []*models.PatchDocument) (*models.SimulationActivity, error)
+	PatchSimulationActivityStub        func(simulationID int32, activityID string, patches []*models.PatchDocument) (*models.SimulationActivity, error)
 	patchSimulationActivityMutex       sync.RWMutex
 	patchSimulationActivityArgsForCall []struct {
 		simulationID int32
-		activityID   int32
+		activityID   string
 		patches      []*models.PatchDocument
 	}
 	patchSimulationActivityReturns struct {
@@ -1801,7 +1801,7 @@ func (fake *FakeClient) PutSimulationActivityReturnsOnCall(i int, result1 error)
 	}{result1}
 }
 
-func (fake *FakeClient) PatchSimulationActivity(simulationID int32, activityID int32, patches []*models.PatchDocument) (*models.SimulationActivity, error) {
+func (fake *FakeClient) PatchSimulationActivity(simulationID int32, activityID string, patches []*models.PatchDocument) (*models.SimulationActivity, error) {
 	var patchesCopy []*models.PatchDocument
 	if patches != nil {
 		patchesCopy = make([]*models.PatchDocument, len(patches))
@@ -1811,7 +1811,7 @@ func (fake *FakeClient) PatchSimulationActivity(simulationID int32, activityID i
 	ret, specificReturn := fake.patchSimulationActivityReturnsOnCall[len(fake.patchSimulationActivityArgsForCall)]
 	fake.patchSimulationActivityArgsForCall = append(fake.patchSimulationActivityArgsForCall, struct {
 		simulationID int32
-		activityID   int32
+		activityID   string
 		patches      []*models.PatchDocument
 	}{simulationID, activityID, patchesCopy})
 	fake.recordInvocation("PatchSimulationActivity", []interface{}{simulationID, activityID, patchesCopy})
@@ -1831,7 +1831,7 @@ func (fake *FakeClient) PatchSimulationActivityCallCount() int {
 	return len(fake.patchSimulationActivityArgsForCall)
 }
 
-func (fake *FakeClient) PatchSimulationActivityArgsForCall(i int) (int32, int32, []*models.PatchDocument) {
+func (fake *FakeClient) PatchSimulationActivityArgsForCall(i int) (int32, string, []*models.PatchDocument) {
 	fake.patchSimulationActivityMutex.RLock()
 	defer fake.patchSimulationActivityMutex.RUnlock()
 	return fake.patchSimulationActivityArgsForCall[i].simulationID, fake.patchSimulationActivityArgsForCall[i].activityID, fake.patchSimulationActivityArgsForCall[i].patches
