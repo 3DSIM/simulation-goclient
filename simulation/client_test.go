@@ -1619,7 +1619,7 @@ func TestPutSimulationActivityWithNonNilValuesExpectsSuccess(t *testing.T) {
 		if err != nil {
 			t.Error("Failed to unmarshal activity documents")
 		}
-		assert.Equal(t, *simulationActivity, actualSimulationActivity, "Expected simulation activity to be passed in body")
+		assert.Equal(t, simulationActivity.ID, actualSimulationActivity.ID, "Expected simulation activity id to be passed in body")
 		w.WriteHeader(http.StatusOK)
 	})
 
