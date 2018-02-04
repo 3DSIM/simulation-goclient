@@ -621,7 +621,10 @@ func (c *client) PutSimulationActivity(simulationID int32, simulationActivity *m
 	if err != nil {
 		return err
 	}
-	params := operations.NewPutSimulationActivityParams().WithSimulationActivity(simulationActivity).WithID(simulationID)
+	params := operations.NewPutSimulationActivityParams().
+		WithSimulationActivity(simulationActivity).
+		WithID(simulationID).
+		WithActivityID(simulationActivity.ID)
 	_, err = c.client.Operations.PutSimulationActivity(params, openapiclient.BearerToken(token))
 	if err != nil {
 		return err
