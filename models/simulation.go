@@ -55,6 +55,9 @@ type Simulation struct {
 	// ID of the material to use in the simulation
 	MaterialID int32 `json:"materialId,omitempty"`
 
+	// indicate the number of cores with which to run the simulation
+	NumberOfCores int32 `json:"numberOfCores,omitempty"`
+
 	// organization Id
 	// Required: true
 	OrganizationID *int32 `json:"organizationId"`
@@ -83,6 +86,9 @@ type Simulation struct {
 
 	// type
 	Type SimulationType `json:"type,omitempty"`
+
+	// workflow identifier - will be provided by the system
+	WorkflowID string `json:"workflowId,omitempty"`
 }
 
 // Validate validates this simulation
