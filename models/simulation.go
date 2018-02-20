@@ -68,6 +68,9 @@ type Simulation struct {
 	// s3 folder used to store input and output files for the simulation
 	SimulationFolder string `json:"simulationFolder,omitempty"`
 
+	// number of slice layers in the part
+	SliceLayers int32 `json:"sliceLayers,omitempty"`
+
 	// time stamp, set server-side, read only
 	Started strfmt.DateTime `json:"started,omitempty"`
 
@@ -86,6 +89,9 @@ type Simulation struct {
 
 	// type
 	Type SimulationType `json:"type,omitempty"`
+
+	// number of voxel layers in the voxelized part + supports
+	VoxelLayers int32 `json:"voxelLayers,omitempty"`
 
 	// workflow identifier - will be provided by the system
 	WorkflowID string `json:"workflowId,omitempty"`
