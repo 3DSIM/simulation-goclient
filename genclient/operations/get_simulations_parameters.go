@@ -68,6 +68,11 @@ type GetSimulationsParams struct {
 
 	*/
 	Archived *bool
+	/*BuildFileID
+	  returns simulations using the specified build file id
+
+	*/
+	BuildFileID *int32
 	/*Limit
 	  number of materials to return within the query
 
@@ -83,6 +88,11 @@ type GetSimulationsParams struct {
 
 	*/
 	OrganizationID int32
+	/*PartID
+	  returns simulations using the specified part id
+
+	*/
+	PartID *int32
 	/*Sort
 	  key:direction pairs for one or multiple field sort orders.  e.g. sort=key1:desc,key2:asc
 
@@ -143,6 +153,17 @@ func (o *GetSimulationsParams) SetArchived(archived *bool) {
 	o.Archived = archived
 }
 
+// WithBuildFileID adds the buildFileID to the get simulations params
+func (o *GetSimulationsParams) WithBuildFileID(buildFileID *int32) *GetSimulationsParams {
+	o.SetBuildFileID(buildFileID)
+	return o
+}
+
+// SetBuildFileID adds the buildFileId to the get simulations params
+func (o *GetSimulationsParams) SetBuildFileID(buildFileID *int32) {
+	o.BuildFileID = buildFileID
+}
+
 // WithLimit adds the limit to the get simulations params
 func (o *GetSimulationsParams) WithLimit(limit *int32) *GetSimulationsParams {
 	o.SetLimit(limit)
@@ -174,6 +195,17 @@ func (o *GetSimulationsParams) WithOrganizationID(organizationID int32) *GetSimu
 // SetOrganizationID adds the organizationId to the get simulations params
 func (o *GetSimulationsParams) SetOrganizationID(organizationID int32) {
 	o.OrganizationID = organizationID
+}
+
+// WithPartID adds the partID to the get simulations params
+func (o *GetSimulationsParams) WithPartID(partID *int32) *GetSimulationsParams {
+	o.SetPartID(partID)
+	return o
+}
+
+// SetPartID adds the partId to the get simulations params
+func (o *GetSimulationsParams) SetPartID(partID *int32) {
+	o.PartID = partID
 }
 
 // WithSort adds the sort to the get simulations params
@@ -222,6 +254,22 @@ func (o *GetSimulationsParams) WriteToRequest(r runtime.ClientRequest, reg strfm
 
 	}
 
+	if o.BuildFileID != nil {
+
+		// query param buildFileId
+		var qrBuildFileID int32
+		if o.BuildFileID != nil {
+			qrBuildFileID = *o.BuildFileID
+		}
+		qBuildFileID := swag.FormatInt32(qrBuildFileID)
+		if qBuildFileID != "" {
+			if err := r.SetQueryParam("buildFileId", qBuildFileID); err != nil {
+				return err
+			}
+		}
+
+	}
+
 	if o.Limit != nil {
 
 		// query param limit
@@ -261,6 +309,22 @@ func (o *GetSimulationsParams) WriteToRequest(r runtime.ClientRequest, reg strfm
 		if err := r.SetQueryParam("organizationId", qOrganizationID); err != nil {
 			return err
 		}
+	}
+
+	if o.PartID != nil {
+
+		// query param partId
+		var qrPartID int32
+		if o.PartID != nil {
+			qrPartID = *o.PartID
+		}
+		qPartID := swag.FormatInt32(qrPartID)
+		if qPartID != "" {
+			if err := r.SetQueryParam("partId", qPartID); err != nil {
+				return err
+			}
+		}
+
 	}
 
 	valuesSort := o.Sort

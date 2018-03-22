@@ -112,6 +112,209 @@ func (a *Client) ConfirmCancellation(params *ConfirmCancellationParams, authInfo
 }
 
 /*
+DeleteAssumedStrainSimulation This will delete an assumed strain simulation and all its associated data including output, logs, and any results from completed simulations
+*/
+func (a *Client) DeleteAssumedStrainSimulation(params *DeleteAssumedStrainSimulationParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteAssumedStrainSimulationOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewDeleteAssumedStrainSimulationParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "DeleteAssumedStrainSimulation",
+		Method:             "DELETE",
+		PathPattern:        "/assumedstrainsimulations/{id}",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &DeleteAssumedStrainSimulationReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*DeleteAssumedStrainSimulationOK), nil
+
+}
+
+/*
+DeleteBuildFile This will delete a build file
+*/
+func (a *Client) DeleteBuildFile(params *DeleteBuildFileParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteBuildFileOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewDeleteBuildFileParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "DeleteBuildFile",
+		Method:             "DELETE",
+		PathPattern:        "/buildfiles/{id}",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &DeleteBuildFileReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*DeleteBuildFileOK), nil
+
+}
+
+/*
+DeletePart This will delete a part and all its associated geometry files
+*/
+func (a *Client) DeletePart(params *DeletePartParams, authInfo runtime.ClientAuthInfoWriter) (*DeletePartOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewDeletePartParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "DeletePart",
+		Method:             "DELETE",
+		PathPattern:        "/parts/{id}",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &DeletePartReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*DeletePartOK), nil
+
+}
+
+/*
+DeletePorositySimulation This will delete a porosity simulation and all its associated data including output, logs, and any results from completed simulations
+*/
+func (a *Client) DeletePorositySimulation(params *DeletePorositySimulationParams, authInfo runtime.ClientAuthInfoWriter) (*DeletePorositySimulationOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewDeletePorositySimulationParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "DeletePorositySimulation",
+		Method:             "DELETE",
+		PathPattern:        "/porositysimulations/{id}",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &DeletePorositySimulationReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*DeletePorositySimulationOK), nil
+
+}
+
+/*
+DeleteScanPatternSimulation This will delete a scan pattern simulation and all its associated data including output, logs, and any results from completed simulations
+*/
+func (a *Client) DeleteScanPatternSimulation(params *DeleteScanPatternSimulationParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteScanPatternSimulationOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewDeleteScanPatternSimulationParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "DeleteScanPatternSimulation",
+		Method:             "DELETE",
+		PathPattern:        "/scanpatternsimulations/{id}",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &DeleteScanPatternSimulationReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*DeleteScanPatternSimulationOK), nil
+
+}
+
+/*
+DeleteSingleBeadSimulation This will delete a single bead simulation and all its associated data including output, logs, and any results from completed simulations
+*/
+func (a *Client) DeleteSingleBeadSimulation(params *DeleteSingleBeadSimulationParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteSingleBeadSimulationOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewDeleteSingleBeadSimulationParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "DeleteSingleBeadSimulation",
+		Method:             "DELETE",
+		PathPattern:        "/singlebeadsimulations/{id}",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &DeleteSingleBeadSimulationReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*DeleteSingleBeadSimulationOK), nil
+
+}
+
+/*
+DeleteThermalSimulation This will delete a thermal simulation and all its associated data including output, logs, and any results from completed simulations
+*/
+func (a *Client) DeleteThermalSimulation(params *DeleteThermalSimulationParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteThermalSimulationOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewDeleteThermalSimulationParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "DeleteThermalSimulation",
+		Method:             "DELETE",
+		PathPattern:        "/thermalsimulations/{id}",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &DeleteThermalSimulationReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*DeleteThermalSimulationOK), nil
+
+}
+
+/*
 RequestCancellation Request a cancellation of a simulation.
 */
 func (a *Client) RequestCancellation(params *RequestCancellationParams, authInfo runtime.ClientAuthInfoWriter) (*RequestCancellationOK, error) {
@@ -224,35 +427,6 @@ func (a *Client) AddParts(params *AddPartsParams, authInfo runtime.ClientAuthInf
 		return nil, err
 	}
 	return result.(*AddPartsOK), nil
-
-}
-
-/*
-ArchiveBuildFile archives a single build file based on an ID
-*/
-func (a *Client) ArchiveBuildFile(params *ArchiveBuildFileParams, authInfo runtime.ClientAuthInfoWriter) (*ArchiveBuildFileOK, error) {
-	// TODO: Validate the params before sending
-	if params == nil {
-		params = NewArchiveBuildFileParams()
-	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
-		ID:                 "archiveBuildFile",
-		Method:             "PUT",
-		PathPattern:        "/buildfiles/{id}/archive",
-		ProducesMediaTypes: []string{"application/json"},
-		ConsumesMediaTypes: []string{"application/json"},
-		Schemes:            []string{"https"},
-		Params:             params,
-		Reader:             &ArchiveBuildFileReader{formats: a.formats},
-		AuthInfo:           authInfo,
-		Context:            params.Context,
-		Client:             params.HTTPClient,
-	})
-	if err != nil {
-		return nil, err
-	}
-	return result.(*ArchiveBuildFileOK), nil
 
 }
 
@@ -1735,7 +1909,7 @@ func (a *Client) PostThermalSimulation(params *PostThermalSimulationParams, auth
 }
 
 /*
-PutAssumedStrainSimulation Puts an updated assumed strain simulation
+PutAssumedStrainSimulation Puts an updated assumed strain simulation (Only accepts updates to title, description, and tags once simulation is started)
 */
 func (a *Client) PutAssumedStrainSimulation(params *PutAssumedStrainSimulationParams, authInfo runtime.ClientAuthInfoWriter) (*PutAssumedStrainSimulationOK, error) {
 	// TODO: Validate the params before sending
@@ -1793,7 +1967,7 @@ func (a *Client) PutMachine(params *PutMachineParams, authInfo runtime.ClientAut
 }
 
 /*
-PutPorositySimulation Puts an updated porosity simulation
+PutPorositySimulation Puts an updated porosity simulation (Only accepts updates to title, description, and tags once simulation is started)
 */
 func (a *Client) PutPorositySimulation(params *PutPorositySimulationParams, authInfo runtime.ClientAuthInfoWriter) (*PutPorositySimulationOK, error) {
 	// TODO: Validate the params before sending
@@ -1822,7 +1996,7 @@ func (a *Client) PutPorositySimulation(params *PutPorositySimulationParams, auth
 }
 
 /*
-PutScanPatternSimulation Puts an updated scan pattern simulation
+PutScanPatternSimulation Puts an updated scan pattern simulation (Only accepts updates to title, description, and tags once simulation is started)
 */
 func (a *Client) PutScanPatternSimulation(params *PutScanPatternSimulationParams, authInfo runtime.ClientAuthInfoWriter) (*PutScanPatternSimulationOK, error) {
 	// TODO: Validate the params before sending
@@ -1880,7 +2054,7 @@ func (a *Client) PutSimulationActivity(params *PutSimulationActivityParams, auth
 }
 
 /*
-PutSingleBeadSimulation Puts an updated single bead simulation
+PutSingleBeadSimulation Puts an updated single bead simulation (Only accepts updates to title, description, and tags once simulation is started)
 */
 func (a *Client) PutSingleBeadSimulation(params *PutSingleBeadSimulationParams, authInfo runtime.ClientAuthInfoWriter) (*PutSingleBeadSimulationOK, error) {
 	// TODO: Validate the params before sending
@@ -1909,7 +2083,7 @@ func (a *Client) PutSingleBeadSimulation(params *PutSingleBeadSimulationParams, 
 }
 
 /*
-PutThermalSimulation Puts an updated thermal simulation
+PutThermalSimulation Puts an updated thermal simulation (Only accepts updates to title, description, and tags once simulation is started)
 */
 func (a *Client) PutThermalSimulation(params *PutThermalSimulationParams, authInfo runtime.ClientAuthInfoWriter) (*PutThermalSimulationOK, error) {
 	// TODO: Validate the params before sending
