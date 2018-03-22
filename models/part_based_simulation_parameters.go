@@ -33,6 +33,9 @@ type PartBasedSimulationParameters struct {
 	// detect support failure
 	DetectSupportFailure bool `json:"detectSupportFailure,omitempty"`
 
+	// a value that is used to scale the after cutoff simulated distortion values
+	DistortionAfterCutoffScaleFactor float64 `json:"distortionAfterCutoffScaleFactor,omitempty"`
+
 	// a value that is used to scale the simulated distortion value
 	DistortionScaleFactor float64 `json:"distortionScaleFactor,omitempty"`
 
@@ -93,6 +96,9 @@ type PartBasedSimulationParameters struct {
 
 	// if true, a predistorted STL file will be created using the distortion simulated by the mechanics solver
 	PerformDistortionCompensation bool `json:"performDistortionCompensation,omitempty"`
+
+	// if true, a predistorted STL file will be created using the distortion after cutoff simulated by the mechanics solver
+	PerformDistortionCompensationAfterCutoff bool `json:"performDistortionCompensationAfterCutoff,omitempty"`
 
 	// perform support optimization
 	// Required: true
