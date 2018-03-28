@@ -73,6 +73,11 @@ type GetSimulationsParams struct {
 
 	*/
 	BuildFileID *int32
+	/*IsParent
+	  returns either parent (true) or child (false) simulations
+
+	*/
+	IsParent *bool
 	/*Limit
 	  number of materials to return within the query
 
@@ -162,6 +167,17 @@ func (o *GetSimulationsParams) WithBuildFileID(buildFileID *int32) *GetSimulatio
 // SetBuildFileID adds the buildFileId to the get simulations params
 func (o *GetSimulationsParams) SetBuildFileID(buildFileID *int32) {
 	o.BuildFileID = buildFileID
+}
+
+// WithIsParent adds the isParent to the get simulations params
+func (o *GetSimulationsParams) WithIsParent(isParent *bool) *GetSimulationsParams {
+	o.SetIsParent(isParent)
+	return o
+}
+
+// SetIsParent adds the isParent to the get simulations params
+func (o *GetSimulationsParams) SetIsParent(isParent *bool) {
+	o.IsParent = isParent
 }
 
 // WithLimit adds the limit to the get simulations params
@@ -264,6 +280,22 @@ func (o *GetSimulationsParams) WriteToRequest(r runtime.ClientRequest, reg strfm
 		qBuildFileID := swag.FormatInt32(qrBuildFileID)
 		if qBuildFileID != "" {
 			if err := r.SetQueryParam("buildFileId", qBuildFileID); err != nil {
+				return err
+			}
+		}
+
+	}
+
+	if o.IsParent != nil {
+
+		// query param isParent
+		var qrIsParent bool
+		if o.IsParent != nil {
+			qrIsParent = *o.IsParent
+		}
+		qIsParent := swag.FormatBool(qrIsParent)
+		if qIsParent != "" {
+			if err := r.SetQueryParam("isParent", qIsParent); err != nil {
 				return err
 			}
 		}

@@ -205,6 +205,27 @@ func (c *client) Simulation(simulationID int32) (simulation *models.Simulation, 
 	return response.Payload, nil
 }
 
+
+// SimulationChildren gets the child simulations for a simulationID
+func (c *client) SimulationChildren(simulationID int32) (simulation []*models.Simulation, err error) {
+	defer func() {
+		// Until this issue is resolved: https://github.com/go-swagger/go-swagger/issues/1021, we need to recover from
+		// panics.
+		if r := recover(); r != nil {
+			err = fmt.Errorf("Recovered from panic: %v", r)
+		}
+	}()
+	token, err := c.tokenFetcher.Token(c.audience)
+	if err != nil {
+		return nil, err
+	}
+	response, err := c.client.Operations.GetSimulationChildren(operations.NewGetSimulationChildrenParams().WithID(simulationID), openapiclient.BearerToken(token))
+	if err != nil {
+		return nil, err
+	}
+	return response.Payload, nil
+}
+
 func (c *client) ThermalSimulation(simulationID int32) (thermalSimulation *models.ThermalSimulation, err error) {
 	defer func() {
 		// Until this issue is resolved: https://github.com/go-swagger/go-swagger/issues/1021, we need to recover from
@@ -475,6 +496,27 @@ func (c *client) PostPorositySimulation(simulation *models.PorositySimulation) (
 		return nil, err
 	}
 	return response.Payload, nil
+}
+
+// GetSimulationOutputs get the outputs for a simulation
+func (c *client) GetSimulationOutputs(simulationID int32) (so []*models.SimulationOutput, err error) {
+	defer func() {
+		// Until this issue is resolved: https://github.com/go-swagger/go-swagger/issues/1021, we need to recover from
+		// panics.
+		if r := recover(); r != nil {
+			err = fmt.Errorf("Recovered from panic: %v", r)
+		}
+	}()
+	token, err := c.tokenFetcher.Token(c.audience)
+	if err != nil {
+		return nil, err
+	}
+	simulationOutputsResponse, err := c.client.Operations.GetSimulationOutputs(operations.NewGetSimulationOutputsParams().WithID(simulationID),
+		openapiclient.BearerToken(token))
+	if err != nil {
+		return nil, err
+	}
+	return simulationOutputsResponse.Payload, nil
 }
 
 // AddSimulationOutput adds the given output type and output file location to the

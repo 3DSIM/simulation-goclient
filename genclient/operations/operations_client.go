@@ -1300,6 +1300,35 @@ func (a *Client) GetSimulationActivity(params *GetSimulationActivityParams, auth
 }
 
 /*
+GetSimulationChildren Gets a list of all child simulations for a parent simulation
+*/
+func (a *Client) GetSimulationChildren(params *GetSimulationChildrenParams, authInfo runtime.ClientAuthInfoWriter) (*GetSimulationChildrenOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetSimulationChildrenParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "getSimulationChildren",
+		Method:             "GET",
+		PathPattern:        "/simulations/{id}/children",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &GetSimulationChildrenReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*GetSimulationChildrenOK), nil
+
+}
+
+/*
 GetSimulationLogs Gets a list of all logs for a simulation
 */
 func (a *Client) GetSimulationLogs(params *GetSimulationLogsParams, authInfo runtime.ClientAuthInfoWriter) (*GetSimulationLogsOK, error) {
