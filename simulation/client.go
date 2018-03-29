@@ -88,6 +88,8 @@ type Client interface {
 	Part(partID int32) (*models.Part, error)
 	UpdatePartAvailability(partID int32, availability string) (*models.Part, error)
 	PatchPart(partID int32, patches []*models.PatchDocument) (*models.Part, error)
+	SimulationOutputs(simulationID int32) (so []*models.SimulationOutput, err error)
+	SimulationChildren(simulationID int32) (simulation []*models.Simulation, err error)
 }
 
 type client struct {
@@ -204,7 +206,6 @@ func (c *client) Simulation(simulationID int32) (simulation *models.Simulation, 
 	}
 	return response.Payload, nil
 }
-
 
 // SimulationChildren gets the child simulations for a simulationID
 func (c *client) SimulationChildren(simulationID int32) (simulation []*models.Simulation, err error) {
@@ -498,8 +499,8 @@ func (c *client) PostPorositySimulation(simulation *models.PorositySimulation) (
 	return response.Payload, nil
 }
 
-// GetSimulationOutputs get the outputs for a simulation
-func (c *client) GetSimulationOutputs(simulationID int32) (so []*models.SimulationOutput, err error) {
+// SimulationOutputs get the outputs for a simulation
+func (c *client) SimulationOutputs(simulationID int32) (so []*models.SimulationOutput, err error) {
 	defer func() {
 		// Until this issue is resolved: https://github.com/go-swagger/go-swagger/issues/1021, we need to recover from
 		// panics.
