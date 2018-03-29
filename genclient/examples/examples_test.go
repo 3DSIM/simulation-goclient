@@ -22,28 +22,28 @@ func _TestExampleUseOfAPIWithAuthentication(t *testing.T) {
 		OrganizationID: swag.Int32(1),
 		Title:          swag.String("Title"),
 	}
-	partBasedSimulationParams := models.PartBasedSimulationParameters {
-		ElasticModulus:                             swag.Float64(208e9),
-		MaximumWallDistance:                        swag.Float64(3e-3),
-		MaximumWallThickness:                       swag.Float64(1e-3),
-		MinimumSupportHeight:                       swag.Float64(5e-3),
-		MinimumWallDistance:                        swag.Float64(0),
-		MinimumWallThickness:                       swag.Float64(5e-5),
-		PoissonRatio:                               swag.Float64(0.33),
-		StrainScalingFactor:                        swag.Float64(1.0),
-		StressMode:                                 swag.String("LinearElastic"),
-		SupportAngle:                               swag.Float64(45),
-		SupportFactorOfSafety:                      swag.Float64(1.0),
-		SupportYieldStrength:                       swag.Float64(480e6),
-		SupportYieldStrengthRatio:                  swag.Float64(0.4375),
-		VoxelSize:                                  swag.Float64(5e-4),
+	partBasedSimulationParams := models.PartBasedSimulationParameters{
+		ElasticModulus:            swag.Float64(208e9),
+		MaximumWallDistance:       swag.Float64(3e-3),
+		MaximumWallThickness:      swag.Float64(1e-3),
+		MinimumSupportHeight:      swag.Float64(5e-3),
+		MinimumWallDistance:       swag.Float64(0),
+		MinimumWallThickness:      swag.Float64(5e-5),
+		PoissonRatio:              swag.Float64(0.33),
+		StrainScalingFactor:       swag.Float64(1.0),
+		StressMode:                swag.String("LinearElastic"),
+		SupportAngle:              swag.Float64(45),
+		SupportFactorOfSafety:     swag.Float64(1.0),
+		SupportYieldStrength:      swag.Float64(480e6),
+		SupportYieldStrengthRatio: swag.Float64(0.4375),
+		VoxelSize:                 swag.Float64(5e-4),
 	}
 	assumedStrainParams := models.AssumedStrainSimulationParameters{
 		LayerThickness: 50e-6,
 	}
 	simulationToCreate := &models.AssumedStrainSimulation{
-		Simulation: simulation,
-		PartBasedSimulationParameters: partBasedSimulationParams,
+		Simulation:                        simulation,
+		PartBasedSimulationParameters:     partBasedSimulationParams,
 		AssumedStrainSimulationParameters: assumedStrainParams,
 	}
 	createdSimulation, err := client.Operations.PostAssumedStrainSimulation(operations.NewPostAssumedStrainSimulationParams().WithAssumedStrainSimulation(simulationToCreate), bearerTokenAuth)

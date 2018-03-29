@@ -62,6 +62,9 @@ type Simulation struct {
 	// Required: true
 	OrganizationID *int32 `json:"organizationId"`
 
+	// parent Id
+	ParentID int32 `json:"parentId,omitempty"`
+
 	// set server-side, read only
 	PercentComplete float64 `json:"percentComplete,omitempty"`
 
