@@ -22,8 +22,13 @@ import (
 // NewGetPorositySimulationsParams creates a new GetPorositySimulationsParams object
 // with the default values initialized.
 func NewGetPorositySimulationsParams() *GetPorositySimulationsParams {
-	var ()
+	var (
+		limitDefault  = int32(10)
+		offsetDefault = int32(0)
+	)
 	return &GetPorositySimulationsParams{
+		Limit:  &limitDefault,
+		Offset: &offsetDefault,
 
 		timeout: cr.DefaultTimeout,
 	}
@@ -32,8 +37,13 @@ func NewGetPorositySimulationsParams() *GetPorositySimulationsParams {
 // NewGetPorositySimulationsParamsWithTimeout creates a new GetPorositySimulationsParams object
 // with the default values initialized, and the ability to set a timeout on a request
 func NewGetPorositySimulationsParamsWithTimeout(timeout time.Duration) *GetPorositySimulationsParams {
-	var ()
+	var (
+		limitDefault  = int32(10)
+		offsetDefault = int32(0)
+	)
 	return &GetPorositySimulationsParams{
+		Limit:  &limitDefault,
+		Offset: &offsetDefault,
 
 		timeout: timeout,
 	}
@@ -42,8 +52,13 @@ func NewGetPorositySimulationsParamsWithTimeout(timeout time.Duration) *GetPoros
 // NewGetPorositySimulationsParamsWithContext creates a new GetPorositySimulationsParams object
 // with the default values initialized, and the ability to set a context for a request
 func NewGetPorositySimulationsParamsWithContext(ctx context.Context) *GetPorositySimulationsParams {
-	var ()
+	var (
+		limitDefault  = int32(10)
+		offsetDefault = int32(0)
+	)
 	return &GetPorositySimulationsParams{
+		Limit:  &limitDefault,
+		Offset: &offsetDefault,
 
 		Context: ctx,
 	}
@@ -52,8 +67,13 @@ func NewGetPorositySimulationsParamsWithContext(ctx context.Context) *GetPorosit
 // NewGetPorositySimulationsParamsWithHTTPClient creates a new GetPorositySimulationsParams object
 // with the default values initialized, and the ability to set a custom HTTPClient for a request
 func NewGetPorositySimulationsParamsWithHTTPClient(client *http.Client) *GetPorositySimulationsParams {
-	var ()
+	var (
+		limitDefault  = int32(10)
+		offsetDefault = int32(0)
+	)
 	return &GetPorositySimulationsParams{
+		Limit:      &limitDefault,
+		Offset:     &offsetDefault,
 		HTTPClient: client,
 	}
 }

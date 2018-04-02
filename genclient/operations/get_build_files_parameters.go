@@ -22,8 +22,13 @@ import (
 // NewGetBuildFilesParams creates a new GetBuildFilesParams object
 // with the default values initialized.
 func NewGetBuildFilesParams() *GetBuildFilesParams {
-	var ()
+	var (
+		limitDefault  = int32(10)
+		offsetDefault = int32(0)
+	)
 	return &GetBuildFilesParams{
+		Limit:  &limitDefault,
+		Offset: &offsetDefault,
 
 		timeout: cr.DefaultTimeout,
 	}
@@ -32,8 +37,13 @@ func NewGetBuildFilesParams() *GetBuildFilesParams {
 // NewGetBuildFilesParamsWithTimeout creates a new GetBuildFilesParams object
 // with the default values initialized, and the ability to set a timeout on a request
 func NewGetBuildFilesParamsWithTimeout(timeout time.Duration) *GetBuildFilesParams {
-	var ()
+	var (
+		limitDefault  = int32(10)
+		offsetDefault = int32(0)
+	)
 	return &GetBuildFilesParams{
+		Limit:  &limitDefault,
+		Offset: &offsetDefault,
 
 		timeout: timeout,
 	}
@@ -42,8 +52,13 @@ func NewGetBuildFilesParamsWithTimeout(timeout time.Duration) *GetBuildFilesPara
 // NewGetBuildFilesParamsWithContext creates a new GetBuildFilesParams object
 // with the default values initialized, and the ability to set a context for a request
 func NewGetBuildFilesParamsWithContext(ctx context.Context) *GetBuildFilesParams {
-	var ()
+	var (
+		limitDefault  = int32(10)
+		offsetDefault = int32(0)
+	)
 	return &GetBuildFilesParams{
+		Limit:  &limitDefault,
+		Offset: &offsetDefault,
 
 		Context: ctx,
 	}
@@ -52,8 +67,13 @@ func NewGetBuildFilesParamsWithContext(ctx context.Context) *GetBuildFilesParams
 // NewGetBuildFilesParamsWithHTTPClient creates a new GetBuildFilesParams object
 // with the default values initialized, and the ability to set a custom HTTPClient for a request
 func NewGetBuildFilesParamsWithHTTPClient(client *http.Client) *GetBuildFilesParams {
-	var ()
+	var (
+		limitDefault  = int32(10)
+		offsetDefault = int32(0)
+	)
 	return &GetBuildFilesParams{
+		Limit:      &limitDefault,
+		Offset:     &offsetDefault,
 		HTTPClient: client,
 	}
 }

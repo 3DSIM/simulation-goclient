@@ -22,8 +22,13 @@ import (
 // NewGetSingleBeadSimulationsParams creates a new GetSingleBeadSimulationsParams object
 // with the default values initialized.
 func NewGetSingleBeadSimulationsParams() *GetSingleBeadSimulationsParams {
-	var ()
+	var (
+		limitDefault  = int32(10)
+		offsetDefault = int32(0)
+	)
 	return &GetSingleBeadSimulationsParams{
+		Limit:  &limitDefault,
+		Offset: &offsetDefault,
 
 		timeout: cr.DefaultTimeout,
 	}
@@ -32,8 +37,13 @@ func NewGetSingleBeadSimulationsParams() *GetSingleBeadSimulationsParams {
 // NewGetSingleBeadSimulationsParamsWithTimeout creates a new GetSingleBeadSimulationsParams object
 // with the default values initialized, and the ability to set a timeout on a request
 func NewGetSingleBeadSimulationsParamsWithTimeout(timeout time.Duration) *GetSingleBeadSimulationsParams {
-	var ()
+	var (
+		limitDefault  = int32(10)
+		offsetDefault = int32(0)
+	)
 	return &GetSingleBeadSimulationsParams{
+		Limit:  &limitDefault,
+		Offset: &offsetDefault,
 
 		timeout: timeout,
 	}
@@ -42,8 +52,13 @@ func NewGetSingleBeadSimulationsParamsWithTimeout(timeout time.Duration) *GetSin
 // NewGetSingleBeadSimulationsParamsWithContext creates a new GetSingleBeadSimulationsParams object
 // with the default values initialized, and the ability to set a context for a request
 func NewGetSingleBeadSimulationsParamsWithContext(ctx context.Context) *GetSingleBeadSimulationsParams {
-	var ()
+	var (
+		limitDefault  = int32(10)
+		offsetDefault = int32(0)
+	)
 	return &GetSingleBeadSimulationsParams{
+		Limit:  &limitDefault,
+		Offset: &offsetDefault,
 
 		Context: ctx,
 	}
@@ -52,8 +67,13 @@ func NewGetSingleBeadSimulationsParamsWithContext(ctx context.Context) *GetSingl
 // NewGetSingleBeadSimulationsParamsWithHTTPClient creates a new GetSingleBeadSimulationsParams object
 // with the default values initialized, and the ability to set a custom HTTPClient for a request
 func NewGetSingleBeadSimulationsParamsWithHTTPClient(client *http.Client) *GetSingleBeadSimulationsParams {
-	var ()
+	var (
+		limitDefault  = int32(10)
+		offsetDefault = int32(0)
+	)
 	return &GetSingleBeadSimulationsParams{
+		Limit:      &limitDefault,
+		Offset:     &offsetDefault,
 		HTTPClient: client,
 	}
 }

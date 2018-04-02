@@ -68,6 +68,10 @@ func NewGetSimulationActivitiesOK() *GetSimulationActivitiesOK {
 Successfully found the list of items
 */
 type GetSimulationActivitiesOK struct {
+	/*Contains paging information in json format - totalCount, totalPages
+	 */
+	XPagination string
+
 	Payload []*models.SimulationActivity
 }
 
@@ -76,6 +80,9 @@ func (o *GetSimulationActivitiesOK) Error() string {
 }
 
 func (o *GetSimulationActivitiesOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	// response header X-Pagination
+	o.XPagination = response.GetHeader("X-Pagination")
 
 	// response payload
 	if err := consumer.Consume(response.Body(), &o.Payload); err != nil && err != io.EOF {

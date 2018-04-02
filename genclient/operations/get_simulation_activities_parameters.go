@@ -22,8 +22,13 @@ import (
 // NewGetSimulationActivitiesParams creates a new GetSimulationActivitiesParams object
 // with the default values initialized.
 func NewGetSimulationActivitiesParams() *GetSimulationActivitiesParams {
-	var ()
+	var (
+		limitDefault  = int32(10)
+		offsetDefault = int32(0)
+	)
 	return &GetSimulationActivitiesParams{
+		Limit:  &limitDefault,
+		Offset: &offsetDefault,
 
 		timeout: cr.DefaultTimeout,
 	}
@@ -32,8 +37,13 @@ func NewGetSimulationActivitiesParams() *GetSimulationActivitiesParams {
 // NewGetSimulationActivitiesParamsWithTimeout creates a new GetSimulationActivitiesParams object
 // with the default values initialized, and the ability to set a timeout on a request
 func NewGetSimulationActivitiesParamsWithTimeout(timeout time.Duration) *GetSimulationActivitiesParams {
-	var ()
+	var (
+		limitDefault  = int32(10)
+		offsetDefault = int32(0)
+	)
 	return &GetSimulationActivitiesParams{
+		Limit:  &limitDefault,
+		Offset: &offsetDefault,
 
 		timeout: timeout,
 	}
@@ -42,8 +52,13 @@ func NewGetSimulationActivitiesParamsWithTimeout(timeout time.Duration) *GetSimu
 // NewGetSimulationActivitiesParamsWithContext creates a new GetSimulationActivitiesParams object
 // with the default values initialized, and the ability to set a context for a request
 func NewGetSimulationActivitiesParamsWithContext(ctx context.Context) *GetSimulationActivitiesParams {
-	var ()
+	var (
+		limitDefault  = int32(10)
+		offsetDefault = int32(0)
+	)
 	return &GetSimulationActivitiesParams{
+		Limit:  &limitDefault,
+		Offset: &offsetDefault,
 
 		Context: ctx,
 	}
@@ -52,8 +67,13 @@ func NewGetSimulationActivitiesParamsWithContext(ctx context.Context) *GetSimula
 // NewGetSimulationActivitiesParamsWithHTTPClient creates a new GetSimulationActivitiesParams object
 // with the default values initialized, and the ability to set a custom HTTPClient for a request
 func NewGetSimulationActivitiesParamsWithHTTPClient(client *http.Client) *GetSimulationActivitiesParams {
-	var ()
+	var (
+		limitDefault  = int32(10)
+		offsetDefault = int32(0)
+	)
 	return &GetSimulationActivitiesParams{
+		Limit:      &limitDefault,
+		Offset:     &offsetDefault,
 		HTTPClient: client,
 	}
 }

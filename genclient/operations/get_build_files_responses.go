@@ -68,6 +68,10 @@ func NewGetBuildFilesOK() *GetBuildFilesOK {
 Successfully retrieved list of build files
 */
 type GetBuildFilesOK struct {
+	/*Contains paging information in json format - totalCount, totalPages
+	 */
+	XPagination string
+
 	Payload []*models.BuildFile
 }
 
@@ -76,6 +80,9 @@ func (o *GetBuildFilesOK) Error() string {
 }
 
 func (o *GetBuildFilesOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	// response header X-Pagination
+	o.XPagination = response.GetHeader("X-Pagination")
 
 	// response payload
 	if err := consumer.Consume(response.Body(), &o.Payload); err != nil && err != io.EOF {

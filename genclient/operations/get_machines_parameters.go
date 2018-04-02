@@ -22,8 +22,13 @@ import (
 // NewGetMachinesParams creates a new GetMachinesParams object
 // with the default values initialized.
 func NewGetMachinesParams() *GetMachinesParams {
-	var ()
+	var (
+		limitDefault  = int32(10)
+		offsetDefault = int32(0)
+	)
 	return &GetMachinesParams{
+		Limit:  &limitDefault,
+		Offset: &offsetDefault,
 
 		timeout: cr.DefaultTimeout,
 	}
@@ -32,8 +37,13 @@ func NewGetMachinesParams() *GetMachinesParams {
 // NewGetMachinesParamsWithTimeout creates a new GetMachinesParams object
 // with the default values initialized, and the ability to set a timeout on a request
 func NewGetMachinesParamsWithTimeout(timeout time.Duration) *GetMachinesParams {
-	var ()
+	var (
+		limitDefault  = int32(10)
+		offsetDefault = int32(0)
+	)
 	return &GetMachinesParams{
+		Limit:  &limitDefault,
+		Offset: &offsetDefault,
 
 		timeout: timeout,
 	}
@@ -42,8 +52,13 @@ func NewGetMachinesParamsWithTimeout(timeout time.Duration) *GetMachinesParams {
 // NewGetMachinesParamsWithContext creates a new GetMachinesParams object
 // with the default values initialized, and the ability to set a context for a request
 func NewGetMachinesParamsWithContext(ctx context.Context) *GetMachinesParams {
-	var ()
+	var (
+		limitDefault  = int32(10)
+		offsetDefault = int32(0)
+	)
 	return &GetMachinesParams{
+		Limit:  &limitDefault,
+		Offset: &offsetDefault,
 
 		Context: ctx,
 	}
@@ -52,8 +67,13 @@ func NewGetMachinesParamsWithContext(ctx context.Context) *GetMachinesParams {
 // NewGetMachinesParamsWithHTTPClient creates a new GetMachinesParams object
 // with the default values initialized, and the ability to set a custom HTTPClient for a request
 func NewGetMachinesParamsWithHTTPClient(client *http.Client) *GetMachinesParams {
-	var ()
+	var (
+		limitDefault  = int32(10)
+		offsetDefault = int32(0)
+	)
 	return &GetMachinesParams{
+		Limit:      &limitDefault,
+		Offset:     &offsetDefault,
 		HTTPClient: client,
 	}
 }

@@ -22,8 +22,13 @@ import (
 // NewGetSimulationLogsParams creates a new GetSimulationLogsParams object
 // with the default values initialized.
 func NewGetSimulationLogsParams() *GetSimulationLogsParams {
-	var ()
+	var (
+		limitDefault  = int32(10)
+		offsetDefault = int32(0)
+	)
 	return &GetSimulationLogsParams{
+		Limit:  &limitDefault,
+		Offset: &offsetDefault,
 
 		timeout: cr.DefaultTimeout,
 	}
@@ -32,8 +37,13 @@ func NewGetSimulationLogsParams() *GetSimulationLogsParams {
 // NewGetSimulationLogsParamsWithTimeout creates a new GetSimulationLogsParams object
 // with the default values initialized, and the ability to set a timeout on a request
 func NewGetSimulationLogsParamsWithTimeout(timeout time.Duration) *GetSimulationLogsParams {
-	var ()
+	var (
+		limitDefault  = int32(10)
+		offsetDefault = int32(0)
+	)
 	return &GetSimulationLogsParams{
+		Limit:  &limitDefault,
+		Offset: &offsetDefault,
 
 		timeout: timeout,
 	}
@@ -42,8 +52,13 @@ func NewGetSimulationLogsParamsWithTimeout(timeout time.Duration) *GetSimulation
 // NewGetSimulationLogsParamsWithContext creates a new GetSimulationLogsParams object
 // with the default values initialized, and the ability to set a context for a request
 func NewGetSimulationLogsParamsWithContext(ctx context.Context) *GetSimulationLogsParams {
-	var ()
+	var (
+		limitDefault  = int32(10)
+		offsetDefault = int32(0)
+	)
 	return &GetSimulationLogsParams{
+		Limit:  &limitDefault,
+		Offset: &offsetDefault,
 
 		Context: ctx,
 	}
@@ -52,8 +67,13 @@ func NewGetSimulationLogsParamsWithContext(ctx context.Context) *GetSimulationLo
 // NewGetSimulationLogsParamsWithHTTPClient creates a new GetSimulationLogsParams object
 // with the default values initialized, and the ability to set a custom HTTPClient for a request
 func NewGetSimulationLogsParamsWithHTTPClient(client *http.Client) *GetSimulationLogsParams {
-	var ()
+	var (
+		limitDefault  = int32(10)
+		offsetDefault = int32(0)
+	)
 	return &GetSimulationLogsParams{
+		Limit:      &limitDefault,
+		Offset:     &offsetDefault,
 		HTTPClient: client,
 	}
 }

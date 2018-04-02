@@ -22,8 +22,13 @@ import (
 // NewGetPartsParams creates a new GetPartsParams object
 // with the default values initialized.
 func NewGetPartsParams() *GetPartsParams {
-	var ()
+	var (
+		limitDefault  = int32(10)
+		offsetDefault = int32(0)
+	)
 	return &GetPartsParams{
+		Limit:  &limitDefault,
+		Offset: &offsetDefault,
 
 		timeout: cr.DefaultTimeout,
 	}
@@ -32,8 +37,13 @@ func NewGetPartsParams() *GetPartsParams {
 // NewGetPartsParamsWithTimeout creates a new GetPartsParams object
 // with the default values initialized, and the ability to set a timeout on a request
 func NewGetPartsParamsWithTimeout(timeout time.Duration) *GetPartsParams {
-	var ()
+	var (
+		limitDefault  = int32(10)
+		offsetDefault = int32(0)
+	)
 	return &GetPartsParams{
+		Limit:  &limitDefault,
+		Offset: &offsetDefault,
 
 		timeout: timeout,
 	}
@@ -42,8 +52,13 @@ func NewGetPartsParamsWithTimeout(timeout time.Duration) *GetPartsParams {
 // NewGetPartsParamsWithContext creates a new GetPartsParams object
 // with the default values initialized, and the ability to set a context for a request
 func NewGetPartsParamsWithContext(ctx context.Context) *GetPartsParams {
-	var ()
+	var (
+		limitDefault  = int32(10)
+		offsetDefault = int32(0)
+	)
 	return &GetPartsParams{
+		Limit:  &limitDefault,
+		Offset: &offsetDefault,
 
 		Context: ctx,
 	}
@@ -52,8 +67,13 @@ func NewGetPartsParamsWithContext(ctx context.Context) *GetPartsParams {
 // NewGetPartsParamsWithHTTPClient creates a new GetPartsParams object
 // with the default values initialized, and the ability to set a custom HTTPClient for a request
 func NewGetPartsParamsWithHTTPClient(client *http.Client) *GetPartsParams {
-	var ()
+	var (
+		limitDefault  = int32(10)
+		offsetDefault = int32(0)
+	)
 	return &GetPartsParams{
+		Limit:      &limitDefault,
+		Offset:     &offsetDefault,
 		HTTPClient: client,
 	}
 }

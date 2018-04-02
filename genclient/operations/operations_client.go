@@ -663,6 +663,35 @@ func (a *Client) GetAssumedStrainSimulation(params *GetAssumedStrainSimulationPa
 }
 
 /*
+GetAssumedStrainSimulationChildren Gets a list of all child simulations for a parent simulation
+*/
+func (a *Client) GetAssumedStrainSimulationChildren(params *GetAssumedStrainSimulationChildrenParams, authInfo runtime.ClientAuthInfoWriter) (*GetAssumedStrainSimulationChildrenOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetAssumedStrainSimulationChildrenParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "getAssumedStrainSimulationChildren",
+		Method:             "GET",
+		PathPattern:        "/assumedstrainsimulations/{id}/children",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &GetAssumedStrainSimulationChildrenReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*GetAssumedStrainSimulationChildrenOK), nil
+
+}
+
+/*
 GetAssumedStrainSimulations Gets a list of all assumed strain simulations for the active user
 */
 func (a *Client) GetAssumedStrainSimulations(params *GetAssumedStrainSimulationsParams, authInfo runtime.ClientAuthInfoWriter) (*GetAssumedStrainSimulationsOK, error) {
@@ -1126,6 +1155,35 @@ func (a *Client) GetPorositySimulation(params *GetPorositySimulationParams, auth
 }
 
 /*
+GetPorositySimulationChildren Gets a list of all child simulations for a parent simulation
+*/
+func (a *Client) GetPorositySimulationChildren(params *GetPorositySimulationChildrenParams, authInfo runtime.ClientAuthInfoWriter) (*GetPorositySimulationChildrenOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetPorositySimulationChildrenParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "getPorositySimulationChildren",
+		Method:             "GET",
+		PathPattern:        "/porositysimulations/{id}/children",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &GetPorositySimulationChildrenReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*GetPorositySimulationChildrenOK), nil
+
+}
+
+/*
 GetPorositySimulations Gets a list of all porosity simulation
 */
 func (a *Client) GetPorositySimulations(params *GetPorositySimulationsParams, authInfo runtime.ClientAuthInfoWriter) (*GetPorositySimulationsOK, error) {
@@ -1180,6 +1238,35 @@ func (a *Client) GetScanPatternSimulation(params *GetScanPatternSimulationParams
 		return nil, err
 	}
 	return result.(*GetScanPatternSimulationOK), nil
+
+}
+
+/*
+GetScanPatternSimulationChildren Gets a list of all child simulations for a parent simulation
+*/
+func (a *Client) GetScanPatternSimulationChildren(params *GetScanPatternSimulationChildrenParams, authInfo runtime.ClientAuthInfoWriter) (*GetScanPatternSimulationChildrenOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetScanPatternSimulationChildrenParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "getScanPatternSimulationChildren",
+		Method:             "GET",
+		PathPattern:        "/scanpatternsimulations/{id}/children",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &GetScanPatternSimulationChildrenReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*GetScanPatternSimulationChildrenOK), nil
 
 }
 
@@ -1445,6 +1532,35 @@ func (a *Client) GetSingleBeadSimulation(params *GetSingleBeadSimulationParams, 
 }
 
 /*
+GetSingleBeadSimulationChildren Gets a list of all child simulations for a parent simulation
+*/
+func (a *Client) GetSingleBeadSimulationChildren(params *GetSingleBeadSimulationChildrenParams, authInfo runtime.ClientAuthInfoWriter) (*GetSingleBeadSimulationChildrenOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetSingleBeadSimulationChildrenParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "getSingleBeadSimulationChildren",
+		Method:             "GET",
+		PathPattern:        "/singlebeadsimulations/{id}/children",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &GetSingleBeadSimulationChildrenReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*GetSingleBeadSimulationChildrenOK), nil
+
+}
+
+/*
 GetSingleBeadSimulations Gets a list of all single bead simulations for the active user
 */
 func (a *Client) GetSingleBeadSimulations(params *GetSingleBeadSimulationsParams, authInfo runtime.ClientAuthInfoWriter) (*GetSingleBeadSimulationsOK, error) {
@@ -1499,6 +1615,35 @@ func (a *Client) GetThermalSimulation(params *GetThermalSimulationParams, authIn
 		return nil, err
 	}
 	return result.(*GetThermalSimulationOK), nil
+
+}
+
+/*
+GetThermalSimulationChildren Gets a list of all child simulations for a parent simulation
+*/
+func (a *Client) GetThermalSimulationChildren(params *GetThermalSimulationChildrenParams, authInfo runtime.ClientAuthInfoWriter) (*GetThermalSimulationChildrenOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetThermalSimulationChildrenParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "getThermalSimulationChildren",
+		Method:             "GET",
+		PathPattern:        "/thermalsimulations/{id}/children",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &GetThermalSimulationChildrenReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*GetThermalSimulationChildrenOK), nil
 
 }
 
