@@ -791,3 +791,49 @@ func (_m *Client) PatchPart(partID int32, patches []*models.PatchDocument) (*mod
 
 	return r0, r1
 }
+
+// SimulationOutputs provides a mock function with given fields: simulationID
+func (_m *Client) SimulationOutputs(simulationID int32) ([]*models.SimulationOutput, error) {
+	ret := _m.Called(simulationID)
+
+	var r0 []*models.SimulationOutput
+	if rf, ok := ret.Get(0).(func(int32) []*models.SimulationOutput); ok {
+		r0 = rf(simulationID)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]*models.SimulationOutput)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(int32) error); ok {
+		r1 = rf(simulationID)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// SimulationChildren provides a mock function with given fields: simulationID
+func (_m *Client) SimulationChildren(simulationID int32) ([]*models.Simulation, error) {
+	ret := _m.Called(simulationID)
+
+	var r0 []*models.Simulation
+	if rf, ok := ret.Get(0).(func(int32) []*models.Simulation); ok {
+		r0 = rf(simulationID)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]*models.Simulation)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(int32) error); ok {
+		r1 = rf(simulationID)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
