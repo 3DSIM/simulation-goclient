@@ -22,8 +22,13 @@ import (
 // NewGetSimulationOutputsParams creates a new GetSimulationOutputsParams object
 // with the default values initialized.
 func NewGetSimulationOutputsParams() *GetSimulationOutputsParams {
-	var ()
+	var (
+		limitDefault  = int32(10)
+		offsetDefault = int32(0)
+	)
 	return &GetSimulationOutputsParams{
+		Limit:  &limitDefault,
+		Offset: &offsetDefault,
 
 		timeout: cr.DefaultTimeout,
 	}
@@ -32,8 +37,13 @@ func NewGetSimulationOutputsParams() *GetSimulationOutputsParams {
 // NewGetSimulationOutputsParamsWithTimeout creates a new GetSimulationOutputsParams object
 // with the default values initialized, and the ability to set a timeout on a request
 func NewGetSimulationOutputsParamsWithTimeout(timeout time.Duration) *GetSimulationOutputsParams {
-	var ()
+	var (
+		limitDefault  = int32(10)
+		offsetDefault = int32(0)
+	)
 	return &GetSimulationOutputsParams{
+		Limit:  &limitDefault,
+		Offset: &offsetDefault,
 
 		timeout: timeout,
 	}
@@ -42,8 +52,13 @@ func NewGetSimulationOutputsParamsWithTimeout(timeout time.Duration) *GetSimulat
 // NewGetSimulationOutputsParamsWithContext creates a new GetSimulationOutputsParams object
 // with the default values initialized, and the ability to set a context for a request
 func NewGetSimulationOutputsParamsWithContext(ctx context.Context) *GetSimulationOutputsParams {
-	var ()
+	var (
+		limitDefault  = int32(10)
+		offsetDefault = int32(0)
+	)
 	return &GetSimulationOutputsParams{
+		Limit:  &limitDefault,
+		Offset: &offsetDefault,
 
 		Context: ctx,
 	}
@@ -52,8 +67,13 @@ func NewGetSimulationOutputsParamsWithContext(ctx context.Context) *GetSimulatio
 // NewGetSimulationOutputsParamsWithHTTPClient creates a new GetSimulationOutputsParams object
 // with the default values initialized, and the ability to set a custom HTTPClient for a request
 func NewGetSimulationOutputsParamsWithHTTPClient(client *http.Client) *GetSimulationOutputsParams {
-	var ()
+	var (
+		limitDefault  = int32(10)
+		offsetDefault = int32(0)
+	)
 	return &GetSimulationOutputsParams{
+		Limit:      &limitDefault,
+		Offset:     &offsetDefault,
 		HTTPClient: client,
 	}
 }

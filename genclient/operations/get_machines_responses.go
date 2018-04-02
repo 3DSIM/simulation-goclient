@@ -68,6 +68,10 @@ func NewGetMachinesOK() *GetMachinesOK {
 Successfully retrieved list of machines
 */
 type GetMachinesOK struct {
+	/*Contains paging information in json format - totalCount, totalPages
+	 */
+	XPagination string
+
 	Payload []*models.Machine
 }
 
@@ -76,6 +80,9 @@ func (o *GetMachinesOK) Error() string {
 }
 
 func (o *GetMachinesOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	// response header X-Pagination
+	o.XPagination = response.GetHeader("X-Pagination")
 
 	// response payload
 	if err := consumer.Consume(response.Body(), &o.Payload); err != nil && err != io.EOF {

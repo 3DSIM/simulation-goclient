@@ -22,8 +22,13 @@ import (
 // NewGetAssumedStrainSimulationsParams creates a new GetAssumedStrainSimulationsParams object
 // with the default values initialized.
 func NewGetAssumedStrainSimulationsParams() *GetAssumedStrainSimulationsParams {
-	var ()
+	var (
+		limitDefault  = int32(10)
+		offsetDefault = int32(0)
+	)
 	return &GetAssumedStrainSimulationsParams{
+		Limit:  &limitDefault,
+		Offset: &offsetDefault,
 
 		timeout: cr.DefaultTimeout,
 	}
@@ -32,8 +37,13 @@ func NewGetAssumedStrainSimulationsParams() *GetAssumedStrainSimulationsParams {
 // NewGetAssumedStrainSimulationsParamsWithTimeout creates a new GetAssumedStrainSimulationsParams object
 // with the default values initialized, and the ability to set a timeout on a request
 func NewGetAssumedStrainSimulationsParamsWithTimeout(timeout time.Duration) *GetAssumedStrainSimulationsParams {
-	var ()
+	var (
+		limitDefault  = int32(10)
+		offsetDefault = int32(0)
+	)
 	return &GetAssumedStrainSimulationsParams{
+		Limit:  &limitDefault,
+		Offset: &offsetDefault,
 
 		timeout: timeout,
 	}
@@ -42,8 +52,13 @@ func NewGetAssumedStrainSimulationsParamsWithTimeout(timeout time.Duration) *Get
 // NewGetAssumedStrainSimulationsParamsWithContext creates a new GetAssumedStrainSimulationsParams object
 // with the default values initialized, and the ability to set a context for a request
 func NewGetAssumedStrainSimulationsParamsWithContext(ctx context.Context) *GetAssumedStrainSimulationsParams {
-	var ()
+	var (
+		limitDefault  = int32(10)
+		offsetDefault = int32(0)
+	)
 	return &GetAssumedStrainSimulationsParams{
+		Limit:  &limitDefault,
+		Offset: &offsetDefault,
 
 		Context: ctx,
 	}
@@ -52,8 +67,13 @@ func NewGetAssumedStrainSimulationsParamsWithContext(ctx context.Context) *GetAs
 // NewGetAssumedStrainSimulationsParamsWithHTTPClient creates a new GetAssumedStrainSimulationsParams object
 // with the default values initialized, and the ability to set a custom HTTPClient for a request
 func NewGetAssumedStrainSimulationsParamsWithHTTPClient(client *http.Client) *GetAssumedStrainSimulationsParams {
-	var ()
+	var (
+		limitDefault  = int32(10)
+		offsetDefault = int32(0)
+	)
 	return &GetAssumedStrainSimulationsParams{
+		Limit:      &limitDefault,
+		Offset:     &offsetDefault,
 		HTTPClient: client,
 	}
 }

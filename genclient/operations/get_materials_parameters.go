@@ -22,8 +22,13 @@ import (
 // NewGetMaterialsParams creates a new GetMaterialsParams object
 // with the default values initialized.
 func NewGetMaterialsParams() *GetMaterialsParams {
-	var ()
+	var (
+		limitDefault  = int32(10)
+		offsetDefault = int32(0)
+	)
 	return &GetMaterialsParams{
+		Limit:  &limitDefault,
+		Offset: &offsetDefault,
 
 		timeout: cr.DefaultTimeout,
 	}
@@ -32,8 +37,13 @@ func NewGetMaterialsParams() *GetMaterialsParams {
 // NewGetMaterialsParamsWithTimeout creates a new GetMaterialsParams object
 // with the default values initialized, and the ability to set a timeout on a request
 func NewGetMaterialsParamsWithTimeout(timeout time.Duration) *GetMaterialsParams {
-	var ()
+	var (
+		limitDefault  = int32(10)
+		offsetDefault = int32(0)
+	)
 	return &GetMaterialsParams{
+		Limit:  &limitDefault,
+		Offset: &offsetDefault,
 
 		timeout: timeout,
 	}
@@ -42,8 +52,13 @@ func NewGetMaterialsParamsWithTimeout(timeout time.Duration) *GetMaterialsParams
 // NewGetMaterialsParamsWithContext creates a new GetMaterialsParams object
 // with the default values initialized, and the ability to set a context for a request
 func NewGetMaterialsParamsWithContext(ctx context.Context) *GetMaterialsParams {
-	var ()
+	var (
+		limitDefault  = int32(10)
+		offsetDefault = int32(0)
+	)
 	return &GetMaterialsParams{
+		Limit:  &limitDefault,
+		Offset: &offsetDefault,
 
 		Context: ctx,
 	}
@@ -52,8 +67,13 @@ func NewGetMaterialsParamsWithContext(ctx context.Context) *GetMaterialsParams {
 // NewGetMaterialsParamsWithHTTPClient creates a new GetMaterialsParams object
 // with the default values initialized, and the ability to set a custom HTTPClient for a request
 func NewGetMaterialsParamsWithHTTPClient(client *http.Client) *GetMaterialsParams {
-	var ()
+	var (
+		limitDefault  = int32(10)
+		offsetDefault = int32(0)
+	)
 	return &GetMaterialsParams{
+		Limit:      &limitDefault,
+		Offset:     &offsetDefault,
 		HTTPClient: client,
 	}
 }

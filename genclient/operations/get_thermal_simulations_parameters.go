@@ -22,8 +22,13 @@ import (
 // NewGetThermalSimulationsParams creates a new GetThermalSimulationsParams object
 // with the default values initialized.
 func NewGetThermalSimulationsParams() *GetThermalSimulationsParams {
-	var ()
+	var (
+		limitDefault  = int32(10)
+		offsetDefault = int32(0)
+	)
 	return &GetThermalSimulationsParams{
+		Limit:  &limitDefault,
+		Offset: &offsetDefault,
 
 		timeout: cr.DefaultTimeout,
 	}
@@ -32,8 +37,13 @@ func NewGetThermalSimulationsParams() *GetThermalSimulationsParams {
 // NewGetThermalSimulationsParamsWithTimeout creates a new GetThermalSimulationsParams object
 // with the default values initialized, and the ability to set a timeout on a request
 func NewGetThermalSimulationsParamsWithTimeout(timeout time.Duration) *GetThermalSimulationsParams {
-	var ()
+	var (
+		limitDefault  = int32(10)
+		offsetDefault = int32(0)
+	)
 	return &GetThermalSimulationsParams{
+		Limit:  &limitDefault,
+		Offset: &offsetDefault,
 
 		timeout: timeout,
 	}
@@ -42,8 +52,13 @@ func NewGetThermalSimulationsParamsWithTimeout(timeout time.Duration) *GetTherma
 // NewGetThermalSimulationsParamsWithContext creates a new GetThermalSimulationsParams object
 // with the default values initialized, and the ability to set a context for a request
 func NewGetThermalSimulationsParamsWithContext(ctx context.Context) *GetThermalSimulationsParams {
-	var ()
+	var (
+		limitDefault  = int32(10)
+		offsetDefault = int32(0)
+	)
 	return &GetThermalSimulationsParams{
+		Limit:  &limitDefault,
+		Offset: &offsetDefault,
 
 		Context: ctx,
 	}
@@ -52,8 +67,13 @@ func NewGetThermalSimulationsParamsWithContext(ctx context.Context) *GetThermalS
 // NewGetThermalSimulationsParamsWithHTTPClient creates a new GetThermalSimulationsParams object
 // with the default values initialized, and the ability to set a custom HTTPClient for a request
 func NewGetThermalSimulationsParamsWithHTTPClient(client *http.Client) *GetThermalSimulationsParams {
-	var ()
+	var (
+		limitDefault  = int32(10)
+		offsetDefault = int32(0)
+	)
 	return &GetThermalSimulationsParams{
+		Limit:      &limitDefault,
+		Offset:     &offsetDefault,
 		HTTPClient: client,
 	}
 }

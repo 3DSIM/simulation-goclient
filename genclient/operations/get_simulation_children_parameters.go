@@ -22,8 +22,13 @@ import (
 // NewGetSimulationChildrenParams creates a new GetSimulationChildrenParams object
 // with the default values initialized.
 func NewGetSimulationChildrenParams() *GetSimulationChildrenParams {
-	var ()
+	var (
+		limitDefault  = int32(10)
+		offsetDefault = int32(0)
+	)
 	return &GetSimulationChildrenParams{
+		Limit:  &limitDefault,
+		Offset: &offsetDefault,
 
 		timeout: cr.DefaultTimeout,
 	}
@@ -32,8 +37,13 @@ func NewGetSimulationChildrenParams() *GetSimulationChildrenParams {
 // NewGetSimulationChildrenParamsWithTimeout creates a new GetSimulationChildrenParams object
 // with the default values initialized, and the ability to set a timeout on a request
 func NewGetSimulationChildrenParamsWithTimeout(timeout time.Duration) *GetSimulationChildrenParams {
-	var ()
+	var (
+		limitDefault  = int32(10)
+		offsetDefault = int32(0)
+	)
 	return &GetSimulationChildrenParams{
+		Limit:  &limitDefault,
+		Offset: &offsetDefault,
 
 		timeout: timeout,
 	}
@@ -42,8 +52,13 @@ func NewGetSimulationChildrenParamsWithTimeout(timeout time.Duration) *GetSimula
 // NewGetSimulationChildrenParamsWithContext creates a new GetSimulationChildrenParams object
 // with the default values initialized, and the ability to set a context for a request
 func NewGetSimulationChildrenParamsWithContext(ctx context.Context) *GetSimulationChildrenParams {
-	var ()
+	var (
+		limitDefault  = int32(10)
+		offsetDefault = int32(0)
+	)
 	return &GetSimulationChildrenParams{
+		Limit:  &limitDefault,
+		Offset: &offsetDefault,
 
 		Context: ctx,
 	}
@@ -52,8 +67,13 @@ func NewGetSimulationChildrenParamsWithContext(ctx context.Context) *GetSimulati
 // NewGetSimulationChildrenParamsWithHTTPClient creates a new GetSimulationChildrenParams object
 // with the default values initialized, and the ability to set a custom HTTPClient for a request
 func NewGetSimulationChildrenParamsWithHTTPClient(client *http.Client) *GetSimulationChildrenParams {
-	var ()
+	var (
+		limitDefault  = int32(10)
+		offsetDefault = int32(0)
+	)
 	return &GetSimulationChildrenParams{
+		Limit:      &limitDefault,
+		Offset:     &offsetDefault,
 		HTTPClient: client,
 	}
 }
@@ -68,6 +88,16 @@ type GetSimulationChildrenParams struct {
 
 	*/
 	ID int32
+	/*Limit
+	  number of materials to return within the query
+
+	*/
+	Limit *int32
+	/*Offset
+	  starting paging count; ex. offset of 60 will skip the first 60 items in the list
+
+	*/
+	Offset *int32
 	/*Sort
 	  key:direction pairs for one or multiple field sort orders.  e.g. sort=key1:desc,key2:asc
 
@@ -128,6 +158,28 @@ func (o *GetSimulationChildrenParams) SetID(id int32) {
 	o.ID = id
 }
 
+// WithLimit adds the limit to the get simulation children params
+func (o *GetSimulationChildrenParams) WithLimit(limit *int32) *GetSimulationChildrenParams {
+	o.SetLimit(limit)
+	return o
+}
+
+// SetLimit adds the limit to the get simulation children params
+func (o *GetSimulationChildrenParams) SetLimit(limit *int32) {
+	o.Limit = limit
+}
+
+// WithOffset adds the offset to the get simulation children params
+func (o *GetSimulationChildrenParams) WithOffset(offset *int32) *GetSimulationChildrenParams {
+	o.SetOffset(offset)
+	return o
+}
+
+// SetOffset adds the offset to the get simulation children params
+func (o *GetSimulationChildrenParams) SetOffset(offset *int32) {
+	o.Offset = offset
+}
+
 // WithSort adds the sort to the get simulation children params
 func (o *GetSimulationChildrenParams) WithSort(sort []string) *GetSimulationChildrenParams {
 	o.SetSort(sort)
@@ -161,6 +213,38 @@ func (o *GetSimulationChildrenParams) WriteToRequest(r runtime.ClientRequest, re
 	// path param id
 	if err := r.SetPathParam("id", swag.FormatInt32(o.ID)); err != nil {
 		return err
+	}
+
+	if o.Limit != nil {
+
+		// query param limit
+		var qrLimit int32
+		if o.Limit != nil {
+			qrLimit = *o.Limit
+		}
+		qLimit := swag.FormatInt32(qrLimit)
+		if qLimit != "" {
+			if err := r.SetQueryParam("limit", qLimit); err != nil {
+				return err
+			}
+		}
+
+	}
+
+	if o.Offset != nil {
+
+		// query param offset
+		var qrOffset int32
+		if o.Offset != nil {
+			qrOffset = *o.Offset
+		}
+		qOffset := swag.FormatInt32(qrOffset)
+		if qOffset != "" {
+			if err := r.SetQueryParam("offset", qOffset); err != nil {
+				return err
+			}
+		}
+
 	}
 
 	valuesSort := o.Sort

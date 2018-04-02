@@ -22,8 +22,13 @@ import (
 // NewGetSimulationsParams creates a new GetSimulationsParams object
 // with the default values initialized.
 func NewGetSimulationsParams() *GetSimulationsParams {
-	var ()
+	var (
+		limitDefault  = int32(10)
+		offsetDefault = int32(0)
+	)
 	return &GetSimulationsParams{
+		Limit:  &limitDefault,
+		Offset: &offsetDefault,
 
 		timeout: cr.DefaultTimeout,
 	}
@@ -32,8 +37,13 @@ func NewGetSimulationsParams() *GetSimulationsParams {
 // NewGetSimulationsParamsWithTimeout creates a new GetSimulationsParams object
 // with the default values initialized, and the ability to set a timeout on a request
 func NewGetSimulationsParamsWithTimeout(timeout time.Duration) *GetSimulationsParams {
-	var ()
+	var (
+		limitDefault  = int32(10)
+		offsetDefault = int32(0)
+	)
 	return &GetSimulationsParams{
+		Limit:  &limitDefault,
+		Offset: &offsetDefault,
 
 		timeout: timeout,
 	}
@@ -42,8 +52,13 @@ func NewGetSimulationsParamsWithTimeout(timeout time.Duration) *GetSimulationsPa
 // NewGetSimulationsParamsWithContext creates a new GetSimulationsParams object
 // with the default values initialized, and the ability to set a context for a request
 func NewGetSimulationsParamsWithContext(ctx context.Context) *GetSimulationsParams {
-	var ()
+	var (
+		limitDefault  = int32(10)
+		offsetDefault = int32(0)
+	)
 	return &GetSimulationsParams{
+		Limit:  &limitDefault,
+		Offset: &offsetDefault,
 
 		Context: ctx,
 	}
@@ -52,8 +67,13 @@ func NewGetSimulationsParamsWithContext(ctx context.Context) *GetSimulationsPara
 // NewGetSimulationsParamsWithHTTPClient creates a new GetSimulationsParams object
 // with the default values initialized, and the ability to set a custom HTTPClient for a request
 func NewGetSimulationsParamsWithHTTPClient(client *http.Client) *GetSimulationsParams {
-	var ()
+	var (
+		limitDefault  = int32(10)
+		offsetDefault = int32(0)
+	)
 	return &GetSimulationsParams{
+		Limit:      &limitDefault,
+		Offset:     &offsetDefault,
 		HTTPClient: client,
 	}
 }

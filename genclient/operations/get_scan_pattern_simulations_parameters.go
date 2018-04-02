@@ -22,8 +22,13 @@ import (
 // NewGetScanPatternSimulationsParams creates a new GetScanPatternSimulationsParams object
 // with the default values initialized.
 func NewGetScanPatternSimulationsParams() *GetScanPatternSimulationsParams {
-	var ()
+	var (
+		limitDefault  = int32(10)
+		offsetDefault = int32(0)
+	)
 	return &GetScanPatternSimulationsParams{
+		Limit:  &limitDefault,
+		Offset: &offsetDefault,
 
 		timeout: cr.DefaultTimeout,
 	}
@@ -32,8 +37,13 @@ func NewGetScanPatternSimulationsParams() *GetScanPatternSimulationsParams {
 // NewGetScanPatternSimulationsParamsWithTimeout creates a new GetScanPatternSimulationsParams object
 // with the default values initialized, and the ability to set a timeout on a request
 func NewGetScanPatternSimulationsParamsWithTimeout(timeout time.Duration) *GetScanPatternSimulationsParams {
-	var ()
+	var (
+		limitDefault  = int32(10)
+		offsetDefault = int32(0)
+	)
 	return &GetScanPatternSimulationsParams{
+		Limit:  &limitDefault,
+		Offset: &offsetDefault,
 
 		timeout: timeout,
 	}
@@ -42,8 +52,13 @@ func NewGetScanPatternSimulationsParamsWithTimeout(timeout time.Duration) *GetSc
 // NewGetScanPatternSimulationsParamsWithContext creates a new GetScanPatternSimulationsParams object
 // with the default values initialized, and the ability to set a context for a request
 func NewGetScanPatternSimulationsParamsWithContext(ctx context.Context) *GetScanPatternSimulationsParams {
-	var ()
+	var (
+		limitDefault  = int32(10)
+		offsetDefault = int32(0)
+	)
 	return &GetScanPatternSimulationsParams{
+		Limit:  &limitDefault,
+		Offset: &offsetDefault,
 
 		Context: ctx,
 	}
@@ -52,8 +67,13 @@ func NewGetScanPatternSimulationsParamsWithContext(ctx context.Context) *GetScan
 // NewGetScanPatternSimulationsParamsWithHTTPClient creates a new GetScanPatternSimulationsParams object
 // with the default values initialized, and the ability to set a custom HTTPClient for a request
 func NewGetScanPatternSimulationsParamsWithHTTPClient(client *http.Client) *GetScanPatternSimulationsParams {
-	var ()
+	var (
+		limitDefault  = int32(10)
+		offsetDefault = int32(0)
+	)
 	return &GetScanPatternSimulationsParams{
+		Limit:      &limitDefault,
+		Offset:     &offsetDefault,
 		HTTPClient: client,
 	}
 }
