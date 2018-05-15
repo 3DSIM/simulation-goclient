@@ -9,15 +9,17 @@ import (
 )
 
 type FakeClient struct {
-	SimulationsStub        func(organizationID int32, status []string, sort []string, offset, limit int32, archived *bool) ([]*models.Simulation, error)
+	SimulationsStub        func(organizationID int32, status []string, sort []string, offset, limit int32, archived, isParent, requiresLicense *bool) ([]*models.Simulation, error)
 	simulationsMutex       sync.RWMutex
 	simulationsArgsForCall []struct {
-		organizationID int32
-		status         []string
-		sort           []string
-		offset         int32
-		limit          int32
-		archived       *bool
+		organizationID  int32
+		status          []string
+		sort            []string
+		offset          int32
+		limit           int32
+		archived        *bool
+		isParent        *bool
+		requiresLicense *bool
 	}
 	simulationsReturns struct {
 		result1 []*models.Simulation
@@ -545,7 +547,7 @@ type FakeClient struct {
 	invocationsMutex sync.RWMutex
 }
 
-func (fake *FakeClient) Simulations(organizationID int32, status []string, sort []string, offset int32, limit int32, archived *bool) ([]*models.Simulation, error) {
+func (fake *FakeClient) Simulations(organizationID int32, status []string, sort []string, offset int32, limit int32, archived *bool, isParent *bool, requiresLicense *bool) ([]*models.Simulation, error) {
 	var statusCopy []string
 	if status != nil {
 		statusCopy = make([]string, len(status))
@@ -559,17 +561,19 @@ func (fake *FakeClient) Simulations(organizationID int32, status []string, sort 
 	fake.simulationsMutex.Lock()
 	ret, specificReturn := fake.simulationsReturnsOnCall[len(fake.simulationsArgsForCall)]
 	fake.simulationsArgsForCall = append(fake.simulationsArgsForCall, struct {
-		organizationID int32
-		status         []string
-		sort           []string
-		offset         int32
-		limit          int32
-		archived       *bool
-	}{organizationID, statusCopy, sortCopy, offset, limit, archived})
-	fake.recordInvocation("Simulations", []interface{}{organizationID, statusCopy, sortCopy, offset, limit, archived})
+		organizationID  int32
+		status          []string
+		sort            []string
+		offset          int32
+		limit           int32
+		archived        *bool
+		isParent        *bool
+		requiresLicense *bool
+	}{organizationID, statusCopy, sortCopy, offset, limit, archived, isParent, requiresLicense})
+	fake.recordInvocation("Simulations", []interface{}{organizationID, statusCopy, sortCopy, offset, limit, archived, isParent, requiresLicense})
 	fake.simulationsMutex.Unlock()
 	if fake.SimulationsStub != nil {
-		return fake.SimulationsStub(organizationID, status, sort, offset, limit, archived)
+		return fake.SimulationsStub(organizationID, status, sort, offset, limit, archived, isParent, requiresLicense)
 	}
 	if specificReturn {
 		return ret.result1, ret.result2
@@ -583,10 +587,10 @@ func (fake *FakeClient) SimulationsCallCount() int {
 	return len(fake.simulationsArgsForCall)
 }
 
-func (fake *FakeClient) SimulationsArgsForCall(i int) (int32, []string, []string, int32, int32, *bool) {
+func (fake *FakeClient) SimulationsArgsForCall(i int) (int32, []string, []string, int32, int32, *bool, *bool, *bool) {
 	fake.simulationsMutex.RLock()
 	defer fake.simulationsMutex.RUnlock()
-	return fake.simulationsArgsForCall[i].organizationID, fake.simulationsArgsForCall[i].status, fake.simulationsArgsForCall[i].sort, fake.simulationsArgsForCall[i].offset, fake.simulationsArgsForCall[i].limit, fake.simulationsArgsForCall[i].archived
+	return fake.simulationsArgsForCall[i].organizationID, fake.simulationsArgsForCall[i].status, fake.simulationsArgsForCall[i].sort, fake.simulationsArgsForCall[i].offset, fake.simulationsArgsForCall[i].limit, fake.simulationsArgsForCall[i].archived, fake.simulationsArgsForCall[i].isParent, fake.simulationsArgsForCall[i].requiresLicense
 }
 
 func (fake *FakeClient) SimulationsReturns(result1 []*models.Simulation, result2 error) {

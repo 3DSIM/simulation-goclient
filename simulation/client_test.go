@@ -667,7 +667,7 @@ func TestSimulationsWhenNilValuesExpectsSuccess(t *testing.T) {
 	client := NewClient(fakeTokenFetcher, testServer.URL, SimulationAPIBasePath, audience)
 
 	// act
-	simulations, err := client.Simulations(organizationID, nil, nil, int32(offset), int32(limit), nil)
+	simulations, err := client.Simulations(organizationID, nil, nil, int32(offset), int32(limit), nil, nil, nil)
 
 	// assert
 
@@ -722,7 +722,7 @@ func TestSimulationsWhenNonNilValuesExpectsSuccess(t *testing.T) {
 
 	// act
 	simulations, err := client.Simulations(organizationID, []string{status}, []string{sort},
-		int32(offset), int32(limit), &archived)
+		int32(offset), int32(limit), &archived, nil, nil)
 
 	// assert
 

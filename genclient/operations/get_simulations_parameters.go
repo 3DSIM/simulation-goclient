@@ -118,6 +118,11 @@ type GetSimulationsParams struct {
 
 	*/
 	PartID *int32
+	/*RequiresLicense
+	  returns simulations that require licence
+
+	*/
+	RequiresLicense *bool
 	/*Sort
 	  key:direction pairs for one or multiple field sort orders.  e.g. sort=key1:desc,key2:asc
 
@@ -242,6 +247,17 @@ func (o *GetSimulationsParams) WithPartID(partID *int32) *GetSimulationsParams {
 // SetPartID adds the partId to the get simulations params
 func (o *GetSimulationsParams) SetPartID(partID *int32) {
 	o.PartID = partID
+}
+
+// WithRequiresLicense adds the requiresLicense to the get simulations params
+func (o *GetSimulationsParams) WithRequiresLicense(requiresLicense *bool) *GetSimulationsParams {
+	o.SetRequiresLicense(requiresLicense)
+	return o
+}
+
+// SetRequiresLicense adds the requiresLicense to the get simulations params
+func (o *GetSimulationsParams) SetRequiresLicense(requiresLicense *bool) {
+	o.RequiresLicense = requiresLicense
 }
 
 // WithSort adds the sort to the get simulations params
@@ -373,6 +389,22 @@ func (o *GetSimulationsParams) WriteToRequest(r runtime.ClientRequest, reg strfm
 		qPartID := swag.FormatInt32(qrPartID)
 		if qPartID != "" {
 			if err := r.SetQueryParam("partId", qPartID); err != nil {
+				return err
+			}
+		}
+
+	}
+
+	if o.RequiresLicense != nil {
+
+		// query param requiresLicense
+		var qrRequiresLicense bool
+		if o.RequiresLicense != nil {
+			qrRequiresLicense = *o.RequiresLicense
+		}
+		qRequiresLicense := swag.FormatBool(qrRequiresLicense)
+		if qRequiresLicense != "" {
+			if err := r.SetQueryParam("requiresLicense", qRequiresLicense); err != nil {
 				return err
 			}
 		}

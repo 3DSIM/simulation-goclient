@@ -8,13 +8,13 @@ type Client struct {
 	mock.Mock
 }
 
-// Simulations provides a mock function with given fields: organizationID, status, sort, offset, limit, archived
-func (_m *Client) Simulations(organizationID int32, status []string, sort []string, offset int32, limit int32, archived *bool) ([]*models.Simulation, error) {
-	ret := _m.Called(organizationID, status, sort, offset, limit, archived)
+// Simulations provides a mock function with given fields: organizationID, status, sort, offset, limit, archived, isParent, requiresLicense
+func (_m *Client) Simulations(organizationID int32, status []string, sort []string, offset int32, limit int32, archived *bool, isParent *bool, requiresLicense *bool) ([]*models.Simulation, error) {
+	ret := _m.Called(organizationID, status, sort, offset, limit, archived, isParent, requiresLicense)
 
 	var r0 []*models.Simulation
-	if rf, ok := ret.Get(0).(func(int32, []string, []string, int32, int32, *bool) []*models.Simulation); ok {
-		r0 = rf(organizationID, status, sort, offset, limit, archived)
+	if rf, ok := ret.Get(0).(func(int32, []string, []string, int32, int32, *bool, *bool, *bool) []*models.Simulation); ok {
+		r0 = rf(organizationID, status, sort, offset, limit, archived, isParent, requiresLicense)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).([]*models.Simulation)
@@ -22,8 +22,8 @@ func (_m *Client) Simulations(organizationID int32, status []string, sort []stri
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(int32, []string, []string, int32, int32, *bool) error); ok {
-		r1 = rf(organizationID, status, sort, offset, limit, archived)
+	if rf, ok := ret.Get(1).(func(int32, []string, []string, int32, int32, *bool, *bool, *bool) error); ok {
+		r1 = rf(organizationID, status, sort, offset, limit, archived, isParent, requiresLicense)
 	} else {
 		r1 = ret.Error(1)
 	}
