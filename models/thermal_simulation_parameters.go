@@ -31,8 +31,11 @@ type ThermalSimulationParameters struct {
 	// Required: true
 	AnisotropicStrainCoefficientsZ *float64 `json:"anisotropicStrainCoefficientsZ"`
 
-	// should be a number between 0.5 and 1.5 mm
-	DynamicVirtualSensorRadius float64 `json:"dynamicVirtualSensorRadius,omitempty"`
+	// should be a number between 0.05 and 1.5 mm
+	CoaxialAverageSensorRadius float64 `json:"coaxialAverageSensorRadius,omitempty"`
+
+	// List of z height (mm) ranges within the part where the coaxial average sensor will collect data
+	CoaxialAverageSensorZHeights []*ZHeightRange `json:"coaxialAverageSensorZHeights"`
 
 	// Must be between 0.00001 to 0.001 meters
 	// Required: true
@@ -81,6 +84,10 @@ type ThermalSimulationParameters struct {
 	// Minimum: 1e-05
 	LayerThickness *float64 `json:"layerThickness"`
 
+	// if true, coaxial average sensor data will be collected for the deposity layers specified by coaxialAverageSensorZHeights
+	// Required: true
+	OutputCoaxialAverageSensorData *bool `json:"outputCoaxialAverageSensorData"`
+
 	// if true, dyanmic sensor data will be collected for each layer specified in the instantDynamicSensorLayers property
 	// Required: true
 	OutputInstantDynamicSensor *bool `json:"outputInstantDynamicSensor"`
@@ -114,10 +121,6 @@ type ThermalSimulationParameters struct {
 
 	// output thermal vtk layers
 	OutputThermalVtkLayers string `json:"outputThermalVtkLayers,omitempty"`
-
-	// Outputs meltpool dimensions and thermal history within a VTK file. Thermal history is output as the average temperature within the user-specified dynamicVirtualSensorRadius, centered at the middle of the laser beam.
-	// Required: true
-	OutputVirtualSensorData *bool `json:"outputVirtualSensorData"`
 
 	// if true, pyrometer sensor data will be collected for every layer
 	PyroVirtualSensorOutputAllLayers bool `json:"pyroVirtualSensorOutputAllLayers,omitempty"`
@@ -171,6 +174,11 @@ func (m *ThermalSimulationParameters) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
+	if err := m.validateCoaxialAverageSensorZHeights(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
 	if err := m.validateHatchSpacing(formats); err != nil {
 		// prop
 		res = append(res, err)
@@ -216,6 +224,11 @@ func (m *ThermalSimulationParameters) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
+	if err := m.validateOutputCoaxialAverageSensorData(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
 	if err := m.validateOutputInstantDynamicSensor(formats); err != nil {
 		// prop
 		res = append(res, err)
@@ -247,11 +260,6 @@ func (m *ThermalSimulationParameters) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateOutputStateMap(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
-	if err := m.validateOutputVirtualSensorData(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -309,6 +317,33 @@ func (m *ThermalSimulationParameters) validateAnisotropicStrainCoefficientsZ(for
 
 	if err := validate.Required("anisotropicStrainCoefficientsZ", "body", m.AnisotropicStrainCoefficientsZ); err != nil {
 		return err
+	}
+
+	return nil
+}
+
+func (m *ThermalSimulationParameters) validateCoaxialAverageSensorZHeights(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.CoaxialAverageSensorZHeights) { // not required
+		return nil
+	}
+
+	for i := 0; i < len(m.CoaxialAverageSensorZHeights); i++ {
+
+		if swag.IsZero(m.CoaxialAverageSensorZHeights[i]) { // not required
+			continue
+		}
+
+		if m.CoaxialAverageSensorZHeights[i] != nil {
+
+			if err := m.CoaxialAverageSensorZHeights[i].Validate(formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("coaxialAverageSensorZHeights" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
 	}
 
 	return nil
@@ -451,6 +486,15 @@ func (m *ThermalSimulationParameters) validateLayerThickness(formats strfmt.Regi
 	return nil
 }
 
+func (m *ThermalSimulationParameters) validateOutputCoaxialAverageSensorData(formats strfmt.Registry) error {
+
+	if err := validate.Required("outputCoaxialAverageSensorData", "body", m.OutputCoaxialAverageSensorData); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (m *ThermalSimulationParameters) validateOutputInstantDynamicSensor(formats strfmt.Registry) error {
 
 	if err := validate.Required("outputInstantDynamicSensor", "body", m.OutputInstantDynamicSensor); err != nil {
@@ -508,15 +552,6 @@ func (m *ThermalSimulationParameters) validateOutputShrinkage(formats strfmt.Reg
 func (m *ThermalSimulationParameters) validateOutputStateMap(formats strfmt.Registry) error {
 
 	if err := validate.Required("outputStateMap", "body", m.OutputStateMap); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *ThermalSimulationParameters) validateOutputVirtualSensorData(formats strfmt.Registry) error {
-
-	if err := validate.Required("outputVirtualSensorData", "body", m.OutputVirtualSensorData); err != nil {
 		return err
 	}
 
