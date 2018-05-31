@@ -65,7 +65,7 @@ type UpdatePartOK struct {
 }
 
 func (o *UpdatePartOK) Error() string {
-	return fmt.Sprintf("[PUT /parts][%d] updatePartOK  %+v", 200, o.Payload)
+	return fmt.Sprintf("[PUT /parts/{id}][%d] updatePartOK  %+v", 200, o.Payload)
 }
 
 func (o *UpdatePartOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -94,7 +94,7 @@ type UpdatePartForbidden struct {
 }
 
 func (o *UpdatePartForbidden) Error() string {
-	return fmt.Sprintf("[PUT /parts][%d] updatePartForbidden  %+v", 403, o.Payload)
+	return fmt.Sprintf("[PUT /parts/{id}][%d] updatePartForbidden  %+v", 403, o.Payload)
 }
 
 func (o *UpdatePartForbidden) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -132,7 +132,7 @@ func (o *UpdatePartDefault) Code() int {
 }
 
 func (o *UpdatePartDefault) Error() string {
-	return fmt.Sprintf("[PUT /parts][%d] UpdatePart default  %+v", o._statusCode, o.Payload)
+	return fmt.Sprintf("[PUT /parts/{id}][%d] UpdatePart default  %+v", o._statusCode, o.Payload)
 }
 
 func (o *UpdatePartDefault) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

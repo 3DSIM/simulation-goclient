@@ -140,6 +140,10 @@ type PartBasedSimulationParameters struct {
 	// support file location
 	SupportFileLocation string `json:"supportFileLocation,omitempty"`
 
+	// type of support used for simulation.
+	// Required: true
+	SupportType *string `json:"supportType"`
+
 	// support yield strength
 	// Required: true
 	SupportYieldStrength *float64 `json:"supportYieldStrength"`
@@ -240,6 +244,11 @@ func (m *PartBasedSimulationParameters) Validate(formats strfmt.Registry) error 
 	}
 
 	if err := m.validateSupportFactorOfSafety(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateSupportType(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -518,6 +527,47 @@ func (m *PartBasedSimulationParameters) validateSupportFactorOfSafety(formats st
 	}
 
 	if err := validate.Maximum("supportFactorOfSafety", "body", float64(*m.SupportFactorOfSafety), 10, false); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+var partBasedSimulationParametersTypeSupportTypePropEnum []interface{}
+
+func init() {
+	var res []string
+	if err := json.Unmarshal([]byte(`["Generated","UserDefined"]`), &res); err != nil {
+		panic(err)
+	}
+	for _, v := range res {
+		partBasedSimulationParametersTypeSupportTypePropEnum = append(partBasedSimulationParametersTypeSupportTypePropEnum, v)
+	}
+}
+
+const (
+	// PartBasedSimulationParametersSupportTypeGenerated captures enum value "Generated"
+	PartBasedSimulationParametersSupportTypeGenerated string = "Generated"
+	// PartBasedSimulationParametersSupportTypeUserDefined captures enum value "UserDefined"
+	PartBasedSimulationParametersSupportTypeUserDefined string = "UserDefined"
+)
+
+// prop value enum
+func (m *PartBasedSimulationParameters) validateSupportTypeEnum(path, location string, value string) error {
+	if err := validate.Enum(path, location, value, partBasedSimulationParametersTypeSupportTypePropEnum); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (m *PartBasedSimulationParameters) validateSupportType(formats strfmt.Registry) error {
+
+	if err := validate.Required("supportType", "body", m.SupportType); err != nil {
+		return err
+	}
+
+	// value enum
+	if err := m.validateSupportTypeEnum("supportType", "body", *m.SupportType); err != nil {
 		return err
 	}
 

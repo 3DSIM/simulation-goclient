@@ -7,7 +7,6 @@ package models
 
 import (
 	"encoding/json"
-	"strconv"
 
 	strfmt "github.com/go-openapi/strfmt"
 
@@ -16,15 +15,17 @@ import (
 	"github.com/go-openapi/validate"
 )
 
-// Part part
-// swagger:model Part
-type Part struct {
+// PartSupport part support
+// swagger:model PartSupport
+type PartSupport struct {
 
 	// Designates whether this entity has been archived.
-	Archived bool `json:"archived,omitempty"`
+	// Required: true
+	Archived *bool `json:"archived"`
 
 	// Describes the availabity of the part. Uploaded - the part has been uploaded.  Processing - the part is being processed.  Available - the part was processed successfully and can be used in simulations.  Error - an error occurred, contact support@3dsim.com.
-	Availability string `json:"availability,omitempty"`
+	// Required: true
+	Availability *string `json:"availability"`
 
 	// collapse cost
 	CollapseCost float64 `json:"collapseCost,omitempty"`
@@ -53,11 +54,9 @@ type Part struct {
 	// Estimated work using estimateVoxelSize
 	EstimatedWork int32 `json:"estimatedWork,omitempty"`
 
-	// S3 bucket containing part
-	FileBucket string `json:"fileBucket,omitempty"`
-
 	// File name of part relative to fileBucket
-	FileLocation string `json:"fileLocation,omitempty"`
+	// Required: true
+	FileLocation *string `json:"fileLocation"`
 
 	// Id of the part
 	// Required: true
@@ -72,6 +71,9 @@ type Part struct {
 	// Estimated max memory usage for mechanics solver using estimateVoxelSize
 	MaxMemory int32 `json:"maxMemory,omitempty"`
 
+	// height (mm) that this support will raise the part
+	MinimumSupportHeight float64 `json:"minimumSupportHeight,omitempty"`
+
 	// name
 	// Required: true
 	Name *string `json:"name"`
@@ -79,24 +81,15 @@ type Part struct {
 	// nodes
 	Nodes int32 `json:"nodes,omitempty"`
 
-	// Id of the organization that owns this part record
-	// Required: true
-	OrganizationID *int32 `json:"organizationId"`
-
 	// The original file name from the user
 	OriginalFileName string `json:"originalFileName,omitempty"`
 
-	// The smallest x location before transformation
-	OriginalX float64 `json:"originalX,omitempty"`
+	// part
+	Part *Part `json:"part,omitempty"`
 
-	// The smallest y location before transformation
-	OriginalY float64 `json:"originalY,omitempty"`
-
-	// The smallest z location before transformation
-	OriginalZ float64 `json:"originalZ,omitempty"`
-
-	// List of supports that have been uploaded for this part
-	PartSupports []*PartSupport `json:"partSupports"`
+	// Id of the part that owns this support record
+	// Required: true
+	PartID *int32 `json:"partId"`
 
 	// Width of the Part bounding box (in meters), calculated when the part is processed, use 0 for initial post
 	SizeX float64 `json:"sizeX,omitempty"`
@@ -107,14 +100,12 @@ type Part struct {
 	// Height of the Part bounding box (in meters), calculated when the part is processed, use 0 for initial post
 	SizeZ float64 `json:"sizeZ,omitempty"`
 
-	// support volume
-	SupportVolume float64 `json:"supportVolume,omitempty"`
+	// type of geometry. Volumeless - thinwall, closed - watertight
+	// Required: true
+	SupportType *string `json:"supportType"`
 
 	// surface area
 	SurfaceArea float64 `json:"surfaceArea,omitempty"`
-
-	// tags
-	Tags []string `json:"tags"`
 
 	// Number of triangles in the original STL file, calculated when the part is processed, use 0 for initial post
 	TriangleCount int32 `json:"triangleCount,omitempty"`
@@ -132,11 +123,21 @@ type Part struct {
 	ZMin float64 `json:"zMin,omitempty"`
 }
 
-// Validate validates this part
-func (m *Part) Validate(formats strfmt.Registry) error {
+// Validate validates this part support
+func (m *PartSupport) Validate(formats strfmt.Registry) error {
 	var res []error
 
+	if err := m.validateArchived(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
 	if err := m.validateAvailability(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateFileLocation(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -151,17 +152,17 @@ func (m *Part) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
-	if err := m.validateOrganizationID(formats); err != nil {
+	if err := m.validatePart(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
 
-	if err := m.validatePartSupports(formats); err != nil {
+	if err := m.validatePartID(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
 
-	if err := m.validateTags(formats); err != nil {
+	if err := m.validateSupportType(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -172,7 +173,16 @@ func (m *Part) Validate(formats strfmt.Registry) error {
 	return nil
 }
 
-var partTypeAvailabilityPropEnum []interface{}
+func (m *PartSupport) validateArchived(formats strfmt.Registry) error {
+
+	if err := validate.Required("archived", "body", m.Archived); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+var partSupportTypeAvailabilityPropEnum []interface{}
 
 func init() {
 	var res []string
@@ -180,44 +190,53 @@ func init() {
 		panic(err)
 	}
 	for _, v := range res {
-		partTypeAvailabilityPropEnum = append(partTypeAvailabilityPropEnum, v)
+		partSupportTypeAvailabilityPropEnum = append(partSupportTypeAvailabilityPropEnum, v)
 	}
 }
 
 const (
-	// PartAvailabilityUploaded captures enum value "Uploaded"
-	PartAvailabilityUploaded string = "Uploaded"
-	// PartAvailabilityProcessing captures enum value "Processing"
-	PartAvailabilityProcessing string = "Processing"
-	// PartAvailabilityAvailable captures enum value "Available"
-	PartAvailabilityAvailable string = "Available"
-	// PartAvailabilityError captures enum value "Error"
-	PartAvailabilityError string = "Error"
+	// PartSupportAvailabilityUploaded captures enum value "Uploaded"
+	PartSupportAvailabilityUploaded string = "Uploaded"
+	// PartSupportAvailabilityProcessing captures enum value "Processing"
+	PartSupportAvailabilityProcessing string = "Processing"
+	// PartSupportAvailabilityAvailable captures enum value "Available"
+	PartSupportAvailabilityAvailable string = "Available"
+	// PartSupportAvailabilityError captures enum value "Error"
+	PartSupportAvailabilityError string = "Error"
 )
 
 // prop value enum
-func (m *Part) validateAvailabilityEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, partTypeAvailabilityPropEnum); err != nil {
+func (m *PartSupport) validateAvailabilityEnum(path, location string, value string) error {
+	if err := validate.Enum(path, location, value, partSupportTypeAvailabilityPropEnum); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (m *Part) validateAvailability(formats strfmt.Registry) error {
+func (m *PartSupport) validateAvailability(formats strfmt.Registry) error {
 
-	if swag.IsZero(m.Availability) { // not required
-		return nil
+	if err := validate.Required("availability", "body", m.Availability); err != nil {
+		return err
 	}
 
 	// value enum
-	if err := m.validateAvailabilityEnum("availability", "body", m.Availability); err != nil {
+	if err := m.validateAvailabilityEnum("availability", "body", *m.Availability); err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func (m *Part) validateID(formats strfmt.Registry) error {
+func (m *PartSupport) validateFileLocation(formats strfmt.Registry) error {
+
+	if err := validate.Required("fileLocation", "body", m.FileLocation); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *PartSupport) validateID(formats strfmt.Registry) error {
 
 	if err := validate.Required("id", "body", m.ID); err != nil {
 		return err
@@ -226,7 +245,7 @@ func (m *Part) validateID(formats strfmt.Registry) error {
 	return nil
 }
 
-func (m *Part) validateName(formats strfmt.Registry) error {
+func (m *PartSupport) validateName(formats strfmt.Registry) error {
 
 	if err := validate.Required("name", "body", m.Name); err != nil {
 		return err
@@ -235,53 +254,77 @@ func (m *Part) validateName(formats strfmt.Registry) error {
 	return nil
 }
 
-func (m *Part) validateOrganizationID(formats strfmt.Registry) error {
+func (m *PartSupport) validatePart(formats strfmt.Registry) error {
 
-	if err := validate.Required("organizationId", "body", m.OrganizationID); err != nil {
+	if swag.IsZero(m.Part) { // not required
+		return nil
+	}
+
+	if m.Part != nil {
+
+		if err := m.Part.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("part")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (m *PartSupport) validatePartID(formats strfmt.Registry) error {
+
+	if err := validate.Required("partId", "body", m.PartID); err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func (m *Part) validatePartSupports(formats strfmt.Registry) error {
+var partSupportTypeSupportTypePropEnum []interface{}
 
-	if swag.IsZero(m.PartSupports) { // not required
-		return nil
+func init() {
+	var res []string
+	if err := json.Unmarshal([]byte(`["ThinWall","Watertight"]`), &res); err != nil {
+		panic(err)
 	}
-
-	for i := 0; i < len(m.PartSupports); i++ {
-
-		if swag.IsZero(m.PartSupports[i]) { // not required
-			continue
-		}
-
-		if m.PartSupports[i] != nil {
-
-			if err := m.PartSupports[i].Validate(formats); err != nil {
-				if ve, ok := err.(*errors.Validation); ok {
-					return ve.ValidateName("partSupports" + "." + strconv.Itoa(i))
-				}
-				return err
-			}
-		}
-
+	for _, v := range res {
+		partSupportTypeSupportTypePropEnum = append(partSupportTypeSupportTypePropEnum, v)
 	}
+}
 
+const (
+	// PartSupportSupportTypeThinWall captures enum value "ThinWall"
+	PartSupportSupportTypeThinWall string = "ThinWall"
+	// PartSupportSupportTypeWatertight captures enum value "Watertight"
+	PartSupportSupportTypeWatertight string = "Watertight"
+)
+
+// prop value enum
+func (m *PartSupport) validateSupportTypeEnum(path, location string, value string) error {
+	if err := validate.Enum(path, location, value, partSupportTypeSupportTypePropEnum); err != nil {
+		return err
+	}
 	return nil
 }
 
-func (m *Part) validateTags(formats strfmt.Registry) error {
+func (m *PartSupport) validateSupportType(formats strfmt.Registry) error {
 
-	if swag.IsZero(m.Tags) { // not required
-		return nil
+	if err := validate.Required("supportType", "body", m.SupportType); err != nil {
+		return err
+	}
+
+	// value enum
+	if err := m.validateSupportTypeEnum("supportType", "body", *m.SupportType); err != nil {
+		return err
 	}
 
 	return nil
 }
 
 // MarshalBinary interface implementation
-func (m *Part) MarshalBinary() ([]byte, error) {
+func (m *PartSupport) MarshalBinary() ([]byte, error) {
 	if m == nil {
 		return nil, nil
 	}
@@ -289,8 +332,8 @@ func (m *Part) MarshalBinary() ([]byte, error) {
 }
 
 // UnmarshalBinary interface implementation
-func (m *Part) UnmarshalBinary(b []byte) error {
-	var res Part
+func (m *PartSupport) UnmarshalBinary(b []byte) error {
+	var res PartSupport
 	if err := swag.ReadJSON(b, &res); err != nil {
 		return err
 	}

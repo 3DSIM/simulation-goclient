@@ -199,6 +199,35 @@ func (a *Client) DeletePart(params *DeletePartParams, authInfo runtime.ClientAut
 }
 
 /*
+DeletePartSupport This will delete a support and all its associated geometry files
+*/
+func (a *Client) DeletePartSupport(params *DeletePartSupportParams, authInfo runtime.ClientAuthInfoWriter) (*DeletePartSupportOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewDeletePartSupportParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "DeletePartSupport",
+		Method:             "DELETE",
+		PathPattern:        "/parts/{partId}/supports/{supportId}",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &DeletePartSupportReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*DeletePartSupportOK), nil
+
+}
+
+/*
 DeletePorositySimulation This will delete a porosity simulation and all its associated data including output, logs, and any results from completed simulations
 */
 func (a *Client) DeletePorositySimulation(params *DeletePorositySimulationParams, authInfo runtime.ClientAuthInfoWriter) (*DeletePorositySimulationOK, error) {
@@ -315,6 +344,64 @@ func (a *Client) DeleteThermalSimulation(params *DeleteThermalSimulationParams, 
 }
 
 /*
+PartSupportGeometry Gets a list of triangles for the geometry file stored in AmazonS3.
+*/
+func (a *Client) PartSupportGeometry(params *PartSupportGeometryParams, authInfo runtime.ClientAuthInfoWriter) (*PartSupportGeometryOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewPartSupportGeometryParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "PartSupportGeometry",
+		Method:             "GET",
+		PathPattern:        "/parts/{partId}/supports/{supportId}/geometry",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &PartSupportGeometryReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*PartSupportGeometryOK), nil
+
+}
+
+/*
+PartSupportGeometryURL Gets a time sensitive URL to the geometry file stored in AmazonS3.
+*/
+func (a *Client) PartSupportGeometryURL(params *PartSupportGeometryURLParams, authInfo runtime.ClientAuthInfoWriter) (*PartSupportGeometryURLOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewPartSupportGeometryURLParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "PartSupportGeometryUrl",
+		Method:             "GET",
+		PathPattern:        "/parts/{partId}/supports/{supportId}/geometryurl",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &PartSupportGeometryURLReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*PartSupportGeometryURLOK), nil
+
+}
+
+/*
 RequestCancellation Request a cancellation of a simulation.
 */
 func (a *Client) RequestCancellation(params *RequestCancellationParams, authInfo runtime.ClientAuthInfoWriter) (*RequestCancellationOK, error) {
@@ -344,6 +431,35 @@ func (a *Client) RequestCancellation(params *RequestCancellationParams, authInfo
 }
 
 /*
+SupportGeometryUploadURL Gets a time sensitive URL to upload a support geometry file to AmazonS3.
+*/
+func (a *Client) SupportGeometryUploadURL(params *SupportGeometryUploadURLParams, authInfo runtime.ClientAuthInfoWriter) (*SupportGeometryUploadURLOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewSupportGeometryUploadURLParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "SupportGeometryUploadUrl",
+		Method:             "GET",
+		PathPattern:        "/parts/{partId}/supports/geometryuploadurl",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &SupportGeometryUploadURLReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*SupportGeometryUploadURLOK), nil
+
+}
+
+/*
 UpdatePart Updates a Part
 */
 func (a *Client) UpdatePart(params *UpdatePartParams, authInfo runtime.ClientAuthInfoWriter) (*UpdatePartOK, error) {
@@ -355,7 +471,7 @@ func (a *Client) UpdatePart(params *UpdatePartParams, authInfo runtime.ClientAut
 	result, err := a.transport.Submit(&runtime.ClientOperation{
 		ID:                 "UpdatePart",
 		Method:             "PUT",
-		PathPattern:        "/parts",
+		PathPattern:        "/parts/{id}",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"https"},
@@ -1097,6 +1213,35 @@ func (a *Client) GetPartGeometryURL(params *GetPartGeometryURLParams, authInfo r
 }
 
 /*
+GetPartSupport Get a single support by Id
+*/
+func (a *Client) GetPartSupport(params *GetPartSupportParams, authInfo runtime.ClientAuthInfoWriter) (*GetPartSupportOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetPartSupportParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "getPartSupport",
+		Method:             "GET",
+		PathPattern:        "/parts/{partId}/supports/{supportId}",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &GetPartSupportReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*GetPartSupportOK), nil
+
+}
+
+/*
 GetParts Get list of parts
 */
 func (a *Client) GetParts(params *GetPartsParams, authInfo runtime.ClientAuthInfoWriter) (*GetPartsOK, error) {
@@ -1764,6 +1909,35 @@ func (a *Client) PatchPart(params *PatchPartParams, authInfo runtime.ClientAuthI
 }
 
 /*
+PatchPartSupport Update fields within a support
+*/
+func (a *Client) PatchPartSupport(params *PatchPartSupportParams, authInfo runtime.ClientAuthInfoWriter) (*PatchPartSupportOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewPatchPartSupportParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "patchPartSupport",
+		Method:             "PATCH",
+		PathPattern:        "/parts/{partId}/supports/{supportId}",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &PatchPartSupportReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*PatchPartSupportOK), nil
+
+}
+
+/*
 PatchSimulation Patch a simulation
 */
 func (a *Client) PatchSimulation(params *PatchSimulationParams, authInfo runtime.ClientAuthInfoWriter) (*PatchSimulationOK, error) {
@@ -1876,6 +2050,35 @@ func (a *Client) PostMachine(params *PostMachineParams, authInfo runtime.ClientA
 		return nil, err
 	}
 	return result.(*PostMachineOK), nil
+
+}
+
+/*
+PostPartSupport Adds a support and starts processing the support.  When processing is finished, the "availability" field for the part will change to "Available".
+*/
+func (a *Client) PostPartSupport(params *PostPartSupportParams, authInfo runtime.ClientAuthInfoWriter) (*PostPartSupportOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewPostPartSupportParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "postPartSupport",
+		Method:             "POST",
+		PathPattern:        "/parts/{partId}/supports",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &PostPartSupportReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*PostPartSupportOK), nil
 
 }
 
@@ -2543,6 +2746,35 @@ func (a *Client) UpdateMaterial(params *UpdateMaterialParams, authInfo runtime.C
 		return nil, err
 	}
 	return result.(*UpdateMaterialOK), nil
+
+}
+
+/*
+UpdatePartSupport Updates a Support
+*/
+func (a *Client) UpdatePartSupport(params *UpdatePartSupportParams, authInfo runtime.ClientAuthInfoWriter) (*UpdatePartSupportOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewUpdatePartSupportParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "updatePartSupport",
+		Method:             "PUT",
+		PathPattern:        "/parts/{partId}/supports/{supportId}",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &UpdatePartSupportReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*UpdatePartSupportOK), nil
 
 }
 
