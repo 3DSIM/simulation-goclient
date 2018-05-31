@@ -104,9 +104,9 @@ type ThermalSimulationParameters struct {
 	// Required: true
 	OutputPointThermalHistory *bool `json:"outputPointThermalHistory"`
 
-	// if true, pyrometer sensor data will be collected for each selectedPoint property
+	// if true, PrintRite sensor data will be collected for each selectedPoint property
 	// Required: true
-	OutputPyroVirtualSensor *bool `json:"outputPyroVirtualSensor"`
+	OutputPrintRitePCssensor *bool `json:"outputPrintRitePCSSensor"`
 
 	// output shrinkage
 	// Required: true
@@ -122,13 +122,13 @@ type ThermalSimulationParameters struct {
 	// output thermal vtk layers
 	OutputThermalVtkLayers string `json:"outputThermalVtkLayers,omitempty"`
 
-	// if true, pyrometer sensor data will be collected for every layer
-	PyroVirtualSensorOutputAllLayers bool `json:"pyroVirtualSensorOutputAllLayers,omitempty"`
-
-	// radius for pyro sensor data collection in mm
+	// radius for PrintRite sensor data collection in mm
 	// Maximum: 1.5
 	// Minimum: 0.05
-	PyroVirtualSensorRadius float64 `json:"pyroVirtualSensorRadius,omitempty"`
+	PrintRitePCssensorRadius float64 `json:"printRitePCSSensorRadius,omitempty"`
+
+	// if true, pyrometer sensor data will be collected for every layer
+	PyroVirtualSensorOutputAllLayers bool `json:"pyroVirtualSensorOutputAllLayers,omitempty"`
 
 	// Must be between 0.01 to 10 meters/second
 	// Required: true
@@ -249,7 +249,7 @@ func (m *ThermalSimulationParameters) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
-	if err := m.validateOutputPyroVirtualSensor(formats); err != nil {
+	if err := m.validateOutputPrintRitePCssensor(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -264,7 +264,7 @@ func (m *ThermalSimulationParameters) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
-	if err := m.validatePyroVirtualSensorRadius(formats); err != nil {
+	if err := m.validatePrintRitePCssensorRadius(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -531,9 +531,9 @@ func (m *ThermalSimulationParameters) validateOutputPointThermalHistory(formats 
 	return nil
 }
 
-func (m *ThermalSimulationParameters) validateOutputPyroVirtualSensor(formats strfmt.Registry) error {
+func (m *ThermalSimulationParameters) validateOutputPrintRitePCssensor(formats strfmt.Registry) error {
 
-	if err := validate.Required("outputPyroVirtualSensor", "body", m.OutputPyroVirtualSensor); err != nil {
+	if err := validate.Required("outputPrintRitePCSSensor", "body", m.OutputPrintRitePCssensor); err != nil {
 		return err
 	}
 
@@ -558,17 +558,17 @@ func (m *ThermalSimulationParameters) validateOutputStateMap(formats strfmt.Regi
 	return nil
 }
 
-func (m *ThermalSimulationParameters) validatePyroVirtualSensorRadius(formats strfmt.Registry) error {
+func (m *ThermalSimulationParameters) validatePrintRitePCssensorRadius(formats strfmt.Registry) error {
 
-	if swag.IsZero(m.PyroVirtualSensorRadius) { // not required
+	if swag.IsZero(m.PrintRitePCssensorRadius) { // not required
 		return nil
 	}
 
-	if err := validate.Minimum("pyroVirtualSensorRadius", "body", float64(m.PyroVirtualSensorRadius), 0.05, false); err != nil {
+	if err := validate.Minimum("printRitePCSSensorRadius", "body", float64(m.PrintRitePCssensorRadius), 0.05, false); err != nil {
 		return err
 	}
 
-	if err := validate.Maximum("pyroVirtualSensorRadius", "body", float64(m.PyroVirtualSensorRadius), 1.5, false); err != nil {
+	if err := validate.Maximum("printRitePCSSensorRadius", "body", float64(m.PrintRitePCssensorRadius), 1.5, false); err != nil {
 		return err
 	}
 
