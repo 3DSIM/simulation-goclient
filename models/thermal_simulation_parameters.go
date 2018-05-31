@@ -106,7 +106,7 @@ type ThermalSimulationParameters struct {
 
 	// if true, PrintRite sensor data will be collected for each selectedPoint property
 	// Required: true
-	OutputPrintRitePCssensor *bool `json:"outputPrintRitePCSSensor"`
+	OutputPrintRitePcsSensor *bool `json:"outputPrintRitePcsSensor"`
 
 	// output shrinkage
 	// Required: true
@@ -125,7 +125,7 @@ type ThermalSimulationParameters struct {
 	// radius for PrintRite sensor data collection in mm
 	// Maximum: 1.5
 	// Minimum: 0.05
-	PrintRitePCssensorRadius float64 `json:"printRitePCSSensorRadius,omitempty"`
+	PrintRitePcsSensorRadius float64 `json:"printRitePcsSensorRadius,omitempty"`
 
 	// if true, pyrometer sensor data will be collected for every layer
 	PyroVirtualSensorOutputAllLayers bool `json:"pyroVirtualSensorOutputAllLayers,omitempty"`
@@ -249,7 +249,7 @@ func (m *ThermalSimulationParameters) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
-	if err := m.validateOutputPrintRitePCssensor(formats); err != nil {
+	if err := m.validateOutputPrintRitePcsSensor(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -264,7 +264,7 @@ func (m *ThermalSimulationParameters) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
-	if err := m.validatePrintRitePCssensorRadius(formats); err != nil {
+	if err := m.validatePrintRitePcsSensorRadius(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -531,9 +531,9 @@ func (m *ThermalSimulationParameters) validateOutputPointThermalHistory(formats 
 	return nil
 }
 
-func (m *ThermalSimulationParameters) validateOutputPrintRitePCssensor(formats strfmt.Registry) error {
+func (m *ThermalSimulationParameters) validateOutputPrintRitePcsSensor(formats strfmt.Registry) error {
 
-	if err := validate.Required("outputPrintRitePCSSensor", "body", m.OutputPrintRitePCssensor); err != nil {
+	if err := validate.Required("outputPrintRitePcsSensor", "body", m.OutputPrintRitePcsSensor); err != nil {
 		return err
 	}
 
@@ -558,17 +558,17 @@ func (m *ThermalSimulationParameters) validateOutputStateMap(formats strfmt.Regi
 	return nil
 }
 
-func (m *ThermalSimulationParameters) validatePrintRitePCssensorRadius(formats strfmt.Registry) error {
+func (m *ThermalSimulationParameters) validatePrintRitePcsSensorRadius(formats strfmt.Registry) error {
 
-	if swag.IsZero(m.PrintRitePCssensorRadius) { // not required
+	if swag.IsZero(m.PrintRitePcsSensorRadius) { // not required
 		return nil
 	}
 
-	if err := validate.Minimum("printRitePCSSensorRadius", "body", float64(m.PrintRitePCssensorRadius), 0.05, false); err != nil {
+	if err := validate.Minimum("printRitePcsSensorRadius", "body", float64(m.PrintRitePcsSensorRadius), 0.05, false); err != nil {
 		return err
 	}
 
-	if err := validate.Maximum("printRitePCSSensorRadius", "body", float64(m.PrintRitePCssensorRadius), 1.5, false); err != nil {
+	if err := validate.Maximum("printRitePcsSensorRadius", "body", float64(m.PrintRitePcsSensorRadius), 1.5, false); err != nil {
 		return err
 	}
 
