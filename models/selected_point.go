@@ -6,6 +6,8 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"encoding/json"
+
 	strfmt "github.com/go-openapi/strfmt"
 
 	"github.com/go-openapi/errors"
@@ -24,6 +26,10 @@ type SelectedPoint struct {
 	// Required: true
 	Label *string `json:"label"`
 
+	// type of point, usually relates to sensor that will be using this point
+	// Required: true
+	SensorType *string `json:"sensorType"`
+
 	// simulation Id
 	// Required: true
 	SimulationID *int32 `json:"simulationId"`
@@ -39,6 +45,12 @@ type SelectedPoint struct {
 	// z
 	// Required: true
 	Z *float64 `json:"z"`
+
+	// z max
+	ZMax float64 `json:"zMax,omitempty"`
+
+	// z min
+	ZMin float64 `json:"zMin,omitempty"`
 }
 
 // Validate validates this selected point
@@ -46,6 +58,11 @@ func (m *SelectedPoint) Validate(formats strfmt.Registry) error {
 	var res []error
 
 	if err := m.validateLabel(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateSensorType(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -79,6 +96,45 @@ func (m *SelectedPoint) Validate(formats strfmt.Registry) error {
 func (m *SelectedPoint) validateLabel(formats strfmt.Registry) error {
 
 	if err := validate.Required("label", "body", m.Label); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+var selectedPointTypeSensorTypePropEnum []interface{}
+
+func init() {
+	var res []string
+	if err := json.Unmarshal([]byte(`["PrintRite"]`), &res); err != nil {
+		panic(err)
+	}
+	for _, v := range res {
+		selectedPointTypeSensorTypePropEnum = append(selectedPointTypeSensorTypePropEnum, v)
+	}
+}
+
+const (
+	// SelectedPointSensorTypePrintRite captures enum value "PrintRite"
+	SelectedPointSensorTypePrintRite string = "PrintRite"
+)
+
+// prop value enum
+func (m *SelectedPoint) validateSensorTypeEnum(path, location string, value string) error {
+	if err := validate.Enum(path, location, value, selectedPointTypeSensorTypePropEnum); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (m *SelectedPoint) validateSensorType(formats strfmt.Registry) error {
+
+	if err := validate.Required("sensorType", "body", m.SensorType); err != nil {
+		return err
+	}
+
+	// value enum
+	if err := m.validateSensorTypeEnum("sensorType", "body", *m.SensorType); err != nil {
 		return err
 	}
 

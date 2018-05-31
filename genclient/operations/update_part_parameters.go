@@ -14,6 +14,7 @@ import (
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
 	cr "github.com/go-openapi/runtime/client"
+	"github.com/go-openapi/swag"
 
 	strfmt "github.com/go-openapi/strfmt"
 
@@ -69,6 +70,11 @@ type UpdatePartParams struct {
 
 	*/
 	Part *models.Part
+	/*ID
+	  ID of a part
+
+	*/
+	ID int32
 
 	timeout    time.Duration
 	Context    context.Context
@@ -119,6 +125,17 @@ func (o *UpdatePartParams) SetPart(part *models.Part) {
 	o.Part = part
 }
 
+// WithID adds the id to the update part params
+func (o *UpdatePartParams) WithID(id int32) *UpdatePartParams {
+	o.SetID(id)
+	return o
+}
+
+// SetID adds the id to the update part params
+func (o *UpdatePartParams) SetID(id int32) {
+	o.ID = id
+}
+
 // WriteToRequest writes these params to a swagger request
 func (o *UpdatePartParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
@@ -132,6 +149,11 @@ func (o *UpdatePartParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Re
 	}
 
 	if err := r.SetBodyParam(o.Part); err != nil {
+		return err
+	}
+
+	// path param id
+	if err := r.SetPathParam("id", swag.FormatInt32(o.ID)); err != nil {
 		return err
 	}
 

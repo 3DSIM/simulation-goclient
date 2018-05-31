@@ -27,9 +27,15 @@ type SimulationPart struct {
 	// Required: true
 	PartID *int32 `json:"partId"`
 
+	// Id of the support to use for the simulation. Can be null
+	PartSupportID int32 `json:"partSupportId,omitempty"`
+
 	// ID of the associated simulation
 	// Required: true
 	SimulationID *int32 `json:"simulationId"`
+
+	// support
+	Support *PartSupport `json:"support,omitempty"`
 
 	// Smallest x coordinate of the part location on the powder bed in millimeters. The center of the powder bed in the x dimension is assumed to be 0
 	// Required: true
@@ -65,6 +71,11 @@ func (m *SimulationPart) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateSimulationID(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateSupport(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -122,6 +133,25 @@ func (m *SimulationPart) validateSimulationID(formats strfmt.Registry) error {
 
 	if err := validate.Required("simulationId", "body", m.SimulationID); err != nil {
 		return err
+	}
+
+	return nil
+}
+
+func (m *SimulationPart) validateSupport(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.Support) { // not required
+		return nil
+	}
+
+	if m.Support != nil {
+
+		if err := m.Support.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("support")
+			}
+			return err
+		}
 	}
 
 	return nil

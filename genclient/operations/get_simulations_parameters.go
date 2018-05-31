@@ -133,6 +133,11 @@ type GetSimulationsParams struct {
 
 	*/
 	Status []string
+	/*SupportID
+	  returns simulations using the specified part support id
+
+	*/
+	SupportID *int32
 
 	timeout    time.Duration
 	Context    context.Context
@@ -282,6 +287,17 @@ func (o *GetSimulationsParams) SetStatus(status []string) {
 	o.Status = status
 }
 
+// WithSupportID adds the supportID to the get simulations params
+func (o *GetSimulationsParams) WithSupportID(supportID *int32) *GetSimulationsParams {
+	o.SetSupportID(supportID)
+	return o
+}
+
+// SetSupportID adds the supportId to the get simulations params
+func (o *GetSimulationsParams) SetSupportID(supportID *int32) {
+	o.SupportID = supportID
+}
+
 // WriteToRequest writes these params to a swagger request
 func (o *GetSimulationsParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
@@ -425,6 +441,22 @@ func (o *GetSimulationsParams) WriteToRequest(r runtime.ClientRequest, reg strfm
 	// query array param status
 	if err := r.SetQueryParam("status", joinedStatus...); err != nil {
 		return err
+	}
+
+	if o.SupportID != nil {
+
+		// query param supportId
+		var qrSupportID int32
+		if o.SupportID != nil {
+			qrSupportID = *o.SupportID
+		}
+		qSupportID := swag.FormatInt32(qrSupportID)
+		if qSupportID != "" {
+			if err := r.SetQueryParam("supportId", qSupportID); err != nil {
+				return err
+			}
+		}
+
 	}
 
 	if len(res) > 0 {
