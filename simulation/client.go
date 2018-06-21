@@ -90,6 +90,8 @@ type Client interface {
 	PatchPart(partID int32, patches []*models.PatchDocument) (*models.Part, error)
 	SimulationOutputs(simulationID int32) (so []*models.SimulationOutput, err error)
 	SimulationChildren(simulationID int32) (simulation []*models.Simulation, err error)
+	PartSupportByID(supportID int32) (*models.PartSupport, error)
+	PatchPartSupport(partID, supportID int32, patches []*models.PatchDocument) (*models.PartSupport, error)
 }
 
 type client struct {
@@ -1030,6 +1032,40 @@ func (c *client) PatchSimulationActivity(simulationID int32, activityID string, 
 	response, err := c.client.Operations.PatchActivity(params, openapiclient.BearerToken(token))
 	if err != nil {
 		patchLog.Error("Problem patching activity", "error", err)
+		return nil, err
+	}
+	return response.Payload, nil
+}
+
+func (c *client) PatchPartSupport(partID, supportID int32, patches []*models.PatchDocument) (*models.PartSupport, error) {
+	patchLog := Log.New("partID", partID, "supportID", supportID)
+	token, err := c.tokenFetcher.Token(c.audience)
+	if err != nil {
+		patchLog.Error("Error getting token", "error", err)
+		return nil, err
+	}
+
+	params := operations.NewPatchPartSupportParams().WithPartID(partID).WithSupportID(supportID).WithPartSupportPatch(patches)
+
+	response, err := c.client.Operations.PatchPartSupport(params, openapiclient.BearerToken(token))
+	if err != nil {
+		patchLog.Error("Problem patching part support", "error", err)
+		return nil, err
+	}
+	return response.Payload, nil
+}
+
+func (c *client) PartSupportByID(supportID int32) (*models.PartSupport, error) {
+	token, err := c.tokenFetcher.Token(c.audience)
+	if err != nil {
+		Log.Error("Error getting token", "error", err)
+		return nil, err
+	}
+	params := operations.NewGetPartSupportByIDParams().WithID(supportID)
+
+	response, err := c.client.Operations.GetPartSupportByID(params, openapiclient.BearerToken(token))
+	if err != nil {
+		Log.Error("Error getting part support by id", "supportID", supportID, "error", err)
 		return nil, err
 	}
 	return response.Payload, nil

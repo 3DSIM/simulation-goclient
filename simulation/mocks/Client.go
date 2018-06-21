@@ -837,3 +837,49 @@ func (_m *Client) SimulationChildren(simulationID int32) ([]*models.Simulation, 
 
 	return r0, r1
 }
+
+// PartSupportByID provides a mock function with given fields: supportID
+func (_m *Client) PartSupportByID(supportID int32) (*models.PartSupport, error) {
+	ret := _m.Called(supportID)
+
+	var r0 *models.PartSupport
+	if rf, ok := ret.Get(0).(func(int32) *models.PartSupport); ok {
+		r0 = rf(supportID)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*models.PartSupport)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(int32) error); ok {
+		r1 = rf(supportID)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// PatchPartSupport provides a mock function with given fields: partID, supportID, patches
+func (_m *Client) PatchPartSupport(partID int32, supportID int32, patches []*models.PatchDocument) (*models.PartSupport, error) {
+	ret := _m.Called(partID, supportID, patches)
+
+	var r0 *models.PartSupport
+	if rf, ok := ret.Get(0).(func(int32, int32, []*models.PatchDocument) *models.PartSupport); ok {
+		r0 = rf(partID, supportID, patches)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*models.PartSupport)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(int32, int32, []*models.PatchDocument) error); ok {
+		r1 = rf(partID, supportID, patches)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}

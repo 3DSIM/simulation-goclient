@@ -543,6 +543,34 @@ type FakeClient struct {
 		result1 []*models.Simulation
 		result2 error
 	}
+	PartSupportByIDStub        func(supportID int32) (*models.PartSupport, error)
+	partSupportByIDMutex       sync.RWMutex
+	partSupportByIDArgsForCall []struct {
+		supportID int32
+	}
+	partSupportByIDReturns struct {
+		result1 *models.PartSupport
+		result2 error
+	}
+	partSupportByIDReturnsOnCall map[int]struct {
+		result1 *models.PartSupport
+		result2 error
+	}
+	PatchPartSupportStub        func(partID, supportID int32, patches []*models.PatchDocument) (*models.PartSupport, error)
+	patchPartSupportMutex       sync.RWMutex
+	patchPartSupportArgsForCall []struct {
+		partID    int32
+		supportID int32
+		patches   []*models.PatchDocument
+	}
+	patchPartSupportReturns struct {
+		result1 *models.PartSupport
+		result2 error
+	}
+	patchPartSupportReturnsOnCall map[int]struct {
+		result1 *models.PartSupport
+		result2 error
+	}
 	invocations      map[string][][]interface{}
 	invocationsMutex sync.RWMutex
 }
@@ -2631,6 +2659,115 @@ func (fake *FakeClient) SimulationChildrenReturnsOnCall(i int, result1 []*models
 	}{result1, result2}
 }
 
+func (fake *FakeClient) PartSupportByID(supportID int32) (*models.PartSupport, error) {
+	fake.partSupportByIDMutex.Lock()
+	ret, specificReturn := fake.partSupportByIDReturnsOnCall[len(fake.partSupportByIDArgsForCall)]
+	fake.partSupportByIDArgsForCall = append(fake.partSupportByIDArgsForCall, struct {
+		supportID int32
+	}{supportID})
+	fake.recordInvocation("PartSupportByID", []interface{}{supportID})
+	fake.partSupportByIDMutex.Unlock()
+	if fake.PartSupportByIDStub != nil {
+		return fake.PartSupportByIDStub(supportID)
+	}
+	if specificReturn {
+		return ret.result1, ret.result2
+	}
+	return fake.partSupportByIDReturns.result1, fake.partSupportByIDReturns.result2
+}
+
+func (fake *FakeClient) PartSupportByIDCallCount() int {
+	fake.partSupportByIDMutex.RLock()
+	defer fake.partSupportByIDMutex.RUnlock()
+	return len(fake.partSupportByIDArgsForCall)
+}
+
+func (fake *FakeClient) PartSupportByIDArgsForCall(i int) int32 {
+	fake.partSupportByIDMutex.RLock()
+	defer fake.partSupportByIDMutex.RUnlock()
+	return fake.partSupportByIDArgsForCall[i].supportID
+}
+
+func (fake *FakeClient) PartSupportByIDReturns(result1 *models.PartSupport, result2 error) {
+	fake.PartSupportByIDStub = nil
+	fake.partSupportByIDReturns = struct {
+		result1 *models.PartSupport
+		result2 error
+	}{result1, result2}
+}
+
+func (fake *FakeClient) PartSupportByIDReturnsOnCall(i int, result1 *models.PartSupport, result2 error) {
+	fake.PartSupportByIDStub = nil
+	if fake.partSupportByIDReturnsOnCall == nil {
+		fake.partSupportByIDReturnsOnCall = make(map[int]struct {
+			result1 *models.PartSupport
+			result2 error
+		})
+	}
+	fake.partSupportByIDReturnsOnCall[i] = struct {
+		result1 *models.PartSupport
+		result2 error
+	}{result1, result2}
+}
+
+func (fake *FakeClient) PatchPartSupport(partID int32, supportID int32, patches []*models.PatchDocument) (*models.PartSupport, error) {
+	var patchesCopy []*models.PatchDocument
+	if patches != nil {
+		patchesCopy = make([]*models.PatchDocument, len(patches))
+		copy(patchesCopy, patches)
+	}
+	fake.patchPartSupportMutex.Lock()
+	ret, specificReturn := fake.patchPartSupportReturnsOnCall[len(fake.patchPartSupportArgsForCall)]
+	fake.patchPartSupportArgsForCall = append(fake.patchPartSupportArgsForCall, struct {
+		partID    int32
+		supportID int32
+		patches   []*models.PatchDocument
+	}{partID, supportID, patchesCopy})
+	fake.recordInvocation("PatchPartSupport", []interface{}{partID, supportID, patchesCopy})
+	fake.patchPartSupportMutex.Unlock()
+	if fake.PatchPartSupportStub != nil {
+		return fake.PatchPartSupportStub(partID, supportID, patches)
+	}
+	if specificReturn {
+		return ret.result1, ret.result2
+	}
+	return fake.patchPartSupportReturns.result1, fake.patchPartSupportReturns.result2
+}
+
+func (fake *FakeClient) PatchPartSupportCallCount() int {
+	fake.patchPartSupportMutex.RLock()
+	defer fake.patchPartSupportMutex.RUnlock()
+	return len(fake.patchPartSupportArgsForCall)
+}
+
+func (fake *FakeClient) PatchPartSupportArgsForCall(i int) (int32, int32, []*models.PatchDocument) {
+	fake.patchPartSupportMutex.RLock()
+	defer fake.patchPartSupportMutex.RUnlock()
+	return fake.patchPartSupportArgsForCall[i].partID, fake.patchPartSupportArgsForCall[i].supportID, fake.patchPartSupportArgsForCall[i].patches
+}
+
+func (fake *FakeClient) PatchPartSupportReturns(result1 *models.PartSupport, result2 error) {
+	fake.PatchPartSupportStub = nil
+	fake.patchPartSupportReturns = struct {
+		result1 *models.PartSupport
+		result2 error
+	}{result1, result2}
+}
+
+func (fake *FakeClient) PatchPartSupportReturnsOnCall(i int, result1 *models.PartSupport, result2 error) {
+	fake.PatchPartSupportStub = nil
+	if fake.patchPartSupportReturnsOnCall == nil {
+		fake.patchPartSupportReturnsOnCall = make(map[int]struct {
+			result1 *models.PartSupport
+			result2 error
+		})
+	}
+	fake.patchPartSupportReturnsOnCall[i] = struct {
+		result1 *models.PartSupport
+		result2 error
+	}{result1, result2}
+}
+
 func (fake *FakeClient) Invocations() map[string][][]interface{} {
 	fake.invocationsMutex.RLock()
 	defer fake.invocationsMutex.RUnlock()
@@ -2714,6 +2851,10 @@ func (fake *FakeClient) Invocations() map[string][][]interface{} {
 	defer fake.simulationOutputsMutex.RUnlock()
 	fake.simulationChildrenMutex.RLock()
 	defer fake.simulationChildrenMutex.RUnlock()
+	fake.partSupportByIDMutex.RLock()
+	defer fake.partSupportByIDMutex.RUnlock()
+	fake.patchPartSupportMutex.RLock()
+	defer fake.patchPartSupportMutex.RUnlock()
 	return fake.invocations
 }
 
