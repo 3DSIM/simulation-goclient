@@ -1242,6 +1242,35 @@ func (a *Client) GetPartSupport(params *GetPartSupportParams, authInfo runtime.C
 }
 
 /*
+GetPartSupportByID Get a single support by Id
+*/
+func (a *Client) GetPartSupportByID(params *GetPartSupportByIDParams, authInfo runtime.ClientAuthInfoWriter) (*GetPartSupportByIDOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetPartSupportByIDParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "getPartSupportById",
+		Method:             "GET",
+		PathPattern:        "/supports/{id}",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &GetPartSupportByIDReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*GetPartSupportByIDOK), nil
+
+}
+
+/*
 GetParts Get list of parts
 */
 func (a *Client) GetParts(params *GetPartsParams, authInfo runtime.ClientAuthInfoWriter) (*GetPartsOK, error) {

@@ -1667,3 +1667,223 @@ func TestPatchSimulationActivityWhenSimulationAPIErrorsExpectsErrorReturned(t *t
 	assert.NotNil(t, err, "Expected an error returned because simulation api sent a 404 error")
 	assert.Nil(t, activity, "Expected activity to be nil due to error from api")
 }
+
+func TestPatchPartSupportWithNonNilValuesExpectsSuccess(t *testing.T) {
+
+	// arrange
+	availability := "Available"
+	partSupportID := int32(101)
+	partID := int32(102)
+
+	// Token
+	fakeTokenFetcher := &auth0fakes.FakeTokenFetcher{}
+	fakeTokenFetcher.TokenReturns("Token", nil)
+
+	patch := &models.PatchDocument{
+		Op:    swag.String(models.PatchDocumentOpReplace),
+		Path:  swag.String("/availability"),
+		Value: availability,
+	}
+
+	partSupportFileToReturn := models.PartSupport{
+		ID:     swag.Int32(partSupportID),
+		PartID: swag.Int32(partID),
+	}
+
+	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		assert.NotEmpty(t, r.Header.Get("Authorization"), "Authorization header should not be empty")
+		receivedPartSupportID, err := strconv.Atoi(mux.Vars(r)["supportID"])
+		if err != nil {
+			t.Fatal(err)
+		}
+		receivedPartID, err := strconv.Atoi(mux.Vars(r)["partID"])
+		if err != nil {
+			t.Fatal(err)
+		}
+		assert.EqualValues(t, int(partSupportID), receivedPartSupportID, "Expected part support id received to match what was passed in")
+		assert.EqualValues(t, int(partID), receivedPartID, "Expected part id received to match what was passed in")
+		bodyBytes, err := ioutil.ReadAll(r.Body)
+		if err != nil {
+			t.Fatal(err)
+		}
+		var actualPatchDocuments []models.PatchDocument
+		err = json.Unmarshal(bodyBytes, &actualPatchDocuments)
+		if err != nil {
+			t.Error("Failed to unmarshal build file")
+		}
+		actualPatch := actualPatchDocuments[0]
+		assert.EqualValues(t, *patch, actualPatch, "Expected patch document to be passed in body of PATCH request")
+		bytes, err := json.Marshal(partSupportFileToReturn)
+		if err != nil {
+			t.Error("Failed to marshal build file")
+		}
+		w.Write(bytes)
+	})
+
+	// Setup routes
+	r := mux.NewRouter()
+	endpoint := "/" + SimulationAPIBasePath + "/parts/{partID}/supports/{supportID}"
+	r.HandleFunc(endpoint, handler)
+	testServer := httptest.NewServer(r)
+	defer testServer.Close()
+	client := NewClient(fakeTokenFetcher, testServer.URL, SimulationAPIBasePath, audience)
+
+	// act
+	partSupport, err := client.PatchPartSupport(int32(partID), int32(partSupportID), []*models.PatchDocument{patch})
+
+	// assert
+
+	assert.Nil(t, err, "Expected no error returned")
+	assert.NotNil(t, partSupport)
+	assert.Equal(t, partSupportID, *partSupport.ID, "Expected ID values to match")
+}
+
+func TestPatchPartSupportWhenPatchErrorsExpectsErrorReturned(t *testing.T) {
+
+	// arrange
+	availability := "Available"
+	partSupportID := int32(101)
+	partID := int32(102)
+
+	// Token
+	fakeTokenFetcher := &auth0fakes.FakeTokenFetcher{}
+	fakeTokenFetcher.TokenReturns("Token", nil)
+
+	patch := &models.PatchDocument{
+		Op:    swag.String(models.PatchDocumentOpReplace),
+		Path:  swag.String("/availability"),
+		Value: availability,
+	}
+
+	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(500)
+	})
+
+	// Setup routes
+	r := mux.NewRouter()
+	endpoint := "/" + SimulationAPIBasePath + "/parts/{partID}/supports/{supportID}"
+	r.HandleFunc(endpoint, handler)
+	testServer := httptest.NewServer(r)
+	defer testServer.Close()
+	client := NewClient(fakeTokenFetcher, testServer.URL, SimulationAPIBasePath, audience)
+
+	// act
+	_, err := client.PatchPartSupport(int32(partID), int32(partSupportID), []*models.PatchDocument{patch})
+
+	// assert
+
+	assert.Error(t, err, "Expected an error returned because patch returned a 500")
+}
+
+func TestPatchPartSupportWhenTokenFetcherErrorsExpectsErrorReturned(t *testing.T) {
+
+	// arrange
+	partSupportID := int32(101)
+	partID := int32(102)
+
+	// Token
+	fakeTokenFetcher := &auth0fakes.FakeTokenFetcher{}
+	expectedError := errors.New("some token error")
+	fakeTokenFetcher.TokenReturns("Token", expectedError)
+
+	client := NewClient(fakeTokenFetcher, "some url", SimulationAPIBasePath, audience)
+
+	// act
+	_, err := client.PatchPartSupport(int32(partID), int32(partSupportID), []*models.PatchDocument{})
+
+	// assert
+	assert.Error(t, err, "Expected an error returned because token fetcher errored")
+}
+
+func TestPartSupportByIDWhenSuccessfulExpectsPartSupportReturned(t *testing.T) {
+	// arrange
+	partSupportID := int32(2)
+
+	// Token
+	fakeTokenFetcher := &auth0fakes.FakeTokenFetcher{}
+	fakeTokenFetcher.TokenReturns("Token", nil)
+
+	// Material
+	partSupportToReturn := &models.PartSupport{
+		ID:   swag.Int32(partSupportID),
+		Name: swag.String("Part support name"),
+	}
+	partSupportHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		assert.NotEmpty(t, r.Header.Get("Authorization"), "Authorization header should not be empty")
+		receivedPartSupportID, err := strconv.Atoi(mux.Vars(r)["partSupportID"])
+		if err != nil {
+			t.Fatal(err)
+		}
+		assert.EqualValues(t, int(partSupportID), receivedPartSupportID, "Expected partSupport id received to match what was passed in")
+		bytes, err := json.Marshal(partSupportToReturn)
+		if err != nil {
+			t.Error("Failed to marshal returned object")
+		}
+		w.Write(bytes)
+	})
+
+	// Setup routes
+	r := mux.NewRouter()
+	materialEndpoint := "/" + SimulationAPIBasePath + "/supports/{partSupportID}"
+	r.HandleFunc(materialEndpoint, partSupportHandler)
+	testServer := httptest.NewServer(r)
+	defer testServer.Close()
+	client := NewClient(fakeTokenFetcher, testServer.URL, SimulationAPIBasePath, audience)
+
+	// act
+	partSupport, err := client.PartSupportByID(partSupportID)
+
+	// assert
+
+	assert.Nil(t, err, "Expected no error returned")
+	assert.Equal(t, *partSupportToReturn.Name, *partSupport.Name, "Expected names to match")
+	assert.Equal(t, *partSupportToReturn.ID, *partSupport.ID, "Expected IDs to match")
+}
+
+func TestPartSupportByIDWhenAPIErrorsExpectsErrorReturned(t *testing.T) {
+	// arrange
+	partSupportID := int32(2)
+
+	// Token
+	fakeTokenFetcher := &auth0fakes.FakeTokenFetcher{}
+	fakeTokenFetcher.TokenReturns("Token", nil)
+
+	partSupportHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(500)
+	})
+
+	// Setup routes
+	r := mux.NewRouter()
+	materialEndpoint := "/" + SimulationAPIBasePath + "/supports/{partSupportID}"
+	r.HandleFunc(materialEndpoint, partSupportHandler)
+	testServer := httptest.NewServer(r)
+	defer testServer.Close()
+	client := NewClient(fakeTokenFetcher, testServer.URL, SimulationAPIBasePath, audience)
+
+	// act
+	_, err := client.PartSupportByID(partSupportID)
+
+	// assert
+	assert.Error(t, err, "Expected an error returned because API returned a 500")
+}
+
+func TestPartSupportByIDWhenTokenFetcherErrorsExpectsErrorReturned(t *testing.T) {
+	// arrange
+	partSupportID := int32(2)
+
+	// Token
+	fakeTokenFetcher := &auth0fakes.FakeTokenFetcher{}
+	expectedError := errors.New("some error")
+	fakeTokenFetcher.TokenReturns("Token", expectedError)
+
+	client := NewClient(fakeTokenFetcher, "some url", SimulationAPIBasePath, audience)
+
+	// act
+	_, err := client.PartSupportByID(partSupportID)
+
+	// assert
+
+	assert.Error(t, err, "Expected error returned because token fetcher errored")
+}
