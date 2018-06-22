@@ -1996,6 +1996,35 @@ func (a *Client) PatchSimulation(params *PatchSimulationParams, authInfo runtime
 }
 
 /*
+PatchSupportByID Update fields within a support
+*/
+func (a *Client) PatchSupportByID(params *PatchSupportByIDParams, authInfo runtime.ClientAuthInfoWriter) (*PatchSupportByIDOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewPatchSupportByIDParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "patchSupportById",
+		Method:             "PATCH",
+		PathPattern:        "/supports/{id}",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &PatchSupportByIDReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*PatchSupportByIDOK), nil
+
+}
+
+/*
 PostAssumedStrainSimulation Posts a new assumed strain simulation
 */
 func (a *Client) PostAssumedStrainSimulation(params *PostAssumedStrainSimulationParams, authInfo runtime.ClientAuthInfoWriter) (*PostAssumedStrainSimulationOK, error) {

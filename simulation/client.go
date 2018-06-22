@@ -92,6 +92,8 @@ type Client interface {
 	SimulationChildren(simulationID int32) (simulation []*models.Simulation, err error)
 	PartSupportByID(supportID int32) (*models.PartSupport, error)
 	PatchPartSupport(partID, supportID int32, patches []*models.PatchDocument) (*models.PartSupport, error)
+	PatchPartSupportByID(supportID int32, patches []*models.PatchDocument) (*models.PartSupport, error)
+	UpdatePartSupportAvailability(supportID int32, availability string) (partSupport *models.PartSupport, err error)
 }
 
 type client struct {
@@ -1069,4 +1071,32 @@ func (c *client) PartSupportByID(supportID int32) (*models.PartSupport, error) {
 		return nil, err
 	}
 	return response.Payload, nil
+}
+
+func (c *client) PatchPartSupportByID(supportID int32, patches []*models.PatchDocument) (*models.PartSupport, error) {
+	patchLog := Log.New("supportID", supportID)
+	token, err := c.tokenFetcher.Token(c.audience)
+	if err != nil {
+		patchLog.Error("Error getting token", "error", err)
+		return nil, err
+	}
+
+	params := operations.NewPatchSupportByIDParams().WithID(supportID).WithSupportPatch(patches)
+
+	response, err := c.client.Operations.PatchSupportByID(params, openapiclient.BearerToken(token))
+	if err != nil {
+		patchLog.Error("Problem patching part support", "error", err)
+		return nil, err
+	}
+	return response.Payload, nil
+}
+
+func (c *client) UpdatePartSupportAvailability(supportID int32, availability string) (partSupport *models.PartSupport, err error) {
+	patch := models.PatchDocument{
+		Op:    swag.String(models.PatchDocumentOpReplace),
+		Path:  swag.String("/availability"),
+		Value: availability,
+	}
+
+	return c.PatchPartSupportByID(supportID, []*models.PatchDocument{&patch})
 }
