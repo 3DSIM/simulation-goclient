@@ -585,6 +585,20 @@ type FakeClient struct {
 		result1 *models.PartSupport
 		result2 error
 	}
+	UpdatePartSupportAvailabilityStub        func(supportID int32, availability string) (partSupport *models.PartSupport, err error)
+	updatePartSupportAvailabilityMutex       sync.RWMutex
+	updatePartSupportAvailabilityArgsForCall []struct {
+		supportID    int32
+		availability string
+	}
+	updatePartSupportAvailabilityReturns struct {
+		result1 *models.PartSupport
+		result2 error
+	}
+	updatePartSupportAvailabilityReturnsOnCall map[int]struct {
+		result1 *models.PartSupport
+		result2 error
+	}
 	invocations      map[string][][]interface{}
 	invocationsMutex sync.RWMutex
 }
@@ -2839,6 +2853,58 @@ func (fake *FakeClient) PatchPartSupportByIDReturnsOnCall(i int, result1 *models
 	}{result1, result2}
 }
 
+func (fake *FakeClient) UpdatePartSupportAvailability(supportID int32, availability string) (partSupport *models.PartSupport, err error) {
+	fake.updatePartSupportAvailabilityMutex.Lock()
+	ret, specificReturn := fake.updatePartSupportAvailabilityReturnsOnCall[len(fake.updatePartSupportAvailabilityArgsForCall)]
+	fake.updatePartSupportAvailabilityArgsForCall = append(fake.updatePartSupportAvailabilityArgsForCall, struct {
+		supportID    int32
+		availability string
+	}{supportID, availability})
+	fake.recordInvocation("UpdatePartSupportAvailability", []interface{}{supportID, availability})
+	fake.updatePartSupportAvailabilityMutex.Unlock()
+	if fake.UpdatePartSupportAvailabilityStub != nil {
+		return fake.UpdatePartSupportAvailabilityStub(supportID, availability)
+	}
+	if specificReturn {
+		return ret.result1, ret.result2
+	}
+	return fake.updatePartSupportAvailabilityReturns.result1, fake.updatePartSupportAvailabilityReturns.result2
+}
+
+func (fake *FakeClient) UpdatePartSupportAvailabilityCallCount() int {
+	fake.updatePartSupportAvailabilityMutex.RLock()
+	defer fake.updatePartSupportAvailabilityMutex.RUnlock()
+	return len(fake.updatePartSupportAvailabilityArgsForCall)
+}
+
+func (fake *FakeClient) UpdatePartSupportAvailabilityArgsForCall(i int) (int32, string) {
+	fake.updatePartSupportAvailabilityMutex.RLock()
+	defer fake.updatePartSupportAvailabilityMutex.RUnlock()
+	return fake.updatePartSupportAvailabilityArgsForCall[i].supportID, fake.updatePartSupportAvailabilityArgsForCall[i].availability
+}
+
+func (fake *FakeClient) UpdatePartSupportAvailabilityReturns(result1 *models.PartSupport, result2 error) {
+	fake.UpdatePartSupportAvailabilityStub = nil
+	fake.updatePartSupportAvailabilityReturns = struct {
+		result1 *models.PartSupport
+		result2 error
+	}{result1, result2}
+}
+
+func (fake *FakeClient) UpdatePartSupportAvailabilityReturnsOnCall(i int, result1 *models.PartSupport, result2 error) {
+	fake.UpdatePartSupportAvailabilityStub = nil
+	if fake.updatePartSupportAvailabilityReturnsOnCall == nil {
+		fake.updatePartSupportAvailabilityReturnsOnCall = make(map[int]struct {
+			result1 *models.PartSupport
+			result2 error
+		})
+	}
+	fake.updatePartSupportAvailabilityReturnsOnCall[i] = struct {
+		result1 *models.PartSupport
+		result2 error
+	}{result1, result2}
+}
+
 func (fake *FakeClient) Invocations() map[string][][]interface{} {
 	fake.invocationsMutex.RLock()
 	defer fake.invocationsMutex.RUnlock()
@@ -2928,6 +2994,8 @@ func (fake *FakeClient) Invocations() map[string][][]interface{} {
 	defer fake.patchPartSupportMutex.RUnlock()
 	fake.patchPartSupportByIDMutex.RLock()
 	defer fake.patchPartSupportByIDMutex.RUnlock()
+	fake.updatePartSupportAvailabilityMutex.RLock()
+	defer fake.updatePartSupportAvailabilityMutex.RUnlock()
 	copiedInvocations := map[string][][]interface{}{}
 	for key, value := range fake.invocations {
 		copiedInvocations[key] = value
