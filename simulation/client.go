@@ -93,6 +93,7 @@ type Client interface {
 	PartSupportByID(supportID int32) (*models.PartSupport, error)
 	PatchPartSupport(partID, supportID int32, patches []*models.PatchDocument) (*models.PartSupport, error)
 	PatchPartSupportByID(supportID int32, patches []*models.PatchDocument) (*models.PartSupport, error)
+	UpdatePartSupportAvailability(supportID int32, availability string) (partSupport *models.PartSupport, err error)
 }
 
 type client struct {
