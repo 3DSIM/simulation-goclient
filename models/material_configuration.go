@@ -101,6 +101,10 @@ type MaterialConfiguration struct {
 	// Required: true
 	FusionLatentHeat *float64 `json:"fusionLatentHeat"`
 
+	// hardening factor
+	// Required: true
+	HardeningFactor *float64 `json:"hardeningFactor"`
+
 	// material configuration identifier
 	ID int32 `json:"id,omitempty"`
 
@@ -313,6 +317,11 @@ func (m *MaterialConfiguration) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateFusionLatentHeat(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateHardeningFactor(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -631,6 +640,15 @@ func (m *MaterialConfiguration) validateExtinctionCoefOfSolidOffset(formats strf
 func (m *MaterialConfiguration) validateFusionLatentHeat(formats strfmt.Registry) error {
 
 	if err := validate.Required("fusionLatentHeat", "body", m.FusionLatentHeat); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *MaterialConfiguration) validateHardeningFactor(formats strfmt.Registry) error {
+
+	if err := validate.Required("hardeningFactor", "body", m.HardeningFactor); err != nil {
 		return err
 	}
 
