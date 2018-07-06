@@ -33,6 +33,10 @@ type Material struct {
 	// Required: true
 	ConfigurationID *int32 `json:"configurationId"`
 
+	// version of the core material this material was derived from
+	// Required: true
+	CoreVersion *string `json:"coreVersion"`
+
 	// created time stamp, set server-side, read only field
 	// Required: true
 	Created *strfmt.DateTime `json:"created"`
@@ -99,6 +103,11 @@ func (m *Material) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateConfigurationID(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateCoreVersion(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -217,6 +226,15 @@ func (m *Material) validateConfigurationHistory(formats strfmt.Registry) error {
 func (m *Material) validateConfigurationID(formats strfmt.Registry) error {
 
 	if err := validate.Required("configurationId", "body", m.ConfigurationID); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *Material) validateCoreVersion(formats strfmt.Registry) error {
+
+	if err := validate.Required("coreVersion", "body", m.CoreVersion); err != nil {
 		return err
 	}
 
