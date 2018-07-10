@@ -47,6 +47,12 @@ type PartBasedSimulationParameters struct {
 	// Required: true
 	GenerateSupportVoxels *bool `json:"generateSupportVoxels"`
 
+	// hardening factor
+	// Required: true
+	// Maximum: 0.5
+	// Minimum: 0
+	HardeningFactor *float64 `json:"hardeningFactor"`
+
 	// Must be between 0 to 0.005 meters, Must be greater than minimumWallDistance
 	// Required: true
 	// Maximum: 0.005
@@ -178,6 +184,11 @@ func (m *PartBasedSimulationParameters) Validate(formats strfmt.Registry) error 
 		res = append(res, err)
 	}
 
+	if err := m.validateHardeningFactor(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
 	if err := m.validateMaximumWallDistance(formats); err != nil {
 		// prop
 		res = append(res, err)
@@ -295,6 +306,23 @@ func (m *PartBasedSimulationParameters) validateElasticModulus(formats strfmt.Re
 func (m *PartBasedSimulationParameters) validateGenerateSupportVoxels(formats strfmt.Registry) error {
 
 	if err := validate.Required("generateSupportVoxels", "body", m.GenerateSupportVoxels); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *PartBasedSimulationParameters) validateHardeningFactor(formats strfmt.Registry) error {
+
+	if err := validate.Required("hardeningFactor", "body", m.HardeningFactor); err != nil {
+		return err
+	}
+
+	if err := validate.Minimum("hardeningFactor", "body", float64(*m.HardeningFactor), 0, false); err != nil {
+		return err
+	}
+
+	if err := validate.Maximum("hardeningFactor", "body", float64(*m.HardeningFactor), 0.5, false); err != nil {
 		return err
 	}
 
