@@ -77,6 +77,7 @@ TODO
 | Simulation API | Simulation Client |
 | ------------- | ------------- |
 | 0.14.x  | 0.3.x |
+|||
 
 
 ## Contributors
@@ -85,6 +86,7 @@ TODO
 * Chad Queen
 * Pete Krull
 * Alex Drinkwater
+* Justin Jensen
 
 ## Original release
 January 2017
