@@ -634,6 +634,35 @@ func (a *Client) CancelAssumedStrainSimulation(params *CancelAssumedStrainSimula
 }
 
 /*
+CancelMicrostructureSimulation Cancels a microstructure simulation
+*/
+func (a *Client) CancelMicrostructureSimulation(params *CancelMicrostructureSimulationParams, authInfo runtime.ClientAuthInfoWriter) (*CancelMicrostructureSimulationOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewCancelMicrostructureSimulationParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "cancelMicrostructureSimulation",
+		Method:             "PUT",
+		PathPattern:        "/microstructuresimulations/{id}/cancel",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &CancelMicrostructureSimulationReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*CancelMicrostructureSimulationOK), nil
+
+}
+
+/*
 CancelPorositySimulation Cancels a porosity simulation
 */
 func (a *Client) CancelPorositySimulation(params *CancelPorositySimulationParams, authInfo runtime.ClientAuthInfoWriter) (*CancelPorositySimulationOK, error) {
@@ -746,6 +775,35 @@ func (a *Client) CancelThermalSimulation(params *CancelThermalSimulationParams, 
 		return nil, err
 	}
 	return result.(*CancelThermalSimulationOK), nil
+
+}
+
+/*
+DeleteMicrostructureSimulation This will delete a microstructure simulation and all its associated data including output, logs, and any results from completed simulations
+*/
+func (a *Client) DeleteMicrostructureSimulation(params *DeleteMicrostructureSimulationParams, authInfo runtime.ClientAuthInfoWriter) (*DeleteMicrostructureSimulationOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewDeleteMicrostructureSimulationParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "deleteMicrostructureSimulation",
+		Method:             "DELETE",
+		PathPattern:        "/microstructuresimulations/{id}",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &DeleteMicrostructureSimulationReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*DeleteMicrostructureSimulationOK), nil
 
 }
 
@@ -1093,6 +1151,93 @@ func (a *Client) GetMaterials(params *GetMaterialsParams, authInfo runtime.Clien
 		return nil, err
 	}
 	return result.(*GetMaterialsOK), nil
+
+}
+
+/*
+GetMicrostructureSimulation Get a microstructure simulation
+*/
+func (a *Client) GetMicrostructureSimulation(params *GetMicrostructureSimulationParams, authInfo runtime.ClientAuthInfoWriter) (*GetMicrostructureSimulationOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetMicrostructureSimulationParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "getMicrostructureSimulation",
+		Method:             "GET",
+		PathPattern:        "/microstructuresimulations/{id}",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &GetMicrostructureSimulationReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*GetMicrostructureSimulationOK), nil
+
+}
+
+/*
+GetMicrostructureSimulationChildren Gets a list of all child simulations for a parent simulation
+*/
+func (a *Client) GetMicrostructureSimulationChildren(params *GetMicrostructureSimulationChildrenParams, authInfo runtime.ClientAuthInfoWriter) (*GetMicrostructureSimulationChildrenOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetMicrostructureSimulationChildrenParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "getMicrostructureSimulationChildren",
+		Method:             "GET",
+		PathPattern:        "/microstructuresimulations/{id}/children",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &GetMicrostructureSimulationChildrenReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*GetMicrostructureSimulationChildrenOK), nil
+
+}
+
+/*
+GetMicrostructureSimulations Gets a list of all microstructure simulations for the active user
+*/
+func (a *Client) GetMicrostructureSimulations(params *GetMicrostructureSimulationsParams, authInfo runtime.ClientAuthInfoWriter) (*GetMicrostructureSimulationsOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetMicrostructureSimulationsParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "getMicrostructureSimulations",
+		Method:             "GET",
+		PathPattern:        "/microstructuresimulations",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &GetMicrostructureSimulationsReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*GetMicrostructureSimulationsOK), nil
 
 }
 
@@ -2112,6 +2257,35 @@ func (a *Client) PostMachine(params *PostMachineParams, authInfo runtime.ClientA
 }
 
 /*
+PostMicrostructureSimulation Posts a new microstructure simulation
+*/
+func (a *Client) PostMicrostructureSimulation(params *PostMicrostructureSimulationParams, authInfo runtime.ClientAuthInfoWriter) (*PostMicrostructureSimulationOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewPostMicrostructureSimulationParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "postMicrostructureSimulation",
+		Method:             "POST",
+		PathPattern:        "/microstructuresimulations",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &PostMicrostructureSimulationReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*PostMicrostructureSimulationOK), nil
+
+}
+
+/*
 PostPartSupport Adds a support and starts processing the support.  When processing is finished, the "availability" field for the part will change to "Available".
 */
 func (a *Client) PostPartSupport(params *PostPartSupportParams, authInfo runtime.ClientAuthInfoWriter) (*PostPartSupportOK, error) {
@@ -2402,6 +2576,35 @@ func (a *Client) PutMachine(params *PutMachineParams, authInfo runtime.ClientAut
 }
 
 /*
+PutMicrostructureSimulation Puts an updated microstructure simulation (Only accepts updates to title, description, and tags once simulation is started)
+*/
+func (a *Client) PutMicrostructureSimulation(params *PutMicrostructureSimulationParams, authInfo runtime.ClientAuthInfoWriter) (*PutMicrostructureSimulationOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewPutMicrostructureSimulationParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "putMicrostructureSimulation",
+		Method:             "PUT",
+		PathPattern:        "/microstructuresimulations/{id}",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &PutMicrostructureSimulationReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*PutMicrostructureSimulationOK), nil
+
+}
+
+/*
 PutPorositySimulation Puts an updated porosity simulation (Only accepts updates to title, description, and tags once simulation is started)
 */
 func (a *Client) PutPorositySimulation(params *PutPorositySimulationParams, authInfo runtime.ClientAuthInfoWriter) (*PutPorositySimulationOK, error) {
@@ -2572,6 +2775,35 @@ func (a *Client) StartAssumedStrainSimulation(params *StartAssumedStrainSimulati
 		return nil, err
 	}
 	return result.(*StartAssumedStrainSimulationOK), nil
+
+}
+
+/*
+StartMicrostructureSimulation Starts a microstructure simulation.  If the simulation has been started before, start requests have no effect.
+*/
+func (a *Client) StartMicrostructureSimulation(params *StartMicrostructureSimulationParams, authInfo runtime.ClientAuthInfoWriter) (*StartMicrostructureSimulationOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewStartMicrostructureSimulationParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "startMicrostructureSimulation",
+		Method:             "PUT",
+		PathPattern:        "/microstructuresimulations/{id}/start",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &StartMicrostructureSimulationReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*StartMicrostructureSimulationOK), nil
 
 }
 

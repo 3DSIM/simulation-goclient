@@ -29,6 +29,8 @@ const (
 	SimulationTypeAssumedStrainSimulation SimulationType = "AssumedStrainSimulation"
 	// SimulationTypeScanPatternSimulation captures enum value "ScanPatternSimulation"
 	SimulationTypeScanPatternSimulation SimulationType = "ScanPatternSimulation"
+	// SimulationTypeMicrostructureSimulation captures enum value "MicrostructureSimulation"
+	SimulationTypeMicrostructureSimulation SimulationType = "MicrostructureSimulation"
 )
 
 // for schema
@@ -36,7 +38,7 @@ var simulationTypeEnum []interface{}
 
 func init() {
 	var res []SimulationType
-	if err := json.Unmarshal([]byte(`["SingleBeadSimulation","ThermalSimulation","PorositySimulation","AssumedStrainSimulation","ScanPatternSimulation"]`), &res); err != nil {
+	if err := json.Unmarshal([]byte(`["SingleBeadSimulation","ThermalSimulation","PorositySimulation","AssumedStrainSimulation","ScanPatternSimulation","MicrostructureSimulation"]`), &res); err != nil {
 		panic(err)
 	}
 	for _, v := range res {
