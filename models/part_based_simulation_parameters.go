@@ -53,17 +53,15 @@ type PartBasedSimulationParameters struct {
 	// Minimum: 0
 	HardeningFactor *float64 `json:"hardeningFactor"`
 
-	// Must be between 0 to 0.005 meters, Must be greater than minimumWallDistance
-	// Required: true
-	// Maximum: 0.005
-	// Minimum: 0
-	MaximumWallDistance *float64 `json:"maximumWallDistance"`
-
 	// Must be between 0.00015 to 0.002 meters, Must be greater than minimumWallThickness
-	// Required: true
-	// Maximum: 0.002
-	// Minimum: 0.00015
-	MaximumWallThickness *float64 `json:"maximumWallThickness"`
+	// Maximum: 0.01
+	// Minimum: 2e-05
+	MaximumThickWallThickness float64 `json:"maximumThickWallThickness,omitempty"`
+
+	// The maximum distance between thinwalls
+	// Maximum: 0.01
+	// Minimum: 2e-05
+	MaximumThinWallDistance float64 `json:"maximumThinWallDistance,omitempty"`
 
 	// Distance to move the part off the base plate for supports, Must be between 0 to 0.005 meters
 	// Required: true
@@ -71,17 +69,10 @@ type PartBasedSimulationParameters struct {
 	// Minimum: 0
 	MinimumSupportHeight *float64 `json:"minimumSupportHeight"`
 
-	// Must be between 0 to 0.0003 meters, Must be less than maximumWallDistance
-	// Required: true
-	// Maximum: 0.0003
-	// Minimum: 0
-	MinimumWallDistance *float64 `json:"minimumWallDistance"`
-
 	// Must be between 0.00005 to 0.0003 meters, Must be less than maximumWallThickness
-	// Required: true
-	// Maximum: 0.0003
-	// Minimum: 5e-05
-	MinimumWallThickness *float64 `json:"minimumWallThickness"`
+	// Maximum: 0.01
+	// Minimum: 2e-05
+	MinimumThickWallThickness float64 `json:"minimumThickWallThickness,omitempty"`
 
 	// output displacement after cutoff
 	// Required: true
@@ -158,6 +149,16 @@ type PartBasedSimulationParameters struct {
 	// Required: true
 	SupportYieldStrengthRatio *float64 `json:"supportYieldStrengthRatio"`
 
+	// The distance between thickwall supports
+	// Maximum: 0.01
+	// Minimum: 2e-05
+	ThickWallDistance float64 `json:"thickWallDistance,omitempty"`
+
+	// The width of the thinwall supports
+	// Maximum: 0.0005
+	// Minimum: 2e-05
+	ThinWallThickness float64 `json:"thinWallThickness,omitempty"`
+
 	// Must be between 0.00002 to 0.002 meters
 	// Required: true
 	// Maximum: 0.002
@@ -189,12 +190,12 @@ func (m *PartBasedSimulationParameters) Validate(formats strfmt.Registry) error 
 		res = append(res, err)
 	}
 
-	if err := m.validateMaximumWallDistance(formats); err != nil {
+	if err := m.validateMaximumThickWallThickness(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
 
-	if err := m.validateMaximumWallThickness(formats); err != nil {
+	if err := m.validateMaximumThinWallDistance(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -204,12 +205,7 @@ func (m *PartBasedSimulationParameters) Validate(formats strfmt.Registry) error 
 		res = append(res, err)
 	}
 
-	if err := m.validateMinimumWallDistance(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
-	if err := m.validateMinimumWallThickness(formats); err != nil {
+	if err := m.validateMinimumThickWallThickness(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -274,6 +270,16 @@ func (m *PartBasedSimulationParameters) Validate(formats strfmt.Registry) error 
 		res = append(res, err)
 	}
 
+	if err := m.validateThickWallDistance(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateThinWallThickness(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
 	if err := m.validateVoxelSize(formats); err != nil {
 		// prop
 		res = append(res, err)
@@ -329,34 +335,34 @@ func (m *PartBasedSimulationParameters) validateHardeningFactor(formats strfmt.R
 	return nil
 }
 
-func (m *PartBasedSimulationParameters) validateMaximumWallDistance(formats strfmt.Registry) error {
+func (m *PartBasedSimulationParameters) validateMaximumThickWallThickness(formats strfmt.Registry) error {
 
-	if err := validate.Required("maximumWallDistance", "body", m.MaximumWallDistance); err != nil {
+	if swag.IsZero(m.MaximumThickWallThickness) { // not required
+		return nil
+	}
+
+	if err := validate.Minimum("maximumThickWallThickness", "body", float64(m.MaximumThickWallThickness), 2e-05, false); err != nil {
 		return err
 	}
 
-	if err := validate.Minimum("maximumWallDistance", "body", float64(*m.MaximumWallDistance), 0, false); err != nil {
-		return err
-	}
-
-	if err := validate.Maximum("maximumWallDistance", "body", float64(*m.MaximumWallDistance), 0.005, false); err != nil {
+	if err := validate.Maximum("maximumThickWallThickness", "body", float64(m.MaximumThickWallThickness), 0.01, false); err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func (m *PartBasedSimulationParameters) validateMaximumWallThickness(formats strfmt.Registry) error {
+func (m *PartBasedSimulationParameters) validateMaximumThinWallDistance(formats strfmt.Registry) error {
 
-	if err := validate.Required("maximumWallThickness", "body", m.MaximumWallThickness); err != nil {
+	if swag.IsZero(m.MaximumThinWallDistance) { // not required
+		return nil
+	}
+
+	if err := validate.Minimum("maximumThinWallDistance", "body", float64(m.MaximumThinWallDistance), 2e-05, false); err != nil {
 		return err
 	}
 
-	if err := validate.Minimum("maximumWallThickness", "body", float64(*m.MaximumWallThickness), 0.00015, false); err != nil {
-		return err
-	}
-
-	if err := validate.Maximum("maximumWallThickness", "body", float64(*m.MaximumWallThickness), 0.002, false); err != nil {
+	if err := validate.Maximum("maximumThinWallDistance", "body", float64(m.MaximumThinWallDistance), 0.01, false); err != nil {
 		return err
 	}
 
@@ -380,34 +386,17 @@ func (m *PartBasedSimulationParameters) validateMinimumSupportHeight(formats str
 	return nil
 }
 
-func (m *PartBasedSimulationParameters) validateMinimumWallDistance(formats strfmt.Registry) error {
+func (m *PartBasedSimulationParameters) validateMinimumThickWallThickness(formats strfmt.Registry) error {
 
-	if err := validate.Required("minimumWallDistance", "body", m.MinimumWallDistance); err != nil {
+	if swag.IsZero(m.MinimumThickWallThickness) { // not required
+		return nil
+	}
+
+	if err := validate.Minimum("minimumThickWallThickness", "body", float64(m.MinimumThickWallThickness), 2e-05, false); err != nil {
 		return err
 	}
 
-	if err := validate.Minimum("minimumWallDistance", "body", float64(*m.MinimumWallDistance), 0, false); err != nil {
-		return err
-	}
-
-	if err := validate.Maximum("minimumWallDistance", "body", float64(*m.MinimumWallDistance), 0.0003, false); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *PartBasedSimulationParameters) validateMinimumWallThickness(formats strfmt.Registry) error {
-
-	if err := validate.Required("minimumWallThickness", "body", m.MinimumWallThickness); err != nil {
-		return err
-	}
-
-	if err := validate.Minimum("minimumWallThickness", "body", float64(*m.MinimumWallThickness), 5e-05, false); err != nil {
-		return err
-	}
-
-	if err := validate.Maximum("minimumWallThickness", "body", float64(*m.MinimumWallThickness), 0.0003, false); err != nil {
+	if err := validate.Maximum("minimumThickWallThickness", "body", float64(m.MinimumThickWallThickness), 0.01, false); err != nil {
 		return err
 	}
 
@@ -614,6 +603,40 @@ func (m *PartBasedSimulationParameters) validateSupportYieldStrength(formats str
 func (m *PartBasedSimulationParameters) validateSupportYieldStrengthRatio(formats strfmt.Registry) error {
 
 	if err := validate.Required("supportYieldStrengthRatio", "body", m.SupportYieldStrengthRatio); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *PartBasedSimulationParameters) validateThickWallDistance(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.ThickWallDistance) { // not required
+		return nil
+	}
+
+	if err := validate.Minimum("thickWallDistance", "body", float64(m.ThickWallDistance), 2e-05, false); err != nil {
+		return err
+	}
+
+	if err := validate.Maximum("thickWallDistance", "body", float64(m.ThickWallDistance), 0.01, false); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *PartBasedSimulationParameters) validateThinWallThickness(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.ThinWallThickness) { // not required
+		return nil
+	}
+
+	if err := validate.Minimum("thinWallThickness", "body", float64(m.ThinWallThickness), 2e-05, false); err != nil {
+		return err
+	}
+
+	if err := validate.Maximum("thinWallThickness", "body", float64(m.ThinWallThickness), 0.0005, false); err != nil {
 		return err
 	}
 
