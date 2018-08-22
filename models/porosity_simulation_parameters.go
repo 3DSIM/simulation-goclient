@@ -55,6 +55,11 @@ type PorositySimulationParameters struct {
 	// Required: true
 	LayerThicknessValues []float64 `json:"layerThicknessValues"`
 
+	// Number of mesh layers used to simulate a single deposit layer
+	// Maximum: 100
+	// Minimum: 1
+	MeshLayersPerLayer int32 `json:"meshLayersPerLayer,omitempty"`
+
 	// Array of origin x values to simulate across, Each value must be between 0 to 0.2 meters
 	// Required: true
 	OriginXValues []*float64 `json:"originXValues"`
@@ -117,6 +122,11 @@ func (m *PorositySimulationParameters) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateLayerThicknessValues(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateMeshLayersPerLayer(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -283,6 +293,23 @@ func (m *PorositySimulationParameters) validateLayerThicknessValues(formats strf
 			return err
 		}
 
+	}
+
+	return nil
+}
+
+func (m *PorositySimulationParameters) validateMeshLayersPerLayer(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.MeshLayersPerLayer) { // not required
+		return nil
+	}
+
+	if err := validate.MinimumInt("meshLayersPerLayer", "body", int64(m.MeshLayersPerLayer), 1, false); err != nil {
+		return err
+	}
+
+	if err := validate.MaximumInt("meshLayersPerLayer", "body", int64(m.MeshLayersPerLayer), 100, false); err != nil {
+		return err
 	}
 
 	return nil

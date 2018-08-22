@@ -84,11 +84,6 @@ type ThermalSimulationParameters struct {
 	// Minimum: 1e-05
 	LayerThickness *float64 `json:"layerThickness"`
 
-	// Number of mesh layers used to simulate a single deposit layer
-	// Maximum: 100
-	// Minimum: 1
-	MeshLayersPerLayer int32 `json:"meshLayersPerLayer,omitempty"`
-
 	// if true, coaxial average sensor data will be collected for the deposity layers specified by coaxialAverageSensorZHeights
 	// Required: true
 	OutputCoaxialAverageSensorData *bool `json:"outputCoaxialAverageSensorData"`
@@ -225,11 +220,6 @@ func (m *ThermalSimulationParameters) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateLayerThickness(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
-	if err := m.validateMeshLayersPerLayer(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -490,23 +480,6 @@ func (m *ThermalSimulationParameters) validateLayerThickness(formats strfmt.Regi
 	}
 
 	if err := validate.Maximum("layerThickness", "body", float64(*m.LayerThickness), 0.0001, false); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *ThermalSimulationParameters) validateMeshLayersPerLayer(formats strfmt.Registry) error {
-
-	if swag.IsZero(m.MeshLayersPerLayer) { // not required
-		return nil
-	}
-
-	if err := validate.MinimumInt("meshLayersPerLayer", "body", int64(m.MeshLayersPerLayer), 1, false); err != nil {
-		return err
-	}
-
-	if err := validate.MaximumInt("meshLayersPerLayer", "body", int64(m.MeshLayersPerLayer), 100, false); err != nil {
 		return err
 	}
 
