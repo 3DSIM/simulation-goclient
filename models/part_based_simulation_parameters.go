@@ -159,6 +159,11 @@ type PartBasedSimulationParameters struct {
 	// Minimum: 2e-05
 	ThinWallThickness float64 `json:"thinWallThickness,omitempty"`
 
+	// the amount of sub voxels per voxel in each direction (x,y,z)
+	// Maximum: 10
+	// Minimum: 1
+	VoxelSampleRate int32 `json:"voxelSampleRate,omitempty"`
+
 	// Must be between 0.00002 to 0.002 meters
 	// Required: true
 	// Maximum: 0.002
@@ -276,6 +281,11 @@ func (m *PartBasedSimulationParameters) Validate(formats strfmt.Registry) error 
 	}
 
 	if err := m.validateThinWallThickness(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateVoxelSampleRate(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -637,6 +647,23 @@ func (m *PartBasedSimulationParameters) validateThinWallThickness(formats strfmt
 	}
 
 	if err := validate.Maximum("thinWallThickness", "body", float64(m.ThinWallThickness), 0.0005, false); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *PartBasedSimulationParameters) validateVoxelSampleRate(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.VoxelSampleRate) { // not required
+		return nil
+	}
+
+	if err := validate.MinimumInt("voxelSampleRate", "body", int64(m.VoxelSampleRate), 1, false); err != nil {
+		return err
+	}
+
+	if err := validate.MaximumInt("voxelSampleRate", "body", int64(m.VoxelSampleRate), 10, false); err != nil {
 		return err
 	}
 
