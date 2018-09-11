@@ -224,7 +224,12 @@ func (c *client) SimulationChildren(simulationID int32) (simulation []*models.Si
 	if err != nil {
 		return nil, err
 	}
-	response, err := c.client.Operations.GetSimulationChildren(operations.NewGetSimulationChildrenParams().WithID(simulationID), openapiclient.BearerToken(token))
+
+	params := operations.NewGetSimulationChildrenParams().
+		WithID(simulationID).
+		WithLimit(swag.Int32(1000))
+
+	response, err := c.client.Operations.GetSimulationChildren(params, openapiclient.BearerToken(token))
 	if err != nil {
 		return nil, err
 	}
