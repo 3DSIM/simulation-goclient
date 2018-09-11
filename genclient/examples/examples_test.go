@@ -2,6 +2,8 @@ package examples
 
 import (
 	"fmt"
+	"testing"
+
 	simulationclient "github.com/3dsim/simulation-goclient/genclient"
 	"github.com/3dsim/simulation-goclient/genclient/operations"
 	"github.com/3dsim/simulation-goclient/models"
@@ -9,7 +11,6 @@ import (
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 func _TestExampleUseOfAPIWithAuthentication(t *testing.T) {
@@ -24,11 +25,11 @@ func _TestExampleUseOfAPIWithAuthentication(t *testing.T) {
 	}
 	partBasedSimulationParams := models.PartBasedSimulationParameters{
 		ElasticModulus:            swag.Float64(208e9),
-		MaximumWallDistance:       swag.Float64(3e-3),
-		MaximumWallThickness:      swag.Float64(1e-3),
+		MaximumThinWallDistance:   3e-3,
+		MaximumThickWallThickness: 1e-3,
 		MinimumSupportHeight:      swag.Float64(5e-3),
-		MinimumWallDistance:       swag.Float64(0),
-		MinimumWallThickness:      swag.Float64(5e-5),
+		ThinWallThickness:         30e-6,
+		MinimumThickWallThickness: 5e-5,
 		PoissonRatio:              swag.Float64(0.33),
 		StrainScalingFactor:       swag.Float64(1.0),
 		StressMode:                swag.String("LinearElastic"),

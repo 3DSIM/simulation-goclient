@@ -306,6 +306,56 @@ func TestSimulationWhenSuccessfulExpectsSimulationReturned(t *testing.T) {
 	assert.Equal(t, simulationToReturn.ID, simulation.ID, "Expected IDs to match")
 }
 
+func TestSimulationChildrenWhenSuccessfulExpectsSimulationReturned(t *testing.T) {
+	// arrange
+	simulationID := int32(2)
+
+	// Token
+	fakeTokenFetcher := &auth0fakes.FakeTokenFetcher{}
+	fakeTokenFetcher.TokenReturns("Token", nil)
+
+	// Simulation
+	simulationToReturn := &models.Simulation{
+		ID:       simulationID,
+		Title:    swag.String("Simulation name"),
+		ParentID: swag.Int32(1),
+	}
+	simulationHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		assert.NotEmpty(t, r.Header.Get("Authorization"), "Authorization header should not be empty")
+		receivedSimulationID, err := strconv.Atoi(mux.Vars(r)["simulationID"])
+		if err != nil {
+			t.Fatal(err)
+		}
+		assert.EqualValues(t, int(simulationID), receivedSimulationID, "Expected simulation id received to match what was passed in")
+		assert.Equal(t, "0", r.URL.Query().Get("offset"), "Expected offset to be passed as query param")
+		assert.Equal(t, "1000", r.URL.Query().Get("limit"), "Expected limit to be passed as query param")
+
+		bytes, err := json.Marshal([]*models.Simulation{simulationToReturn})
+		if err != nil {
+			t.Error("Failed to marshal simulation")
+		}
+		w.Write(bytes)
+	})
+
+	// Setup routes
+	r := mux.NewRouter()
+	simulationEndpoint := "/" + SimulationAPIBasePath + "/simulations/{simulationID}/children"
+	r.HandleFunc(simulationEndpoint, simulationHandler)
+	testServer := httptest.NewServer(r)
+	defer testServer.Close()
+	client := NewClient(fakeTokenFetcher, testServer.URL, SimulationAPIBasePath, audience)
+
+	// act
+	children, err := client.SimulationChildren(simulationID)
+
+	// assert
+
+	assert.Nil(t, err, "Expected no error returned")
+	assert.Equal(t, *simulationToReturn.Title, *children[0].Title, "Expected names to match")
+	assert.Equal(t, simulationToReturn.ID, children[0].ID, "Expected IDs to match")
+}
+
 // ThermalSimulations
 func TestThermalSimulationWhenFetcherErrorsExpectsErrorReturned(t *testing.T) {
 	// arrange
@@ -1905,7 +1955,7 @@ func TestPatchPartSupportByIDWithNonNilValuesExpectsSuccess(t *testing.T) {
 	}
 
 	partSupportFileToReturn := models.PartSupport{
-		ID:     swag.Int32(partSupportID),
+		ID: swag.Int32(partSupportID),
 	}
 
 	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -2023,7 +2073,7 @@ func TestUpdatePartSupportAvailabilityWithNonNilValuesExpectsSuccess(t *testing.
 	}
 
 	partSupportFileToReturn := models.PartSupport{
-		ID:     swag.Int32(partSupportID),
+		ID: swag.Int32(partSupportID),
 	}
 
 	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
