@@ -30,6 +30,11 @@ type SingleBeadSimulationParameters struct {
 	// Required: true
 	BeadType *string `json:"beadType"`
 
+	// heater temperature in degrees kelvin
+	// Maximum: 474
+	// Minimum: 293
+	HeaterTemperature float64 `json:"heaterTemperature,omitempty"`
+
 	// Array of Powder Laser Absorptivity Values to simulate across, Each value must be between 0% and 100%, expressed as a decimal
 	// Required: true
 	LaserAbsorptivityInPowderValues []*float64 `json:"laserAbsorptivityInPowderValues"`
@@ -79,6 +84,11 @@ func (m *SingleBeadSimulationParameters) Validate(formats strfmt.Registry) error
 	}
 
 	if err := m.validateBeadType(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateHeaterTemperature(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -186,6 +196,23 @@ func (m *SingleBeadSimulationParameters) validateBeadType(formats strfmt.Registr
 
 	// value enum
 	if err := m.validateBeadTypeEnum("beadType", "body", *m.BeadType); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *SingleBeadSimulationParameters) validateHeaterTemperature(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.HeaterTemperature) { // not required
+		return nil
+	}
+
+	if err := validate.Minimum("heaterTemperature", "body", float64(m.HeaterTemperature), 293, false); err != nil {
+		return err
+	}
+
+	if err := validate.Maximum("heaterTemperature", "body", float64(m.HeaterTemperature), 474, false); err != nil {
 		return err
 	}
 

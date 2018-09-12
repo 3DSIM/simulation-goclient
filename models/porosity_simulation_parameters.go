@@ -41,6 +41,11 @@ type PorositySimulationParameters struct {
 	// Required: true
 	HatchSpacingValues []float64 `json:"hatchSpacingValues"`
 
+	// heater temperature in degrees kelvin
+	// Maximum: 474
+	// Minimum: 293
+	HeaterTemperature float64 `json:"heaterTemperature,omitempty"`
+
 	// Array of laser power values to simulate across, Each value must be between 10 to 1000 watts
 	// Required: true
 	LaserWattageValues []float64 `json:"laserWattageValues"`
@@ -107,6 +112,11 @@ func (m *PorositySimulationParameters) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateHatchSpacingValues(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateHeaterTemperature(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -234,6 +244,23 @@ func (m *PorositySimulationParameters) validateHatchSpacingValues(formats strfmt
 			return err
 		}
 
+	}
+
+	return nil
+}
+
+func (m *PorositySimulationParameters) validateHeaterTemperature(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.HeaterTemperature) { // not required
+		return nil
+	}
+
+	if err := validate.Minimum("heaterTemperature", "body", float64(m.HeaterTemperature), 293, false); err != nil {
+		return err
+	}
+
+	if err := validate.Maximum("heaterTemperature", "body", float64(m.HeaterTemperature), 474, false); err != nil {
+		return err
 	}
 
 	return nil

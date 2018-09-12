@@ -26,9 +26,9 @@ type MicrostructureSimulationParameters struct {
 	HatchSpacing *float64 `json:"hatchSpacing"`
 
 	// Heater temperature in degrees kelvin, aka baseplate temperature
-	// Maximum: 1000
-	// Minimum: 0
-	HeaterTemperature *float64 `json:"heaterTemperature,omitempty"`
+	// Maximum: 474
+	// Minimum: 293
+	HeaterTemperature float64 `json:"heaterTemperature,omitempty"`
 
 	// Must be between 10 to 1000 watts
 	// Required: true
@@ -155,11 +155,11 @@ func (m *MicrostructureSimulationParameters) validateHeaterTemperature(formats s
 		return nil
 	}
 
-	if err := validate.Minimum("heaterTemperature", "body", float64(*m.HeaterTemperature), 0, false); err != nil {
+	if err := validate.Minimum("heaterTemperature", "body", float64(m.HeaterTemperature), 293, false); err != nil {
 		return err
 	}
 
-	if err := validate.Maximum("heaterTemperature", "body", float64(*m.HeaterTemperature), 1000, false); err != nil {
+	if err := validate.Maximum("heaterTemperature", "body", float64(m.HeaterTemperature), 474, false); err != nil {
 		return err
 	}
 

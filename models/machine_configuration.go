@@ -45,8 +45,8 @@ type MachineConfiguration struct {
 
 	// heater temperature in degrees kelvin
 	// Required: true
-	// Maximum: 1000
-	// Minimum: 0
+	// Maximum: 474
+	// Minimum: 293
 	HeaterTemperature *float64 `json:"heaterTemperature"`
 
 	// machine configuration identifier
@@ -254,11 +254,11 @@ func (m *MachineConfiguration) validateHeaterTemperature(formats strfmt.Registry
 		return err
 	}
 
-	if err := validate.Minimum("heaterTemperature", "body", float64(*m.HeaterTemperature), 0, false); err != nil {
+	if err := validate.Minimum("heaterTemperature", "body", float64(*m.HeaterTemperature), 293, false); err != nil {
 		return err
 	}
 
-	if err := validate.Maximum("heaterTemperature", "body", float64(*m.HeaterTemperature), 1000, false); err != nil {
+	if err := validate.Maximum("heaterTemperature", "body", float64(*m.HeaterTemperature), 474, false); err != nil {
 		return err
 	}
 
