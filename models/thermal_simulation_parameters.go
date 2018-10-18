@@ -34,7 +34,7 @@ type ThermalSimulationParameters struct {
 	// should be a number between 0.05 and 1.5 mm
 	CoaxialAverageSensorRadius float64 `json:"coaxialAverageSensorRadius,omitempty"`
 
-	// List of z height (mm) ranges within the part where the coaxial average sensor will collect data
+	// list of z height (mm) ranges within the part where the coaxial average sensor will collect data
 	CoaxialAverageSensorZHeights []*ZHeightRange `json:"coaxialAverageSensorZHeights"`
 
 	// Must be between 0.00001 to 0.001 meters
@@ -82,6 +82,11 @@ type ThermalSimulationParameters struct {
 	// Maximum: 0.0001
 	// Minimum: 1e-05
 	LayerThickness *float64 `json:"layerThickness"`
+
+	// multiplier of fine grid spacing for course grid portion of FEA mesh
+	// Maximum: 15
+	// Minimum: 1
+	MeshResolutionFactor int32 `json:"meshResolutionFactor,omitempty"`
 
 	// if true, coaxial average sensor data will be collected for the deposity layers specified by coaxialAverageSensorZHeights
 	// Required: true
@@ -219,6 +224,11 @@ func (m *ThermalSimulationParameters) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateLayerThickness(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateMeshResolutionFactor(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -479,6 +489,23 @@ func (m *ThermalSimulationParameters) validateLayerThickness(formats strfmt.Regi
 	}
 
 	if err := validate.Maximum("layerThickness", "body", float64(*m.LayerThickness), 0.0001, false); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *ThermalSimulationParameters) validateMeshResolutionFactor(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.MeshResolutionFactor) { // not required
+		return nil
+	}
+
+	if err := validate.MinimumInt("meshResolutionFactor", "body", int64(m.MeshResolutionFactor), 1, false); err != nil {
+		return err
+	}
+
+	if err := validate.MaximumInt("meshResolutionFactor", "body", int64(m.MeshResolutionFactor), 15, false); err != nil {
 		return err
 	}
 
