@@ -65,14 +65,6 @@ type PorositySimulationParameters struct {
 	// Minimum: 1
 	MeshLayersPerLayer int32 `json:"meshLayersPerLayer,omitempty"`
 
-	// Array of origin x values to simulate across, Each value must be between 0 to 0.2 meters
-	// Required: true
-	OriginXValues []*float64 `json:"originXValues"`
-
-	// Array of origin y values to simulate across, Each value must be between 0 to 0.2 meters
-	// Required: true
-	OriginYValues []*float64 `json:"originYValues"`
-
 	// Array of scan speed values to simulate across, Each value must be between 0.01 to 10 meters/second
 	// Required: true
 	ScanSpeedValues []float64 `json:"scanSpeedValues"`
@@ -80,10 +72,6 @@ type PorositySimulationParameters struct {
 	// Array of slicing strip width values to simulate across, Each value must be between 0.001 to 0.1 meters
 	// Required: true
 	SlicingStripeWidthValues []float64 `json:"slicingStripeWidthValues"`
-
-	// Array of solidus temperature values to simulate across
-	// Required: true
-	SolidusTemperatureValues []float64 `json:"solidusTemperatureValues"`
 
 	// Must be between 0 to 180 degrees
 	// Required: true
@@ -141,27 +129,12 @@ func (m *PorositySimulationParameters) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
-	if err := m.validateOriginXValues(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
-	if err := m.validateOriginYValues(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
 	if err := m.validateScanSpeedValues(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
 
 	if err := m.validateSlicingStripeWidthValues(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
-	if err := m.validateSolidusTemperatureValues(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -342,56 +315,6 @@ func (m *PorositySimulationParameters) validateMeshLayersPerLayer(formats strfmt
 	return nil
 }
 
-func (m *PorositySimulationParameters) validateOriginXValues(formats strfmt.Registry) error {
-
-	if err := validate.Required("originXValues", "body", m.OriginXValues); err != nil {
-		return err
-	}
-
-	for i := 0; i < len(m.OriginXValues); i++ {
-
-		if swag.IsZero(m.OriginXValues[i]) { // not required
-			continue
-		}
-
-		if err := validate.Minimum("originXValues"+"."+strconv.Itoa(i), "body", float64(*m.OriginXValues[i]), 0, false); err != nil {
-			return err
-		}
-
-		if err := validate.Maximum("originXValues"+"."+strconv.Itoa(i), "body", float64(*m.OriginXValues[i]), 0.2, false); err != nil {
-			return err
-		}
-
-	}
-
-	return nil
-}
-
-func (m *PorositySimulationParameters) validateOriginYValues(formats strfmt.Registry) error {
-
-	if err := validate.Required("originYValues", "body", m.OriginYValues); err != nil {
-		return err
-	}
-
-	for i := 0; i < len(m.OriginYValues); i++ {
-
-		if swag.IsZero(m.OriginYValues[i]) { // not required
-			continue
-		}
-
-		if err := validate.Minimum("originYValues"+"."+strconv.Itoa(i), "body", float64(*m.OriginYValues[i]), 0, false); err != nil {
-			return err
-		}
-
-		if err := validate.Maximum("originYValues"+"."+strconv.Itoa(i), "body", float64(*m.OriginYValues[i]), 0.2, false); err != nil {
-			return err
-		}
-
-	}
-
-	return nil
-}
-
 func (m *PorositySimulationParameters) validateScanSpeedValues(formats strfmt.Registry) error {
 
 	if err := validate.Required("scanSpeedValues", "body", m.ScanSpeedValues); err != nil {
@@ -429,15 +352,6 @@ func (m *PorositySimulationParameters) validateSlicingStripeWidthValues(formats 
 			return err
 		}
 
-	}
-
-	return nil
-}
-
-func (m *PorositySimulationParameters) validateSolidusTemperatureValues(formats strfmt.Registry) error {
-
-	if err := validate.Required("solidusTemperatureValues", "body", m.SolidusTemperatureValues); err != nil {
-		return err
 	}
 
 	return nil
