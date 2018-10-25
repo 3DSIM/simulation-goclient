@@ -84,7 +84,7 @@ type ThermalSimulationParameters struct {
 	LayerThickness *float64 `json:"layerThickness"`
 
 	// multiplier of fine grid spacing for course grid portion of FEA mesh
-	// Maximum: 10
+	// Maximum: 12
 	// Minimum: 1
 	MeshResolutionFactor int32 `json:"meshResolutionFactor,omitempty"`
 
@@ -505,7 +505,7 @@ func (m *ThermalSimulationParameters) validateMeshResolutionFactor(formats strfm
 		return err
 	}
 
-	if err := validate.MaximumInt("meshResolutionFactor", "body", int64(m.MeshResolutionFactor), 10, false); err != nil {
+	if err := validate.MaximumInt("meshResolutionFactor", "body", int64(m.MeshResolutionFactor), 12, false); err != nil {
 		return err
 	}
 
