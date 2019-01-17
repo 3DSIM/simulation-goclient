@@ -17,8 +17,6 @@ import (
 type MicrostructureSimulation struct {
 	Simulation
 
-	PartBasedSimulationParameters
-
 	MicrostructureSimulationParameters
 }
 
@@ -31,17 +29,11 @@ func (m *MicrostructureSimulation) UnmarshalJSON(raw []byte) error {
 	}
 	m.Simulation = aO0
 
-	var aO1 PartBasedSimulationParameters
+	var aO1 MicrostructureSimulationParameters
 	if err := swag.ReadJSON(raw, &aO1); err != nil {
 		return err
 	}
-	m.PartBasedSimulationParameters = aO1
-
-	var aO2 MicrostructureSimulationParameters
-	if err := swag.ReadJSON(raw, &aO2); err != nil {
-		return err
-	}
-	m.MicrostructureSimulationParameters = aO2
+	m.MicrostructureSimulationParameters = aO1
 
 	return nil
 }
@@ -56,17 +48,11 @@ func (m MicrostructureSimulation) MarshalJSON() ([]byte, error) {
 	}
 	_parts = append(_parts, aO0)
 
-	aO1, err := swag.WriteJSON(m.PartBasedSimulationParameters)
+	aO1, err := swag.WriteJSON(m.MicrostructureSimulationParameters)
 	if err != nil {
 		return nil, err
 	}
 	_parts = append(_parts, aO1)
-
-	aO2, err := swag.WriteJSON(m.MicrostructureSimulationParameters)
-	if err != nil {
-		return nil, err
-	}
-	_parts = append(_parts, aO2)
 
 	return swag.ConcatJSON(_parts...), nil
 }
@@ -76,10 +62,6 @@ func (m *MicrostructureSimulation) Validate(formats strfmt.Registry) error {
 	var res []error
 
 	if err := m.Simulation.Validate(formats); err != nil {
-		res = append(res, err)
-	}
-
-	if err := m.PartBasedSimulationParameters.Validate(formats); err != nil {
 		res = append(res, err)
 	}
 

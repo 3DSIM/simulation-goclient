@@ -75,7 +75,7 @@ func NewPartSupportGeometryOK() *PartSupportGeometryOK {
 Successfully returns support geometry triangles
 */
 type PartSupportGeometryOK struct {
-	Payload []*models.Triangle
+	Payload []*models.GeometryTriangle
 }
 
 func (o *PartSupportGeometryOK) Error() string {
