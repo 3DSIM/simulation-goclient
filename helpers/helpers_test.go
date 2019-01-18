@@ -21,6 +21,7 @@ func TestIsSimulationUsingMachine(t *testing.T) {
 		{"PorositySimulation", models.SimulationTypePorositySimulation, true},
 		{"AssumedStrainSimulation", models.SimulationTypeAssumedStrainSimulation, false},
 		{"ScanPatternSimulation", models.SimulationTypeScanPatternSimulation, true},
+		{"MicrostructureSimulation", models.SimulationTypeMicrostructureSimulation, true},
 	}
 
 	for _, tc := range testCases {

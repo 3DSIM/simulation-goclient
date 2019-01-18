@@ -2119,3 +2119,191 @@ func TestUpdatePartSupportAvailabilityWithNonNilValuesExpectsSuccess(t *testing.
 	assert.NotNil(t, partSupport)
 	assert.Equal(t, partSupportID, *partSupport.ID, "Expected ID values to match")
 }
+
+func TestMicrostructureSimulationWhenSuccessfulExpectsMicrostructureSimulationReturned(t *testing.T) {
+	// arrange
+	ID := int32(2)
+
+	fakeTokenFetcher := &auth0fakes.FakeTokenFetcher{}
+	fakeTokenFetcher.TokenReturns("Token", nil)
+
+	simToReturn := &models.MicrostructureSimulation{
+		Simulation: models.Simulation{
+			ID:    ID,
+			Title: swag.String("Simulation name"),
+		},
+		MicrostructureSimulationParameters: models.MicrostructureSimulationParameters{
+			GeometryHeight: swag.Float64(10),
+		},
+	}
+	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		assert.NotEmpty(t, r.Header.Get("Authorization"), "Authorization header should not be empty")
+		receivedID, err := strconv.Atoi(mux.Vars(r)["ID"])
+		if err != nil {
+			t.Fatal(err)
+		}
+		assert.EqualValues(t, int(ID), receivedID, "Expected id received to match what was passed in")
+		bytes, err := json.Marshal(simToReturn)
+		if err != nil {
+			t.Error("Failed to marshal simulation")
+		}
+		w.Write(bytes)
+	})
+
+	// Setup routes
+	r := mux.NewRouter()
+	endpoint := "/" + SimulationAPIBasePath + "/microstructuresimulations/{ID}"
+	r.HandleFunc(endpoint, handler)
+	testServer := httptest.NewServer(r)
+	defer testServer.Close()
+	service := NewClient(fakeTokenFetcher, testServer.URL, SimulationAPIBasePath, audience)
+
+	// act
+	sim, err := service.MicrostructureSimulation(ID)
+
+	// assert
+	assert.Nil(t, err, "Expected no error returned")
+	assert.Equal(t, *simToReturn.Title, *sim.Title, "Expected names to match")
+	assert.Equal(t, simToReturn.ID, sim.ID, "Expected IDs to match")
+	assert.EqualValues(t, *simToReturn.GeometryHeight, *sim.GeometryHeight, "Expected GeometryHeight values to match")
+}
+func TestMicrostructureSimulationWhenFetcherErrorsExpectsErrorReturned(t *testing.T) {
+	// arrange
+	microstructureSimulationID := int32(2)
+	expectedError := errors.New("Some auth0 error")
+
+	// Token
+	fakeTokenFetcher := &auth0fakes.FakeTokenFetcher{}
+	fakeTokenFetcher.TokenReturns("", expectedError)
+
+	microstructureSimulationService := NewClient(fakeTokenFetcher, "", "", audience)
+
+	// act
+	_, err := microstructureSimulationService.MicrostructureSimulation(microstructureSimulationID)
+
+	// assert
+
+	assert.Equal(t, expectedError, err, "Expected an error returned")
+}
+
+func TestMicrostructureSimulationWhenMicrostructureSimulationAPIErrorsExpectsErrorReturned(t *testing.T) {
+	// arrange
+	microstructureSimulationID := int32(2)
+
+	// Token
+	fakeTokenFetcher := &auth0fakes.FakeTokenFetcher{}
+	fakeTokenFetcher.TokenReturns("Token", nil)
+
+	// MicrostructureSimulation
+	microstructureSimulationHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(500)
+	})
+
+	// Setup routes
+	r := mux.NewRouter()
+	microstructureSimulationEndpoint := "/" + SimulationAPIBasePath + "/microstructuresimulations/{microstructureSimulationID}"
+	r.HandleFunc(microstructureSimulationEndpoint, microstructureSimulationHandler)
+	testServer := httptest.NewServer(r)
+	defer testServer.Close()
+	microstructureSimulationService := NewClient(fakeTokenFetcher, testServer.URL, SimulationAPIBasePath, audience)
+
+	// act
+	_, err := microstructureSimulationService.MicrostructureSimulation(microstructureSimulationID)
+
+	// assert
+
+	assert.NotNil(t, err, "Expected an error returned because microstructureSimulation api send a 500 error")
+}
+
+func TestPostMicrostructureWithNonNilValuesExpectsSuccess(t *testing.T) {
+
+	// arrange
+	fakeTokenFetcher := &auth0fakes.FakeTokenFetcher{}
+	fakeTokenFetcher.TokenReturns("Token", nil)
+
+	microstructureToPost := &models.MicrostructureSimulation{
+		Simulation: models.Simulation{
+			Title:          swag.String("Simulation name"),
+			OrganizationID: swag.Int32(1),
+		},
+		MicrostructureSimulationParameters: models.MicrostructureSimulationParameters{
+			GeometryHeight: swag.Float64(10),
+		},
+	}
+
+	microstructureToReturn := models.MicrostructureSimulation{
+		Simulation: models.Simulation{
+			ID:             int32(99),
+			Title:          microstructureToPost.Title,
+			OrganizationID: microstructureToPost.OrganizationID,
+		},
+		MicrostructureSimulationParameters: models.MicrostructureSimulationParameters{
+			GeometryHeight: microstructureToPost.GeometryHeight,
+		},
+	}
+
+	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		assert.NotEmpty(t, r.Header.Get("Authorization"), "Authorization header should not be empty")
+		bytes, err := json.Marshal(microstructureToReturn)
+		if err != nil {
+			t.Error("Failed to marshal build file")
+		}
+		w.Write(bytes)
+	})
+
+	// Setup routes
+	r := mux.NewRouter()
+	endpoint := "/" + SimulationAPIBasePath + "/microstructuresimulations"
+	r.HandleFunc(endpoint, handler)
+	testServer := httptest.NewServer(r)
+	defer testServer.Close()
+	client := NewClient(fakeTokenFetcher, testServer.URL, SimulationAPIBasePath, audience)
+
+	// act
+	microstructure, err := client.PostMicrostructureSimulation(microstructureToPost)
+
+	// assert
+
+	assert.Nil(t, err, "Expected no error returned")
+	assert.NotNil(t, microstructure)
+	assert.Equal(t, microstructureToReturn.ID, microstructure.ID, "Expected ID values to match")
+	assert.Equal(t, *microstructureToReturn.Title, *microstructure.Title, "Expected Title values to match")
+	assert.Equal(t, *microstructureToReturn.GeometryHeight, *microstructure.GeometryHeight, "Expected GeometryHeight values to match")
+}
+
+func TestPostMicrostructureWhenSimulationAPIErrorsExpectsErrorReturned(t *testing.T) {
+	// arrange
+	// Token
+	fakeTokenFetcher := &auth0fakes.FakeTokenFetcher{}
+	fakeTokenFetcher.TokenReturns("Token", nil)
+
+	microstructureToPost := &models.MicrostructureSimulation{
+		Simulation: models.Simulation{
+			Title:          swag.String("Simulation name"),
+			OrganizationID: swag.Int32(1),
+		},
+		MicrostructureSimulationParameters: models.MicrostructureSimulationParameters{
+			GeometryHeight: swag.Float64(10),
+		},
+	}
+
+	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(500)
+	})
+
+	// Setup routes
+	r := mux.NewRouter()
+	endpoint := "/" + SimulationAPIBasePath + "/microstructuresimulations"
+	r.HandleFunc(endpoint, handler)
+	testServer := httptest.NewServer(r)
+	defer testServer.Close()
+	client := NewClient(fakeTokenFetcher, testServer.URL, SimulationAPIBasePath, audience)
+
+	// act
+	_, err := client.PostMicrostructureSimulation(microstructureToPost)
+
+	// assert
+	assert.NotNil(t, err, "Expected an error returned because simulation api sent a 500 error")
+}
