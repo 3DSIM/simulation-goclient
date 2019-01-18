@@ -11,7 +11,8 @@ func IsSimulationUsingMachine(simulation *models.Simulation) bool {
 	case models.SimulationTypeThermalSimulation,
 		models.SimulationTypeScanPatternSimulation,
 		models.SimulationTypeSingleBeadSimulation,
-		models.SimulationTypePorositySimulation:
+		models.SimulationTypePorositySimulation,
+		models.SimulationTypeMicrostructureSimulation:
 		return true
 	case models.SimulationTypeAssumedStrainSimulation:
 		return false

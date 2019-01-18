@@ -94,6 +94,8 @@ type Client interface {
 	PatchPartSupport(partID, supportID int32, patches []*models.PatchDocument) (*models.PartSupport, error)
 	PatchPartSupportByID(supportID int32, patches []*models.PatchDocument) (*models.PartSupport, error)
 	UpdatePartSupportAvailability(supportID int32, availability string) (partSupport *models.PartSupport, err error)
+	MicrostructureSimulation(simulationID int32) (*models.MicrostructureSimulation, error)
+	PostMicrostructureSimulation(simulation *models.MicrostructureSimulation) (*models.MicrostructureSimulation, error)
 }
 
 type client struct {
@@ -325,6 +327,25 @@ func (c *client) SingleBeadSimulation(simulationID int32) (s *models.SingleBeadS
 		return nil, err
 	}
 	response, err := c.client.Operations.GetSingleBeadSimulation(operations.NewGetSingleBeadSimulationParams().WithID(simulationID), openapiclient.BearerToken(token))
+	if err != nil {
+		return nil, err
+	}
+	return response.Payload, nil
+}
+
+func (c *client) MicrostructureSimulation(simulationID int32) (s *models.MicrostructureSimulation, err error) {
+	defer func() {
+		// Until this issue is resolved: https://github.com/go-swagger/go-swagger/issues/1021, we need to recover from
+		// panics.
+		if r := recover(); r != nil {
+			err = fmt.Errorf("Recovered from panic: %v", r)
+		}
+	}()
+	token, err := c.tokenFetcher.Token(c.audience)
+	if err != nil {
+		return nil, err
+	}
+	response, err := c.client.Operations.GetMicrostructureSimulation(operations.NewGetMicrostructureSimulationParams().WithID(simulationID), openapiclient.BearerToken(token))
 	if err != nil {
 		return nil, err
 	}
@@ -616,6 +637,26 @@ func (c *client) PostSingleBeadSimulation(simulation *models.SingleBeadSimulatio
 	}
 	params := operations.NewPostSingleBeadSimulationParams().WithSingleBeadSimulation(simulation)
 	response, err := c.client.Operations.PostSingleBeadSimulation(params, openapiclient.BearerToken(token))
+	if err != nil {
+		return nil, err
+	}
+	return response.Payload, nil
+}
+
+func (c *client) PostMicrostructureSimulation(simulation *models.MicrostructureSimulation) (p *models.MicrostructureSimulation, err error) {
+	defer func() {
+		// Until this issue is resolved: https://github.com/go-swagger/go-swagger/issues/1021, we need to recover from
+		// panics.
+		if r := recover(); r != nil {
+			err = fmt.Errorf("Recovered from panic: %v", r)
+		}
+	}()
+	token, err := c.tokenFetcher.Token(c.audience)
+	if err != nil {
+		return nil, err
+	}
+	params := operations.NewPostMicrostructureSimulationParams().WithMicrostructureSimulation(simulation)
+	response, err := c.client.Operations.PostMicrostructureSimulation(params, openapiclient.BearerToken(token))
 	if err != nil {
 		return nil, err
 	}
