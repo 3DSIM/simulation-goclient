@@ -70,6 +70,9 @@ type Material struct {
 	// Required: true
 	LastModifiedBy *string `json:"lastModifiedBy"`
 
+	// true if the material properites have been tuned for microstructure simulations
+	MicrostructureSimulationApproved bool `json:"microstructureSimulationApproved,omitempty"`
+
 	// material name
 	// Required: true
 	// Max Length: 128
