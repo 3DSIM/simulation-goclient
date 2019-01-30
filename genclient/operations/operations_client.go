@@ -2054,6 +2054,34 @@ func (a *Client) PatchBuildFile(params *PatchBuildFileParams, authInfo runtime.C
 }
 
 /*
+PatchMicrostructureSensor Update fields within a microstructure sensor.
+*/
+func (a *Client) PatchMicrostructureSensor(params *PatchMicrostructureSensorParams) (*PatchMicrostructureSensorOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewPatchMicrostructureSensorParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "patchMicrostructureSensor",
+		Method:             "PATCH",
+		PathPattern:        "/microstructuresimulations/{id}/sensors/{sensorId}",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &PatchMicrostructureSensorReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*PatchMicrostructureSensorOK), nil
+
+}
+
+/*
 PatchPart Update fields within a part
 */
 func (a *Client) PatchPart(params *PatchPartParams, authInfo runtime.ClientAuthInfoWriter) (*PatchPartOK, error) {
