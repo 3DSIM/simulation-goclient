@@ -143,6 +143,10 @@ type MaterialConfiguration struct {
 	// Required: true
 	MaterialYieldStrength *float64 `json:"materialYieldStrength"`
 
+	// nucleation constant
+	// Required: true
+	NucleationConstant *float64 `json:"nucleationConstant"`
+
 	// poisson ratio
 	// Required: true
 	PoissonRatio *float64 `json:"poissonRatio"`
@@ -362,6 +366,11 @@ func (m *MaterialConfiguration) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateMaterialYieldStrength(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateNucleationConstant(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -721,6 +730,15 @@ func (m *MaterialConfiguration) validateMaterialStrainSensitivity(formats strfmt
 func (m *MaterialConfiguration) validateMaterialYieldStrength(formats strfmt.Registry) error {
 
 	if err := validate.Required("materialYieldStrength", "body", m.MaterialYieldStrength); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *MaterialConfiguration) validateNucleationConstant(formats strfmt.Registry) error {
+
+	if err := validate.Required("nucleationConstant", "body", m.NucleationConstant); err != nil {
 		return err
 	}
 
