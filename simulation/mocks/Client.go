@@ -254,6 +254,29 @@ func (_m *Client) PatchBuildFile(buildFileID int32, patches []*models.PatchDocum
 	return r0, r1
 }
 
+// PatchMicrostructureSensor provides a mock function with given fields: simulationID, sensorID, patches
+func (_m *Client) PatchMicrostructureSensor(simulationID int32, sensorID int32, patches []*models.PatchDocument) (*models.MicrostructureSensor, error) {
+	ret := _m.Called(simulationID, sensorID, patches)
+
+	var r0 *models.MicrostructureSensor
+	if rf, ok := ret.Get(0).(func(int32, int32, []*models.PatchDocument) *models.MicrostructureSensor); ok {
+		r0 = rf(simulationID, sensorID, patches)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*models.MicrostructureSensor)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(int32, int32, []*models.PatchDocument) error); ok {
+		r1 = rf(simulationID, sensorID, patches)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
 // PatchPart provides a mock function with given fields: partID, patches
 func (_m *Client) PatchPart(partID int32, patches []*models.PatchDocument) (*models.Part, error) {
 	ret := _m.Called(partID, patches)

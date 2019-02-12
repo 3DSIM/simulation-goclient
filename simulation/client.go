@@ -96,6 +96,7 @@ type Client interface {
 	UpdatePartSupportAvailability(supportID int32, availability string) (partSupport *models.PartSupport, err error)
 	MicrostructureSimulation(simulationID int32) (*models.MicrostructureSimulation, error)
 	PostMicrostructureSimulation(simulation *models.MicrostructureSimulation) (*models.MicrostructureSimulation, error)
+	PatchMicrostructureSensor(simulationID, sensorID int32, patches []*models.PatchDocument) (*models.MicrostructureSensor, error)
 }
 
 type client struct {
@@ -1145,4 +1146,21 @@ func (c *client) UpdatePartSupportAvailability(supportID int32, availability str
 	}
 
 	return c.PatchPartSupportByID(supportID, []*models.PatchDocument{&patch})
+}
+
+func (c *client) PatchMicrostructureSensor(simulationID, sensorID int32, patches []*models.PatchDocument) (sensor *models.MicrostructureSensor, err error) {
+	patchLog := Log.New("sensorID", sensorID)
+	token, err := c.tokenFetcher.Token(c.audience)
+	if err != nil {
+		patchLog.Error("Error getting token", "error", err)
+		return nil, err
+	}
+
+	params := operations.NewPatchMicrostructureSensorParams().WithID(simulationID).WithSensorID(sensorID).WithMicrostructureSensorPatch(patches)
+
+	response, err := c.client.Operations.PatchMicrostructureSensor(params, openapiclient.BearerToken(token))
+	if err != nil {
+		return nil, err
+	}
+	return response.Payload, nil
 }
