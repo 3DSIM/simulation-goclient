@@ -2056,7 +2056,7 @@ func (a *Client) PatchBuildFile(params *PatchBuildFileParams, authInfo runtime.C
 /*
 PatchMicrostructureSensor Update fields within a microstructure sensor.
 */
-func (a *Client) PatchMicrostructureSensor(params *PatchMicrostructureSensorParams) (*PatchMicrostructureSensorOK, error) {
+func (a *Client) PatchMicrostructureSensor(params *PatchMicrostructureSensorParams, authInfo runtime.ClientAuthInfoWriter) (*PatchMicrostructureSensorOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewPatchMicrostructureSensorParams()
@@ -2071,6 +2071,7 @@ func (a *Client) PatchMicrostructureSensor(params *PatchMicrostructureSensorPara
 		Schemes:            []string{"https"},
 		Params:             params,
 		Reader:             &PatchMicrostructureSensorReader{formats: a.formats},
+		AuthInfo:           authInfo,
 		Context:            params.Context,
 		Client:             params.HTTPClient,
 	})
