@@ -2307,3 +2307,106 @@ func TestPostMicrostructureWhenSimulationAPIErrorsExpectsErrorReturned(t *testin
 	// assert
 	assert.NotNil(t, err, "Expected an error returned because simulation api sent a 500 error")
 }
+
+func TestPatchMicrostructureSensorWithNonNilValuesExpectsSensorPatched(t *testing.T) {
+
+	// arrange
+	simulationID := int32(101)
+	sensorID := int32(1)
+	coolingRate := 3
+	fakeTokenFetcher := &auth0fakes.FakeTokenFetcher{}
+	fakeTokenFetcher.TokenReturns("Token", nil)
+
+	patch := &models.PatchDocument{
+		From:  "",
+		Op:    swag.String(models.PatchDocumentOpReplace),
+		Path:  swag.String("/coolingrate"),
+		Value: coolingRate,
+	}
+
+	sensorToReturn := models.MicrostructureSensor{
+		ID: sensorID,
+	}
+
+	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		assert.NotEmpty(t, r.Header.Get("Authorization"), "Authorization header should not be empty")
+		receivedSimulationID, err := strconv.Atoi(mux.Vars(r)["id"])
+		if err != nil {
+			t.Fatal(err)
+		}
+		assert.EqualValues(t, int(simulationID), receivedSimulationID, "Expected simulation id received to match what was passed in")
+		receivedSensorID, err := strconv.Atoi(mux.Vars(r)["sensorId"])
+		if err != nil {
+			t.Fatal(err)
+		}
+		assert.EqualValues(t, int(sensorID), receivedSensorID, "Expected sensor id received to match what was passed in")
+
+		bodyBytes, err := ioutil.ReadAll(r.Body)
+		if err != nil {
+			t.Fatal(err)
+		}
+		var actualPatchDocuments []models.PatchDocument
+		err = json.Unmarshal(bodyBytes, &actualPatchDocuments)
+		if err != nil {
+			t.Error("Failed to unmarshal build file")
+		}
+		actualPatch := actualPatchDocuments[0]
+		assert.EqualValues(t, *patch.Op, *actualPatch.Op, "Expected patch operation to be passed in PATCH request")
+		assert.EqualValues(t, *patch.Path, *actualPatch.Path, "Expected patch path to be passed in PATCH request")
+		assert.EqualValues(t, patch.Value, actualPatch.Value, "Expected patch value to be passed in PATCH request")
+		bytes, err := json.Marshal(sensorToReturn)
+		if err != nil {
+			t.Error("Failed to marshal build file")
+		}
+		w.Write(bytes)
+	})
+
+	// Setup routes
+	r := mux.NewRouter()
+	endpoint := "/" + SimulationAPIBasePath + "/microstructuresimulations/{id}/sensors/{sensorId}"
+	r.HandleFunc(endpoint, handler)
+	testServer := httptest.NewServer(r)
+	defer testServer.Close()
+	client := NewClient(fakeTokenFetcher, testServer.URL, SimulationAPIBasePath, audience)
+
+	// act
+	sensor, err := client.PatchMicrostructureSensor(simulationID, sensorID, []*models.PatchDocument{patch})
+
+	// assert
+
+	assert.Nil(t, err, "Expected no error returned")
+	assert.NotNil(t, sensor)
+	assert.Equal(t, sensorID, sensor.ID, "Expected ID values to match")
+}
+
+func TestPatchMicrostructureSensorWhenSimulationAPIErrorsExpectsErrorReturned(t *testing.T) {
+	// arrange
+	fakeTokenFetcher := &auth0fakes.FakeTokenFetcher{}
+	fakeTokenFetcher.TokenReturns("Token", nil)
+
+	patch := models.PatchDocument{
+		From:  "",
+		Op:    swag.String(models.PatchDocumentOpReplace),
+		Path:  swag.String("/sensorx"),
+		Value: float64(3),
+	}
+
+	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(500)
+	})
+
+	// Setup routes
+	r := mux.NewRouter()
+	endpoint := "/" + SimulationAPIBasePath + "/microstrucutresimulations/{id}/sensors/{sensorId}"
+	r.HandleFunc(endpoint, handler)
+	testServer := httptest.NewServer(r)
+	defer testServer.Close()
+	client := NewClient(fakeTokenFetcher, testServer.URL, SimulationAPIBasePath, audience)
+
+	// act
+	_, err := client.PatchMicrostructureSensor(1, 2, []*models.PatchDocument{&patch})
+
+	// assert
+	assert.NotNil(t, err, "Expected an error returned because simulation api sent a 500 error")
+}

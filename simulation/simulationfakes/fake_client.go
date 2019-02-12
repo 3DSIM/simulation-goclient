@@ -158,6 +158,21 @@ type FakeClient struct {
 		result1 *models.BuildFile
 		result2 error
 	}
+	PatchMicrostructureSensorStub        func(int32, int32, []*models.PatchDocument) (*models.MicrostructureSensor, error)
+	patchMicrostructureSensorMutex       sync.RWMutex
+	patchMicrostructureSensorArgsForCall []struct {
+		arg1 int32
+		arg2 int32
+		arg3 []*models.PatchDocument
+	}
+	patchMicrostructureSensorReturns struct {
+		result1 *models.MicrostructureSensor
+		result2 error
+	}
+	patchMicrostructureSensorReturnsOnCall map[int]struct {
+		result1 *models.MicrostructureSensor
+		result2 error
+	}
 	PatchPartStub        func(int32, []*models.PatchDocument) (*models.Part, error)
 	patchPartMutex       sync.RWMutex
 	patchPartArgsForCall []struct {
@@ -1343,6 +1358,76 @@ func (fake *FakeClient) PatchBuildFileReturnsOnCall(i int, result1 *models.Build
 	}
 	fake.patchBuildFileReturnsOnCall[i] = struct {
 		result1 *models.BuildFile
+		result2 error
+	}{result1, result2}
+}
+
+func (fake *FakeClient) PatchMicrostructureSensor(arg1 int32, arg2 int32, arg3 []*models.PatchDocument) (*models.MicrostructureSensor, error) {
+	var arg3Copy []*models.PatchDocument
+	if arg3 != nil {
+		arg3Copy = make([]*models.PatchDocument, len(arg3))
+		copy(arg3Copy, arg3)
+	}
+	fake.patchMicrostructureSensorMutex.Lock()
+	ret, specificReturn := fake.patchMicrostructureSensorReturnsOnCall[len(fake.patchMicrostructureSensorArgsForCall)]
+	fake.patchMicrostructureSensorArgsForCall = append(fake.patchMicrostructureSensorArgsForCall, struct {
+		arg1 int32
+		arg2 int32
+		arg3 []*models.PatchDocument
+	}{arg1, arg2, arg3Copy})
+	fake.recordInvocation("PatchMicrostructureSensor", []interface{}{arg1, arg2, arg3Copy})
+	fake.patchMicrostructureSensorMutex.Unlock()
+	if fake.PatchMicrostructureSensorStub != nil {
+		return fake.PatchMicrostructureSensorStub(arg1, arg2, arg3)
+	}
+	if specificReturn {
+		return ret.result1, ret.result2
+	}
+	fakeReturns := fake.patchMicrostructureSensorReturns
+	return fakeReturns.result1, fakeReturns.result2
+}
+
+func (fake *FakeClient) PatchMicrostructureSensorCallCount() int {
+	fake.patchMicrostructureSensorMutex.RLock()
+	defer fake.patchMicrostructureSensorMutex.RUnlock()
+	return len(fake.patchMicrostructureSensorArgsForCall)
+}
+
+func (fake *FakeClient) PatchMicrostructureSensorCalls(stub func(int32, int32, []*models.PatchDocument) (*models.MicrostructureSensor, error)) {
+	fake.patchMicrostructureSensorMutex.Lock()
+	defer fake.patchMicrostructureSensorMutex.Unlock()
+	fake.PatchMicrostructureSensorStub = stub
+}
+
+func (fake *FakeClient) PatchMicrostructureSensorArgsForCall(i int) (int32, int32, []*models.PatchDocument) {
+	fake.patchMicrostructureSensorMutex.RLock()
+	defer fake.patchMicrostructureSensorMutex.RUnlock()
+	argsForCall := fake.patchMicrostructureSensorArgsForCall[i]
+	return argsForCall.arg1, argsForCall.arg2, argsForCall.arg3
+}
+
+func (fake *FakeClient) PatchMicrostructureSensorReturns(result1 *models.MicrostructureSensor, result2 error) {
+	fake.patchMicrostructureSensorMutex.Lock()
+	defer fake.patchMicrostructureSensorMutex.Unlock()
+	fake.PatchMicrostructureSensorStub = nil
+	fake.patchMicrostructureSensorReturns = struct {
+		result1 *models.MicrostructureSensor
+		result2 error
+	}{result1, result2}
+}
+
+func (fake *FakeClient) PatchMicrostructureSensorReturnsOnCall(i int, result1 *models.MicrostructureSensor, result2 error) {
+	fake.patchMicrostructureSensorMutex.Lock()
+	defer fake.patchMicrostructureSensorMutex.Unlock()
+	fake.PatchMicrostructureSensorStub = nil
+	if fake.patchMicrostructureSensorReturnsOnCall == nil {
+		fake.patchMicrostructureSensorReturnsOnCall = make(map[int]struct {
+			result1 *models.MicrostructureSensor
+			result2 error
+		})
+	}
+	fake.patchMicrostructureSensorReturnsOnCall[i] = struct {
+		result1 *models.MicrostructureSensor
 		result2 error
 	}{result1, result2}
 }
@@ -3610,6 +3695,8 @@ func (fake *FakeClient) Invocations() map[string][][]interface{} {
 	defer fake.partSupportByIDMutex.RUnlock()
 	fake.patchBuildFileMutex.RLock()
 	defer fake.patchBuildFileMutex.RUnlock()
+	fake.patchMicrostructureSensorMutex.RLock()
+	defer fake.patchMicrostructureSensorMutex.RUnlock()
 	fake.patchPartMutex.RLock()
 	defer fake.patchPartMutex.RUnlock()
 	fake.patchPartSupportMutex.RLock()
