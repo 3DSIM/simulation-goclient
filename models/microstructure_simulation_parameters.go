@@ -60,7 +60,7 @@ type MicrostructureSimulationParameters struct {
 	MicrostructureSensors []*MicrostructureSensor `json:"microstructureSensors"`
 
 	// Seed value used for random number generation. If not provided it will be auto-generated.
-	RandomSeed int32 `json:"randomSeed,omitempty"`
+	RandomSeed uint32 `json:"randomSeed,omitempty"`
 
 	// Array of scan speed values to simulate across. Each value must be 0.01 to 10 meters/second
 	// Required: true
