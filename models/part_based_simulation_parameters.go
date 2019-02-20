@@ -34,10 +34,20 @@ type PartBasedSimulationParameters struct {
 	DetectSupportFailure bool `json:"detectSupportFailure,omitempty"`
 
 	// a value that is used to scale the after cutoff simulated distortion values
-	DistortionAfterCutoffScaleFactor float64 `json:"distortionAfterCutoffScaleFactor,omitempty"`
+	// Maximum: 5
+	// Minimum: -5
+	DistortionAfterCutoffScaleFactor *float64 `json:"distortionAfterCutoffScaleFactor,omitempty"`
+
+	// Array of distortion after cutoff scale factor values, each one will produce a separate distortion after cutoff output
+	DistortionAfterCutoffScaleFactorValues []*float64 `json:"distortionAfterCutoffScaleFactorValues"`
 
 	// a value that is used to scale the simulated distortion value
-	DistortionScaleFactor float64 `json:"distortionScaleFactor,omitempty"`
+	// Maximum: 5
+	// Minimum: -5
+	DistortionScaleFactor *float64 `json:"distortionScaleFactor,omitempty"`
+
+	// Array of distortion scale factor values, each one will produce a separate distortion output
+	DistortionScaleFactorValues []*float64 `json:"distortionScaleFactorValues"`
 
 	// elastic modulus
 	// Required: true
@@ -180,6 +190,26 @@ func (m *PartBasedSimulationParameters) Validate(formats strfmt.Registry) error 
 		res = append(res, err)
 	}
 
+	if err := m.validateDistortionAfterCutoffScaleFactor(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateDistortionAfterCutoffScaleFactorValues(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateDistortionScaleFactor(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateDistortionScaleFactorValues(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
 	if err := m.validateElasticModulus(formats); err != nil {
 		// prop
 		res = append(res, err)
@@ -305,6 +335,90 @@ func (m *PartBasedSimulationParameters) validateDetectBladeCrash(formats strfmt.
 
 	if err := validate.Required("detectBladeCrash", "body", m.DetectBladeCrash); err != nil {
 		return err
+	}
+
+	return nil
+}
+
+func (m *PartBasedSimulationParameters) validateDistortionAfterCutoffScaleFactor(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.DistortionAfterCutoffScaleFactor) { // not required
+		return nil
+	}
+
+	if err := validate.Minimum("distortionAfterCutoffScaleFactor", "body", float64(*m.DistortionAfterCutoffScaleFactor), -5, false); err != nil {
+		return err
+	}
+
+	if err := validate.Maximum("distortionAfterCutoffScaleFactor", "body", float64(*m.DistortionAfterCutoffScaleFactor), 5, false); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *PartBasedSimulationParameters) validateDistortionAfterCutoffScaleFactorValues(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.DistortionAfterCutoffScaleFactorValues) { // not required
+		return nil
+	}
+
+	for i := 0; i < len(m.DistortionAfterCutoffScaleFactorValues); i++ {
+
+		if swag.IsZero(m.DistortionAfterCutoffScaleFactorValues[i]) { // not required
+			continue
+		}
+
+		if err := validate.Minimum("distortionAfterCutoffScaleFactorValues"+"."+strconv.Itoa(i), "body", float64(*m.DistortionAfterCutoffScaleFactorValues[i]), -5, false); err != nil {
+			return err
+		}
+
+		if err := validate.Maximum("distortionAfterCutoffScaleFactorValues"+"."+strconv.Itoa(i), "body", float64(*m.DistortionAfterCutoffScaleFactorValues[i]), 5, false); err != nil {
+			return err
+		}
+
+	}
+
+	return nil
+}
+
+func (m *PartBasedSimulationParameters) validateDistortionScaleFactor(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.DistortionScaleFactor) { // not required
+		return nil
+	}
+
+	if err := validate.Minimum("distortionScaleFactor", "body", float64(*m.DistortionScaleFactor), -5, false); err != nil {
+		return err
+	}
+
+	if err := validate.Maximum("distortionScaleFactor", "body", float64(*m.DistortionScaleFactor), 5, false); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *PartBasedSimulationParameters) validateDistortionScaleFactorValues(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.DistortionScaleFactorValues) { // not required
+		return nil
+	}
+
+	for i := 0; i < len(m.DistortionScaleFactorValues); i++ {
+
+		if swag.IsZero(m.DistortionScaleFactorValues[i]) { // not required
+			continue
+		}
+
+		if err := validate.Minimum("distortionScaleFactorValues"+"."+strconv.Itoa(i), "body", float64(*m.DistortionScaleFactorValues[i]), -5, false); err != nil {
+			return err
+		}
+
+		if err := validate.Maximum("distortionScaleFactorValues"+"."+strconv.Itoa(i), "body", float64(*m.DistortionScaleFactorValues[i]), 5, false); err != nil {
+			return err
+		}
+
 	}
 
 	return nil

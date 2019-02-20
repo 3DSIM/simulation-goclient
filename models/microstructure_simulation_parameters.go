@@ -60,7 +60,9 @@ type MicrostructureSimulationParameters struct {
 	MicrostructureSensors []*MicrostructureSensor `json:"microstructureSensors"`
 
 	// Seed value used for random number generation. If not provided it will be auto-generated.
-	RandomSeed uint32 `json:"randomSeed,omitempty"`
+	// Maximum: 4.294967295e+09
+	// Minimum: 0
+	RandomSeed *int64 `json:"randomSeed,omitempty"`
 
 	// Array of scan speed values to simulate across. Each value must be 0.01 to 10 meters/second
 	// Required: true
@@ -124,6 +126,11 @@ func (m *MicrostructureSimulationParameters) Validate(formats strfmt.Registry) e
 	}
 
 	if err := m.validateMicrostructureSensors(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateRandomSeed(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -336,6 +343,23 @@ func (m *MicrostructureSimulationParameters) validateMicrostructureSensors(forma
 			}
 		}
 
+	}
+
+	return nil
+}
+
+func (m *MicrostructureSimulationParameters) validateRandomSeed(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.RandomSeed) { // not required
+		return nil
+	}
+
+	if err := validate.MinimumInt("randomSeed", "body", int64(*m.RandomSeed), 0, false); err != nil {
+		return err
+	}
+
+	if err := validate.MaximumInt("randomSeed", "body", int64(*m.RandomSeed), 4.294967295e+09, false); err != nil {
+		return err
 	}
 
 	return nil
