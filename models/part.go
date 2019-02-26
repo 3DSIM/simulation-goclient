@@ -41,7 +41,7 @@ type Part struct {
 	// elements
 	Elements int32 `json:"elements,omitempty"`
 
-	// If an error ocurrs uploading a part, a string will be populated in this field.
+	// If an error occurs uploading a part, a string will be populated in this field.
 	ErrorReason string `json:"errorReason,omitempty"`
 
 	// Voxel size used for estimatedMemory, maxMemory, estimatedWork

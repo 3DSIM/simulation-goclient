@@ -42,7 +42,7 @@ type PartSupport struct {
 	// elements
 	Elements int32 `json:"elements,omitempty"`
 
-	// If an error ocurrs uploading a part, a string will be populated in this field.
+	// If an error occurs uploading a part, a string will be populated in this field.
 	ErrorReason string `json:"errorReason,omitempty"`
 
 	// Voxel size used for estimatedMemory, maxMemory, estimatedWork
@@ -67,6 +67,9 @@ type PartSupport struct {
 
 	// assigned user, set server-side, read only
 	LastModifiedBy string `json:"lastModifiedBy,omitempty"`
+
+	// Whether the support should be translated with the part (true), or a minimumSupportHeight will be specified (false).
+	LockToPartTranslation bool `json:"lockToPartTranslation,omitempty"`
 
 	// Estimated max memory usage for mechanics solver using estimateVoxelSize
 	MaxMemory int32 `json:"maxMemory,omitempty"`
