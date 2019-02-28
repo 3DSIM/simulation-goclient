@@ -17,6 +17,21 @@ import (
 // swagger:model MaterialConfiguration
 type MaterialConfiguration struct {
 
+	// absorptivity minimum
+	AbsorptivityMinimum float64 `json:"absorptivityMinimum,omitempty"`
+
+	// absorptivity powder coeff a
+	AbsorptivityPowderCoeffA float64 `json:"absorptivityPowderCoeffA,omitempty"`
+
+	// absorptivity powder coeff b
+	AbsorptivityPowderCoeffB float64 `json:"absorptivityPowderCoeffB,omitempty"`
+
+	// absorptivity solid coeff a
+	AbsorptivitySolidCoeffA float64 `json:"absorptivitySolidCoeffA,omitempty"`
+
+	// absorptivity solid coeff b
+	AbsorptivitySolidCoeffB float64 `json:"absorptivitySolidCoeffB,omitempty"`
+
 	// anisotropic strain coefficient parallel
 	// Required: true
 	AnisotropicStrainCoefficientParallel *float64 `json:"anisotropicStrainCoefficientParallel"`
@@ -128,7 +143,7 @@ type MaterialConfiguration struct {
 	// Required: true
 	LiquidusTemperature *float64 `json:"liquidusTemperature"`
 
-	// Location where the lookup file is stored in S3.  Set server side.  Only used internally within 3DSIM.
+	// Location where the lookup file is stored.  Set server side.  Only used internally.
 	LookupFileLocation string `json:"lookupFileLocation,omitempty"`
 
 	// material identifier for this material configuration
@@ -146,6 +161,18 @@ type MaterialConfiguration struct {
 	// nucleation constant
 	// Required: true
 	NucleationConstant *float64 `json:"nucleationConstant"`
+
+	// penetration depth powder coeff a
+	PenetrationDepthPowderCoeffA float64 `json:"penetrationDepthPowderCoeffA,omitempty"`
+
+	// penetration depth powder coeff b
+	PenetrationDepthPowderCoeffB float64 `json:"penetrationDepthPowderCoeffB,omitempty"`
+
+	// penetration depth solid coeff a
+	PenetrationDepthSolidCoeffA float64 `json:"penetrationDepthSolidCoeffA,omitempty"`
+
+	// penetration depth solid coeff b
+	PenetrationDepthSolidCoeffB float64 `json:"penetrationDepthSolidCoeffB,omitempty"`
 
 	// poisson ratio
 	// Required: true
@@ -214,6 +241,15 @@ type MaterialConfiguration struct {
 	// vaporization temperature
 	// Required: true
 	VaporizationTemperature *float64 `json:"vaporizationTemperature"`
+
+	// Location where tuning method lookup file is stored. Set server side. Only used internally.
+	W0LookupFileLocation string `json:"w0LookupFileLocation,omitempty"`
+
+	// w0 lower bound
+	W0LowerBound float64 `json:"w0LowerBound,omitempty"`
+
+	// w0 upper bound
+	W0UpperBound float64 `json:"w0UpperBound,omitempty"`
 }
 
 // Validate validates this material configuration

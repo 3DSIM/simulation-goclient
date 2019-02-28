@@ -23,7 +23,7 @@ type Part struct {
 	// Designates whether this entity has been archived.
 	Archived bool `json:"archived,omitempty"`
 
-	// Describes the availabity of the part. Uploaded - the part has been uploaded.  Processing - the part is being processed.  Available - the part was processed successfully and can be used in simulations.  Error - an error occurred, contact support@3dsim.com.
+	// Describes the availabity of the part. Uploaded - the part has been uploaded.  Processing - the part is being processed.  Available - the part was processed successfully and can be used in simulations.  Error - an error occurred, contact Ansys Support.
 	Availability string `json:"availability,omitempty"`
 
 	// collapse cost
