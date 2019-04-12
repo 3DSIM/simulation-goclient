@@ -107,6 +107,10 @@ type PartBasedSimulationParameters struct {
 	// if true, a predistorted STL file will be created using the distortion after cutoff simulated by the mechanics solver
 	PerformDistortionCompensationAfterCutoff bool `json:"performDistortionCompensationAfterCutoff,omitempty"`
 
+	// perform support only cutoff
+	// Required: true
+	PerformSupportOnlyCutoff *bool `json:"performSupportOnlyCutoff"`
+
 	// perform support optimization
 	// Required: true
 	PerformSupportOptimization *bool `json:"performSupportOptimization"`
@@ -251,6 +255,11 @@ func (m *PartBasedSimulationParameters) Validate(formats strfmt.Registry) error 
 	}
 
 	if err := m.validateOutputLayerVtk(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validatePerformSupportOnlyCutoff(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -539,6 +548,15 @@ func (m *PartBasedSimulationParameters) validateOutputDisplacementAfterCutoff(fo
 func (m *PartBasedSimulationParameters) validateOutputLayerVtk(formats strfmt.Registry) error {
 
 	if err := validate.Required("outputLayerVtk", "body", m.OutputLayerVtk); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *PartBasedSimulationParameters) validatePerformSupportOnlyCutoff(formats strfmt.Registry) error {
+
+	if err := validate.Required("performSupportOnlyCutoff", "body", m.PerformSupportOnlyCutoff); err != nil {
 		return err
 	}
 
