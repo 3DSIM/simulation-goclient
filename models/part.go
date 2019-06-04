@@ -95,6 +95,9 @@ type Part struct {
 	// The smallest z location before transformation
 	OriginalZ float64 `json:"originalZ,omitempty"`
 
+	// List of partsupport configurations
+	PartSupportConfigurations []*PartSupportConfiguration `json:"partSupportConfigurations"`
+
 	// List of supports that have been uploaded for this part
 	PartSupports []*PartSupport `json:"partSupports"`
 
@@ -152,6 +155,11 @@ func (m *Part) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateOrganizationID(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validatePartSupportConfigurations(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -239,6 +247,33 @@ func (m *Part) validateOrganizationID(formats strfmt.Registry) error {
 
 	if err := validate.Required("organizationId", "body", m.OrganizationID); err != nil {
 		return err
+	}
+
+	return nil
+}
+
+func (m *Part) validatePartSupportConfigurations(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.PartSupportConfigurations) { // not required
+		return nil
+	}
+
+	for i := 0; i < len(m.PartSupportConfigurations); i++ {
+
+		if swag.IsZero(m.PartSupportConfigurations[i]) { // not required
+			continue
+		}
+
+		if m.PartSupportConfigurations[i] != nil {
+
+			if err := m.PartSupportConfigurations[i].Validate(formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("partSupportConfigurations" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
 	}
 
 	return nil

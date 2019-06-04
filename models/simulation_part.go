@@ -27,15 +27,21 @@ type SimulationPart struct {
 	// Required: true
 	PartID *int32 `json:"partId"`
 
+	// part support
+	PartSupport *PartSupport `json:"partSupport,omitempty"`
+
+	// part support configuration
+	PartSupportConfiguration *PartSupportConfiguration `json:"partSupportConfiguration,omitempty"`
+
+	// Id of the PartSupportConfiguration to use for the simulation. Can be null
+	PartSupportConfigurationID int32 `json:"partSupportConfigurationId,omitempty"`
+
 	// Id of the support to use for the simulation. Can be null
 	PartSupportID int32 `json:"partSupportId,omitempty"`
 
 	// ID of the associated simulation
 	// Required: true
 	SimulationID *int32 `json:"simulationId"`
-
-	// support
-	Support *PartSupport `json:"support,omitempty"`
 
 	// Smallest x coordinate of the part location on the powder bed in millimeters. The center of the powder bed in the x dimension is assumed to be 0
 	// Required: true
@@ -70,12 +76,17 @@ func (m *SimulationPart) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
-	if err := m.validateSimulationID(formats); err != nil {
+	if err := m.validatePartSupport(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
 
-	if err := m.validateSupport(formats); err != nil {
+	if err := m.validatePartSupportConfiguration(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateSimulationID(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -129,29 +140,48 @@ func (m *SimulationPart) validatePartID(formats strfmt.Registry) error {
 	return nil
 }
 
-func (m *SimulationPart) validateSimulationID(formats strfmt.Registry) error {
+func (m *SimulationPart) validatePartSupport(formats strfmt.Registry) error {
 
-	if err := validate.Required("simulationId", "body", m.SimulationID); err != nil {
-		return err
+	if swag.IsZero(m.PartSupport) { // not required
+		return nil
+	}
+
+	if m.PartSupport != nil {
+
+		if err := m.PartSupport.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("partSupport")
+			}
+			return err
+		}
 	}
 
 	return nil
 }
 
-func (m *SimulationPart) validateSupport(formats strfmt.Registry) error {
+func (m *SimulationPart) validatePartSupportConfiguration(formats strfmt.Registry) error {
 
-	if swag.IsZero(m.Support) { // not required
+	if swag.IsZero(m.PartSupportConfiguration) { // not required
 		return nil
 	}
 
-	if m.Support != nil {
+	if m.PartSupportConfiguration != nil {
 
-		if err := m.Support.Validate(formats); err != nil {
+		if err := m.PartSupportConfiguration.Validate(formats); err != nil {
 			if ve, ok := err.(*errors.Validation); ok {
-				return ve.ValidateName("support")
+				return ve.ValidateName("partSupportConfiguration")
 			}
 			return err
 		}
+	}
+
+	return nil
+}
+
+func (m *SimulationPart) validateSimulationID(formats strfmt.Registry) error {
+
+	if err := validate.Required("simulationId", "body", m.SimulationID); err != nil {
+		return err
 	}
 
 	return nil

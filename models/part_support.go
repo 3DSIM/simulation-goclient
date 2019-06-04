@@ -87,9 +87,6 @@ type PartSupport struct {
 	// The original file name from the user
 	OriginalFileName string `json:"originalFileName,omitempty"`
 
-	// part
-	Part *Part `json:"part,omitempty"`
-
 	// Id of the part that owns this support record
 	// Required: true
 	PartID *int32 `json:"partId"`
@@ -151,11 +148,6 @@ func (m *PartSupport) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateName(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
-	if err := m.validatePart(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -252,25 +244,6 @@ func (m *PartSupport) validateName(formats strfmt.Registry) error {
 
 	if err := validate.Required("name", "body", m.Name); err != nil {
 		return err
-	}
-
-	return nil
-}
-
-func (m *PartSupport) validatePart(formats strfmt.Registry) error {
-
-	if swag.IsZero(m.Part) { // not required
-		return nil
-	}
-
-	if m.Part != nil {
-
-		if err := m.Part.Validate(formats); err != nil {
-			if ve, ok := err.(*errors.Validation); ok {
-				return ve.ValidateName("part")
-			}
-			return err
-		}
 	}
 
 	return nil

@@ -17,6 +17,9 @@ import (
 // swagger:model MaterialConfiguration
 type MaterialConfiguration struct {
 
+	// absorptivity maximum
+	AbsorptivityMaximum float64 `json:"absorptivityMaximum,omitempty"`
+
 	// absorptivity minimum
 	AbsorptivityMinimum float64 `json:"absorptivityMinimum,omitempty"`
 
@@ -158,9 +161,19 @@ type MaterialConfiguration struct {
 	// Required: true
 	MaterialYieldStrength *float64 `json:"materialYieldStrength"`
 
-	// nucleation constant
+	// nucleation constant bulk
 	// Required: true
-	NucleationConstant *float64 `json:"nucleationConstant"`
+	NucleationConstantBulk *float64 `json:"nucleationConstantBulk"`
+
+	// nucleation constant interface
+	// Required: true
+	NucleationConstantInterface *float64 `json:"nucleationConstantInterface"`
+
+	// penetration depth maximum
+	PenetrationDepthMaximum float64 `json:"penetrationDepthMaximum,omitempty"`
+
+	// penetration depth minimum
+	PenetrationDepthMinimum float64 `json:"penetrationDepthMinimum,omitempty"`
 
 	// penetration depth powder coeff a
 	PenetrationDepthPowderCoeffA float64 `json:"penetrationDepthPowderCoeffA,omitempty"`
@@ -177,6 +190,9 @@ type MaterialConfiguration struct {
 	// poisson ratio
 	// Required: true
 	PoissonRatio *float64 `json:"poissonRatio"`
+
+	// powder packing density
+	PowderPackingDensity float64 `json:"powderPackingDensity,omitempty"`
 
 	// powder to solid density ratio
 	// Required: true
@@ -244,12 +260,6 @@ type MaterialConfiguration struct {
 
 	// Location where tuning method lookup file is stored. Set server side. Only used internally.
 	W0LookupFileLocation string `json:"w0LookupFileLocation,omitempty"`
-
-	// w0 lower bound
-	W0LowerBound float64 `json:"w0LowerBound,omitempty"`
-
-	// w0 upper bound
-	W0UpperBound float64 `json:"w0UpperBound,omitempty"`
 }
 
 // Validate validates this material configuration
@@ -406,7 +416,12 @@ func (m *MaterialConfiguration) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
-	if err := m.validateNucleationConstant(formats); err != nil {
+	if err := m.validateNucleationConstantBulk(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateNucleationConstantInterface(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -772,9 +787,18 @@ func (m *MaterialConfiguration) validateMaterialYieldStrength(formats strfmt.Reg
 	return nil
 }
 
-func (m *MaterialConfiguration) validateNucleationConstant(formats strfmt.Registry) error {
+func (m *MaterialConfiguration) validateNucleationConstantBulk(formats strfmt.Registry) error {
 
-	if err := validate.Required("nucleationConstant", "body", m.NucleationConstant); err != nil {
+	if err := validate.Required("nucleationConstantBulk", "body", m.NucleationConstantBulk); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *MaterialConfiguration) validateNucleationConstantInterface(formats strfmt.Registry) error {
+
+	if err := validate.Required("nucleationConstantInterface", "body", m.NucleationConstantInterface); err != nil {
 		return err
 	}
 

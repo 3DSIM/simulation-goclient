@@ -489,6 +489,35 @@ func (a *Client) UpdatePart(params *UpdatePartParams, authInfo runtime.ClientAut
 }
 
 /*
+AddCustomMaterial Creates a new custom material for the organizationId specified
+*/
+func (a *Client) AddCustomMaterial(params *AddCustomMaterialParams, authInfo runtime.ClientAuthInfoWriter) (*AddCustomMaterialOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewAddCustomMaterialParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "addCustomMaterial",
+		Method:             "POST",
+		PathPattern:        "/materials/custom",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"multipart/form-data"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &AddCustomMaterialReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*AddCustomMaterialOK), nil
+
+}
+
+/*
 AddMaterial Creates a new material for the organizationId specified
 */
 func (a *Client) AddMaterial(params *AddMaterialParams, authInfo runtime.ClientAuthInfoWriter) (*AddMaterialOK, error) {
@@ -601,6 +630,35 @@ func (a *Client) ArchiveMaterial(params *ArchiveMaterialParams, authInfo runtime
 		return nil, err
 	}
 	return result.(*ArchiveMaterialOK), nil
+
+}
+
+/*
+ArchivePartSupportConfiguration Archives a support configuration
+*/
+func (a *Client) ArchivePartSupportConfiguration(params *ArchivePartSupportConfigurationParams, authInfo runtime.ClientAuthInfoWriter) (*ArchivePartSupportConfigurationOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewArchivePartSupportConfigurationParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "archivePartSupportConfiguration",
+		Method:             "PUT",
+		PathPattern:        "/parts/{partId}/supportconfigurations/{supportConfigurationId}/archive",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &ArchivePartSupportConfigurationReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*ArchivePartSupportConfigurationOK), nil
 
 }
 
@@ -1412,6 +1470,35 @@ func (a *Client) GetPartSupportByID(params *GetPartSupportByIDParams, authInfo r
 		return nil, err
 	}
 	return result.(*GetPartSupportByIDOK), nil
+
+}
+
+/*
+GetPartSupportConfiguration Get a single support configuration by Id
+*/
+func (a *Client) GetPartSupportConfiguration(params *GetPartSupportConfigurationParams, authInfo runtime.ClientAuthInfoWriter) (*GetPartSupportConfigurationOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetPartSupportConfigurationParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "getPartSupportConfiguration",
+		Method:             "GET",
+		PathPattern:        "/parts/{partId}/supportconfigurations/{supportConfigurationId}",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &GetPartSupportConfigurationReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*GetPartSupportConfigurationOK), nil
 
 }
 
@@ -2344,6 +2431,35 @@ func (a *Client) PostPartSupport(params *PostPartSupportParams, authInfo runtime
 }
 
 /*
+PostPartSupportConfiguration Adds a support configuration.
+*/
+func (a *Client) PostPartSupportConfiguration(params *PostPartSupportConfigurationParams, authInfo runtime.ClientAuthInfoWriter) (*PostPartSupportConfigurationOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewPostPartSupportConfigurationParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "postPartSupportConfiguration",
+		Method:             "POST",
+		PathPattern:        "/parts/{partId}/supportconfigurations",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &PostPartSupportConfigurationReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*PostPartSupportConfigurationOK), nil
+
+}
+
+/*
 PostPorositySimulation Posts a new porosity simulation
 */
 func (a *Client) PostPorositySimulation(params *PostPorositySimulationParams, authInfo runtime.ClientAuthInfoWriter) (*PostPorositySimulationOK, error) {
@@ -3094,6 +3210,35 @@ func (a *Client) UpdatePartSupport(params *UpdatePartSupportParams, authInfo run
 		return nil, err
 	}
 	return result.(*UpdatePartSupportOK), nil
+
+}
+
+/*
+UpdatePartSupportConfiguration Updates a support configuration
+*/
+func (a *Client) UpdatePartSupportConfiguration(params *UpdatePartSupportConfigurationParams, authInfo runtime.ClientAuthInfoWriter) (*UpdatePartSupportConfigurationOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewUpdatePartSupportConfigurationParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "updatePartSupportConfiguration",
+		Method:             "PUT",
+		PathPattern:        "/parts/{partId}/supportconfigurations/{supportConfigurationId}",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &UpdatePartSupportConfigurationReader{formats: a.formats},
+		AuthInfo:           authInfo,
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*UpdatePartSupportConfigurationOK), nil
 
 }
 
