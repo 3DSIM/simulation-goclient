@@ -63,6 +63,9 @@ type PartBasedSimulationParameters struct {
 	// Minimum: 0
 	HardeningFactor *float64 `json:"hardeningFactor"`
 
+	// if true, the on-plate stress output file will include the on-plate strain
+	IncludeOnPlateStrainOutput bool `json:"includeOnPlateStrainOutput,omitempty"`
+
 	// Must be between 0.00015 to 0.002 meters, Must be greater than minimumWallThickness
 	// Maximum: 0.01
 	// Minimum: 2e-05

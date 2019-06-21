@@ -7,6 +7,7 @@ package models
 
 import (
 	"encoding/json"
+	"strconv"
 
 	strfmt "github.com/go-openapi/strfmt"
 
@@ -29,6 +30,9 @@ type BuildFile struct {
 
 	// folder containing build file contents, multiple files may be contained within the folder
 	BuildFileLocation string `json:"buildFileLocation,omitempty"`
+
+	// List of supports for this buildfile
+	BuildFileSupports []*BuildFileSupport `json:"buildFileSupports"`
 
 	// time stamp assigned when this build file is created
 	CreatedAt strfmt.DateTime `json:"createdAt,omitempty"`
@@ -139,6 +143,11 @@ func (m *BuildFile) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
+	if err := m.validateBuildFileSupports(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
 	if err := m.validateID(formats); err != nil {
 		// prop
 		res = append(res, err)
@@ -234,6 +243,33 @@ func (m *BuildFile) validateAvailability(formats strfmt.Registry) error {
 	// value enum
 	if err := m.validateAvailabilityEnum("availability", "body", *m.Availability); err != nil {
 		return err
+	}
+
+	return nil
+}
+
+func (m *BuildFile) validateBuildFileSupports(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.BuildFileSupports) { // not required
+		return nil
+	}
+
+	for i := 0; i < len(m.BuildFileSupports); i++ {
+
+		if swag.IsZero(m.BuildFileSupports[i]) { // not required
+			continue
+		}
+
+		if m.BuildFileSupports[i] != nil {
+
+			if err := m.BuildFileSupports[i].Validate(formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("buildFileSupports" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
 	}
 
 	return nil
