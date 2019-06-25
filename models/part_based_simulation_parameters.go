@@ -53,6 +53,9 @@ type PartBasedSimulationParameters struct {
 	// Required: true
 	ElasticModulus *float64 `json:"elasticModulus"`
 
+	// if true, contour scan vectors is used in scan pattern simulation
+	EnableContours bool `json:"enableContours,omitempty"`
+
 	// generate support voxels
 	// Required: true
 	GenerateSupportVoxels *bool `json:"generateSupportVoxels"`
