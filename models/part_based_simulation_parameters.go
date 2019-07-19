@@ -69,6 +69,14 @@ type PartBasedSimulationParameters struct {
 	// if true, the on-plate stress output file will include the on-plate strain
 	IncludeOnPlateStrainOutput bool `json:"includeOnPlateStrainOutput,omitempty"`
 
+	// load stepping type
+	LoadSteppingType string `json:"loadSteppingType,omitempty"`
+
+	// load steps
+	// Maximum: 200
+	// Minimum: 1
+	LoadSteps int32 `json:"loadSteps,omitempty"`
+
 	// Must be between 0.00015 to 0.002 meters, Must be greater than minimumWallThickness
 	// Maximum: 0.01
 	// Minimum: 2e-05
@@ -231,6 +239,16 @@ func (m *PartBasedSimulationParameters) Validate(formats strfmt.Registry) error 
 	}
 
 	if err := m.validateHardeningFactor(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateLoadSteppingType(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateLoadSteps(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -468,6 +486,64 @@ func (m *PartBasedSimulationParameters) validateHardeningFactor(formats strfmt.R
 	}
 
 	if err := validate.Maximum("hardeningFactor", "body", float64(*m.HardeningFactor), 0.5, false); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+var partBasedSimulationParametersTypeLoadSteppingTypePropEnum []interface{}
+
+func init() {
+	var res []string
+	if err := json.Unmarshal([]byte(`["DynamicLoadStepping","FixedLoadStepping"]`), &res); err != nil {
+		panic(err)
+	}
+	for _, v := range res {
+		partBasedSimulationParametersTypeLoadSteppingTypePropEnum = append(partBasedSimulationParametersTypeLoadSteppingTypePropEnum, v)
+	}
+}
+
+const (
+	// PartBasedSimulationParametersLoadSteppingTypeDynamicLoadStepping captures enum value "DynamicLoadStepping"
+	PartBasedSimulationParametersLoadSteppingTypeDynamicLoadStepping string = "DynamicLoadStepping"
+	// PartBasedSimulationParametersLoadSteppingTypeFixedLoadStepping captures enum value "FixedLoadStepping"
+	PartBasedSimulationParametersLoadSteppingTypeFixedLoadStepping string = "FixedLoadStepping"
+)
+
+// prop value enum
+func (m *PartBasedSimulationParameters) validateLoadSteppingTypeEnum(path, location string, value string) error {
+	if err := validate.Enum(path, location, value, partBasedSimulationParametersTypeLoadSteppingTypePropEnum); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (m *PartBasedSimulationParameters) validateLoadSteppingType(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.LoadSteppingType) { // not required
+		return nil
+	}
+
+	// value enum
+	if err := m.validateLoadSteppingTypeEnum("loadSteppingType", "body", m.LoadSteppingType); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *PartBasedSimulationParameters) validateLoadSteps(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.LoadSteps) { // not required
+		return nil
+	}
+
+	if err := validate.MinimumInt("loadSteps", "body", int64(m.LoadSteps), 1, false); err != nil {
+		return err
+	}
+
+	if err := validate.MaximumInt("loadSteps", "body", int64(m.LoadSteps), 200, false); err != nil {
 		return err
 	}
 
