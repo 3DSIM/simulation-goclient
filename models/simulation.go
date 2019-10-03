@@ -43,6 +43,9 @@ type Simulation struct {
 	// assigned user, set server-side, read only
 	LastModifiedBy string `json:"lastModifiedBy,omitempty"`
 
+	// length (in meters) of the longest fill scan vector in the scan pattern
+	LongestScanVectorLength float64 `json:"longestScanVectorLength,omitempty"`
+
 	// ID of the machine configuration that was used in the simulation, set server-side, read only
 	MachineConfigurationID int32 `json:"machineConfigurationId,omitempty"`
 

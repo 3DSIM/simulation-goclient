@@ -71,6 +71,9 @@ type BuildFile struct {
 	// thickness of powder deposition layer in meters
 	LayerThickness float64 `json:"layerThickness,omitempty"`
 
+	// length (in meters) of the longest fill scan vector in the scan pattern
+	LongestScanVectorLength float64 `json:"longestScanVectorLength,omitempty"`
+
 	// type of machine associated with this build file
 	// Required: true
 	MachineType *string `json:"machineType"`
