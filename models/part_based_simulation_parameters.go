@@ -106,6 +106,10 @@ type PartBasedSimulationParameters struct {
 	// Required: true
 	OutputLayerVtk *bool `json:"outputLayerVtk"`
 
+	// if true, mechanics solver output will include files related to passing mesh and inital state to ANSYS Workbench
+	// Required: true
+	OutputMapdl *bool `json:"outputMapdl"`
+
 	// if true, a VTK file of the support structure will be created
 	OutputSupportsVtk bool `json:"outputSupportsVtk,omitempty"`
 
@@ -279,6 +283,11 @@ func (m *PartBasedSimulationParameters) Validate(formats strfmt.Registry) error 
 	}
 
 	if err := m.validateOutputLayerVtk(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateOutputMapdl(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -630,6 +639,15 @@ func (m *PartBasedSimulationParameters) validateOutputDisplacementAfterCutoff(fo
 func (m *PartBasedSimulationParameters) validateOutputLayerVtk(formats strfmt.Registry) error {
 
 	if err := validate.Required("outputLayerVtk", "body", m.OutputLayerVtk); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *PartBasedSimulationParameters) validateOutputMapdl(formats strfmt.Registry) error {
+
+	if err := validate.Required("outputMapdl", "body", m.OutputMapdl); err != nil {
 		return err
 	}
 
