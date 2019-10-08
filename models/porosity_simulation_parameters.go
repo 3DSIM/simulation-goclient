@@ -19,6 +19,12 @@ import (
 // swagger:model PorositySimulationParameters
 type PorositySimulationParameters struct {
 
+	// diameter of laser beam in meters
+	// Required: true
+	// Maximum: 0.00012
+	// Minimum: 8e-05
+	BeamDiameter *float64 `json:"beamDiameter"`
+
 	// Must be between 0.001 to 0.01 meters
 	// Required: true
 	// Maximum: 0.01
@@ -84,6 +90,11 @@ type PorositySimulationParameters struct {
 func (m *PorositySimulationParameters) Validate(formats strfmt.Registry) error {
 	var res []error
 
+	if err := m.validateBeamDiameter(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
 	if err := m.validateGeometryHeight(formats); err != nil {
 		// prop
 		res = append(res, err)
@@ -147,6 +158,23 @@ func (m *PorositySimulationParameters) Validate(formats strfmt.Registry) error {
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
+	return nil
+}
+
+func (m *PorositySimulationParameters) validateBeamDiameter(formats strfmt.Registry) error {
+
+	if err := validate.Required("beamDiameter", "body", m.BeamDiameter); err != nil {
+		return err
+	}
+
+	if err := validate.Minimum("beamDiameter", "body", float64(*m.BeamDiameter), 8e-05, false); err != nil {
+		return err
+	}
+
+	if err := validate.Maximum("beamDiameter", "body", float64(*m.BeamDiameter), 0.00012, false); err != nil {
+		return err
+	}
+
 	return nil
 }
 

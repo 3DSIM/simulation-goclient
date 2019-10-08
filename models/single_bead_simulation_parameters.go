@@ -30,6 +30,12 @@ type SingleBeadSimulationParameters struct {
 	// Required: true
 	BeadType *string `json:"beadType"`
 
+	// diameter of laser beam in meters
+	// Required: true
+	// Maximum: 0.00012
+	// Minimum: 8e-05
+	BeamDiameter *float64 `json:"beamDiameter"`
+
 	// heater temperature in degrees kelvin
 	// Maximum: 474
 	// Minimum: 293
@@ -84,6 +90,11 @@ func (m *SingleBeadSimulationParameters) Validate(formats strfmt.Registry) error
 	}
 
 	if err := m.validateBeadType(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateBeamDiameter(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -196,6 +207,23 @@ func (m *SingleBeadSimulationParameters) validateBeadType(formats strfmt.Registr
 
 	// value enum
 	if err := m.validateBeadTypeEnum("beadType", "body", *m.BeadType); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *SingleBeadSimulationParameters) validateBeamDiameter(formats strfmt.Registry) error {
+
+	if err := validate.Required("beamDiameter", "body", m.BeamDiameter); err != nil {
+		return err
+	}
+
+	if err := validate.Minimum("beamDiameter", "body", float64(*m.BeamDiameter), 8e-05, false); err != nil {
+		return err
+	}
+
+	if err := validate.Maximum("beamDiameter", "body", float64(*m.BeamDiameter), 0.00012, false); err != nil {
 		return err
 	}
 

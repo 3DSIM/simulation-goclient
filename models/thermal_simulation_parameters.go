@@ -31,6 +31,12 @@ type ThermalSimulationParameters struct {
 	// Required: true
 	AnisotropicStrainCoefficientsZ *float64 `json:"anisotropicStrainCoefficientsZ"`
 
+	// diameter of laser beam in meters
+	// Required: true
+	// Maximum: 0.00012
+	// Minimum: 8e-05
+	BeamDiameter *float64 `json:"beamDiameter"`
+
 	// should be a number between 0.05 and 1.5 mm
 	CoaxialAverageSensorRadius float64 `json:"coaxialAverageSensorRadius,omitempty"`
 
@@ -174,6 +180,11 @@ func (m *ThermalSimulationParameters) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateAnisotropicStrainCoefficientsZ(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateBeamDiameter(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -325,6 +336,23 @@ func (m *ThermalSimulationParameters) validateAnisotropicStrainCoefficientsPerpe
 func (m *ThermalSimulationParameters) validateAnisotropicStrainCoefficientsZ(formats strfmt.Registry) error {
 
 	if err := validate.Required("anisotropicStrainCoefficientsZ", "body", m.AnisotropicStrainCoefficientsZ); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *ThermalSimulationParameters) validateBeamDiameter(formats strfmt.Registry) error {
+
+	if err := validate.Required("beamDiameter", "body", m.BeamDiameter); err != nil {
+		return err
+	}
+
+	if err := validate.Minimum("beamDiameter", "body", float64(*m.BeamDiameter), 8e-05, false); err != nil {
+		return err
+	}
+
+	if err := validate.Maximum("beamDiameter", "body", float64(*m.BeamDiameter), 0.00012, false); err != nil {
 		return err
 	}
 
