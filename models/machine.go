@@ -33,6 +33,11 @@ type Machine struct {
 	// Required: true
 	ConfigurationID *int32 `json:"configurationId"`
 
+	// version of the core machine this machine was derived from
+	// Required: true
+	// Max Length: 32
+	CoreVersion *string `json:"coreVersion"`
+
 	// created time stamp, set server-side, read only field
 	// Required: true
 	Created *strfmt.DateTime `json:"created"`
@@ -96,6 +101,11 @@ func (m *Machine) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateConfigurationID(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateCoreVersion(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -214,6 +224,19 @@ func (m *Machine) validateConfigurationHistory(formats strfmt.Registry) error {
 func (m *Machine) validateConfigurationID(formats strfmt.Registry) error {
 
 	if err := validate.Required("configurationId", "body", m.ConfigurationID); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *Machine) validateCoreVersion(formats strfmt.Registry) error {
+
+	if err := validate.Required("coreVersion", "body", m.CoreVersion); err != nil {
+		return err
+	}
+
+	if err := validate.MaxLength("coreVersion", "body", string(*m.CoreVersion), 32); err != nil {
 		return err
 	}
 
