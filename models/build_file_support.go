@@ -34,18 +34,27 @@ type BuildFileSupport struct {
 	// The original file name from the user
 	OriginalFileName string `json:"originalFileName,omitempty"`
 
-	// Width of the Part bounding box (in meters), calculated when the part is processed, use 0 for initial post
+	// Width of the Support bounding box (in meters), calculated when the Support is processed, use 0 for initial post
 	SizeX float64 `json:"sizeX,omitempty"`
 
-	// Length of the Part bounding box (in meters), calculated when the part is processed, use 0 for initial post
+	// Length of the Support bounding box (in meters), calculated when the Support is processed, use 0 for initial post
 	SizeY float64 `json:"sizeY,omitempty"`
 
-	// Height of the Part bounding box (in meters), calculated when the part is processed, use 0 for initial post
+	// Height of the Support bounding box (in meters), calculated when the Support is processed, use 0 for initial post
 	SizeZ float64 `json:"sizeZ,omitempty"`
 
 	// type of geometry. Volumeless - thinwall, closed - watertight
 	// Required: true
 	SupportType *string `json:"supportType"`
+
+	// x location (in meters) where the lower left corner of the bounding box of the support, use 0 for initial post
+	XMin float64 `json:"xMin,omitempty"`
+
+	// y location (in meters) where the lower left corner of the bounding box of the support, use 0 for initial post
+	YMin float64 `json:"yMin,omitempty"`
+
+	// z location (in meters) where the lower left corner of the bounding box of the support, use 0 for initial post
+	ZMin float64 `json:"zMin,omitempty"`
 }
 
 // Validate validates this build file support
