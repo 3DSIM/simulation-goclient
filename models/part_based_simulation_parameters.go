@@ -137,6 +137,15 @@ type PartBasedSimulationParameters struct {
 	// Required: true
 	PoissonRatio *float64 `json:"poissonRatio"`
 
+	// The offset between the positioned part and the origin in x direction
+	PositionedPartOffsetX float64 `json:"positionedPartOffsetX,omitempty"`
+
+	// The offset between the positioned part and the origin in y direction
+	PositionedPartOffsetY float64 `json:"positionedPartOffsetY,omitempty"`
+
+	// The offset between the positioned part and the origin in z direction
+	PositionedPartOffsetZ float64 `json:"positionedPartOffsetZ,omitempty"`
+
 	// List of parts to simulate (current limit is one part, imposed by server)
 	SimulationParts []*SimulationPart `json:"simulationParts"`
 
