@@ -25,6 +25,9 @@ type MicrostructureSimulationParameters struct {
 	// Minimum: 8e-05
 	BeamDiameter *float64 `json:"beamDiameter"`
 
+	// Results in the generation of a new random seed.  Useful if duplicating a simulation and require unique seeds in each simulation.
+	GenerateRandomSeed bool `json:"generateRandomSeed,omitempty"`
+
 	// Height of part geometry, 0.001 to 0.01 meters
 	// Required: true
 	// Maximum: 0.01
