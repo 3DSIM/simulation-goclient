@@ -29,10 +29,6 @@ type Machine struct {
 	// configuration history
 	ConfigurationHistory []*MachineConfiguration `json:"configurationHistory"`
 
-	// identifier for the active configuration for the machine
-	// Required: true
-	ConfigurationID *int32 `json:"configurationId"`
-
 	// version of the core machine this machine was derived from
 	// Required: true
 	// Max Length: 32
@@ -71,6 +67,10 @@ type Machine struct {
 	// Required: true
 	LastModifiedBy *string `json:"lastModifiedBy"`
 
+	// identifier for the active configuration for the machine
+	// Required: true
+	MachineConfigurationID *int32 `json:"machineConfigurationId"`
+
 	// machine name
 	// Required: true
 	// Max Length: 128
@@ -96,11 +96,6 @@ func (m *Machine) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateConfigurationHistory(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
-	if err := m.validateConfigurationID(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -146,6 +141,11 @@ func (m *Machine) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateLastModifiedBy(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateMachineConfigurationID(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -216,15 +216,6 @@ func (m *Machine) validateConfigurationHistory(formats strfmt.Registry) error {
 			}
 		}
 
-	}
-
-	return nil
-}
-
-func (m *Machine) validateConfigurationID(formats strfmt.Registry) error {
-
-	if err := validate.Required("configurationId", "body", m.ConfigurationID); err != nil {
-		return err
 	}
 
 	return nil
@@ -317,6 +308,15 @@ func (m *Machine) validateLastModified(formats strfmt.Registry) error {
 func (m *Machine) validateLastModifiedBy(formats strfmt.Registry) error {
 
 	if err := validate.Required("lastModifiedBy", "body", m.LastModifiedBy); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *Machine) validateMachineConfigurationID(formats strfmt.Registry) error {
+
+	if err := validate.Required("machineConfigurationId", "body", m.MachineConfigurationID); err != nil {
 		return err
 	}
 

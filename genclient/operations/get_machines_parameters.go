@@ -88,6 +88,11 @@ type GetMachinesParams struct {
 
 	*/
 	Archived *bool
+	/*IsCore
+	  If true, will return all Core Machines in any organization.  If false, will return non-core machines in the organization. If not provided, will return all core machines and machines in the passed organization.
+
+	*/
+	IsCore *bool
 	/*Limit
 	  number of items to return within the query
 
@@ -158,6 +163,17 @@ func (o *GetMachinesParams) SetArchived(archived *bool) {
 	o.Archived = archived
 }
 
+// WithIsCore adds the isCore to the get machines params
+func (o *GetMachinesParams) WithIsCore(isCore *bool) *GetMachinesParams {
+	o.SetIsCore(isCore)
+	return o
+}
+
+// SetIsCore adds the isCore to the get machines params
+func (o *GetMachinesParams) SetIsCore(isCore *bool) {
+	o.IsCore = isCore
+}
+
 // WithLimit adds the limit to the get machines params
 func (o *GetMachinesParams) WithLimit(limit *int32) *GetMachinesParams {
 	o.SetLimit(limit)
@@ -220,6 +236,22 @@ func (o *GetMachinesParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.R
 		qArchived := swag.FormatBool(qrArchived)
 		if qArchived != "" {
 			if err := r.SetQueryParam("archived", qArchived); err != nil {
+				return err
+			}
+		}
+
+	}
+
+	if o.IsCore != nil {
+
+		// query param isCore
+		var qrIsCore bool
+		if o.IsCore != nil {
+			qrIsCore = *o.IsCore
+		}
+		qIsCore := swag.FormatBool(qrIsCore)
+		if qIsCore != "" {
+			if err := r.SetQueryParam("isCore", qIsCore); err != nil {
 				return err
 			}
 		}
