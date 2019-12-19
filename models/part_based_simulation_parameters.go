@@ -26,6 +26,10 @@ type PartBasedSimulationParameters struct {
 	// Id of build file being simulated, mutually exclusive with simulationParts
 	BuildFileID int32 `json:"buildFileId,omitempty"`
 
+	// cutoff method
+	// Required: true
+	CutoffMethod *string `json:"cutoffMethod"`
+
 	// detect blade crash
 	// Required: true
 	DetectBladeCrash *bool `json:"detectBladeCrash"`
@@ -216,6 +220,11 @@ type PartBasedSimulationParameters struct {
 func (m *PartBasedSimulationParameters) Validate(formats strfmt.Registry) error {
 	var res []error
 
+	if err := m.validateCutoffMethod(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
 	if err := m.validateDetectBladeCrash(formats); err != nil {
 		// prop
 		res = append(res, err)
@@ -379,6 +388,47 @@ func (m *PartBasedSimulationParameters) Validate(formats strfmt.Registry) error 
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
+	return nil
+}
+
+var partBasedSimulationParametersTypeCutoffMethodPropEnum []interface{}
+
+func init() {
+	var res []string
+	if err := json.Unmarshal([]byte(`["Legacy","Instantaneous"]`), &res); err != nil {
+		panic(err)
+	}
+	for _, v := range res {
+		partBasedSimulationParametersTypeCutoffMethodPropEnum = append(partBasedSimulationParametersTypeCutoffMethodPropEnum, v)
+	}
+}
+
+const (
+	// PartBasedSimulationParametersCutoffMethodLegacy captures enum value "Legacy"
+	PartBasedSimulationParametersCutoffMethodLegacy string = "Legacy"
+	// PartBasedSimulationParametersCutoffMethodInstantaneous captures enum value "Instantaneous"
+	PartBasedSimulationParametersCutoffMethodInstantaneous string = "Instantaneous"
+)
+
+// prop value enum
+func (m *PartBasedSimulationParameters) validateCutoffMethodEnum(path, location string, value string) error {
+	if err := validate.Enum(path, location, value, partBasedSimulationParametersTypeCutoffMethodPropEnum); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (m *PartBasedSimulationParameters) validateCutoffMethod(formats strfmt.Registry) error {
+
+	if err := validate.Required("cutoffMethod", "body", m.CutoffMethod); err != nil {
+		return err
+	}
+
+	// value enum
+	if err := m.validateCutoffMethodEnum("cutoffMethod", "body", *m.CutoffMethod); err != nil {
+		return err
+	}
+
 	return nil
 }
 
