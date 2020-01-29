@@ -73,6 +73,10 @@ type PartBasedSimulationParameters struct {
 	// if true, the on-plate stress output file will include the on-plate strain
 	IncludeOnPlateStrainOutput bool `json:"includeOnPlateStrainOutput,omitempty"`
 
+	// the maximum number of bytes to be written in layer-wise VTK files before subsequent VTK layer-wise VTK files will be skipped. Ignored if outputLayerVtk is false and required if true.
+	// Minimum: 1.048576e+06
+	LayerVtkMaxSize int64 `json:"layerVtkMaxSize,omitempty"`
+
 	// load stepping type
 	LoadSteppingType string `json:"loadSteppingType,omitempty"`
 
@@ -261,6 +265,11 @@ func (m *PartBasedSimulationParameters) Validate(formats strfmt.Registry) error 
 	}
 
 	if err := m.validateHardeningFactor(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateLayerVtkMaxSize(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -554,6 +563,19 @@ func (m *PartBasedSimulationParameters) validateHardeningFactor(formats strfmt.R
 	}
 
 	if err := validate.Maximum("hardeningFactor", "body", float64(*m.HardeningFactor), 0.5, false); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *PartBasedSimulationParameters) validateLayerVtkMaxSize(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.LayerVtkMaxSize) { // not required
+		return nil
+	}
+
+	if err := validate.MinimumInt("layerVtkMaxSize", "body", int64(m.LayerVtkMaxSize), 1.048576e+06, false); err != nil {
 		return err
 	}
 
