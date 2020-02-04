@@ -47,26 +47,6 @@ type MaterialConfiguration struct {
 	// Required: true
 	AnisotropicStrainCoefficientZ *float64 `json:"anisotropicStrainCoefficientZ"`
 
-	// assumed strain
-	// Required: true
-	AssumedStrain *float64 `json:"assumedStrain"`
-
-	// atomic weight
-	// Required: true
-	AtomicWeight *float64 `json:"atomicWeight"`
-
-	// cap temperature laser power coef
-	// Required: true
-	CapTemperatureLaserPowerCoef *float64 `json:"capTemperatureLaserPowerCoef"`
-
-	// cap temperature laser speed coef
-	// Required: true
-	CapTemperatureLaserSpeedCoef *float64 `json:"capTemperatureLaserSpeedCoef"`
-
-	// cap temperature offset
-	// Required: true
-	CapTemperatureOffset *float64 `json:"capTemperatureOffset"`
-
 	// created time stamp, set server-side, read only field
 	// Required: true
 	Created *strfmt.DateTime `json:"created"`
@@ -83,64 +63,12 @@ type MaterialConfiguration struct {
 	// Required: true
 	ElasticModulusOfBase *float64 `json:"elasticModulusOfBase"`
 
-	// energy absorbing rate by powder
-	// Required: true
-	EnergyAbsorbingRateByPowder *float64 `json:"energyAbsorbingRateByPowder"`
-
-	// energy absorbing rate by solid
-	// Required: true
-	EnergyAbsorbingRateBySolid *float64 `json:"energyAbsorbingRateBySolid"`
-
-	// extinction coef of powder laser power coef
-	// Required: true
-	ExtinctionCoefOfPowderLaserPowerCoef *float64 `json:"extinctionCoefOfPowderLaserPowerCoef"`
-
-	// extinction coef of powder laser speed coef
-	// Required: true
-	ExtinctionCoefOfPowderLaserSpeedCoef *float64 `json:"extinctionCoefOfPowderLaserSpeedCoef"`
-
-	// extinction coef of powder offset
-	// Required: true
-	ExtinctionCoefOfPowderOffset *float64 `json:"extinctionCoefOfPowderOffset"`
-
-	// extinction coef of solid laser power coef
-	// Required: true
-	ExtinctionCoefOfSolidLaserPowerCoef *float64 `json:"extinctionCoefOfSolidLaserPowerCoef"`
-
-	// extinction coef of solid laser speed coef
-	// Required: true
-	ExtinctionCoefOfSolidLaserSpeedCoef *float64 `json:"extinctionCoefOfSolidLaserSpeedCoef"`
-
-	// extinction coef of solid offset
-	// Required: true
-	ExtinctionCoefOfSolidOffset *float64 `json:"extinctionCoefOfSolidOffset"`
-
-	// fusion latent heat
-	// Required: true
-	FusionLatentHeat *float64 `json:"fusionLatentHeat"`
-
 	// hardening factor
 	// Required: true
 	HardeningFactor *float64 `json:"hardeningFactor"`
 
 	// material configuration identifier
 	ID int32 `json:"id,omitempty"`
-
-	// laser power lower bound
-	// Required: true
-	LaserPowerLowerBound *float64 `json:"laserPowerLowerBound"`
-
-	// laser power upper bound
-	// Required: true
-	LaserPowerUpperBound *float64 `json:"laserPowerUpperBound"`
-
-	// laser speed lower bound
-	// Required: true
-	LaserSpeedLowerBound *float64 `json:"laserSpeedLowerBound"`
-
-	// laser speed upper bound
-	// Required: true
-	LaserSpeedUpperBound *float64 `json:"laserSpeedUpperBound"`
 
 	// liquidus temperature
 	// Required: true
@@ -152,10 +80,6 @@ type MaterialConfiguration struct {
 	// material identifier for this material configuration
 	// Required: true
 	MaterialID *int32 `json:"materialId"`
-
-	// material strain sensitivity
-	// Required: true
-	MaterialStrainSensitivity *float64 `json:"materialStrainSensitivity"`
 
 	// material yield strength
 	// Required: true
@@ -194,18 +118,6 @@ type MaterialConfiguration struct {
 	// powder packing density
 	PowderPackingDensity float64 `json:"powderPackingDensity,omitempty"`
 
-	// powder to solid density ratio
-	// Required: true
-	PowderToSolidDensityRatio *float64 `json:"powderToSolidDensityRatio"`
-
-	// powder to solid specific heat ratio
-	// Required: true
-	PowderToSolidSpecificHeatRatio *float64 `json:"powderToSolidSpecificHeatRatio"`
-
-	// powder to solid thermal conductivity ratio
-	// Required: true
-	PowderToSolidThermalConductivityRatio *float64 `json:"powderToSolidThermalConductivityRatio"`
-
 	// purging gas convection coefficient
 	// Required: true
 	PurgingGasConvectionCoefficient *float64 `json:"purgingGasConvectionCoefficient"`
@@ -218,10 +130,6 @@ type MaterialConfiguration struct {
 	// Required: true
 	SolidSpecificHeatAtRoomTemperature *float64 `json:"solidSpecificHeatAtRoomTemperature"`
 
-	// solid state transition temperature
-	// Required: true
-	SolidStateTransitionTemperature *float64 `json:"solidStateTransitionTemperature"`
-
 	// solid thermal conductivity at room temperature
 	// Required: true
 	SolidThermalConductivityAtRoomTemperature *float64 `json:"solidThermalConductivityAtRoomTemperature"`
@@ -230,29 +138,13 @@ type MaterialConfiguration struct {
 	// Required: true
 	SolidusTemperature *float64 `json:"solidusTemperature"`
 
-	// strain plasticity relaxation factor
-	// Required: true
-	StrainPlasticityRelaxationFactor *float64 `json:"strainPlasticityRelaxationFactor"`
-
 	// support yield strength ratio
 	// Required: true
 	SupportYieldStrengthRatio *float64 `json:"supportYieldStrengthRatio"`
 
-	// surface tension
-	// Required: true
-	SurfaceTension *float64 `json:"surfaceTension"`
-
 	// thermal expansion coefficient
 	// Required: true
 	ThermalExpansionCoefficient *float64 `json:"thermalExpansionCoefficient"`
-
-	// vaporization latent heat
-	// Required: true
-	VaporizationLatentHeat *float64 `json:"vaporizationLatentHeat"`
-
-	// vaporization start temperature
-	// Required: true
-	VaporizationStartTemperature *float64 `json:"vaporizationStartTemperature"`
 
 	// vaporization temperature
 	// Required: true
@@ -281,31 +173,6 @@ func (m *MaterialConfiguration) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
-	if err := m.validateAssumedStrain(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
-	if err := m.validateAtomicWeight(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
-	if err := m.validateCapTemperatureLaserPowerCoef(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
-	if err := m.validateCapTemperatureLaserSpeedCoef(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
-	if err := m.validateCapTemperatureOffset(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
 	if err := m.validateCreated(formats); err != nil {
 		// prop
 		res = append(res, err)
@@ -326,72 +193,7 @@ func (m *MaterialConfiguration) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
-	if err := m.validateEnergyAbsorbingRateByPowder(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
-	if err := m.validateEnergyAbsorbingRateBySolid(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
-	if err := m.validateExtinctionCoefOfPowderLaserPowerCoef(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
-	if err := m.validateExtinctionCoefOfPowderLaserSpeedCoef(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
-	if err := m.validateExtinctionCoefOfPowderOffset(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
-	if err := m.validateExtinctionCoefOfSolidLaserPowerCoef(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
-	if err := m.validateExtinctionCoefOfSolidLaserSpeedCoef(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
-	if err := m.validateExtinctionCoefOfSolidOffset(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
-	if err := m.validateFusionLatentHeat(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
 	if err := m.validateHardeningFactor(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
-	if err := m.validateLaserPowerLowerBound(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
-	if err := m.validateLaserPowerUpperBound(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
-	if err := m.validateLaserSpeedLowerBound(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
-	if err := m.validateLaserSpeedUpperBound(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -402,11 +204,6 @@ func (m *MaterialConfiguration) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateMaterialID(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
-	if err := m.validateMaterialStrainSensitivity(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -431,21 +228,6 @@ func (m *MaterialConfiguration) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
-	if err := m.validatePowderToSolidDensityRatio(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
-	if err := m.validatePowderToSolidSpecificHeatRatio(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
-	if err := m.validatePowderToSolidThermalConductivityRatio(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
 	if err := m.validatePurgingGasConvectionCoefficient(formats); err != nil {
 		// prop
 		res = append(res, err)
@@ -461,11 +243,6 @@ func (m *MaterialConfiguration) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
-	if err := m.validateSolidStateTransitionTemperature(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
 	if err := m.validateSolidThermalConductivityAtRoomTemperature(formats); err != nil {
 		// prop
 		res = append(res, err)
@@ -476,32 +253,12 @@ func (m *MaterialConfiguration) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
-	if err := m.validateStrainPlasticityRelaxationFactor(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
 	if err := m.validateSupportYieldStrengthRatio(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
 
-	if err := m.validateSurfaceTension(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
 	if err := m.validateThermalExpansionCoefficient(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
-	if err := m.validateVaporizationLatentHeat(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
-	if err := m.validateVaporizationStartTemperature(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -544,51 +301,6 @@ func (m *MaterialConfiguration) validateAnisotropicStrainCoefficientZ(formats st
 	return nil
 }
 
-func (m *MaterialConfiguration) validateAssumedStrain(formats strfmt.Registry) error {
-
-	if err := validate.Required("assumedStrain", "body", m.AssumedStrain); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *MaterialConfiguration) validateAtomicWeight(formats strfmt.Registry) error {
-
-	if err := validate.Required("atomicWeight", "body", m.AtomicWeight); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *MaterialConfiguration) validateCapTemperatureLaserPowerCoef(formats strfmt.Registry) error {
-
-	if err := validate.Required("capTemperatureLaserPowerCoef", "body", m.CapTemperatureLaserPowerCoef); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *MaterialConfiguration) validateCapTemperatureLaserSpeedCoef(formats strfmt.Registry) error {
-
-	if err := validate.Required("capTemperatureLaserSpeedCoef", "body", m.CapTemperatureLaserSpeedCoef); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *MaterialConfiguration) validateCapTemperatureOffset(formats strfmt.Registry) error {
-
-	if err := validate.Required("capTemperatureOffset", "body", m.CapTemperatureOffset); err != nil {
-		return err
-	}
-
-	return nil
-}
-
 func (m *MaterialConfiguration) validateCreated(formats strfmt.Registry) error {
 
 	if err := validate.Required("created", "body", m.Created); err != nil {
@@ -625,126 +337,9 @@ func (m *MaterialConfiguration) validateElasticModulusOfBase(formats strfmt.Regi
 	return nil
 }
 
-func (m *MaterialConfiguration) validateEnergyAbsorbingRateByPowder(formats strfmt.Registry) error {
-
-	if err := validate.Required("energyAbsorbingRateByPowder", "body", m.EnergyAbsorbingRateByPowder); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *MaterialConfiguration) validateEnergyAbsorbingRateBySolid(formats strfmt.Registry) error {
-
-	if err := validate.Required("energyAbsorbingRateBySolid", "body", m.EnergyAbsorbingRateBySolid); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *MaterialConfiguration) validateExtinctionCoefOfPowderLaserPowerCoef(formats strfmt.Registry) error {
-
-	if err := validate.Required("extinctionCoefOfPowderLaserPowerCoef", "body", m.ExtinctionCoefOfPowderLaserPowerCoef); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *MaterialConfiguration) validateExtinctionCoefOfPowderLaserSpeedCoef(formats strfmt.Registry) error {
-
-	if err := validate.Required("extinctionCoefOfPowderLaserSpeedCoef", "body", m.ExtinctionCoefOfPowderLaserSpeedCoef); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *MaterialConfiguration) validateExtinctionCoefOfPowderOffset(formats strfmt.Registry) error {
-
-	if err := validate.Required("extinctionCoefOfPowderOffset", "body", m.ExtinctionCoefOfPowderOffset); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *MaterialConfiguration) validateExtinctionCoefOfSolidLaserPowerCoef(formats strfmt.Registry) error {
-
-	if err := validate.Required("extinctionCoefOfSolidLaserPowerCoef", "body", m.ExtinctionCoefOfSolidLaserPowerCoef); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *MaterialConfiguration) validateExtinctionCoefOfSolidLaserSpeedCoef(formats strfmt.Registry) error {
-
-	if err := validate.Required("extinctionCoefOfSolidLaserSpeedCoef", "body", m.ExtinctionCoefOfSolidLaserSpeedCoef); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *MaterialConfiguration) validateExtinctionCoefOfSolidOffset(formats strfmt.Registry) error {
-
-	if err := validate.Required("extinctionCoefOfSolidOffset", "body", m.ExtinctionCoefOfSolidOffset); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *MaterialConfiguration) validateFusionLatentHeat(formats strfmt.Registry) error {
-
-	if err := validate.Required("fusionLatentHeat", "body", m.FusionLatentHeat); err != nil {
-		return err
-	}
-
-	return nil
-}
-
 func (m *MaterialConfiguration) validateHardeningFactor(formats strfmt.Registry) error {
 
 	if err := validate.Required("hardeningFactor", "body", m.HardeningFactor); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *MaterialConfiguration) validateLaserPowerLowerBound(formats strfmt.Registry) error {
-
-	if err := validate.Required("laserPowerLowerBound", "body", m.LaserPowerLowerBound); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *MaterialConfiguration) validateLaserPowerUpperBound(formats strfmt.Registry) error {
-
-	if err := validate.Required("laserPowerUpperBound", "body", m.LaserPowerUpperBound); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *MaterialConfiguration) validateLaserSpeedLowerBound(formats strfmt.Registry) error {
-
-	if err := validate.Required("laserSpeedLowerBound", "body", m.LaserSpeedLowerBound); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *MaterialConfiguration) validateLaserSpeedUpperBound(formats strfmt.Registry) error {
-
-	if err := validate.Required("laserSpeedUpperBound", "body", m.LaserSpeedUpperBound); err != nil {
 		return err
 	}
 
@@ -763,15 +358,6 @@ func (m *MaterialConfiguration) validateLiquidusTemperature(formats strfmt.Regis
 func (m *MaterialConfiguration) validateMaterialID(formats strfmt.Registry) error {
 
 	if err := validate.Required("materialId", "body", m.MaterialID); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *MaterialConfiguration) validateMaterialStrainSensitivity(formats strfmt.Registry) error {
-
-	if err := validate.Required("materialStrainSensitivity", "body", m.MaterialStrainSensitivity); err != nil {
 		return err
 	}
 
@@ -814,33 +400,6 @@ func (m *MaterialConfiguration) validatePoissonRatio(formats strfmt.Registry) er
 	return nil
 }
 
-func (m *MaterialConfiguration) validatePowderToSolidDensityRatio(formats strfmt.Registry) error {
-
-	if err := validate.Required("powderToSolidDensityRatio", "body", m.PowderToSolidDensityRatio); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *MaterialConfiguration) validatePowderToSolidSpecificHeatRatio(formats strfmt.Registry) error {
-
-	if err := validate.Required("powderToSolidSpecificHeatRatio", "body", m.PowderToSolidSpecificHeatRatio); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *MaterialConfiguration) validatePowderToSolidThermalConductivityRatio(formats strfmt.Registry) error {
-
-	if err := validate.Required("powderToSolidThermalConductivityRatio", "body", m.PowderToSolidThermalConductivityRatio); err != nil {
-		return err
-	}
-
-	return nil
-}
-
 func (m *MaterialConfiguration) validatePurgingGasConvectionCoefficient(formats strfmt.Registry) error {
 
 	if err := validate.Required("purgingGasConvectionCoefficient", "body", m.PurgingGasConvectionCoefficient); err != nil {
@@ -868,15 +427,6 @@ func (m *MaterialConfiguration) validateSolidSpecificHeatAtRoomTemperature(forma
 	return nil
 }
 
-func (m *MaterialConfiguration) validateSolidStateTransitionTemperature(formats strfmt.Registry) error {
-
-	if err := validate.Required("solidStateTransitionTemperature", "body", m.SolidStateTransitionTemperature); err != nil {
-		return err
-	}
-
-	return nil
-}
-
 func (m *MaterialConfiguration) validateSolidThermalConductivityAtRoomTemperature(formats strfmt.Registry) error {
 
 	if err := validate.Required("solidThermalConductivityAtRoomTemperature", "body", m.SolidThermalConductivityAtRoomTemperature); err != nil {
@@ -895,15 +445,6 @@ func (m *MaterialConfiguration) validateSolidusTemperature(formats strfmt.Regist
 	return nil
 }
 
-func (m *MaterialConfiguration) validateStrainPlasticityRelaxationFactor(formats strfmt.Registry) error {
-
-	if err := validate.Required("strainPlasticityRelaxationFactor", "body", m.StrainPlasticityRelaxationFactor); err != nil {
-		return err
-	}
-
-	return nil
-}
-
 func (m *MaterialConfiguration) validateSupportYieldStrengthRatio(formats strfmt.Registry) error {
 
 	if err := validate.Required("supportYieldStrengthRatio", "body", m.SupportYieldStrengthRatio); err != nil {
@@ -913,36 +454,9 @@ func (m *MaterialConfiguration) validateSupportYieldStrengthRatio(formats strfmt
 	return nil
 }
 
-func (m *MaterialConfiguration) validateSurfaceTension(formats strfmt.Registry) error {
-
-	if err := validate.Required("surfaceTension", "body", m.SurfaceTension); err != nil {
-		return err
-	}
-
-	return nil
-}
-
 func (m *MaterialConfiguration) validateThermalExpansionCoefficient(formats strfmt.Registry) error {
 
 	if err := validate.Required("thermalExpansionCoefficient", "body", m.ThermalExpansionCoefficient); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *MaterialConfiguration) validateVaporizationLatentHeat(formats strfmt.Registry) error {
-
-	if err := validate.Required("vaporizationLatentHeat", "body", m.VaporizationLatentHeat); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *MaterialConfiguration) validateVaporizationStartTemperature(formats strfmt.Registry) error {
-
-	if err := validate.Required("vaporizationStartTemperature", "body", m.VaporizationStartTemperature); err != nil {
 		return err
 	}
 
