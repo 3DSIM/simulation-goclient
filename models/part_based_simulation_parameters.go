@@ -37,6 +37,14 @@ type PartBasedSimulationParameters struct {
 	// detect support failure
 	DetectSupportFailure bool `json:"detectSupportFailure,omitempty"`
 
+	// The amount of steps MAPDL will use for directional cut off
+	// Maximum: 2.147483647e+09
+	// Minimum: 1
+	DirectionCutoffSteps int32 `json:"directionCutoffSteps,omitempty"`
+
+	// The direction of the MAPDL directional cut off
+	DirectionalCutoffDirection string `json:"directionalCutoffDirection,omitempty"`
+
 	// a value that is used to scale the after cutoff simulated distortion values
 	// Maximum: 5
 	// Minimum: -5
@@ -234,6 +242,16 @@ func (m *PartBasedSimulationParameters) Validate(formats strfmt.Registry) error 
 		res = append(res, err)
 	}
 
+	if err := m.validateDirectionCutoffSteps(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateDirectionalCutoffDirection(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
 	if err := m.validateDistortionAfterCutoffScaleFactor(formats); err != nil {
 		// prop
 		res = append(res, err)
@@ -404,7 +422,7 @@ var partBasedSimulationParametersTypeCutoffMethodPropEnum []interface{}
 
 func init() {
 	var res []string
-	if err := json.Unmarshal([]byte(`["Legacy","Instantaneous"]`), &res); err != nil {
+	if err := json.Unmarshal([]byte(`["Legacy","Instantaneous","Directional"]`), &res); err != nil {
 		panic(err)
 	}
 	for _, v := range res {
@@ -417,6 +435,8 @@ const (
 	PartBasedSimulationParametersCutoffMethodLegacy string = "Legacy"
 	// PartBasedSimulationParametersCutoffMethodInstantaneous captures enum value "Instantaneous"
 	PartBasedSimulationParametersCutoffMethodInstantaneous string = "Instantaneous"
+	// PartBasedSimulationParametersCutoffMethodDirectional captures enum value "Directional"
+	PartBasedSimulationParametersCutoffMethodDirectional string = "Directional"
 )
 
 // prop value enum
@@ -444,6 +464,68 @@ func (m *PartBasedSimulationParameters) validateCutoffMethod(formats strfmt.Regi
 func (m *PartBasedSimulationParameters) validateDetectBladeCrash(formats strfmt.Registry) error {
 
 	if err := validate.Required("detectBladeCrash", "body", m.DetectBladeCrash); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *PartBasedSimulationParameters) validateDirectionCutoffSteps(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.DirectionCutoffSteps) { // not required
+		return nil
+	}
+
+	if err := validate.MinimumInt("directionCutoffSteps", "body", int64(m.DirectionCutoffSteps), 1, false); err != nil {
+		return err
+	}
+
+	if err := validate.MaximumInt("directionCutoffSteps", "body", int64(m.DirectionCutoffSteps), 2.147483647e+09, false); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+var partBasedSimulationParametersTypeDirectionalCutoffDirectionPropEnum []interface{}
+
+func init() {
+	var res []string
+	if err := json.Unmarshal([]byte(`["POS_X","NEG_X","POS_Y","NEG_Y"]`), &res); err != nil {
+		panic(err)
+	}
+	for _, v := range res {
+		partBasedSimulationParametersTypeDirectionalCutoffDirectionPropEnum = append(partBasedSimulationParametersTypeDirectionalCutoffDirectionPropEnum, v)
+	}
+}
+
+const (
+	// PartBasedSimulationParametersDirectionalCutoffDirectionPOSX captures enum value "POS_X"
+	PartBasedSimulationParametersDirectionalCutoffDirectionPOSX string = "POS_X"
+	// PartBasedSimulationParametersDirectionalCutoffDirectionNEGX captures enum value "NEG_X"
+	PartBasedSimulationParametersDirectionalCutoffDirectionNEGX string = "NEG_X"
+	// PartBasedSimulationParametersDirectionalCutoffDirectionPOSY captures enum value "POS_Y"
+	PartBasedSimulationParametersDirectionalCutoffDirectionPOSY string = "POS_Y"
+	// PartBasedSimulationParametersDirectionalCutoffDirectionNEGY captures enum value "NEG_Y"
+	PartBasedSimulationParametersDirectionalCutoffDirectionNEGY string = "NEG_Y"
+)
+
+// prop value enum
+func (m *PartBasedSimulationParameters) validateDirectionalCutoffDirectionEnum(path, location string, value string) error {
+	if err := validate.Enum(path, location, value, partBasedSimulationParametersTypeDirectionalCutoffDirectionPropEnum); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (m *PartBasedSimulationParameters) validateDirectionalCutoffDirection(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.DirectionalCutoffDirection) { // not required
+		return nil
+	}
+
+	// value enum
+	if err := m.validateDirectionalCutoffDirectionEnum("directionalCutoffDirection", "body", m.DirectionalCutoffDirection); err != nil {
 		return err
 	}
 
