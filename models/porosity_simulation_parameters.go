@@ -21,8 +21,8 @@ type PorositySimulationParameters struct {
 
 	// diameter of laser beam in meters
 	// Required: true
-	// Maximum: 0.00012
-	// Minimum: 8e-05
+	// Maximum: 0.00014
+	// Minimum: 1e-05
 	BeamDiameter *float64 `json:"beamDiameter"`
 
 	// Must be between 0.001 to 0.01 meters
@@ -48,8 +48,8 @@ type PorositySimulationParameters struct {
 	HatchSpacingValues []float64 `json:"hatchSpacingValues"`
 
 	// heater temperature in degrees kelvin
-	// Maximum: 474
-	// Minimum: 293
+	// Maximum: 773.15
+	// Minimum: 293.15
 	HeaterTemperature float64 `json:"heaterTemperature,omitempty"`
 
 	// Array of laser power values to simulate across, Each value must be between 10 to 1000 watts
@@ -167,11 +167,11 @@ func (m *PorositySimulationParameters) validateBeamDiameter(formats strfmt.Regis
 		return err
 	}
 
-	if err := validate.Minimum("beamDiameter", "body", float64(*m.BeamDiameter), 8e-05, false); err != nil {
+	if err := validate.Minimum("beamDiameter", "body", float64(*m.BeamDiameter), 1e-05, false); err != nil {
 		return err
 	}
 
-	if err := validate.Maximum("beamDiameter", "body", float64(*m.BeamDiameter), 0.00012, false); err != nil {
+	if err := validate.Maximum("beamDiameter", "body", float64(*m.BeamDiameter), 0.00014, false); err != nil {
 		return err
 	}
 
@@ -256,11 +256,11 @@ func (m *PorositySimulationParameters) validateHeaterTemperature(formats strfmt.
 		return nil
 	}
 
-	if err := validate.Minimum("heaterTemperature", "body", float64(m.HeaterTemperature), 293, false); err != nil {
+	if err := validate.Minimum("heaterTemperature", "body", float64(m.HeaterTemperature), 293.15, false); err != nil {
 		return err
 	}
 
-	if err := validate.Maximum("heaterTemperature", "body", float64(m.HeaterTemperature), 474, false); err != nil {
+	if err := validate.Maximum("heaterTemperature", "body", float64(m.HeaterTemperature), 773.15, false); err != nil {
 		return err
 	}
 

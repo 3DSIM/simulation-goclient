@@ -21,8 +21,8 @@ type MicrostructureSimulationParameters struct {
 
 	// diameter of laser beam in meters
 	// Required: true
-	// Maximum: 0.00012
-	// Minimum: 8e-05
+	// Maximum: 0.00014
+	// Minimum: 1e-05
 	BeamDiameter *float64 `json:"beamDiameter"`
 
 	// Results in the generation of a new random seed.  Useful if duplicating a simulation and require unique seeds in each simulation.
@@ -50,10 +50,10 @@ type MicrostructureSimulationParameters struct {
 	// Required: true
 	HatchSpacingValues []float64 `json:"hatchSpacingValues"`
 
-	// Array of printer heater temperature values in degrees kelvin. Each value must be 293 and 474.
+	// Array of printer heater temperature values in degrees kelvin. Each value must be 293.15 and 773.15.
 	HeaterTemperatureValues []float64 `json:"heaterTemperatureValues"`
 
-	// Array of laser power values to simulate across. Each value must be 10 to 1000 watts
+	// Array of laser power values to simulate across. Each value must be 50 to 700 watts
 	LaserWattageValues []float64 `json:"laserWattageValues"`
 
 	// Array of layer rotation angles to simulate across. Each value must be 0 to 180 degrees
@@ -73,7 +73,7 @@ type MicrostructureSimulationParameters struct {
 	// Minimum: 0
 	RandomSeed *int64 `json:"randomSeed,omitempty"`
 
-	// Array of scan speed values to simulate across. Each value must be 0.01 to 10 meters/second
+	// Array of scan speed values to simulate across. Each value must be 0.35 to 2.5 meters/second
 	// Required: true
 	ScanSpeedValues []float64 `json:"scanSpeedValues"`
 
@@ -181,11 +181,11 @@ func (m *MicrostructureSimulationParameters) validateBeamDiameter(formats strfmt
 		return err
 	}
 
-	if err := validate.Minimum("beamDiameter", "body", float64(*m.BeamDiameter), 8e-05, false); err != nil {
+	if err := validate.Minimum("beamDiameter", "body", float64(*m.BeamDiameter), 1e-05, false); err != nil {
 		return err
 	}
 
-	if err := validate.Maximum("beamDiameter", "body", float64(*m.BeamDiameter), 0.00012, false); err != nil {
+	if err := validate.Maximum("beamDiameter", "body", float64(*m.BeamDiameter), 0.00014, false); err != nil {
 		return err
 	}
 
@@ -272,11 +272,11 @@ func (m *MicrostructureSimulationParameters) validateHeaterTemperatureValues(for
 
 	for i := 0; i < len(m.HeaterTemperatureValues); i++ {
 
-		if err := validate.Minimum("heaterTemperatureValues"+"."+strconv.Itoa(i), "body", float64(m.HeaterTemperatureValues[i]), 293, false); err != nil {
+		if err := validate.Minimum("heaterTemperatureValues"+"."+strconv.Itoa(i), "body", float64(m.HeaterTemperatureValues[i]), 293.15, false); err != nil {
 			return err
 		}
 
-		if err := validate.Maximum("heaterTemperatureValues"+"."+strconv.Itoa(i), "body", float64(m.HeaterTemperatureValues[i]), 474, false); err != nil {
+		if err := validate.Maximum("heaterTemperatureValues"+"."+strconv.Itoa(i), "body", float64(m.HeaterTemperatureValues[i]), 773.15, false); err != nil {
 			return err
 		}
 
@@ -293,11 +293,11 @@ func (m *MicrostructureSimulationParameters) validateLaserWattageValues(formats 
 
 	for i := 0; i < len(m.LaserWattageValues); i++ {
 
-		if err := validate.Minimum("laserWattageValues"+"."+strconv.Itoa(i), "body", float64(m.LaserWattageValues[i]), 10, false); err != nil {
+		if err := validate.Minimum("laserWattageValues"+"."+strconv.Itoa(i), "body", float64(m.LaserWattageValues[i]), 50, false); err != nil {
 			return err
 		}
 
-		if err := validate.Maximum("laserWattageValues"+"."+strconv.Itoa(i), "body", float64(m.LaserWattageValues[i]), 1000, false); err != nil {
+		if err := validate.Maximum("laserWattageValues"+"."+strconv.Itoa(i), "body", float64(m.LaserWattageValues[i]), 700, false); err != nil {
 			return err
 		}
 
@@ -404,11 +404,11 @@ func (m *MicrostructureSimulationParameters) validateScanSpeedValues(formats str
 
 	for i := 0; i < len(m.ScanSpeedValues); i++ {
 
-		if err := validate.Minimum("scanSpeedValues"+"."+strconv.Itoa(i), "body", float64(m.ScanSpeedValues[i]), 0.01, false); err != nil {
+		if err := validate.Minimum("scanSpeedValues"+"."+strconv.Itoa(i), "body", float64(m.ScanSpeedValues[i]), 0.35, false); err != nil {
 			return err
 		}
 
-		if err := validate.Maximum("scanSpeedValues"+"."+strconv.Itoa(i), "body", float64(m.ScanSpeedValues[i]), 10, false); err != nil {
+		if err := validate.Maximum("scanSpeedValues"+"."+strconv.Itoa(i), "body", float64(m.ScanSpeedValues[i]), 2.5, false); err != nil {
 			return err
 		}
 

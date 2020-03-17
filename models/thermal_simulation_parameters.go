@@ -33,8 +33,8 @@ type ThermalSimulationParameters struct {
 
 	// diameter of laser beam in meters
 	// Required: true
-	// Maximum: 0.00012
-	// Minimum: 8e-05
+	// Maximum: 0.00014
+	// Minimum: 1e-05
 	BeamDiameter *float64 `json:"beamDiameter"`
 
 	// should be a number between 0.05 and 1.5 mm
@@ -50,8 +50,8 @@ type ThermalSimulationParameters struct {
 	HatchSpacing *float64 `json:"hatchSpacing"`
 
 	// heater temperature in degrees kelvin
-	// Maximum: 474
-	// Minimum: 293
+	// Maximum: 773.15
+	// Minimum: 293.15
 	HeaterTemperature float64 `json:"heaterTemperature,omitempty"`
 
 	// false indicates that only the thermal solver will run, while true indicates that the mechanics solver will run after the thermal solver
@@ -71,10 +71,10 @@ type ThermalSimulationParameters struct {
 	// Minimum: 0.05
 	InstantStaticSensorRadius float64 `json:"instantStaticSensorRadius,omitempty"`
 
-	// Must be between 10 to 1000 watts
+	// Must be between 50 to 700 watts
 	// Required: true
-	// Maximum: 1000
-	// Minimum: 10
+	// Maximum: 700
+	// Minimum: 50
 	LaserWattage *float64 `json:"laserWattage"`
 
 	// Must be between 0 to 180 degrees
@@ -140,10 +140,10 @@ type ThermalSimulationParameters struct {
 	// if true, pyrometer sensor data will be collected for every layer
 	PyroVirtualSensorOutputAllLayers bool `json:"pyroVirtualSensorOutputAllLayers,omitempty"`
 
-	// Must be between 0.01 to 10 meters/second
+	// Must be between 0.35 to 2.5 meters/second
 	// Required: true
-	// Maximum: 10
-	// Minimum: 0.01
+	// Maximum: 2.5
+	// Minimum: 0.35
 	ScanSpeed *float64 `json:"scanSpeed"`
 
 	// List of points where the thermal solver will collect thermal history - limit 10
@@ -348,11 +348,11 @@ func (m *ThermalSimulationParameters) validateBeamDiameter(formats strfmt.Regist
 		return err
 	}
 
-	if err := validate.Minimum("beamDiameter", "body", float64(*m.BeamDiameter), 8e-05, false); err != nil {
+	if err := validate.Minimum("beamDiameter", "body", float64(*m.BeamDiameter), 1e-05, false); err != nil {
 		return err
 	}
 
-	if err := validate.Maximum("beamDiameter", "body", float64(*m.BeamDiameter), 0.00012, false); err != nil {
+	if err := validate.Maximum("beamDiameter", "body", float64(*m.BeamDiameter), 0.00014, false); err != nil {
 		return err
 	}
 
@@ -409,11 +409,11 @@ func (m *ThermalSimulationParameters) validateHeaterTemperature(formats strfmt.R
 		return nil
 	}
 
-	if err := validate.Minimum("heaterTemperature", "body", float64(m.HeaterTemperature), 293, false); err != nil {
+	if err := validate.Minimum("heaterTemperature", "body", float64(m.HeaterTemperature), 293.15, false); err != nil {
 		return err
 	}
 
-	if err := validate.Maximum("heaterTemperature", "body", float64(m.HeaterTemperature), 474, false); err != nil {
+	if err := validate.Maximum("heaterTemperature", "body", float64(m.HeaterTemperature), 773.15, false); err != nil {
 		return err
 	}
 
@@ -478,11 +478,11 @@ func (m *ThermalSimulationParameters) validateLaserWattage(formats strfmt.Regist
 		return err
 	}
 
-	if err := validate.Minimum("laserWattage", "body", float64(*m.LaserWattage), 10, false); err != nil {
+	if err := validate.Minimum("laserWattage", "body", float64(*m.LaserWattage), 50, false); err != nil {
 		return err
 	}
 
-	if err := validate.Maximum("laserWattage", "body", float64(*m.LaserWattage), 1000, false); err != nil {
+	if err := validate.Maximum("laserWattage", "body", float64(*m.LaserWattage), 700, false); err != nil {
 		return err
 	}
 
@@ -635,11 +635,11 @@ func (m *ThermalSimulationParameters) validateScanSpeed(formats strfmt.Registry)
 		return err
 	}
 
-	if err := validate.Minimum("scanSpeed", "body", float64(*m.ScanSpeed), 0.01, false); err != nil {
+	if err := validate.Minimum("scanSpeed", "body", float64(*m.ScanSpeed), 0.35, false); err != nil {
 		return err
 	}
 
-	if err := validate.Maximum("scanSpeed", "body", float64(*m.ScanSpeed), 10, false); err != nil {
+	if err := validate.Maximum("scanSpeed", "body", float64(*m.ScanSpeed), 2.5, false); err != nil {
 		return err
 	}
 

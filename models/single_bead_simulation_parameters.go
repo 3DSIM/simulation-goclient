@@ -32,13 +32,13 @@ type SingleBeadSimulationParameters struct {
 
 	// diameter of laser beam in meters
 	// Required: true
-	// Maximum: 0.00012
-	// Minimum: 8e-05
+	// Maximum: 0.00014
+	// Minimum: 1e-05
 	BeamDiameter *float64 `json:"beamDiameter"`
 
 	// heater temperature in degrees kelvin
-	// Maximum: 474
-	// Minimum: 293
+	// Maximum: 773.15
+	// Minimum: 293.15
 	HeaterTemperature float64 `json:"heaterTemperature,omitempty"`
 
 	// Array of Powder Laser Absorptivity Values to simulate across, Each value must be between 0% and 100%, expressed as a decimal
@@ -219,11 +219,11 @@ func (m *SingleBeadSimulationParameters) validateBeamDiameter(formats strfmt.Reg
 		return err
 	}
 
-	if err := validate.Minimum("beamDiameter", "body", float64(*m.BeamDiameter), 8e-05, false); err != nil {
+	if err := validate.Minimum("beamDiameter", "body", float64(*m.BeamDiameter), 1e-05, false); err != nil {
 		return err
 	}
 
-	if err := validate.Maximum("beamDiameter", "body", float64(*m.BeamDiameter), 0.00012, false); err != nil {
+	if err := validate.Maximum("beamDiameter", "body", float64(*m.BeamDiameter), 0.00014, false); err != nil {
 		return err
 	}
 
@@ -236,11 +236,11 @@ func (m *SingleBeadSimulationParameters) validateHeaterTemperature(formats strfm
 		return nil
 	}
 
-	if err := validate.Minimum("heaterTemperature", "body", float64(m.HeaterTemperature), 293, false); err != nil {
+	if err := validate.Minimum("heaterTemperature", "body", float64(m.HeaterTemperature), 293.15, false); err != nil {
 		return err
 	}
 
-	if err := validate.Maximum("heaterTemperature", "body", float64(m.HeaterTemperature), 474, false); err != nil {
+	if err := validate.Maximum("heaterTemperature", "body", float64(m.HeaterTemperature), 773.15, false); err != nil {
 		return err
 	}
 
