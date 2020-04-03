@@ -73,16 +73,16 @@ type AddCustomMaterialParams struct {
 
 	*/
 	CustomMaterialPost string
+	/*Cwlookup
+	  csv file defining columns Speed (mm/s), Power (W), CW (m)
+
+	*/
+	Cwlookup os.File
 	/*Lookup
-	  csv file defining columns T(in Kelvins), Thermal Conductivity (W/m/K), Specific Heat (J/kg/K), Density (kg/m3), Thermal Conductivity Ratio, Density Ratio, Specific Heat Ratio
+	  csv file defining columns Temperature (K), Thermal Conductivity (W/m/K), Specific Heat (J/kg/K), Density (kg/m3), Thermal Conductivity Ratio, Density Ratio, Specific Heat Ratio
 
 	*/
 	Lookup os.File
-	/*W0lookup
-	  csv file defining columns Speed (mm/s), Power (W), W0 (m)
-
-	*/
-	W0lookup os.File
 
 	timeout    time.Duration
 	Context    context.Context
@@ -144,6 +144,17 @@ func (o *AddCustomMaterialParams) SetCustomMaterialPost(customMaterialPost strin
 	o.CustomMaterialPost = customMaterialPost
 }
 
+// WithCwlookup adds the cwlookup to the add custom material params
+func (o *AddCustomMaterialParams) WithCwlookup(cwlookup os.File) *AddCustomMaterialParams {
+	o.SetCwlookup(cwlookup)
+	return o
+}
+
+// SetCwlookup adds the cwlookup to the add custom material params
+func (o *AddCustomMaterialParams) SetCwlookup(cwlookup os.File) {
+	o.Cwlookup = cwlookup
+}
+
 // WithLookup adds the lookup to the add custom material params
 func (o *AddCustomMaterialParams) WithLookup(lookup os.File) *AddCustomMaterialParams {
 	o.SetLookup(lookup)
@@ -153,17 +164,6 @@ func (o *AddCustomMaterialParams) WithLookup(lookup os.File) *AddCustomMaterialP
 // SetLookup adds the lookup to the add custom material params
 func (o *AddCustomMaterialParams) SetLookup(lookup os.File) {
 	o.Lookup = lookup
-}
-
-// WithW0lookup adds the w0lookup to the add custom material params
-func (o *AddCustomMaterialParams) WithW0lookup(w0lookup os.File) *AddCustomMaterialParams {
-	o.SetW0lookup(w0lookup)
-	return o
-}
-
-// SetW0lookup adds the w0lookup to the add custom material params
-func (o *AddCustomMaterialParams) SetW0lookup(w0lookup os.File) {
-	o.W0lookup = w0lookup
 }
 
 // WriteToRequest writes these params to a swagger request
@@ -188,13 +188,13 @@ func (o *AddCustomMaterialParams) WriteToRequest(r runtime.ClientRequest, reg st
 		}
 	}
 
-	// form file param lookup
-	if err := r.SetFileParam("lookup", &o.Lookup); err != nil {
+	// form file param cwlookup
+	if err := r.SetFileParam("cwlookup", &o.Cwlookup); err != nil {
 		return err
 	}
 
-	// form file param w0lookup
-	if err := r.SetFileParam("w0lookup", &o.W0lookup); err != nil {
+	// form file param lookup
+	if err := r.SetFileParam("lookup", &o.Lookup); err != nil {
 		return err
 	}
 
