@@ -19,14 +19,14 @@ import (
 	strfmt "github.com/go-openapi/strfmt"
 )
 
-// NewGetPartsParams creates a new GetPartsParams object
+// NewGetPartSupportsParams creates a new GetPartSupportsParams object
 // with the default values initialized.
-func NewGetPartsParams() *GetPartsParams {
+func NewGetPartSupportsParams() *GetPartSupportsParams {
 	var (
 		limitDefault  = int32(10)
 		offsetDefault = int32(0)
 	)
-	return &GetPartsParams{
+	return &GetPartSupportsParams{
 		Limit:  &limitDefault,
 		Offset: &offsetDefault,
 
@@ -34,14 +34,14 @@ func NewGetPartsParams() *GetPartsParams {
 	}
 }
 
-// NewGetPartsParamsWithTimeout creates a new GetPartsParams object
+// NewGetPartSupportsParamsWithTimeout creates a new GetPartSupportsParams object
 // with the default values initialized, and the ability to set a timeout on a request
-func NewGetPartsParamsWithTimeout(timeout time.Duration) *GetPartsParams {
+func NewGetPartSupportsParamsWithTimeout(timeout time.Duration) *GetPartSupportsParams {
 	var (
 		limitDefault  = int32(10)
 		offsetDefault = int32(0)
 	)
-	return &GetPartsParams{
+	return &GetPartSupportsParams{
 		Limit:  &limitDefault,
 		Offset: &offsetDefault,
 
@@ -49,14 +49,14 @@ func NewGetPartsParamsWithTimeout(timeout time.Duration) *GetPartsParams {
 	}
 }
 
-// NewGetPartsParamsWithContext creates a new GetPartsParams object
+// NewGetPartSupportsParamsWithContext creates a new GetPartSupportsParams object
 // with the default values initialized, and the ability to set a context for a request
-func NewGetPartsParamsWithContext(ctx context.Context) *GetPartsParams {
+func NewGetPartSupportsParamsWithContext(ctx context.Context) *GetPartSupportsParams {
 	var (
 		limitDefault  = int32(10)
 		offsetDefault = int32(0)
 	)
-	return &GetPartsParams{
+	return &GetPartSupportsParams{
 		Limit:  &limitDefault,
 		Offset: &offsetDefault,
 
@@ -64,32 +64,32 @@ func NewGetPartsParamsWithContext(ctx context.Context) *GetPartsParams {
 	}
 }
 
-// NewGetPartsParamsWithHTTPClient creates a new GetPartsParams object
+// NewGetPartSupportsParamsWithHTTPClient creates a new GetPartSupportsParams object
 // with the default values initialized, and the ability to set a custom HTTPClient for a request
-func NewGetPartsParamsWithHTTPClient(client *http.Client) *GetPartsParams {
+func NewGetPartSupportsParamsWithHTTPClient(client *http.Client) *GetPartSupportsParams {
 	var (
 		limitDefault  = int32(10)
 		offsetDefault = int32(0)
 	)
-	return &GetPartsParams{
+	return &GetPartSupportsParams{
 		Limit:      &limitDefault,
 		Offset:     &offsetDefault,
 		HTTPClient: client,
 	}
 }
 
-/*GetPartsParams contains all the parameters to send to the API endpoint
-for the get parts operation typically these are written to a http.Request
+/*GetPartSupportsParams contains all the parameters to send to the API endpoint
+for the get part supports operation typically these are written to a http.Request
 */
-type GetPartsParams struct {
+type GetPartSupportsParams struct {
 
 	/*Archived
-	  If true, will only return archived parts.  If false, will only return unarchived parts.  If not provided, will return both archived and unarchived parts.
+	  If true, will only return archived support.  If false, will only return unarchived support.  If not provided, will return both archived and unarchived support.
 
 	*/
 	Archived *bool
 	/*Availability
-	  If specified, will filter to only include parts with the given availability.  Uploaded - the part has been uploaded.  Processing - the part is being processed.  Available - the part was processed successfully and can be used in simulations.  Error - an error occurred, contact Ansys Support.
+	  If specified, will filter to only include supports with the given availability. If an array of items is sent, they are treated as "OR" operations. Uploaded - the support has been uploaded.  Processing - the support is being processed.  Available - the support was processed successfully and can be used in simulations.  Error - an error occurred, contact Ansys Support.
 
 	*/
 	Availability []string
@@ -119,107 +119,107 @@ type GetPartsParams struct {
 	HTTPClient *http.Client
 }
 
-// WithTimeout adds the timeout to the get parts params
-func (o *GetPartsParams) WithTimeout(timeout time.Duration) *GetPartsParams {
+// WithTimeout adds the timeout to the get part supports params
+func (o *GetPartSupportsParams) WithTimeout(timeout time.Duration) *GetPartSupportsParams {
 	o.SetTimeout(timeout)
 	return o
 }
 
-// SetTimeout adds the timeout to the get parts params
-func (o *GetPartsParams) SetTimeout(timeout time.Duration) {
+// SetTimeout adds the timeout to the get part supports params
+func (o *GetPartSupportsParams) SetTimeout(timeout time.Duration) {
 	o.timeout = timeout
 }
 
-// WithContext adds the context to the get parts params
-func (o *GetPartsParams) WithContext(ctx context.Context) *GetPartsParams {
+// WithContext adds the context to the get part supports params
+func (o *GetPartSupportsParams) WithContext(ctx context.Context) *GetPartSupportsParams {
 	o.SetContext(ctx)
 	return o
 }
 
-// SetContext adds the context to the get parts params
-func (o *GetPartsParams) SetContext(ctx context.Context) {
+// SetContext adds the context to the get part supports params
+func (o *GetPartSupportsParams) SetContext(ctx context.Context) {
 	o.Context = ctx
 }
 
-// WithHTTPClient adds the HTTPClient to the get parts params
-func (o *GetPartsParams) WithHTTPClient(client *http.Client) *GetPartsParams {
+// WithHTTPClient adds the HTTPClient to the get part supports params
+func (o *GetPartSupportsParams) WithHTTPClient(client *http.Client) *GetPartSupportsParams {
 	o.SetHTTPClient(client)
 	return o
 }
 
-// SetHTTPClient adds the HTTPClient to the get parts params
-func (o *GetPartsParams) SetHTTPClient(client *http.Client) {
+// SetHTTPClient adds the HTTPClient to the get part supports params
+func (o *GetPartSupportsParams) SetHTTPClient(client *http.Client) {
 	o.HTTPClient = client
 }
 
-// WithArchived adds the archived to the get parts params
-func (o *GetPartsParams) WithArchived(archived *bool) *GetPartsParams {
+// WithArchived adds the archived to the get part supports params
+func (o *GetPartSupportsParams) WithArchived(archived *bool) *GetPartSupportsParams {
 	o.SetArchived(archived)
 	return o
 }
 
-// SetArchived adds the archived to the get parts params
-func (o *GetPartsParams) SetArchived(archived *bool) {
+// SetArchived adds the archived to the get part supports params
+func (o *GetPartSupportsParams) SetArchived(archived *bool) {
 	o.Archived = archived
 }
 
-// WithAvailability adds the availability to the get parts params
-func (o *GetPartsParams) WithAvailability(availability []string) *GetPartsParams {
+// WithAvailability adds the availability to the get part supports params
+func (o *GetPartSupportsParams) WithAvailability(availability []string) *GetPartSupportsParams {
 	o.SetAvailability(availability)
 	return o
 }
 
-// SetAvailability adds the availability to the get parts params
-func (o *GetPartsParams) SetAvailability(availability []string) {
+// SetAvailability adds the availability to the get part supports params
+func (o *GetPartSupportsParams) SetAvailability(availability []string) {
 	o.Availability = availability
 }
 
-// WithLimit adds the limit to the get parts params
-func (o *GetPartsParams) WithLimit(limit *int32) *GetPartsParams {
+// WithLimit adds the limit to the get part supports params
+func (o *GetPartSupportsParams) WithLimit(limit *int32) *GetPartSupportsParams {
 	o.SetLimit(limit)
 	return o
 }
 
-// SetLimit adds the limit to the get parts params
-func (o *GetPartsParams) SetLimit(limit *int32) {
+// SetLimit adds the limit to the get part supports params
+func (o *GetPartSupportsParams) SetLimit(limit *int32) {
 	o.Limit = limit
 }
 
-// WithOffset adds the offset to the get parts params
-func (o *GetPartsParams) WithOffset(offset *int32) *GetPartsParams {
+// WithOffset adds the offset to the get part supports params
+func (o *GetPartSupportsParams) WithOffset(offset *int32) *GetPartSupportsParams {
 	o.SetOffset(offset)
 	return o
 }
 
-// SetOffset adds the offset to the get parts params
-func (o *GetPartsParams) SetOffset(offset *int32) {
+// SetOffset adds the offset to the get part supports params
+func (o *GetPartSupportsParams) SetOffset(offset *int32) {
 	o.Offset = offset
 }
 
-// WithOrganizationID adds the organizationID to the get parts params
-func (o *GetPartsParams) WithOrganizationID(organizationID int32) *GetPartsParams {
+// WithOrganizationID adds the organizationID to the get part supports params
+func (o *GetPartSupportsParams) WithOrganizationID(organizationID int32) *GetPartSupportsParams {
 	o.SetOrganizationID(organizationID)
 	return o
 }
 
-// SetOrganizationID adds the organizationId to the get parts params
-func (o *GetPartsParams) SetOrganizationID(organizationID int32) {
+// SetOrganizationID adds the organizationId to the get part supports params
+func (o *GetPartSupportsParams) SetOrganizationID(organizationID int32) {
 	o.OrganizationID = organizationID
 }
 
-// WithSort adds the sort to the get parts params
-func (o *GetPartsParams) WithSort(sort []string) *GetPartsParams {
+// WithSort adds the sort to the get part supports params
+func (o *GetPartSupportsParams) WithSort(sort []string) *GetPartSupportsParams {
 	o.SetSort(sort)
 	return o
 }
 
-// SetSort adds the sort to the get parts params
-func (o *GetPartsParams) SetSort(sort []string) {
+// SetSort adds the sort to the get part supports params
+func (o *GetPartSupportsParams) SetSort(sort []string) {
 	o.Sort = sort
 }
 
 // WriteToRequest writes these params to a swagger request
-func (o *GetPartsParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
+func (o *GetPartSupportsParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err
