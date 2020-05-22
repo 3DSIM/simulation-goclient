@@ -291,7 +291,7 @@ var buildFileTypeMachineTypePropEnum []interface{}
 
 func init() {
 	var res []string
-	if err := json.Unmarshal([]byte(`["AdditiveIndustries","Renishaw","SLM","ThreeDSystems","EOS","Trumpf","Sisma"]`), &res); err != nil {
+	if err := json.Unmarshal([]byte(`["AdditiveIndustries","Renishaw","SLM","ThreeDSystems","EOS","Trumpf","Sisma","HB3D"]`), &res); err != nil {
 		panic(err)
 	}
 	for _, v := range res {
@@ -314,6 +314,8 @@ const (
 	BuildFileMachineTypeTrumpf string = "Trumpf"
 	// BuildFileMachineTypeSisma captures enum value "Sisma"
 	BuildFileMachineTypeSisma string = "Sisma"
+	// BuildFileMachineTypeHB3D captures enum value "HB3D"
+	BuildFileMachineTypeHB3D string = "HB3D"
 )
 
 // prop value enum
