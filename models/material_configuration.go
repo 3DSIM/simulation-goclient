@@ -138,6 +138,10 @@ type MaterialConfiguration struct {
 	// Required: true
 	SolidusTemperature *float64 `json:"solidusTemperature"`
 
+	// strain scaling factor
+	// Required: true
+	StrainScalingFactor *float64 `json:"strainScalingFactor"`
+
 	// support yield strength ratio
 	// Required: true
 	SupportYieldStrengthRatio *float64 `json:"supportYieldStrengthRatio"`
@@ -249,6 +253,11 @@ func (m *MaterialConfiguration) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateSolidusTemperature(formats); err != nil {
+		// prop
+		res = append(res, err)
+	}
+
+	if err := m.validateStrainScalingFactor(formats); err != nil {
 		// prop
 		res = append(res, err)
 	}
@@ -439,6 +448,15 @@ func (m *MaterialConfiguration) validateSolidThermalConductivityAtRoomTemperatur
 func (m *MaterialConfiguration) validateSolidusTemperature(formats strfmt.Registry) error {
 
 	if err := validate.Required("solidusTemperature", "body", m.SolidusTemperature); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *MaterialConfiguration) validateStrainScalingFactor(formats strfmt.Registry) error {
+
+	if err := validate.Required("strainScalingFactor", "body", m.StrainScalingFactor); err != nil {
 		return err
 	}
 
