@@ -1,10 +1,6 @@
-[![GoDoc](https://godoc.org/github.com/3DSIM/simulation-goclient?status.svg)](https://godoc.org/github.com/3DSIM/simulation-goclient)
-
 # simulation-goclient
-**Note: You must be a paying customer/partner to be able to call the 3DSIM Simulation API.**
 
-Go client for interacting with the 3DSIM simulation api.  To inquire about becoming a customer or partner, contact us here: http://3dsim.com/#contact.  See http://docs.simulationapi.apiary.io for full API documentation.
-Issues and PRs are welcome.  If you are a 3DSIM customer and have questions, feel free to visit https://community.3dsim.com to start a discussion.
+Go client for interacting with the simulation api. 
 
 ## Technical Specifications
 
